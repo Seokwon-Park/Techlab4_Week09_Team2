@@ -147,3 +147,24 @@ bool UPrimitiveComponent::TraceMeshLocal(const FRay& LocalRay, const FStaticMesh
 {
 	return RayIntersectsMesh(LocalRay, Mesh, OutT);
 }
+
+bool UPrimitiveComponent::IsOverlappingComponent(const UPrimitiveComponent* Other) const
+{
+	// TODO(C): OverlapInfos 검색
+	return false;
+}
+
+void UPrimitiveComponent::BeginComponentOverlap(UPrimitiveComponent* OtherComp)
+{
+	// TODO(C): OverlapInfos 추가 → OnComponentBeginOverlap.Broadcast → Owner->NotifyActorBeginOverlap
+}
+
+void UPrimitiveComponent::EndComponentOverlap(UPrimitiveComponent* OtherComp)
+{
+	// TODO(C): OverlapInfos 제거 → OnComponentEndOverlap.Broadcast → Owner->NotifyActorEndOverlap
+}
+
+void UPrimitiveComponent::DispatchHit(UPrimitiveComponent* OtherComp)
+{
+	// TODO(C): OnComponentHit.Broadcast → Owner->NotifyHit
+}

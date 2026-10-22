@@ -6,8 +6,20 @@
 #include "Render/RenderPacket.h"
 #include "Render/GeometryGenerator.h"
 #include "Collision/HitResult.h"
+#include "Core/Delegate.h"
 
 class FPrimitiveSceneProxy;
+class AActor;
+class UPrimitiveComponent;
+
+// (Self, Other, OtherComp). 담당: C
+DECLARE_DELEGATE(FComponentOverlapSignature, UPrimitiveComponent*, AActor*, UPrimitiveComponent*);
+DECLARE_DELEGATE(FComponentHitSignature, UPrimitiveComponent*, AActor*, UPrimitiveComponent*);
+
+struct FOverlapInfo
+{
+	UPrimitiveComponent* OtherComp = nullptr;
+};
 
 enum class EPrimitiveType
 {
@@ -29,6 +41,8 @@ class UPrimitiveComponent :public USceneComponent
 	REFLECT_START(ClassName)
 		PROPERTY(bCastShadow)
 		PROPERTY(bReceiveShadow)
+		PROPERTY(bGenerateOverlapEvents)
+		PROPERTY(bBlockComponent)
 		REFLECT_END()
 public:
 	UPrimitiveComponent();
@@ -79,7 +93,25 @@ public:
 	bool bCastShadow = true;
 	bool bReceiveShadow = true;
 
+	// ---- 충돌 이벤트 (담당: C) ----
+	FComponentOverlapSignature OnComponentBeginOverlap;
+	FComponentOverlapSignature OnComponentEndOverlap;
+	FComponentHitSignature OnComponentHit;
+
+	bool bGenerateOverlapEvents = true;
+	bool bBlockComponent = false;
+
+	bool IsOverlappingComponent(const UPrimitiveComponent* Other) const;
+	const TArray<FOverlapInfo>& GetOverlapInfos() const { return OverlapInfos; }
+
+	// UWorld::UpdateOverlaps가 겹침 상태가 바뀐 프레임에 호출한다
+	void BeginComponentOverlap(UPrimitiveComponent* OtherComp);
+	void EndComponentOverlap(UPrimitiveComponent* OtherComp);
+	void DispatchHit(UPrimitiveComponent* OtherComp);
+
 protected:
+	TArray<FOverlapInfo> OverlapInfos;
+
 	virtual bool ShouldCreateRenderState() const override
 	{
 		return true;

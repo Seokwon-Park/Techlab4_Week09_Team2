@@ -140,6 +140,8 @@ void UWorld::Tick(float DeltaTime)
 			{
 				PathTracker.Tick(Level->GetActors(), DeltaTime);
 			}
+
+			UpdateOverlaps();
 		}
 	}
 	else
@@ -878,4 +880,11 @@ void UWorld::Serialize(FStructuredArchive::FRecord Record)
 
 	// (선택) 메인 카메라는 레벨에 속하지 않아 따로 쓴다. PIE 시작 시점이나 에디터 시점을 복원할 때 쓸 수 있다.
 	// MainCamera->GetCameraComponent()->Serialize(Record.EnterRecord("MainCamera"));
+}
+
+void UWorld::UpdateOverlaps()
+{
+	// TODO(C): bGenerateOverlapEvents인 UShapeComponent 후보 쌍(BVH 또는 N²) → GetWorldAABB 1차 거름
+	//          → FCollision::Overlap → 지난 프레임 쌍과 비교해 EndComponentOverlap, BeginComponentOverlap 호출
+	//          둘 다 bBlockComponent면 DispatchHit
 }

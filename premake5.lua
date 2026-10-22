@@ -20,6 +20,8 @@ IncludeDir["ImGui"] = "Source/ThirdParty/ImGui"
 IncludeDir["stb"]   = "Source/ThirdParty/stb"
 IncludeDir["json"]  = "Source/ThirdParty/json"
 IncludeDir["DDSLoader"] = "Source/ThirdParty/DDSLoader"
+IncludeDir["lua"]   = "Source/ThirdParty/lua/src"
+IncludeDir["sol2"]  = "Source/ThirdParty/sol2/include"
 
 -- premake의 filter는 project()를 만나면 초기화된다.
 -- 두 프로젝트가 같은 런타임(/MDd vs /MD)으로 컴파일되지 않으면 링크가 실패하므로
@@ -120,6 +122,18 @@ project "ImGui"
 	}
 
 
+-- Lua 5.4. C로 컴파일한다. lua.c·luac.c는 main이 있는 단독 실행 파일용이라 뺀다.
+project "Lua"
+	location "Source/ThirdParty/lua"
+	kind     "StaticLib"
+	CommonSettings()
+	language "C"   -- CommonSettings의 C++를 덮어쓴다
+
+	files { "%{IncludeDir.lua}/*.h", "%{IncludeDir.lua}/*.c" }
+	removefiles { "%{IncludeDir.lua}/lua.c", "%{IncludeDir.lua}/luac.c" }
+	includedirs { "%{IncludeDir.lua}" }
+
+
 -- 런타임. 에디터를 모른다. include 경로에 Source/Editor가 없는 것이 그 방벽이다.
 -- location이 소스 루트와 같아야 "모든 파일 표시"에서 폴더가 보인다.
 project "HitoriEngine"
@@ -145,7 +159,16 @@ project "HitoriEngine"
 		"%{IncludeDir.stb}",
 		"%{IncludeDir.json}",
 		"%{IncludeDir.DDSLoader}",
+		"%{IncludeDir.lua}",
+		"%{IncludeDir.sol2}",
 	}
+
+	links { "Lua" }
+
+	-- sol2 템플릿이 섹션 수 제한을 넘긴다
+	filter "files:Source/Runtime/Script/**.cpp"
+		buildoptions { "/bigobj" }
+	filter {}
 
 	links
 	{
@@ -168,7 +191,7 @@ project "HitoriEditor"
 	pchheader "EnginePCH.h"
 	pchsource "Source/Editor/EditorPCH.cpp"
 
-	links { "HitoriEngine", "ImGui" }
+	links { "HitoriEngine", "ImGui", "Lua" }
 
 	files
 	{
@@ -188,6 +211,8 @@ project "HitoriEditor"
 		"%{IncludeDir.ImGui}/backends",
 		"%{IncludeDir.stb}",
 		"%{IncludeDir.json}",
+		"%{IncludeDir.lua}",
+		"%{IncludeDir.sol2}",
 	}
 
 	links

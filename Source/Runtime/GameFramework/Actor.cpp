@@ -371,3 +371,31 @@ bool AActor::TryGetActorBounds(FBox& OutBounds) const
 
 	return bHasBounds;
 }
+
+void AActor::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	// TODO(A): if (Script) Script->Call("OnBeginOverlap", OtherActor);
+	//          sol.hpp는 LuaScriptInstance.cpp 안에서만 include하도록 비템플릿 진입점을 거친다
+}
+
+void AActor::NotifyActorEndOverlap(AActor* OtherActor)
+{
+	// TODO(A): if (Script) Script->Call("OnEndOverlap", OtherActor);
+}
+
+void AActor::NotifyHit(AActor* OtherActor)
+{
+	// TODO(A): if (Script) Script->Call("OnHit", OtherActor);
+}
+
+bool AActor::IsOverlappingActor(const AActor* Other) const
+{
+	// TODO(C): 내 PrimitiveComponent들의 OverlapInfos 중 Owner가 Other인 것이 있는지
+	return false;
+}
+
+void AActor::GetOverlappingActors(TArray<AActor*>& OutActors) const
+{
+	// TODO(C): 중복 없이 모은다
+	OutActors.Reset();
+}

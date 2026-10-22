@@ -10,12 +10,14 @@
 
 class UWorld;
 class ULevel;
+struct FLuaScriptInstance;
 
 class AActor : public UObject
 {
 	DECLARE_CLASS(AActor, UObject)
 	REFLECT_START(ClassName)
 		PROPERTY(bActorEnableCollision)
+		PROPERTY(ScriptPath)
 		REFLECT_END()
 public:
 	AActor();
@@ -68,6 +70,20 @@ public:
 	virtual void RegisterAllComponents();
 	// Parameter : 바로 다시 Register 할껀지
 	virtual void UnregisterAllComponents();
+
+	// Lua 스크립트 (담당: A). ScriptPath가 비어 있으면 Script를 만들지 않는다.
+	// 이 헤더에서 sol.hpp를 include하지 않도록 포인터로 둔다.
+	FString ScriptPath;
+	FLuaScriptInstance* Script = nullptr;
+
+	// 컴포넌트 충돌 이벤트를 액터 단위로 받는 지점 (C가 호출, A가 Lua로 넘김)
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor);
+	virtual void NotifyActorEndOverlap(AActor* OtherActor);
+	virtual void NotifyHit(AActor* OtherActor);
+
+	// 담당: C
+	bool IsOverlappingActor(const AActor* Other) const;
+	void GetOverlappingActors(TArray<AActor*>& OutActors) const;
 protected:
 	virtual void OnDefaultSubobjectCreated(UObject* Subobject) override;
 
