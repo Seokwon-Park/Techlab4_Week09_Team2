@@ -28,7 +28,7 @@ public:
 	// 평소 ShapeColor, 겹쳐 있으면 빨강
 	FVector4 GetDebugColor() const;
 
-	FColor ShapeColor = FColor(255, 0, 0, 255);
+	FColor ShapeColor = FColor(110, 200, 120, 255);
 	bool bDrawOnlyIfSelected = false;
 
 protected:

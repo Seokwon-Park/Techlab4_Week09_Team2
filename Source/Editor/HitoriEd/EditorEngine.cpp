@@ -855,9 +855,16 @@ void UEditorEngine::RenderGameFrame(FGameViewportClient* GameClient, const FScen
 	if (!GameClient) return;
 
 	FSceneViewTargets& Targets = GameClient->GetViewTargets();
-	const bool bRendered = RenderScene(Targets, SceneView, SceneRenderer, GameClient->GetWorld(), RenderOptions,
-		[this, &Targets, &SceneView, bIsSIEMode](FSceneOverlayCallbacks& Overlays)
+	UWorld* TargetWorld = GameClient->GetWorld();
+	const bool bRendered = RenderScene(Targets, SceneView, SceneRenderer, TargetWorld, RenderOptions,
+		[this, &Targets, &SceneView, bIsSIEMode, TargetWorld](FSceneOverlayCallbacks& Overlays)
 	{
+		Overlays.EditorLines = [this, &SceneView, TargetWorld]
+		{
+			LineBatcher->BeginFrame();
+			DrawCollisionShapes(TargetWorld, LineBatcher.get(), nullptr);
+			LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
+		};
 		if (!bIsSIEMode) return;
 		const FViewportSettings ViewportSetting{ 0, 0, Targets.SceneColor->GetWidth(),
 			Targets.SceneColor->GetHeight(), 0.0f, 1.0f };
@@ -1077,7 +1084,6 @@ void UEditorEngine::RenderFrame(FEditorViewportClient* ViewClient,
 			 Cast<ARectLightActor>(Gizmo->GetTarget()->GetOwner()));
 
 		const bool bDrawCascadeBounds = SettingsPanel->GetSettings().bDrawCascadeBounds;
-		if (SettingsPanel->GetSettings().bDrawBatchLine || bDrawSelectedLight || bDrawCascadeBounds)
 		{
 			Overlays.EditorLines = [this, ViewClient, &SceneView, bDrawSelectedLight, bDrawCascadeBounds]
 				{
