@@ -31,6 +31,8 @@
 
 #include "UObject/UObjectGlobals.h"
 
+#include "Script/LuaBindings.h"
+
 namespace
 {
 	inline void WritePerObjectConstants(uint8* Dest, const FMatrix& LocalToWorld, const FMatrix& WorldToLocal)
@@ -573,6 +575,9 @@ bool UWorld::DestroyActor(AActor* Actor)
 
 	FString ActorName = Actor->GetName();
 	uint32 ActorUUID = Actor->GetUUID();
+
+	if (Actor->HasBegunPlay())
+		Actor->EndPlay();
 
 	// 5. 프록시 제거
 	Actor->UnregisterAllComponents();

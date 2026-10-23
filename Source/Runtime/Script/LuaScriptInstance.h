@@ -14,8 +14,8 @@ struct FLuaScriptInstance
 
 	// env 생성, obj = Owner 주입, 파일 실행. 문법 오류면 로그 남기고 false
 	bool Load(AActor* InOwner, const FString& InPath);
-	// 파일 수정 시각이 바뀌었으면 다시 Load. 매 Tick 호출해도 싸야 한다
-	void ReloadIfChanged();
+
+	void Tick(float DeltaTime);
 
 	// 함수가 없으면 무시. Lua 에러는 protected_function으로 잡아 로그만 남긴다
 	void Call(const char* Name);
@@ -26,6 +26,9 @@ struct FLuaScriptInstance
 	const FString& GetPath() const { return Path; }
 
 private:
+	// 파일 수정 시각이 바뀌었으면 다시 Load. 매 Tick 호출해도 싸야 한다
+	void ReloadIfChanged(float DeltaTime);
+
 	struct FImpl;
 	std::unique_ptr<FImpl> Impl;
 

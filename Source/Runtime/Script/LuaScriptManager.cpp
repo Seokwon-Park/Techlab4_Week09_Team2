@@ -1,5 +1,7 @@
 #include "EnginePCH.h"
 #include "LuaScriptManager.h"
+
+#include "LuaBindings.h"
 #include <sol/sol.hpp>
 
 FLuaScriptManager& FLuaScriptManager::Get()
@@ -19,7 +21,27 @@ void FLuaScriptManager::Initialize()
 		return;
 
 	State = new sol::state();
-	// TODO(A): open_libraries(base, math, string, table, coroutine), print 재정의, FLuaBindings::Register(*State)
+
+	State->open_libraries(sol::lib::base, sol::lib::math, sol::lib::string,
+		sol::lib::table, sol::lib::coroutine);
+
+	State->set_function("print", [](sol::this_state S, sol::variadic_args Args)
+		{
+			sol::state_view Lua(S);
+			sol::protected_function ToString = Lua["tostring"];
+
+			FString Line;
+			for (auto Arg : Args)
+			{
+				if (!Line.empty())
+					Line += "\t";
+				sol::protected_function_result Str = ToString(Arg);
+				Line += Str.valid() ? Str.get<FString>() : FString("<?>");
+			}
+			HTR_LOG(Info, "[Lua] {}", Line);
+		});
+
+	FLuaBindings::Register(*State);
 }
 
 void FLuaScriptManager::Shutdown()
