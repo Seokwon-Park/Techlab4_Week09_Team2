@@ -63,8 +63,8 @@ namespace
 			{
 				return MoveComp;
 			}
-			return nullptr;
 		}
+		return nullptr;
 	}
 
 	void RegisterActor(sol::state& Lua)
