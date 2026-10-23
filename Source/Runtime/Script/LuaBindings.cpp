@@ -116,7 +116,10 @@ namespace
 					{
 						MoveComp->Velocity = V;
 					}
-					throw sol::error("Actor does not have a MovementComponent to set Velocity.");
+					else
+					{
+						throw sol::error("Actor does not have a MovementComponent to set Velocity.");
+					}
 				}),
 			"PrintLocation", [](const FLuaActorRef& Ref)
 			{
@@ -239,7 +242,7 @@ namespace
 			{
 				return "move";
 			}));
-		
+
 		Lua.set_function("move_to",
 			[](sol::this_environment ThisEnv, const FVector& Target, float Speed)
 			{
