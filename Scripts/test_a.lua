@@ -11,3 +11,7 @@ function Tick(dt)
         elapsed = 0
     end
 end
+
+function EndPlay()
+    print("EndPlay A")
+end

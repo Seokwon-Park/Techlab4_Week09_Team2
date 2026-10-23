@@ -3,6 +3,9 @@
 #include "LuaScriptManager.h"
 #include <sol/sol.hpp>
 #include "GameFramework/Actor.h"
+#include "LuaActorRef.h"
+#include "Engine/World.h"
+#include "LuaBindings.h"
 
 struct FLuaScriptInstance::FImpl
 {
@@ -71,9 +74,9 @@ bool FLuaScriptInstance::Load(AActor* InOwner, const FString& InPath)
 	sol::state& Lua = FLuaScriptManager::Get().GetState();
 
 	sol::environment NewEnv(Lua, sol::create, Lua.globals());
-	NewEnv["obj"] = Owner;
+	NewEnv["obj"] = FLuaActorRef::Make(Owner);
 
-	sol::protected_function_result Result = Lua.safe_script(Code, NewEnv, sol::script_default_on_error, "@" + Path);
+	sol::protected_function_result Result = Lua.safe_script(Code, NewEnv, sol::script_pass_on_error, "@" + Path);
 	if (!Result.valid())
 	{
 		sol::error Err = Result;
@@ -102,8 +105,27 @@ void FLuaScriptInstance::Tick(float DeltaTime)
 
 void FLuaScriptInstance::ReloadIfChanged(float DeltaTime)
 {
-	
 	// TODO(A): fs::last_write_time 비교 후 Load(Owner, Path)
+	UWorld* World = Owner ? Owner->GetWorld() : nullptr;
+	if (!FLuaScriptManager::Get().bEnableHotReload || !World || !World->IsPlayInEditor())
+		return;
+
+	Impl->CheckTimer += DeltaTime;
+	if (Impl->CheckTimer < HotReloadInterval)
+		return;
+	Impl->CheckTimer = 0.0f;
+
+	std::error_code Ec;
+	const fs::file_time_type WriteTime = fs::last_write_time(FLuaScriptManager::ToPath(Path), Ec);
+	if (Ec || WriteTime == Impl->LastWriteTime) return;
+
+	if (Load(Owner, Path))
+	{
+		FCoroutineScheduler::Get().StopAll(Owner);
+		FLuaBindings::ReleaseCallbacks(Owner);
+		HTR_LOG(Info, "[Lua] Hot Reload: {}", Path);
+		Call("OnReload");
+	}
 }
 
 void FLuaScriptInstance::Call(const char* Name)
@@ -118,5 +140,5 @@ void FLuaScriptInstance::Call(const char* Name, float Value)
 
 void FLuaScriptInstance::Call(const char* Name, AActor* Other)
 {
-	CallLua(Impl->Env, Path, Name, Other);
+	CallLua(Impl->Env, Path, Name, FLuaActorRef::Make(Other));
 }

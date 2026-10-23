@@ -35,6 +35,8 @@ public:
 		return FString(U8.begin(), U8.end());
 	}
 
+	bool bEnableHotReload = true;
+
 private:
 	FLuaScriptManager() = default;
 	~FLuaScriptManager();

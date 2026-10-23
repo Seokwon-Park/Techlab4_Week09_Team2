@@ -137,6 +137,7 @@ void UWorld::Tick(float DeltaTime)
 			SCOPE_CYCLE_COUNTER(STAT_ActorTick);
 			// 모든 Actor를 도는 대신 등록된 Tick 함수만 실행한다
 			TickTaskManager.RunAllTickGroups(DeltaTime);
+			FCoroutineScheduler::Get().Tick(DeltaTime);
 
 			for (ULevel* Level : Levels)
 			{
@@ -186,6 +187,8 @@ void UWorld::ClearWorld()
 		for (AActor* Actor : Level->Actors)
 		{
 			if (!Actor) continue;
+			if (Actor->HasBegunPlay())
+				Actor->EndPlay();
 			Actor->UnregisterAllComponents();
 			Actor->RegisterAllActorTickFunctions(false);
 		}
