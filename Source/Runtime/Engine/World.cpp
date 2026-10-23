@@ -31,6 +31,8 @@
 
 #include "UObject/UObjectGlobals.h"
 
+#include "Script/LuaBindings.h"
+
 namespace
 {
 	inline void WritePerObjectConstants(uint8* Dest, const FMatrix& LocalToWorld, const FMatrix& WorldToLocal)
@@ -142,6 +144,7 @@ void UWorld::Tick(float DeltaTime)
 			}
 
 			UpdateOverlaps();
+			FLuaBindings::FlushPendingDestroy(this);
 		}
 	}
 	else

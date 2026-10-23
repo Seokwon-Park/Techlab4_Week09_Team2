@@ -8,9 +8,12 @@
 #include "GameFramework/Actor.h"
 #include "Input/InputSystem.h"
 #include "Script/LuaActorRef.h"
+#include "Engine/World.h"
 
 namespace
 {
+	TArray<FLuaActorRef> PendingDestroies;
+
 	// FVector, FRotator
 	void RegisterMath(sol::state& Lua)
 	{
@@ -120,6 +123,15 @@ namespace
 				HTR_LOG(Info, "[Lua] {} ({:.2f}, {:.2f}, {:.2f})", Deref(Ref).GetName(), Location.X, Location.Y, Location.Z);
 			},
 
+			"Destroy", [](const FLuaActorRef& Ref)
+			{
+				// 이미 파괴되지 않은 액터만 PendingDestroies에 추가
+				if (Ref.Get())
+				{
+					PendingDestroies.Add(Ref);
+				}
+			},
+
 			sol::meta_function::equal_to, [](const FLuaActorRef& A, const FLuaActorRef& B)
 			{
 				return A.UUID == B.UUID;
@@ -194,6 +206,29 @@ namespace FLuaBindings
 		RegisterMath(Lua);
 		RegisterActor(Lua);
 		RegisterInput(Lua);
+	}
+
+	void FlushPendingDestroy(UWorld* World)
+	{
+		TArray<FLuaActorRef> ToDestroy = std::move(PendingDestroies);
+		PendingDestroies = TArray<FLuaActorRef>();
+
+		for (const FLuaActorRef& Ref : ToDestroy)
+		{
+			if (Ref.World != World)
+			{
+				continue;
+			}
+			if (AActor* Actor = Ref.Get()) // 살아 있는 액터만 Destroy
+			{
+				Actor->Destroy();
+			}
+		}
+	}
+
+	void ReleaseCallbacks(AActor* Owner)
+	{
+		// TODO
 	}
 }
 
