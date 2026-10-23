@@ -17,4 +17,5 @@ public:
 	float GetScaledCapsuleHalfHeight() const;
 	float GetScaledCapsuleRadius() const;
 	virtual FBox CalcLocalBounds() const override;
+	virtual void DrawDebug(FLineBatcher*, const FVector4&) const override;
 };

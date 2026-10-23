@@ -2,7 +2,6 @@
 
 #include "ShapeComponent.h"
 
-// 담당: D
 class USphereComponent : public UShapeComponent
 {
 	DECLARE_CLASS(USphereComponent, UShapeComponent)
@@ -15,4 +14,5 @@ public:
 	// 비균일 스케일이면 가장 큰 축을 쓴다
 	float GetScaledSphereRadius() const;
 	virtual FBox CalcLocalBounds() const override;
+	virtual void DrawDebug(FLineBatcher*, const FVector4&) const override;
 };

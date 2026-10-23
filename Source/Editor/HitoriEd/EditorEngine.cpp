@@ -44,6 +44,8 @@
 #include "Core/EngineLog.h"
 #include "Core/Stats/LightweightStats.h"
 
+#include "Components/ShapeComponent.h"
+
 namespace
 {
 	DECLARE_CYCLE_STAT("Viewport Update", STAT_ViewportUpdate);
@@ -1046,9 +1048,19 @@ void UEditorEngine::RenderFrame(FEditorViewportClient* ViewClient,
 
 	FSceneViewTargets& Targets = ViewClient->GetViewTargets();
 	const bool bRendered = RenderScene(Targets, SceneView, SceneRenderer, TargetWorld, Options,
-		[this, ViewClient, &SceneView, &Targets, bIsPIE](FSceneOverlayCallbacks& Overlays)
+		[this, ViewClient, &SceneView, &Targets, bIsPIE, TargetWorld](FSceneOverlayCallbacks& Overlays)
 	{
-		if (bIsPIE) return;
+		if (bIsPIE)
+		{
+			// PIE에서는 그리드, 기즈모 없이 충돌 도형만 그린다
+			Overlays.EditorLines = [this, &SceneView, TargetWorld]
+			{
+					LineBatcher->BeginFrame();
+					DrawCollisionShapes(TargetWorld, LineBatcher.get(), nullptr);
+					LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
+			};
+			return;
+		}
 		const FViewportSettings ViewportSetting{ 0, 0, Targets.SceneColor->GetWidth(),Targets.SceneColor->GetHeight(), 0.0f, 1.0f };
 		const bool bIsActiveViewport = ViewportsPanel && SceneView.ViewIndex == ViewportsPanel->GetActiveViewIndex();
 		
@@ -1101,6 +1113,12 @@ void UEditorEngine::RenderFrame(FEditorViewportClient* ViewClient,
 						else if (ARectLightActor* Light = Cast<ARectLightActor>(Gizmo->GetTarget()->GetOwner()))
 							Light->GetRectLightComponent()->DrawDebug(LineBatcher.get());
 					}
+
+					const AActor* SelectedActor =
+						Gizmo->GetTarget() ? Gizmo->GetTarget()->GetOwner() : nullptr;
+
+					DrawCollisionShapes(EditorWorld, LineBatcher.get(), SelectedActor);
+
 					LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
 				};
 		}

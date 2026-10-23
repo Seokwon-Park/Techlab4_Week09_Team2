@@ -4,11 +4,20 @@
 #include "Engine/GameViewportClient.h"
 #include "Engine/Level.h"
 #include "Camera/CameraActor.h"
+#include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
+#include "Components/CapsuleComponent.h"
 
 UEngine* GEngine = nullptr;
 
 bool UEngine::Init()
 {
+	// Keep reflected shape classes linked even when no actor references them yet.
+	// Add Component and scene loading both discover these classes by registration.
+	UBoxComponent::StaticClass();
+	USphereComponent::StaticClass();
+	UCapsuleComponent::StaticClass();
+
 	AssetManager = NewObject<UAssetManager>();
 	/*World = FObjectFactory::ConstructObject<UWorld>();
 
