@@ -3,8 +3,10 @@
 
 #include <sol/sol.hpp>
 
-#include "GameFramework/Actor.h"
 #include "Components/MovementComponent.h"
+#include "Core/EngineTimer.h"
+#include "GameFramework/Actor.h"
+#include "Input/InputSystem.h"
 #include "Script/LuaActorRef.h"
 
 namespace
@@ -128,16 +130,70 @@ namespace
 			}
 		);
 	}
+
+	EKeyCode ToKeyCode(const std::string& Name)
+	{
+		if (Name.size() == 1 && std::isalnum(static_cast<unsigned char>(Name[0])))
+		{
+			// 알파벳 또는 숫자 키를 EKeyCode로 변환
+			return static_cast<EKeyCode>(std::toupper(static_cast<unsigned char>(Name[0])));
+		}
+
+		static const TMap<std::string, EKeyCode> KeyMap =
+		{
+			{ "space", EKeyCode::Space },
+			{ "enter", EKeyCode::Enter },
+			{ "escape", EKeyCode::Escape },
+			{ "tab", EKeyCode::Tab },
+			{ "shift", EKeyCode::Shift },
+			{ "backspace", EKeyCode::Backspace },
+			{ "ctrl", EKeyCode::Control },
+			{ "alt", EKeyCode::Alt },
+			{ "left", EKeyCode::Left },
+			{ "right", EKeyCode::Right },
+			{ "up", EKeyCode::Up },
+			{ "down", EKeyCode::Down },
+		};
+
+		std::string Lower = Name;
+		std::transform(Lower.begin(), Lower.end(), Lower.begin(), [](unsigned char c) { return std::tolower(c); });
+		if (const EKeyCode* Code = KeyMap.Find(Lower))
+		{
+			return *Code;
+		}
+		throw sol::error("Unknown key name: " + Name);
+	}
+
+	void RegisterInput(sol::state& Lua)
+	{
+		Lua.set_function("IsKeyDown", [](const std::string& K) {
+			return FInputSystem::IsKeyDown(ToKeyCode(K));
+			});
+		Lua.set_function("IsKeyPressed", [](const std::string& K) {
+			return FInputSystem::IsKeyPressed(ToKeyCode(K));
+			});
+		Lua.set_function("IsKeyReleased", [](const std::string& K) {
+			return FInputSystem::IsKeyReleased(ToKeyCode(K));
+			});
+
+		// Tick(dt)의 dt를 쓰는 게 원칙. 코루틴처럼 dt를 못 받는 곳에서만 쓴다
+		Lua.set_function("GetDeltaTime", []() {
+			return EngineTimer::GetDeltaTime();
+			});
+		Lua.set_function("GetTime", []() {
+			return EngineTimer::GetTotalTime();
+			});
+	}
 }
 
 namespace FLuaBindings
 {
 	void Register(sol::state& Lua)
 	{
-		// TODO(B): new_usertype<FVector>, FRotator, 액터 핸들(UUID), IsKeyDown, GetDeltaTime
 		// TODO(B): wait, wait_until, wait_until_move_done, StartCoroutine
 		RegisterMath(Lua);
 		RegisterActor(Lua);
+		RegisterInput(Lua);
 	}
 }
 
