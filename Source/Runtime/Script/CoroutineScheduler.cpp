@@ -222,6 +222,18 @@ void FCoroutineScheduler::MoveTo(AActor* Owner, const FVector& Target, float Spe
 	Moves.Add({ FLuaActorRef::Make(Owner), Target, Speed });
 }
 
+bool FCoroutineScheduler::IsMoving(const AActor* Owner) const
+{
+	for (const FMoveTask& M : Moves)
+	{
+		if (M.Owner.Ptr == Owner)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 void FCoroutineScheduler::TickMoves(float DeltaTime)
 {
 	for (int32 i = Moves.Num() - 1; i >= 0; --i)
