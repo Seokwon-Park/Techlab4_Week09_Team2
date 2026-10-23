@@ -44,6 +44,9 @@
 #include "Core/EngineLog.h"
 #include "Core/Stats/LightweightStats.h"
 
+#include "Script/LuaScriptManager.h"
+#include <sol/sol.hpp>
+
 namespace
 {
 	DECLARE_CYCLE_STAT("Viewport Update", STAT_ViewportUpdate);
@@ -304,6 +307,8 @@ bool UEditorEngine::Init()
 		[this]() { return PlayMode; },
 		[this](EPlayModeType Mode) { PlayMode = Mode; },
 		[this]() { return !IsPlaying(); });
+
+	FLuaScriptManager::Get().GetState().script("print('hello', 1 + 2, nil)");
 
 	return true;
 }

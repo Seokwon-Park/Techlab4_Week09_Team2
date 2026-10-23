@@ -577,6 +577,9 @@ bool UWorld::DestroyActor(AActor* Actor)
 	FString ActorName = Actor->GetName();
 	uint32 ActorUUID = Actor->GetUUID();
 
+	if (Actor->HasBegunPlay())
+		Actor->EndPlay();
+
 	// 5. 프록시 제거
 	Actor->UnregisterAllComponents();
 

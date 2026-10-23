@@ -24,6 +24,17 @@ public:
 	// 기본 연결 프로그램으로 연다. ShellExecute 반환값 ≤ 32이면 false
 	bool OpenScriptInEditor(const FString& Path);
 
+	static fs::path ToPath(const FString& Utf8)
+	{
+		return fs::path(std::u8string(Utf8.begin(), Utf8.end()));
+	}
+
+	static FString FromPath(const fs::path& Path)
+	{
+		const std::u8string U8 = Path.u8string();
+		return FString(U8.begin(), U8.end());
+	}
+
 private:
 	FLuaScriptManager() = default;
 	~FLuaScriptManager();
