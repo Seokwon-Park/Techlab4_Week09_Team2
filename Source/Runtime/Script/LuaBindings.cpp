@@ -8,6 +8,7 @@
 #include "GameFramework/Actor.h"
 #include "Input/InputSystem.h"
 #include "Script/LuaActorRef.h"
+#include "Script/CoroutineScheduler.h"
 #include "Engine/World.h"
 
 namespace
@@ -196,6 +197,58 @@ namespace
 			return EngineTimer::GetTotalTime();
 			});
 	}
+
+	AActor* OwnerFromEnv(sol::this_environment& ThisEnv)
+	{
+		if (!ThisEnv)
+			return nullptr;
+
+		sol::environment& Env = ThisEnv;
+		sol::optional<FLuaActorRef> Ref = Env["obj"];
+		return Ref
+			? Ref->Get()
+			: nullptr;
+	}
+
+	void RegisterCoroutine(sol::state& Lua)
+	{
+		Lua.set_function("StartCoroutine",
+			[](sol::this_environment ThisEnv, sol::function Fn)
+			{
+				FCoroutineScheduler::Get().Start(OwnerFromEnv(ThisEnv), Fn);
+			});
+
+		// C++ 함수가 반환값을 yield 값으로 남기고 멈춘다. 코루틴 밖에서 부르면 Lua 에러
+		Lua.set_function("wait", sol::yielding(
+			[](float Seconds)
+			{
+				return std::make_tuple("time", Seconds);
+			}));
+		Lua.set_function("wait_frame", sol::yielding(
+			[]()
+			{
+				return;
+			}));
+		Lua.set_function("wait_until", sol::yielding(
+			[](sol::function Cond)
+			{
+				return std::make_tuple("until", Cond);
+			}));
+		Lua.set_function("wait_until_move_done", sol::yielding(
+			[]()
+			{
+				return "move";
+			}));
+		
+		Lua.set_function("move_to",
+			[](sol::this_environment ThisEnv, const FVector& Target, float Speed)
+			{
+				if (AActor* Owner = OwnerFromEnv(ThisEnv))
+				{
+					FCoroutineScheduler::Get().MoveTo(Owner, Target, Speed);
+				}
+			});
+	}
 }
 
 namespace FLuaBindings
@@ -206,6 +259,7 @@ namespace FLuaBindings
 		RegisterMath(Lua);
 		RegisterActor(Lua);
 		RegisterInput(Lua);
+		RegisterCoroutine(Lua);
 	}
 
 	void FlushPendingDestroy(UWorld* World)
@@ -230,25 +284,4 @@ namespace FLuaBindings
 	{
 		// TODO
 	}
-}
-
-FCoroutineScheduler& FCoroutineScheduler::Get()
-{
-	static FCoroutineScheduler Instance;
-	return Instance;
-}
-
-void FCoroutineScheduler::Start(AActor* Owner, sol::function Func)
-{
-	// TODO(B): sol::thread 생성, 대기 목록에 추가 후 첫 resume
-}
-
-void FCoroutineScheduler::Tick(float DeltaTime)
-{
-	// TODO(B): 대기 조건이 풀린 코루틴 resume, 끝난 것은 제거
-}
-
-void FCoroutineScheduler::StopAll(AActor* Owner)
-{
-	// TODO(B)
 }
