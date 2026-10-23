@@ -10,10 +10,10 @@ public:
 	static bool SaveSceneAs(UWorld* World);
 	static bool LoadScene(UWorld* World);
 
+	static FString CurrentScenePath;
 private:
 	static FString OpenSaveSceneDialog();
 	static FString OpenLoadSceneDialog();
 
-	static FString CurrentScenePath;
 };
 
