@@ -46,6 +46,8 @@
 
 #include "Components/ShapeComponent.h"
 
+#include "Physics/Collision.h"
+
 namespace
 {
 	DECLARE_CYCLE_STAT("Viewport Update", STAT_ViewportUpdate);
@@ -101,6 +103,11 @@ bool UEditorEngine::Init()
 	OutputLogPanel = EditorUI->AddEditorPanel<FOutputLogPanel>();
 	FLog::AddSink(OutputLogPanel);
 	HTR_LOG(Info, "Editor Initialize...");
+
+	// 테스트 코드 
+#ifdef ENGINE_DEBUG
+	FCollision::RunSelfTest();
+#endif
 
 	HTR_LOG(Info, "Initialize ImGui...");
 	ImGuiRenderer = MakeUnique<FImGuiRenderer>();
