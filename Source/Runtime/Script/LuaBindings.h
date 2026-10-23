@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sol/forward.hpp>
+#include "Script/CoroutineScheduler.h"
 
 class AActor;
 class UWorld;
