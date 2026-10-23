@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sol/forward.hpp>
+#include "Script/CoroutineScheduler.h"
 
 class AActor;
 class UWorld;
@@ -17,14 +18,3 @@ namespace FLuaBindings
 	// 해당 액터의 Lua 콜백을 전부 푼다.
 	void ReleaseCallbacks(AActor* Owner);
 }
-
-// wait(sec), wait_until(cond) 등으로 멈춘 코루틴을 들고 있다가 조건이 되면 재개한다. 담당: B
-class FCoroutineScheduler
-{
-public:
-	static FCoroutineScheduler& Get();
-
-	void Start(AActor* Owner, sol::function Func);
-	void Tick(float DeltaTime);     // A가 월드 Tick에서 1회 호출
-	void StopAll(AActor* Owner);    // A가 액터 EndPlay·Destroy에서 호출
-};
