@@ -4,6 +4,8 @@ local MoveSpeed = 3.0
 
 function BeginPlay()
     print("[BeginPlay] " .. obj.UUID)
+
+    StartCoroutine(MouseInputCoroutine)
 end
 
 function EndPlay()
@@ -33,5 +35,20 @@ function ProcessKeyboardInput(dt)
     end
     if IsKeyDown('d') then
         obj.Location = obj.Location + FVector(0, 1, 0) * dt * MoveSpeed
+    end
+end
+
+local function OnLeftMousePressed()
+    local x, y = GetMousePosition()
+    print("[OnLeftMousePressed] " .. x, y)
+end
+
+function MouseInputCoroutine()
+    while true do
+        wait_until(function()
+            return IsLeftMouseButtonPressed()
+        end)
+
+        OnLeftMousePressed()
     end
 end

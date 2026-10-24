@@ -10,10 +10,24 @@
 #include "Script/LuaActorRef.h"
 #include "Script/CoroutineScheduler.h"
 #include "Engine/World.h"
+#include "Engine/Engine.h"
+#include "Engine/GameViewportClient.h"
 
 namespace
 {
 	TArray<FLuaActorRef> PendingDestroies;
+
+	AActor* OwnerFromEnv(sol::this_environment& ThisEnv)
+	{
+		if (!ThisEnv)
+			return nullptr;
+
+		sol::environment& Env = ThisEnv;
+		sol::optional<FLuaActorRef> Ref = Env["obj"];
+		return Ref
+			? Ref->Get()
+			: nullptr;
+	}
 
 	// FVector, FRotator
 	void RegisterMath(sol::state& Lua)
@@ -192,6 +206,52 @@ namespace
 			return FInputSystem::IsKeyReleased(ToKeyCode(K));
 			});
 
+		Lua.set_function("IsLeftMouseButtonPressed", []() {
+			return FInputSystem::IsMousePressed(EMouseButton::Left);
+			});
+
+		// Viewport 포지션을 반환한다.
+		Lua.set_function("GetMousePosition", [](sol::this_environment ThisEnv) {
+			AActor* Owner = OwnerFromEnv(ThisEnv);
+			if (!Owner)
+			{
+				throw sol::error("GetMousePosition must be called from a coroutine with an Actor context.");
+			}
+
+			UWorld* World = Owner->GetWorld();
+			if (!World)
+			{
+				throw sol::error("GetMousePosition must be called from a coroutine with an Actor context.");
+			}
+
+			FWorldContext* Context =
+				GEngine ? GEngine->GetWorldContextFromWorld(World) : nullptr;
+
+			if (!Context || !Context->GameViewport)
+			{
+				throw sol::error("GetMousePosition must be called from a coroutine with an Actor context.");
+			}
+
+			FGameViewportClient* Viewport = Context->GameViewport.get();
+
+			const FRect& ViewportRect = Viewport->GetRect();
+			
+			//const float MouseX = FInputSystem::GetMouseX();
+			//const float MouseY = FInputSystem::GetMouseY();
+			POINT Mouse{};
+			if (!::GetCursorPos(&Mouse))
+			{
+				throw sol::error("Failed to get mouse cursor position.");
+			}
+
+			const float LocalX = static_cast<float>(Mouse.x) - ViewportRect.X;
+			const float LocalY = static_cast<float>(Mouse.y) - ViewportRect.Y;
+
+			return std::make_tuple(
+				LocalX,
+				LocalY);
+			});
+
 		// Tick(dt)의 dt를 쓰는 게 원칙. 코루틴처럼 dt를 못 받는 곳에서만 쓴다
 		Lua.set_function("GetDeltaTime", []() {
 			return EngineTimer::GetDeltaTime();
@@ -199,18 +259,6 @@ namespace
 		Lua.set_function("GetTime", []() {
 			return EngineTimer::GetTotalTime();
 			});
-	}
-
-	AActor* OwnerFromEnv(sol::this_environment& ThisEnv)
-	{
-		if (!ThisEnv)
-			return nullptr;
-
-		sol::environment& Env = ThisEnv;
-		sol::optional<FLuaActorRef> Ref = Env["obj"];
-		return Ref
-			? Ref->Get()
-			: nullptr;
 	}
 
 	void RegisterCoroutine(sol::state& Lua)

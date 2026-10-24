@@ -51,6 +51,9 @@ public:
 	// 렌더 타깃 크기 관리
 	virtual void Resize(FViewport* Viewport, uint32 NewWidth, uint32 NewHeight) override { Resize(NewWidth, NewHeight); }
 	void Resize(uint32 InWidth, uint32 InHeight);
+
+	const FRect& GetRect() const { return Rect; }
+	void SetRect(const FRect& InRect) { Rect = InRect; }
 	uint32 GetWidth() const { return Width; }
 	uint32 GetHeight() const { return Height; }
 	class FTexture2D* GetColorTarget() const { return ViewTargets.SceneColor.get(); }
@@ -116,6 +119,7 @@ private:
 	bool bSIEModeRequested = false;
 
 	// 렌더 타깃 버퍼
+	FRect Rect{};
 	uint32 Width = 0;
 	uint32 Height = 0;
 	FSceneViewTargets ViewTargets;
