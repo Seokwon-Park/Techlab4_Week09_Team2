@@ -47,6 +47,10 @@
 #include "Script/LuaScriptManager.h"
 #include <sol/sol.hpp>
 
+#include "Components/ShapeComponent.h"
+
+#include "Physics/Collision.h"
+
 namespace
 {
 	DECLARE_CYCLE_STAT("Viewport Update", STAT_ViewportUpdate);
