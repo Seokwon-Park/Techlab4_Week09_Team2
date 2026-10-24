@@ -87,3 +87,45 @@ void GetDerivedClasses(const UClass* ClassToLookFor, TArray<UClass*>& Results, b
 			if (bRecursive) GetDerivedClasses(Child, Results, true);
 		}
 }
+bool TryGetLiveObjectUUID(const UObject* Object, const UClass* ObjectClass, uint32& OutUUID)
+{
+	OutUUID = 0;
+
+	if (!Object)
+		return false;
+
+	// 클래스 정보를 알고 있다면 빠른 검색표를 사용한다.
+	if (ObjectClass)
+	{
+		const TSet<UObject*>* Objects =
+			GetClassToObjects().Find(ObjectClass);
+
+		if (!Objects)
+			return false;
+
+		// 기존 집합이 UObject*를 보관하므로 타입만 맞춘다.
+		// 객체를 수정하는 용도로 사용하지 않는다.
+		UObject* ObjectKey = const_cast<UObject*>(Object);
+
+		// 주소가 등록되어 있는지 먼저 확인한다.
+		if (!Objects->Contains(ObjectKey))
+			return false;
+
+		// 존재를 확인한 뒤에만 객체 내부를 읽는다.
+		OutUUID = Object->GetUUID();
+		return true;
+	}
+
+	// 클래스 정보가 없는 객체는 기존 방식으로 확인한다.
+	// 예: 생성자 안에서 구독했거나 직접 new로 만든 객체
+	for (const UObject* LiveObject : GUObjectArray)
+	{
+		if (LiveObject && LiveObject == Object)
+		{
+			OutUUID = LiveObject->GetUUID();
+			return true;
+		}
+	}
+
+	return false;
+}

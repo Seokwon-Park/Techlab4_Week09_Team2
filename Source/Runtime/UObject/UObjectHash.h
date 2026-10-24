@@ -15,3 +15,6 @@ void HashObject(UObject* Obj, const UClass* Class);
 void UnhashObject(UObject* Obj, const UClass* Class);
 
 void GetDerivedClasses(const UClass* ClassToLookFor, TArray<UClass*>& Results, bool bRecursive = true);
+
+//Delegate용 getter
+bool TryGetLiveObjectUUID(const UObject* Object, const UClass* ObjectClass, uint32& OutUUID);
