@@ -3,6 +3,7 @@
 #include "Editor/EditorUI/EditorPanel.h"
 
 #include <filesystem>
+#include <functional>
 
 namespace fs = std::filesystem;
 
@@ -15,7 +16,12 @@ public:
 	const char* GetPanelName() const override { return "Content Drawer"; }
 	void RenderFolderTree(const fs::path& Path, fs::path& SelectedPath);
 
+	// .widget 파일을 더블클릭하면 불린다 (UI 에디터가 연다).
+	void SetOpenWidgetCallback(std::function<void(const FString&)> InCallback) { OnOpenWidget = std::move(InCallback); }
+
 private:
+	std::function<void(const FString&)> OnOpenWidget;
+
 	fs::path AssetRootPath = "Assets";
 	fs::path CurrentPath = "Assets";
 

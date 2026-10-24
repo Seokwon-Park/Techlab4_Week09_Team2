@@ -168,7 +168,8 @@ bool UEditorEngine::Init()
 	SettingsPanel = EditorUI->AddEditorPanel<FSettingsPanel>();
 	OutputLogPanel->SetEditorSettings(&SettingsPanel->GetMutableSettings());
 
-
+	UIEditorPanel = EditorUI->AddEditorPanel<FUIEditorPanel>();
+	ContentDrawerPanel->SetOpenWidgetCallback([this](const FString& Path) { UIEditorPanel->OpenAsset(Path); });
 
 	Outline = MakeUnique<FOutline>();
 
@@ -176,6 +177,9 @@ bool UEditorEngine::Init()
 
 	TextRenderer = MakeUnique<FTextRenderer>();
 	TextRenderer->Init();
+
+	UIRenderer = MakeUnique<FUIRenderer>();
+	UIRenderer->Init();
 
 	// 화면 나눔 비율 설정 가져오기
 	ViewportSplitRatio = {
@@ -620,6 +624,8 @@ void UEditorEngine::RenderViewports()
 			}
 		}
 	}
+
+	UIEditorPanel->RenderPreview(*UIRenderer);
 }
 
 void UEditorEngine::UpdatePIEViewCamera()
