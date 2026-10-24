@@ -35,13 +35,14 @@
 #include "PlayInEditorDataTypes.h"
 #include "Core/Misc/Optional.h"
 
-//Temp
-#include "Text/Font.h"
 #include "Text/TextRenderer.h"
 
 #include "Editor/HitoriEd/GamePackager.h"
 
 #include <Engine\GameViewportClient.h>
+
+#include "UI/UIRenderer.h"
+#include "UI/UIDrawList.h"
 
 
 inline constexpr int32 InvalidViewIndex = -1;
@@ -148,7 +149,10 @@ private:
 	TUniquePtr<FOutlineRenderer> OutlineRenderer;
 	TUniquePtr<FSceneDepthRenderer> SceneDepthRenderer;
 	TUniquePtr<FCascadeFloorRenderer> CascadeFloorRenderer;
+	TUniquePtr<FUIRenderer> UIRenderer;
 	TUniquePtr<FGizmo> Gizmo;
+
+	FUIDrawList UIDrawList;
 
 	UFont* SystemFont;
 

@@ -14,6 +14,7 @@
 #include "GameFramework/Actor/ExponentialHeightFogActor.h"
 #include "GameFramework/Actor/FireBallActor.h"
 #include "GameFramework/Actor/ProjectileActor.h"
+#include "GameFramework/Actor/ScoreboardManager.h"
 class FViewportsPanel;
 
 // 액터 생성과 카메라·기즈모 편집에 필요한 패널 상태를 보관한다.
@@ -37,7 +38,7 @@ public:
 
 	int32 SelectedIndex = 0;
 
-	const char* Items[6] = {"StaticMesh", "Particle", "Text", "HeightFog", "FireBall", "Projectile" };
+	const char* Items[7] = {"StaticMesh", "Particle", "Text", "HeightFog", "FireBall", "Projectile", "ScoreboardManager" };
 
 	FGizmo* Gizmo = nullptr;
 	int32 GizmoSelectedIndex = 0;
@@ -54,6 +55,7 @@ public:
 		AExponentialHeightFogActor::StaticClass(),
 		AFireBallActor::StaticClass(),
 		AProjectileActor::StaticClass(),
+		AScoreboardManager::StaticClass(),
 	};
 
 private:

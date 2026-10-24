@@ -27,6 +27,7 @@ struct FSceneOverlayCallbacks
 	std::function<void()> SIEGizmo;
 	bool bClearEditorDepth = false;
 	std::function<void()> EditorUUID;
+	std::function<void()> GameUI;
 };
 
 struct FScenePassCallbacks // 기본 도형 다 그려진 후 그려져야 될 목록들

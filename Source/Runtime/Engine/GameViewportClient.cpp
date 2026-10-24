@@ -12,6 +12,7 @@
 #include <cmath>
 #include "Math/Frustum.h"
 #include "Render/RenderCommand.h"
+#include "UI/UserWidget.h"
 
 FGameViewportClient::FGameViewportClient()
 {
@@ -308,6 +309,11 @@ void FGameViewportClient::Resize(uint32 InWidth, uint32 InHeight)
 
 void FGameViewportClient::Reset()
 {
+	// PIE가 끝나면 화면에 남은 위젯을 정리한다.
+	const TArray<UUserWidget*> Widgets = ViewportWidgets;
+	for (UUserWidget* Widget : Widgets)
+		Widget->Destroy();
+
 	RenderData.ResetScene();
 	EndSIEMode();
 	LostFocus();
@@ -321,4 +327,101 @@ void FGameViewportClient::Reset()
 	ViewTargets.Reset();
 	Width = 0;
 	Height = 0;
+}
+
+void FGameViewportClient::AddViewportWidget(UUserWidget* Widget)
+{
+	if (!Widget || ViewportWidgets.Find(Widget) != INDEX_NONE) return;
+	Widget->OwningViewport = this;
+
+	// ZOrder가 같으면 나중에 추가한 것이 위에 온다.
+	int32 Index = 0;
+	while (Index < ViewportWidgets.Num() && ViewportWidgets[Index]->ZOrder <= Widget->ZOrder)
+		++Index;
+	ViewportWidgets.Insert(Widget, Index);
+}
+
+void FGameViewportClient::RemoveViewportWidget(UUserWidget* Widget)
+{
+	const int32 Index = ViewportWidgets.Find(Widget);
+	if (Index == INDEX_NONE) return;
+	ViewportWidgets.RemoveAt(Index);
+	Widget->OwningViewport = nullptr;
+
+	// 빠진 트리 안을 가리키고 있을 수 있으니 비운다.
+	HoveredWidget = nullptr;
+	PressedWidget = nullptr;
+}
+
+void FGameViewportClient::TickUI(float DeltaTime)
+{
+	// Tick 중에 위젯이 스스로 빠질 수 있어 복사본으로 돈다.
+	const TArray<UUserWidget*> Widgets = ViewportWidgets;
+	for (UUserWidget* Widget : Widgets)
+		Widget->Tick(DeltaTime);
+}
+
+void FGameViewportClient::PaintUI(FUIDrawList& DrawList)
+{
+	DrawList.Reset();
+	if (Width == 0 || Height == 0) return;
+
+	const FUIGeometry Screen{ FUIRect{ 0.0f, 0.0f, static_cast<float>(Width), static_cast<float>(Height) },
+		static_cast<float>(Height) / UIDesignHeight };
+	for (UUserWidget* Widget : ViewportWidgets)
+	{
+		Widget->Arrange(Screen);
+		Widget->Paint(DrawList, 1.0f);
+	}
+}
+
+UWidget* FGameViewportClient::HitTestUI(float X, float Y) const
+{
+	for (auto It = ViewportWidgets.rbegin(); It != ViewportWidgets.rend(); ++It)
+		if (UWidget* Hit = (*It)->HitTest(X, Y))
+			return Hit;
+	return nullptr;
+}
+
+bool FGameViewportClient::HandleUIMouseMove(int32 X, int32 Y)
+{
+	UIMouseX = X;
+	UIMouseY = Y;
+
+	UWidget* Hit = HitTestUI(static_cast<float>(X), static_cast<float>(Y));
+	if (Hit != HoveredWidget)
+	{
+		if (HoveredWidget) HoveredWidget->OnMouseLeave();
+		HoveredWidget = Hit;
+		if (HoveredWidget) HoveredWidget->OnMouseEnter();
+	}
+	return false;   // 마우스 이동은 카메라도 써야 하므로 소비하지 않는다
+}
+
+bool FGameViewportClient::HandleUIKey(int32 Key, bool bDown)
+{
+	if (Key != static_cast<int32>(EKeyCode::LButton)) return false;
+
+	const float X = static_cast<float>(UIMouseX);
+	const float Y = static_cast<float>(UIMouseY);
+	if (bDown)
+	{
+		UWidget* Hit = HitTestUI(X, Y);
+		if (Hit && Hit->OnMouseButtonDown())
+		{
+			PressedWidget = Hit;
+			return true;    // 버튼을 눌렀으면 게임으로 넘기지 않는다
+		}
+		return false;
+	}
+
+	if (!PressedWidget) return false;
+	PressedWidget->OnMouseButtonUp(PressedWidget->GetCachedRect().Contains(X, Y));
+	PressedWidget = nullptr;
+	return true;
+}
+
+bool FGameViewportClient::HandleUIAxis(EGameInputAxis AxisKey, float Delta)
+{
+	return false;   // 스크롤 박스를 만들 때 휠을 여기서 처리한다
 }
