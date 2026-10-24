@@ -8,7 +8,6 @@
 #include "Components/TextRenderComponent.h"
 #include "Math/Transform.h"
 #include "Render/Renderer.h"
-#include "PathTracker.h"
 #include "Math/Frustum.h"
 #include "Math/BVH.h"
 #include "Engine/Scene.h"
@@ -17,7 +16,6 @@
 #include "Engine/EngineTypes.h"
 #include "Render/SceneRenderData.h"
 
-//class ACameraActor;
 class ULevel;
 class UBillboardComponent;
 class APawn;
@@ -66,8 +64,6 @@ public:
 	ULevel* GetCurrentLevel() const { return CurrentLevel; }
 	void SetCurrentLevel(ULevel* InLevel) { CurrentLevel = InLevel; }
 
-	FPathTracker& GetPathTracker() { return PathTracker; }
-
 	int32 GetActorNum();
 
 	bool DestroyActor(AActor* Actor);
@@ -98,6 +94,7 @@ public:
 	static UWorld* CreateWorld(const EWorldType InWorldType, bool bInformEngineOfWorld, FName WorldName = NAME_None); /*, UPackage* InWorldPackage = NULL, bool bAddToRoot = true, ERHIFeatureLevel::Type InFeatureLevel = ERHIFeatureLevel::Num, const InitializationValues* InIVS = nullptr, bool bInSkipInitWorld = false);*/
 
 	bool IsPlayInEditor() const { return WorldType == EWorldType::PIE; }
+	bool IsGameWorld() const { return WorldType == EWorldType::Game || WorldType == EWorldType::PIE; }
 
 	static UWorld* GetDuplicatedWorldForPIE(UWorld* InWorld);
 
@@ -133,8 +130,6 @@ private:
 	APlayerController* PlayerController = nullptr;
 	bool bIsPaused = false;
 	bool bBegunPlay = false;
-
-	FPathTracker PathTracker;
 
 	ULevel* PersistentLevel = nullptr;
 	ULevel* CurrentLevel = nullptr;

@@ -614,12 +614,6 @@ bool FSceneRenderer::AddViewportPasses(FRenderGraphBuilder& Graph, FRenderer* Re
 	bHasFog = false;
 	bFXAAPassSucceeded = true;
 
-	if (!Options.bShowWorldNormal && Options.bDrawPrimitives && Callbacks.FireBall)
-	{
-		FRenderGraphRasterPassDesc Pass = MakeViewportPass("FireBall", SceneColor);
-		Pass.ReadTextures = { Depth };
-		if (!Graph.AddRasterPass(std::move(Pass), Callbacks.FireBall)) return false;
-	}
 	if (!Options.bShowWorldNormal && Options.bDrawPrimitives && Options.bEnableFog && Callbacks.HeightFog)
 	{
 		FRenderGraphRasterPassDesc Pass = MakeViewportPass("HeightFog", SceneColor);

@@ -14,9 +14,8 @@
 #include "Render/LineBatcher.h"
 #include "Editor/Rendering/SceneDepthRenderer.h"
 #include "Editor/Rendering/CascadeFloorRenderer.h"
-#include "Editor/Rendering/HeightFogRenderer.h"
-#include "Editor/Rendering/FXAARenderer.h"
-#include "Editor/Rendering/FireBallRenderer.h"
+#include "Render/PostProcess/HeightFogRenderer.h"
+#include "Render/PostProcess/FXAARenderer.h"
 #include "Render/SceneRenderOptions.h"
 #include "Render/SceneViewTargets.h"
 #include "Render/RenderGraph/RenderGraph.h"
@@ -127,7 +126,6 @@ private:
 		const std::function<void(FSceneOverlayCallbacks&)>& BuildOverlays);
 	void RenderSceneText(UWorld* TargetWorld, const FSceneView& SceneView);
 	bool RenderHeightFog(UWorld* TargetWorld, const FSceneView& SceneView, FTexture2D* DepthTarget, FTexture2D* ColorTarget);
-	bool RenderFireBall(UWorld* TargetWorld, const FSceneView& SceneView, FTexture2D* DepthTarget, FTexture2D* ColorTarget);
 	void RenderActorUUIDs(const FSceneView& View);
 
 	FWorldContext& GetEditorWorldContext();
@@ -157,7 +155,6 @@ private:
 	TUniquePtr<FSkyboxRenderer> SkyboxRenderer;
 	TUniquePtr<FHeightFogRenderer> HeightFogRenderer;
 	TUniquePtr<FFXAARenderer> FXAARenderer;
-	TUniquePtr<FFireBallRenderer> FireBallRenderer;
 	TUniquePtr<FGizmo> Gizmo;
 
 	UFont* SystemFont;

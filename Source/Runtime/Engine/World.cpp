@@ -139,11 +139,6 @@ void UWorld::Tick(float DeltaTime)
 			TickTaskManager.RunAllTickGroups(DeltaTime);
 			FCoroutineScheduler::Get().Tick(DeltaTime);
 
-			for (ULevel* Level : Levels)
-			{
-				PathTracker.Tick(Level->GetActors(), DeltaTime);
-			}
-
 			UpdateOverlaps();
 			FLuaBindings::FlushPendingDestroy(this);
 		}
@@ -176,10 +171,6 @@ void UWorld::ClearWorld()
 	{
 		BeginPlayList.Dequeue();
 	}
-
-	PathTracker.SetPlaybackEnabled(false);
-	PathTracker.SetPathRenderingEnabled(false);
-	PathTracker.ClearPath();
 
 	
 	for (ULevel* Level : Levels)
@@ -436,46 +427,6 @@ void UWorld::GatherRenderPackets(FRenderQueue& RenderQueue, const FViewContext* 
 	}
 }
 
-//void UWorld::GatherRenderPackets(TArray<FRenderPacket>& RenderArray, const FLODViewContext* LODView, const FFrustumPlanes* Frustum)
-//{
-//	for (TObjectIterator<UPrimitiveComponent> Itr; Itr; ++Itr)
-//	{
-//		if (!*Itr || !Itr->IsVisible())
-//			continue;
-//
-//		if (Frustum)
-//		{
-//			const FBox Box = Itr->CalcBounds();
-//			const FAABB Bounds{
-//				(Box.Min + Box.Max) * 0.5f,
-//				(Box.Max - Box.Min) * 0.5f
-//			};
-//			if (!IsAABBInFrustum(Bounds, *Frustum))
-//				continue;
-//		}
-//
-//		if (LODView)
-//		{
-//			if (auto* Component = Cast<UStaticMeshComponent>(*Itr))
-//			{
-//				if (UStaticMesh* Mesh =
-//					Component->GetStaticMesh())
-//				{
-//					const uint32 LOD = SelectStaticMeshLOD(
-//						*Mesh,
-//						Component->GetWorldMatrix(),
-//						*LODView);
-//
-//					Component->SubmitToRenderQueue(RenderQueue, LOD);
-//					continue;
-//				}
-//			}
-//		}
-//
-//		Itr->SubmitToRenderQueue(RenderQueue);
-//	}
-//}
-
 // 메인 카메라 생성
 void UWorld::CreateMainCamera()
 {
@@ -546,28 +497,7 @@ bool UWorld::DestroyActor(AActor* Actor)
 
 	BeginPlayList = std::move(NewBeginPlayList);
 
-	// 2. PathTracker에서 제거
-	PathTracker.OnObjectDestroyed(Actor);
-
-	//// 3. PrimitiveComponents에서 제거
-	//for (UActorComponent* Component : Actor->Components)
-	//{
-	//	UPrimitiveComponent* Primitive = Cast<UPrimitiveComponent>(Component);
-
-	//	if (!Primitive)
-	//		continue;
-
-	//	for (int32 i = PrimitiveComponents.Num() - 1; i >= 0; --i)
-	//	{
-	//		if (PrimitiveComponents[i] == Primitive)
-	//		{
-	//			PrimitiveComponents.RemoveAt(i, 1);
-	//			break;
-	//		}
-	//	}
-	//}
-
-	// 4. Level의 Actors에서 제거
+	// 2. Level의 Actors에서 제거
 	for (int32 i = Level->Actors.Num() - 1; i >= 0; --i)
 	{
 		if (Level->Actors[i] == Actor)
@@ -583,12 +513,12 @@ bool UWorld::DestroyActor(AActor* Actor)
 	if (Actor->HasBegunPlay())
 		Actor->EndPlay();
 
-	// 5. 프록시 제거
+	// 3. 프록시 제거
 	Actor->UnregisterAllComponents();
 
 	Actor->RegisterAllActorTickFunctions(false);
 
-	// 6. Actor 삭제
+	// 4. Actor 삭제
 	delete Actor;
 
 	HTR_LOG(Info, "Destroy Actor : {} UUID {}", ActorName, ActorUUID);
@@ -769,7 +699,7 @@ bool UWorld::LineTraceSingle(const FRay& WorldRay, FHitResult& OutHit,
 
 void UWorld::BeginPlay()
 {
-	if (WorldType != EWorldType::PIE || bBegunPlay) return;
+	if (!IsGameWorld() || bBegunPlay) return;
 	if (!PlayerPawn)
 	{
 		for (AActor* Actor : PersistentLevel->GetActors())
@@ -849,10 +779,6 @@ void UWorld::PostDuplicate(bool bDuplicateForPIE)
 {
 	Super::PostDuplicate(bDuplicateForPIE);
 
-	// 아직 필요 없는애들
-	//TArray<UObject*> ObjectsToFixReferences;
-	//TMap<UObject*, UObject*> ReplacementMap;
-
 	if (!bDuplicateForPIE)
 	{
 		assert(PersistentLevel);
@@ -886,9 +812,6 @@ void UWorld::Serialize(FStructuredArchive::FRecord Record)
 
 	FArchive& Ar = Record.GetUnderlyingArchive();
 	PersistentLevel->Serialize(Record.EnterRecord("PersistentLevel"));
-
-	// (선택) 메인 카메라는 레벨에 속하지 않아 따로 쓴다. PIE 시작 시점이나 에디터 시점을 복원할 때 쓸 수 있다.
-	// MainCamera->GetCameraComponent()->Serialize(Record.EnterRecord("MainCamera"));
 }
 
 void UWorld::UpdateOverlaps()

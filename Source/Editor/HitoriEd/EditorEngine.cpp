@@ -29,7 +29,6 @@
 #include "Components/SpotLightComponent.h"
 #include "Components/RectLightComponent.h"
 #include "Components/ExponentialHeightFogComponent.h"
-#include "Components/FireBallComponent.h"
 #include "Components/TextRenderComponent.h"
 
 #include "Asset/AssetManager.h"
@@ -169,9 +168,6 @@ bool UEditorEngine::Init()
 
 	FXAARenderer = MakeUnique<FFXAARenderer>();
 	FXAARenderer->Init(Renderer);
-
-	FireBallRenderer = MakeUnique<FFireBallRenderer>();
-	FireBallRenderer->Init(Renderer);
 
 	SettingsPanel = EditorUI->AddEditorPanel<FSettingsPanel>();
 	OutputLogPanel->SetEditorSettings(&SettingsPanel->GetMutableSettings());
@@ -902,10 +898,6 @@ bool UEditorEngine::RenderScene(FSceneViewTargets& Targets, const FSceneView& Sc
 		return false;
 
 	FScenePassCallbacks Callbacks;
-	Callbacks.FireBall = [this, TargetWorld, &SceneView, DepthTarget, ColorTarget]
-	{
-		RenderFireBall(TargetWorld, SceneView, DepthTarget, ColorTarget);
-	};
 	Callbacks.HeightFog = [this, TargetWorld, &SceneView, DepthTarget, ColorTarget]
 	{
 		return RenderHeightFog(TargetWorld, SceneView, DepthTarget, ColorTarget);
@@ -985,29 +977,6 @@ bool UEditorEngine::RenderHeightFog(UWorld* TargetWorld, const FSceneView& Scene
 			return true;
 	}
 	return false;
-}
-
-bool UEditorEngine::RenderFireBall(UWorld* TargetWorld, const FSceneView& SceneView, FTexture2D* DepthTarget, FTexture2D* ColorTarget)
-{
-	if (!TargetWorld || !FireBallRenderer || !DepthTarget || !ColorTarget)
-		return false;
-	bool bRendered = false;
-	for (TObjectIterator<UFireBallComponent> FireBall; FireBall; ++FireBall)
-	{
-		if (!FireBall || !FireBall->IsRegistered() || !FireBall->IsVisible() ||
-			!FireBall->IsShown(SceneView.bGameView) || !FireBall->GetOwner() ||
-			FireBall->GetOwner()->GetWorld() != TargetWorld)
-			continue;
-		FFireBallData Data{};
-		Data.Center = FireBall->GetWorldLocation();
-		Data.Radius = FireBall->GetRadius();
-		Data.Color = FireBall->GetColor();
-		Data.Intensity = FireBall->GetIntensity();
-		Data.RadiusFallOff = FireBall->GetRadiusFallOff();
-
-		bRendered |= FireBallRenderer->OnRender(SceneView, DepthTarget, ColorTarget, Data);
-	}
-	return bRendered;
 }
 
 void UEditorEngine::RenderActorUUIDs(const FSceneView& SceneView)
@@ -1120,7 +1089,6 @@ void UEditorEngine::RenderFrame(FEditorViewportClient* ViewClient,
 					if (SettingsPanel->GetSettings().bDrawBatchLine && SettingsPanel->GetSettings().bDrawBoundingBox)
 					{
 						LineBatcher->BuildVertexBuffer();
-						EditorWorld->GetPathTracker().OnRender(LineBatcher.get());
 					}
 					if (bDrawSelectedLight)
 					{
