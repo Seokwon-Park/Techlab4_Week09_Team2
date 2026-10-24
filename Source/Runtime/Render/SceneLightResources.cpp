@@ -63,15 +63,12 @@ void FSceneLightResources::CreateShadowAtlasIfNeed(uint32 ShadowAtlasMapWidth, u
 {
 	if (!SceneLightShadowMapAtlas || ShadowAtlasMapWidth > SceneLightShadowMapAtlas->GetWidth() || ShadowAtlasMapHeight > SceneLightShadowMapAtlas->GetHeight() || NeedAtlasCount > SceneLightShadowMapAtlas->GetArraySize())
 	{
-		D3D11_TEXTURE2D_DESC Desc{};
+		FTextureDesc Desc{};
 		Desc.Width = ShadowAtlasMapWidth;
 		Desc.Height = ShadowAtlasMapHeight;
-		Desc.MipLevels = 1;
 		Desc.ArraySize = NeedAtlasCount;
-		Desc.SampleDesc.Count = 1;
-		Desc.Usage = D3D11_USAGE_DEFAULT;
-		Desc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
-		Desc.Format = DXGI_FORMAT_R24G8_TYPELESS;
+		Desc.BindFlags = ETextureBindFlags::DepthStencil | ETextureBindFlags::ShaderResource;
+		Desc.Format = ETextureFormat::R24G8_Typeless;
 
 		SceneLightShadowMapAtlas = RenderCommand::CreateTexture2DArray(Desc);
 	}

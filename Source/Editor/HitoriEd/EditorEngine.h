@@ -14,15 +14,12 @@
 #include "Render/LineBatcher.h"
 #include "Editor/Rendering/SceneDepthRenderer.h"
 #include "Editor/Rendering/CascadeFloorRenderer.h"
-#include "Render/PostProcess/HeightFogRenderer.h"
-#include "Render/PostProcess/FXAARenderer.h"
 #include "Render/SceneRenderOptions.h"
 #include "Render/SceneViewTargets.h"
 #include "Render/RenderGraph/RenderGraph.h"
 
 
 #include "Editor/EditorUI/EditorUI.h"
-#include "Editor/EditorUI/ImGuiRenderer.h"
 #include "Editor/OutputLog/OutputLogPanel.h"
 #include "Editor/Details/DetailsPanel.h"
 #include "Editor/EditorControls/EditorControlsPanel.h"
@@ -35,14 +32,15 @@
 #include "Editor/Rendering/OutLineRenderer.h"
 #include "Editor/Outliner/OutlinerPanel.h"
 
-#include "Render/SkyboxRenderer.h"
-
 #include "PlayInEditorDataTypes.h"
 #include "Core/Misc/Optional.h"
 
 //Temp
 #include "Text/Font.h"
 #include "Text/TextRenderer.h"
+
+#include "Editor/HitoriEd/GamePackager.h"
+
 #include <Engine\GameViewportClient.h>
 
 
@@ -124,8 +122,6 @@ private:
 	bool RenderScene(FSceneViewTargets& Targets, const FSceneView& SceneView,
 		FSceneRenderer& SceneRenderer, UWorld* TargetWorld, const FSceneRenderOptions& Options,
 		const std::function<void(FSceneOverlayCallbacks&)>& BuildOverlays);
-	void RenderSceneText(UWorld* TargetWorld, const FSceneView& SceneView);
-	bool RenderHeightFog(UWorld* TargetWorld, const FSceneView& SceneView, FTexture2D* DepthTarget, FTexture2D* ColorTarget);
 	void RenderActorUUIDs(const FSceneView& View);
 
 	FWorldContext& GetEditorWorldContext();
@@ -152,9 +148,6 @@ private:
 	TUniquePtr<FOutlineRenderer> OutlineRenderer;
 	TUniquePtr<FSceneDepthRenderer> SceneDepthRenderer;
 	TUniquePtr<FCascadeFloorRenderer> CascadeFloorRenderer;
-	TUniquePtr<FSkyboxRenderer> SkyboxRenderer;
-	TUniquePtr<FHeightFogRenderer> HeightFogRenderer;
-	TUniquePtr<FFXAARenderer> FXAARenderer;
 	TUniquePtr<FGizmo> Gizmo;
 
 	UFont* SystemFont;
@@ -189,6 +182,8 @@ private:
 	bool bPIEWindowRendered = false;
 
 	FVector UUIDLocation;
+
+	FGamePackager Packager;
 
 	FEditorCommand Save;
 

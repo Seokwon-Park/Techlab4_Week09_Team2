@@ -1,8 +1,14 @@
 #include "EnginePCH.h"
 #include "Texture.h"
+#include "D3D11TypeConversion.h"
 
 FTexture::FTexture()
 {
+}
+
+ETextureFormat FTexture::GetTextureFormat() const
+{
+	return D3D11Type::FromDXGI(Format);
 }
 
 uint32 FormatToBytes(DXGI_FORMAT Format)

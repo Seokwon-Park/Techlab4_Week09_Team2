@@ -195,15 +195,12 @@ void UAssetManager::CreateDefaultTextures() {
 	// 셰이더에서 곱해도 결과가 변하지 않으므로 "텍스처 없음"의 기본값으로 쓴다.
 	const uint32 WhitePixel{ 0xFFFFFFFF };
 
-	D3D11_TEXTURE2D_DESC Desc{};
+	FTextureDesc Desc{};
 	Desc.Width = 1;
 	Desc.Height = 1;
-	Desc.MipLevels = 1;
-	Desc.ArraySize = 1;
-	Desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	Desc.SampleDesc.Count = 1;
-	Desc.Usage = D3D11_USAGE_IMMUTABLE;
-	Desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	Desc.Format = ETextureFormat::R8G8B8A8_UNorm;
+	Desc.Usage = ETextureUsage::Immutable;
+	Desc.BindFlags = ETextureBindFlags::ShaderResource;
 
 	TUniquePtr<FTexture2D> Resource{ RenderCommand::CreateTexture2D(Desc, &WhitePixel) };
 	if (!Resource) {
@@ -217,7 +214,7 @@ void UAssetManager::CreateDefaultTextures() {
 	AssetMap["WhiteTexture"] = WhiteTexture;
 
 	const FVector4 NormalPixel{ 0.5f, 0.5f, 1.0f, 1.0f };
-	Desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	Desc.Format = ETextureFormat::R32G32B32A32_Float;
 	TUniquePtr<FTexture2D> NormalResource{ RenderCommand::CreateTexture2D(Desc, &NormalPixel) };
 	if (!NormalResource) {
 		return;
@@ -370,16 +367,14 @@ UTexture2D* UAssetManager::LoadTexture(const FString& InPath, bool GenerateMips)
 	// BC 압축 DDS는 렌더 타깃으로 바인딩할 수 없으므로 GPU mip 생성 대상에서 제외한다.
 	const bool bGenerateGPUmips = GenerateMips && !bUseDDSLevels && Data.BytesPerPixel != 0;
 
-	D3D11_TEXTURE2D_DESC Desc{};
+	FTextureDesc Desc{};
 	Desc.Width = Data.Width;
 	Desc.Height = Data.Height;
-	Desc.ArraySize = 1;
-	Desc.Format = Data.Format;
-	Desc.SampleDesc.Count = 1;
 	Desc.MipLevels = bGenerateGPUmips ? 0 : Data.MipLevels;
-	Desc.Usage = bGenerateGPUmips ? D3D11_USAGE_DEFAULT : D3D11_USAGE_IMMUTABLE;
-	Desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | (bGenerateGPUmips ? D3D11_BIND_RENDER_TARGET : 0);
-	Desc.MiscFlags = bGenerateGPUmips ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
+	Desc.Usage = bGenerateGPUmips ? ETextureUsage::Default : ETextureUsage::Immutable;
+	Desc.BindFlags = ETextureBindFlags::ShaderResource |
+		(bGenerateGPUmips ? ETextureBindFlags::RenderTarget : ETextureBindFlags::None);
+	Desc.bGenerateMips = bGenerateGPUmips;
 
 	TUniquePtr<FTexture2D> Resource = RenderCommand::CreateTexture2D(Desc, Data);
 

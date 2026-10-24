@@ -202,7 +202,7 @@ void Cull(uint3 Id : SV_DispatchThreadID)
 
 bool FGPUOcclusion::Init()
 {
-	ID3D11Device* Device = RenderCommand::GetDevice();
+	ID3D11Device* Device = FRenderDevice::Get()->GetDevice();
 
 	BuildHiZCS = CompileComputeShader(Device, "BuildHiZ");
 	CullCS = CompileComputeShader(Device, "Cull");
@@ -223,7 +223,7 @@ bool FGPUOcclusion::EnsureTargets(uint32 Width, uint32 Height)
 	if (OccluderDSV && TargetWidth == Width && TargetHeight == Height)
 		return true;
 
-	ID3D11Device* Device = RenderCommand::GetDevice();
+	ID3D11Device* Device = FRenderDevice::Get()->GetDevice();
 	TargetWidth = TargetHeight = 0;
 	OccluderDepth.Reset(); OccluderDSV.Reset(); OccluderDepthSRV.Reset();
 	HiZ.Reset(); HiZSRV.Reset(); HiZMipSRVs.clear(); HiZMipUAVs.clear();
@@ -308,7 +308,7 @@ bool FGPUOcclusion::EnsureItemCapacity(uint32 Count)
 	while (NewCapacity < Count)
 		NewCapacity *= 2;
 
-	ID3D11Device* Device = RenderCommand::GetDevice();
+	ID3D11Device* Device = FRenderDevice::Get()->GetDevice();
 	ItemBuffer.Reset(); ItemSRV.Reset(); ResultBuffer.Reset(); ResultUAV.Reset(); ResultStaging.Reset();
 	ItemCapacity = 0;
 
@@ -395,7 +395,7 @@ bool FGPUOcclusion::FillItems(const FPrimitiveSceneProxy* const* Proxies, uint32
 	HistogramChunks = ChunkCount;   // 아래에서 실패해도 0으로 채워진 히스토그램을 읽게 된다 (가림막 없음)
 
 	D3D11_MAPPED_SUBRESOURCE Mapped{};
-	if (FAILED(RenderCommand::GetContext()->Map(ItemBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &Mapped)))
+	if (FAILED(FRenderDevice::Get()->GetContext()->Map(ItemBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &Mapped)))
 	{
 		std::fill(ScoreBuckets.begin(), ScoreBuckets.end(), uint8(0));
 		return false;   // 판정 입력을 못 채웠으면 이번 프레임은 오클루전 없이 그린다
@@ -432,7 +432,7 @@ bool FGPUOcclusion::FillItems(const FPrimitiveSceneProxy* const* Proxies, uint32
 			}
 		});
 
-	RenderCommand::GetContext()->Unmap(ItemBuffer.Get(), 0);
+	FRenderDevice::Get()->GetContext()->Unmap(ItemBuffer.Get(), 0);
 	return true;
 }
 
@@ -441,7 +441,7 @@ void FGPUOcclusion::DrawOccluders(const FPrimitiveSceneProxy* const* Proxies, co
 {
 	// 가장 먼저 비운다. 가림막을 하나도 못 그리고 끝나도 깊이가 1(아무것도 안 가림)이어야 한다.
 	// (지난 프레임 깊이가 남아 있으면 지금 보이는 물체를 가려진 것으로 판정할 수 있다.)
-	ID3D11DeviceContext* Context = RenderCommand::GetContext();
+	ID3D11DeviceContext* Context = FRenderDevice::Get()->GetContext();
 	Context->ClearDepthStencilView(OccluderDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	{
@@ -543,7 +543,7 @@ void FGPUOcclusion::DrawOccluders(const FPrimitiveSceneProxy* const* Proxies, co
 
 	RenderCommand::SetDepthStencilState(EDepthStencilState::Default);
 	RenderCommand::SetRasterizerState(ERasterizerState::SolidBack);
-	RenderCommand::SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	RenderCommand::SetPrimitiveTopology(EPrimitiveTopology::TriangleList);
 	Context->VSSetConstantBuffers(0, 1, ViewCB.GetAddressOf());
 	FPipelineState* DepthPipeline = FRenderResourceManager::GetPSO(EPSOType::StaticMesh_DepthOnly);
 	if (!DepthPipeline || !DepthPipeline->Shader || !DepthPipeline->Shader->VertexShader)
@@ -573,7 +573,7 @@ void FGPUOcclusion::DrawOccluders(const FPrimitiveSceneProxy* const* Proxies, co
 
 void FGPUOcclusion::BuildHiZ()
 {
-	ID3D11DeviceContext* Context = RenderCommand::GetContext();
+	ID3D11DeviceContext* Context = FRenderDevice::Get()->GetContext();
 	Context->CSSetShader(BuildHiZCS.Get(), nullptr, 0);
 	Context->CSSetConstantBuffers(0, 1, HiZParamsCB.GetAddressOf());
 
@@ -601,7 +601,7 @@ void FGPUOcclusion::BuildHiZ()
 
 void FGPUOcclusion::Cull(const FMatrix& ViewProjection, uint32 Count)
 {
-	ID3D11DeviceContext* Context = RenderCommand::GetContext();
+	ID3D11DeviceContext* Context = FRenderDevice::Get()->GetContext();
 
 	FCullParams Params;
 	Params.ViewProjection = ViewProjection;
@@ -634,7 +634,7 @@ bool FGPUOcclusion::ReadBack(uint32 Count)
 	SCOPE_CYCLE_COUNTER(STAT_GPUOcclusionWait);
 	const auto Start = std::chrono::high_resolution_clock::now();
 
-	ID3D11DeviceContext* Context = RenderCommand::GetContext();
+	ID3D11DeviceContext* Context = FRenderDevice::Get()->GetContext();
 	D3D11_MAPPED_SUBRESOURCE Mapped{};
 	if (FAILED(Context->Map(ResultStaging.Get(), 0, D3D11_MAP_READ, 0, &Mapped)))
 		return false;
@@ -665,7 +665,7 @@ bool FGPUOcclusion::Run(const FPrimitiveSceneProxy* const* Proxies, uint32 Count
 	if (!EnsureTargets(View.Width, View.Height) || !EnsureItemCapacity(Count))
 		return false;
 
-	ID3D11DeviceContext* Context = RenderCommand::GetContext();
+	ID3D11DeviceContext* Context = FRenderDevice::Get()->GetContext();
 
 	// 호출한 쪽의 렌더 타깃·뷰포트를 기억했다가 되돌린다 (Get은 참조를 올리므로 ComPtr로 받는다).
 	ComPtr<ID3D11RenderTargetView> SavedRTV;

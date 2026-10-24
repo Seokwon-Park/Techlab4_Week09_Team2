@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Render/RenderTypes.h"
+
 // 압축되지 않은 포맷의 픽셀당 바이트 수.
 // 압축(BC*)·비디오 포맷은 블록 단위라 픽셀당 바이트가 없으므로 0을 반환한다.
 uint32 FormatToBytes(DXGI_FORMAT Format);
@@ -24,6 +26,8 @@ public:
 	uint32 GetDepth()  const { return Depth; }
 
 	DXGI_FORMAT       GetFormat()    const { return Format; }
+	// 엔진 포맷에 없는 값(압축 포맷 등)이면 Unknown
+	ETextureFormat    GetTextureFormat() const;
 	ETextureDimension GetDimension() const { return Dimension; }
 
 	ID3D11Resource* GetRawPtr() const { return Texture.Get(); }

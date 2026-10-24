@@ -9,6 +9,7 @@
 
 FRenderDevice::FRenderDevice()
 {
+	Instance = this;
 	uint32 CreationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
 #if defined(_DEBUG)
@@ -63,6 +64,7 @@ FRenderDevice::FRenderDevice()
 
 FRenderDevice::~FRenderDevice()
 {
+	if (Instance == this) Instance = nullptr;
 }
 
 
@@ -442,6 +444,12 @@ void FRenderDevice::CreateStates()
 		LinearDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 
 		Device->CreateSamplerState(&LinearDesc, SamplerStates[(uint8)ESamplerState::LinearWrap].GetAddressOf());
+
+		// 등장방형 파노라마용: 경도(U)는 이어지고 위도(V)는 극에서 멈춘다.
+		LinearDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		LinearDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+
+		Device->CreateSamplerState(&LinearDesc, SamplerStates[(uint8)ESamplerState::LinearWrapUClampV].GetAddressOf());
 
 		D3D11_SAMPLER_DESC PointDesc = {};
 		PointDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;

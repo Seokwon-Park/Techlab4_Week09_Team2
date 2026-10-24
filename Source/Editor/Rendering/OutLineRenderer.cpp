@@ -13,14 +13,14 @@ void FOutlineRenderer::Init(FRenderer* InRenderer)
 
 	// 1패스: 원본 크기 메시 영역을 색 없이 스텐실에만 기록한다.
 	MaskPipelineState.Shader = Shader;
-	MaskPipelineState.Topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	MaskPipelineState.Topology = EPrimitiveTopology::TriangleList;
 	MaskPipelineState.RasterizerState = ERasterizerState::SolidNone;
 	MaskPipelineState.BlendState = EBlendState::NoColorWrite;
 	MaskPipelineState.DepthStencilState = EDepthStencilState::StencilMask;
 
 	// 2패스: 확장 메시를 스텐실이 비어 있는 곳에만 그려 테두리 띠만 남긴다.
 	OutlinePipelineState.Shader = Shader;
-	OutlinePipelineState.Topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	OutlinePipelineState.Topology = EPrimitiveTopology::TriangleList;
 	OutlinePipelineState.RasterizerState = ERasterizerState::SolidNone;
 	OutlinePipelineState.BlendState = EBlendState::Opaque;
 	OutlinePipelineState.DepthStencilState = EDepthStencilState::StencilOutline;

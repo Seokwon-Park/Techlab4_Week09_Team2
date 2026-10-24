@@ -11,7 +11,7 @@ void FSceneDepthRenderer::Init(FRenderer* InRenderer)
 
 	// depth buffer를 사용하지 않고, 별도의 shader를 통해 렌더링을 처리한다.
 	SceneDepthPipelineState.Shader = Shader;
-	SceneDepthPipelineState.Topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	SceneDepthPipelineState.Topology = EPrimitiveTopology::TriangleList;
 	SceneDepthPipelineState.RasterizerState = ERasterizerState::SolidNone;
 	SceneDepthPipelineState.BlendState = EBlendState::Opaque;
 	SceneDepthPipelineState.DepthStencilState = EDepthStencilState::Disabled;

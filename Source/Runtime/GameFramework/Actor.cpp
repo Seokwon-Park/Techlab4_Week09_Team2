@@ -425,7 +425,7 @@ void AActor::NotifyHit(AActor* OtherActor)
 	// TODO(A): if (Script) Script->Call("OnHit", OtherActor);
 	if (Script)
 		Script->Call("OnHit", OtherActor);
-	
+
 }
 
 bool AActor::IsOverlappingActor(const AActor* Other) const

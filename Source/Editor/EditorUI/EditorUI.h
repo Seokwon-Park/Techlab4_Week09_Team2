@@ -29,6 +29,9 @@ public:
 	void SetOpenSceneCallback(std::function<void()> InCallback) { OnOpenScene = InCallback; }
 	void SetSaveSceneCallback(std::function<void()> InCallback) { OnSaveScene = InCallback; }
 	void SetSaveSceneAsCallback(std::function<void()> InCallback) { OnSaveSceneAs = InCallback; }
+	void SetPackageGameCallback(std::function<void()> InCallback) { OnPackageGame = InCallback; }
+	// 패키징 중이면 true. Build 메뉴 항목을 비활성화하는 데 쓴다.
+	void SetIsPackagingQuery(std::function<bool()> InQuery) { IsPackaging = InQuery; }
 
 private:
 	bool bUseDockSpace = true;
@@ -43,4 +46,6 @@ private:
 	std::function<void()> OnOpenScene;
 	std::function<void()> OnSaveScene;
 	std::function<void()> OnSaveSceneAs;
+	std::function<void()> OnPackageGame;
+	std::function<bool()> IsPackaging;
 };

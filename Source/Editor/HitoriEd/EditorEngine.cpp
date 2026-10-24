@@ -101,6 +101,8 @@ bool UEditorEngine::Init()
 	EditorUI->SetOpenSceneCallback([this]() { OpenScene(); });
 	EditorUI->SetSaveSceneCallback([this]() { SaveCurrentScene(); });
 	EditorUI->SetSaveSceneAsCallback([this]() { SaveSceneAs(); });
+	EditorUI->SetPackageGameCallback([this]() { Packager.Start("Release"); });
+	EditorUI->SetIsPackagingQuery([this]() { return Packager.IsRunning(); });
 
 	OutputLogPanel = EditorUI->AddEditorPanel<FOutputLogPanel>();
 	FLog::AddSink(OutputLogPanel);
@@ -162,12 +164,6 @@ bool UEditorEngine::Init()
 	SceneDepthRenderer->Init(Renderer);
 	CascadeFloorRenderer = MakeUnique<FCascadeFloorRenderer>();
 	CascadeFloorRenderer->Init();
-
-	HeightFogRenderer = MakeUnique<FHeightFogRenderer>();
-	HeightFogRenderer->Init(Renderer);
-
-	FXAARenderer = MakeUnique<FFXAARenderer>();
-	FXAARenderer->Init(Renderer);
 
 	SettingsPanel = EditorUI->AddEditorPanel<FSettingsPanel>();
 	OutputLogPanel->SetEditorSettings(&SettingsPanel->GetMutableSettings());
@@ -272,9 +268,6 @@ bool UEditorEngine::Init()
 	}
 	SettingsPanel->ApplyViewportSettings();
 
-	SkyboxRenderer = MakeUnique<FSkyboxRenderer>();
-	SkyboxRenderer->Init("Assets/SkySphere/Sky.hdr");
-
 	const ImVec4 White = { 1, 1, 1, 1 };
 	const ImVec4 Green = { 0.40f, 0.80f, 0.30f, 1.0f };
 
@@ -338,6 +331,7 @@ void UEditorEngine::Tick(const float DeltaTime)
 // DeltaTime을 패널에 전달하고 에디터 단축키를 처리한다.
 void UEditorEngine::BeginFrame(const float DeltaTime)
 {
+	Packager.Tick();
 	FStatOverlay::Tick(DeltaTime);
 	EditorControlsPanel->FEditorControlsPanel::DeltaTime = DeltaTime;
 
@@ -888,96 +882,64 @@ bool UEditorEngine::RenderScene(FSceneViewTargets& Targets, const FSceneView& Sc
 	FSceneRenderer& SceneRenderer, UWorld* TargetWorld, const FSceneRenderOptions& Options,
 	const std::function<void(FSceneOverlayCallbacks&)>& BuildOverlays)
 {
-	FTexture2D* ColorTarget = Targets.SceneColor.get();
-	FTexture2D* DepthTarget = Targets.Depth.get();
-	if (!TargetWorld || !Renderer || !ColorTarget || !DepthTarget)
-		return false;
-	const uint32 Width = ColorTarget->GetWidth();
-	const uint32 Height = ColorTarget->GetHeight();
-	if (!Width || !Height || !Targets.IsValidFor(Width, Height))
-		return false;
-
-	FScenePassCallbacks Callbacks;
-	Callbacks.HeightFog = [this, TargetWorld, &SceneView, DepthTarget, ColorTarget]
-	{
-		return RenderHeightFog(TargetWorld, SceneView, DepthTarget, ColorTarget);
-	};
-	Callbacks.TranslucentFogConstants = [this](bool bHasFog)
-	{
-		return HeightFogRenderer ? HeightFogRenderer->GetTranslucentFogConstants(bHasFog) : nullptr;
-	};
-	Callbacks.SceneText = [this, TargetWorld, &SceneView] { RenderSceneText(TargetWorld, SceneView); };
-	if (SceneDepthRenderer)
-		Callbacks.DepthVisualization = [this, &SceneView, DepthTarget, ColorTarget, Range = Options.SceneDepthRange]
+	return SceneRenderer.Render(Renderer, Targets, Options,
+		[&](FScenePassCallbacks& Callbacks)
 		{
-			SceneDepthRenderer->OnRender(SceneView, DepthTarget, ColorTarget, Range);
-		};
-	if (Options.bShowCascade && CascadeFloorRenderer)
-		Callbacks.CascadeVisualization = [this, &SceneView, &SceneRenderer, DepthTarget, ColorTarget]
-		{
-			CascadeFloorRenderer->OnRender(SceneView, SceneRenderer.GetRenderData(), DepthTarget, ColorTarget);
-		};
-
-	const bool bUseFXAA = Options.bEnableFXAA && !Options.bShowSceneDepth &&
-		!Options.bShowWorldNormal && FXAARenderer && FXAARenderer->PrepareOutput(ColorTarget);
-	if (bUseFXAA)
-	{
-		Callbacks.FXAAOutput = FXAARenderer->GetOutputTarget().get();
-		Callbacks.FXAA = [this, ColorTarget] { return FXAARenderer->OnRender(ColorTarget); };
-	}
-
-	if (BuildOverlays) BuildOverlays(Callbacks.Overlays);
-
-	FRenderGraphBuilder Graph;
-	if (!SceneRenderer.AddViewportPasses(Graph, Renderer, Targets, Options, SkyboxRenderer.get(), Callbacks) ||
-		!Graph.Execute() || !SceneRenderer.DidCorePassSucceed() || !SceneRenderer.DidFXAAPassSucceed())
-		return false;
-	if (bUseFXAA && !Targets.SwapSceneColorAndBind(FXAARenderer->GetOutputTarget()))
-		return false;
-
-	RenderCommand::EndRenderPass();
-	return true;
+			FTexture2D* ColorTarget = Targets.SceneColor.get();
+			FTexture2D* DepthTarget = Targets.Depth.get();
+			if (SceneDepthRenderer)
+				Callbacks.DepthVisualization = [this, &SceneView, DepthTarget, ColorTarget, Range = Options.SceneDepthRange]
+				{
+					SceneDepthRenderer->OnRender(SceneView, DepthTarget, ColorTarget, Range);
+				};
+			if (Options.bShowCascade && CascadeFloorRenderer)
+				Callbacks.CascadeVisualization = [this, &SceneView, &SceneRenderer, DepthTarget, ColorTarget]
+				{
+					CascadeFloorRenderer->OnRender(SceneView, SceneRenderer.GetRenderData(), DepthTarget, ColorTarget);
+				};
+			if (BuildOverlays) BuildOverlays(Callbacks.Overlays);
+		});
 }
 
-void UEditorEngine::RenderSceneText(UWorld* TargetWorld, const FSceneView& SceneView)
-{
-	if (!TextRenderer) return;
-	for (TObjectIterator<UTextRenderComponent> Text; Text; ++Text)
-	{
-		if (!Text || !Text->IsRegistered() || !Text->GetFont() || !Text->IsShown(SceneView.bGameView) || !Text->GetOwner() ||
-			Text->GetOwner()->GetWorld() != TargetWorld)
-			continue;
-		TextRenderer->OnRender(Text->GetText(), Text->GetWorldMatrix(), Text->GetTextSize(),
-			*Text->GetFont(), SceneView.ViewProjectionMatrix);
-	}
-}
-
-bool UEditorEngine::RenderHeightFog(UWorld* TargetWorld, const FSceneView& SceneView,
-	FTexture2D* DepthTarget, FTexture2D* ColorTarget)
-{
-	if (!TargetWorld || !HeightFogRenderer || !DepthTarget || !ColorTarget ||
-		!SceneView.bIsPerspective)
-		return false;
-
-	for (TObjectIterator<UExponentialHeightFogComponent> Fog; Fog; ++Fog)
-	{
-		if (!Fog || !Fog->IsRegistered() || !Fog->IsShown(SceneView.bGameView) || !Fog->GetOwner() ||
-			Fog->GetOwner()->GetWorld() != TargetWorld)
-			continue;
-
-		FHeightFogSetting Setting;
-		Setting.FogDensity = Fog->GetFogDensity();
-		Setting.FogHeightFalloff = Fog->GetFogHeightFalloff();
-		Setting.FogHeight = Fog->GetFogHeight();
-		Setting.FogColor = Fog->GetFogColor();
-		Setting.StartDistance = Fog->GetStartDistance();
-		Setting.FogMaxOpacity = Fog->GetFogMaxOpacity();
-		Setting.FogCutoffDistance = Fog->GetFogCutoffDistance();
-		if (HeightFogRenderer->OnRender(SceneView, DepthTarget, ColorTarget, Setting))
-			return true;
-	}
-	return false;
-}
+//void UEditorEngine::RenderSceneText(UWorld* TargetWorld, const FSceneView& SceneView)
+//{
+//	if (!TextRenderer) return;
+//	for (TObjectIterator<UTextRenderComponent> Text; Text; ++Text)
+//	{
+//		if (!Text || !Text->IsRegistered() || !Text->GetFont() || !Text->IsShown(SceneView.bGameView) || !Text->GetOwner() ||
+//			Text->GetOwner()->GetWorld() != TargetWorld)
+//			continue;
+//		TextRenderer->OnRender(Text->GetText(), Text->GetWorldMatrix(), Text->GetTextSize(),
+//			*Text->GetFont(), SceneView.ViewProjectionMatrix);
+//	}
+//}
+//
+//bool UEditorEngine::RenderHeightFog(UWorld* TargetWorld, const FSceneView& SceneView,
+//	FTexture2D* DepthTarget, FTexture2D* ColorTarget)
+//{
+//	if (!TargetWorld || !HeightFogRenderer || !DepthTarget || !ColorTarget ||
+//		!SceneView.bIsPerspective)
+//		return false;
+//
+//	for (TObjectIterator<UExponentialHeightFogComponent> Fog; Fog; ++Fog)
+//	{
+//		if (!Fog || !Fog->IsRegistered() || !Fog->IsShown(SceneView.bGameView) || !Fog->GetOwner() ||
+//			Fog->GetOwner()->GetWorld() != TargetWorld)
+//			continue;
+//
+//		FHeightFogSetting Setting;
+//		Setting.FogDensity = Fog->GetFogDensity();
+//		Setting.FogHeightFalloff = Fog->GetFogHeightFalloff();
+//		Setting.FogHeight = Fog->GetFogHeight();
+//		Setting.FogColor = Fog->GetFogColor();
+//		Setting.StartDistance = Fog->GetStartDistance();
+//		Setting.FogMaxOpacity = Fog->GetFogMaxOpacity();
+//		Setting.FogCutoffDistance = Fog->GetFogCutoffDistance();
+//		if (HeightFogRenderer->OnRender(SceneView, DepthTarget, ColorTarget, Setting))
+//			return true;
+//	}
+//	return false;
+//}
 
 void UEditorEngine::RenderActorUUIDs(const FSceneView& SceneView)
 {
@@ -1375,7 +1337,7 @@ void UEditorEngine::CopyPIEWindowToBackbuffer()
 		Backbuffer->GetHeight() != PIETargetHeight)
 		return;
 
-	RenderCommand::GetContext()->CopyResource(Backbuffer->GetRawPtr(), PIEColorTarget->GetRawPtr());
+	RenderCommand::CopyTexture(Backbuffer, PIEColorTarget);
 	bPIEWindowRendered = true;
 }
 

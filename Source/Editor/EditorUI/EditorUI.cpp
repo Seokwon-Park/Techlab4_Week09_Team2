@@ -141,6 +141,13 @@ void FEditorUI::DrawMainMenuBar()
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Build"))
+		{
+			const bool bCanPackage = !IsPackaging || !IsPackaging();
+			if (ImGui::MenuItem("Package Game (Release)", nullptr, false, bCanPackage)) { if (OnPackageGame) OnPackageGame(); }
+			ImGui::EndMenu();
+		}
+
 		ImGui::EndMainMenuBar();
 	}
 	ImGui::PopStyleVar(2);

@@ -3,6 +3,7 @@
 #include "Core/Types.h"
 #include "Math/Rect.h"
 #include "Containers/Array.h"
+#include "Render/RenderTypes.h"
 
 #include <array>
 #include <functional>
@@ -71,8 +72,8 @@ struct FRenderGraphTextureDesc
 {
 	uint32 Width = 0;
 	uint32 Height = 0;
-	DXGI_FORMAT Format = DXGI_FORMAT_UNKNOWN;
-	UINT BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	ETextureFormat Format = ETextureFormat::Unknown;
+	ETextureBindFlags BindFlags = ETextureBindFlags::RenderTarget | ETextureBindFlags::ShaderResource;
 };
 
 // 1단계: 외부 텍스처와 순차 래스터 패스만 지원한다.

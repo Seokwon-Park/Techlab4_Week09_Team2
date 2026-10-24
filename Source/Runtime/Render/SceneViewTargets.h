@@ -52,21 +52,17 @@ struct FSceneViewTargets
 		if (Width == 0 || Height == 0)
 			return false;
 
-		D3D11_TEXTURE2D_DESC Desc{};
+		FTextureDesc Desc{};
 		Desc.Width = Width;
 		Desc.Height = Height;
-		Desc.MipLevels = 1;
-		Desc.ArraySize = 1;
-		Desc.SampleDesc.Count = 1;
-		Desc.Usage = D3D11_USAGE_DEFAULT;
-		Desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+		Desc.BindFlags = ETextureBindFlags::RenderTarget | ETextureBindFlags::ShaderResource;
 
-		Desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		Desc.Format = ETextureFormat::R8G8B8A8_UNorm;
 		SceneColor = RenderCommand::CreateTexture2D(Desc);
 
 		// DSV로 쓰고 SRV로 읽을 수 있도록 typeless 리소스로 만든다.
-		Desc.Format = DXGI_FORMAT_R24G8_TYPELESS;
-		Desc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+		Desc.Format = ETextureFormat::R24G8_Typeless;
+		Desc.BindFlags = ETextureBindFlags::DepthStencil | ETextureBindFlags::ShaderResource;
 		Depth = RenderCommand::CreateTexture2D(Desc);
 
 		if (!IsValidFor(Width, Height))

@@ -157,13 +157,13 @@ bool FGridRenderer::Init(FRenderer *InRenderer) {
       RenderCommand::CreateConstantBuffer(sizeof(FPSGridData));
 
   BatchGridPipelineState.Shader = BatchGridShader;
-  BatchGridPipelineState.Topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+  BatchGridPipelineState.Topology = EPrimitiveTopology::TriangleList;
   BatchGridPipelineState.RasterizerState = ERasterizerState::SolidNone;
   BatchGridPipelineState.BlendState = EBlendState::AlphaBlend;
   BatchGridPipelineState.DepthStencilState = EDepthStencilState::ReadOnly;
 
   PSGridPipelineState.Shader = PSGridShader;
-  PSGridPipelineState.Topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
+  PSGridPipelineState.Topology = EPrimitiveTopology::TriangleStrip;
   PSGridPipelineState.RasterizerState = ERasterizerState::SolidNone;
   PSGridPipelineState.BlendState = EBlendState::AlphaBlend;
   PSGridPipelineState.DepthStencilState = EDepthStencilState::ReadOnly;

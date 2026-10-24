@@ -241,7 +241,7 @@ void UBenchmarkEngine::DrawSelectionBounds(const FMatrix& ViewProjection)
 	RenderCommand::SetRasterizerState(ERasterizerState::SolidBack);
 	RenderCommand::SetBlendState(EBlendState::Opaque);
 	RenderCommand::SetDepthStencilState(EDepthStencilState::Default);
-	RenderCommand::SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	RenderCommand::SetPrimitiveTopology(EPrimitiveTopology::TriangleList);
 }
 
 // 마우스 Ray로 Gizmo를 갱신하고, 축을 잡지 않은 클릭은 피킹으로 처리한다.
@@ -367,7 +367,7 @@ void UBenchmarkEngine::Tick(float DeltaTime)
 	{
 		// Grid 파이프라인이 바꾼 상태를 장면 기준으로 되돌린다.
 		RenderCommand::SetRasterizerState(ERasterizerState::SolidBack);
-		RenderCommand::SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		RenderCommand::SetPrimitiveTopology(EPrimitiveTopology::TriangleList);
 		Renderer->RenderTranslucent(ViewProjection);
 
 		DrawSelectionBounds(ViewProjection);
