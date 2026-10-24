@@ -43,6 +43,7 @@ function CommonSettings()
 		"NOMINMAX",
 		"UNICODE",
 		"_UNICODE",
+		"SOL_ALL_SAFETIES_ON=1", 
 	}
 
 	filter "files:**.hlsl"

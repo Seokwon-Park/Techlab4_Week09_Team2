@@ -25,9 +25,50 @@
 #include "GameFramework/Actor.h"
 #include "Core/EngineLog.h"
 
+#include "Editor/HitoriEd/EditorFileUtils.h"
+#include "Script/LuaScriptManager.h"
+
 
 namespace
 {
+	void DrawScriptSection(AActor* Actor)
+	{
+		ImGui::SeparatorText("Lua Script");
+
+		if (Actor->ScriptPath.empty())
+		{
+			if (ImGui::Button("Create Script"))
+			{
+				const FString& ScenePath = FEditorFileUtils::CurrentScenePath;
+				if (ScenePath.empty())
+				{
+					HTR_LOG(Warning, "[Lua] Save the scene first. The scene name will be included in the script name.");
+				}
+				else
+				{
+					const FString SceneName = FLuaScriptManager::FromPath(FLuaScriptManager::ToPath(ScenePath).stem());
+					const FString NewPath = FLuaScriptManager::MakeScriptPath(SceneName, Actor->GetName());
+					if (FLuaScriptManager::Get().CreateScriptFromTemplate(NewPath))
+					{
+						Actor->ScriptPath = NewPath;   // 리플렉션 프로퍼티라 씬 저장 때 같이 저장된다
+					}
+				}
+			}
+			return;
+		}
+
+		ImGui::TextWrapped("%s", Actor->ScriptPath.c_str());
+		if (ImGui::Button("Edit Script"))
+		{
+			FLuaScriptManager::Get().OpenScriptInEditor(Actor->ScriptPath);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Detach"))
+		{
+			Actor->ScriptPath.clear();   // 연결만 끊고 파일은 지우지 않는다
+		}
+	}
+
 	bool DrawAxisControl(const FString& _label, float& _value, float _speed, float _minValue, float _maxValue, float _resetValue, FVector4 _color)
 	{
 		bool isValueChanged = false;
@@ -835,6 +876,7 @@ namespace
 			}
 			ImGui::EndPopup();
 		}
+		DrawScriptSection(Actor);
 	}
 }
 

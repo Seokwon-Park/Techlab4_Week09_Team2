@@ -8,6 +8,9 @@
 #include "Core/EngineLog.h"
 #include "UObject/Object.h"
 
+#include "Script/LuaScriptInstance.h"
+#include "Script/LuaBindings.h"
+
 enum class EAttachmentRule;
 
 
@@ -36,7 +39,37 @@ void AActor::BeginPlay()
 	bHasBegunPlay = true;
 	for (UActorComponent* Component : Components)
 		if (Component) Component->BeginPlayComponent();
+
+	if (!ScriptPath.empty())
+	{
+		Script = new FLuaScriptInstance();
+		Script->Load(this, ScriptPath);
+		PrimaryActorTick.bCanEverTick = true;
+	}
+
 	RegisterAllActorTickFunctions(true);
+
+	if (Script)
+		Script->Call("BeginPlay");
+}
+
+void AActor::TickActor(float DeltaTime)
+{
+	Tick(DeltaTime);
+	if (Script)
+		Script->Tick(DeltaTime);
+}
+
+void AActor::EndPlay()
+{
+	if (!Script)
+		return;
+
+	Script->Call("EndPlay");
+	FCoroutineScheduler::Get().StopAll(this);   // B의 코루틴이 지워질 액터를 다시 깨우지 않게
+	FLuaBindings::ReleaseCallbacks(this);       // 델리게이트에 걸린 Lua 함수 해제 (단계 8 안전장치 참고)
+	delete Script;
+	Script = nullptr;
 }
 
 void AActor::RegisterAllActorTickFunctions(bool bRegister)
@@ -267,7 +300,7 @@ UActorComponent* AActor::AddComponent(UClass* ComponentClass, FName Name)
 	}
 
 	UActorComponent* NewComponent = NewObject<UActorComponent>(this, ComponentClass, Name);
-	if (!NewComponent){return nullptr;}
+	if (!NewComponent) { return nullptr; }
 
 	if (USceneComponent* SceneComponent = Cast<USceneComponent>(NewComponent))
 	{
@@ -376,16 +409,23 @@ void AActor::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	// TODO(A): if (Script) Script->Call("OnBeginOverlap", OtherActor);
 	//          sol.hpp는 LuaScriptInstance.cpp 안에서만 include하도록 비템플릿 진입점을 거친다
+	if (Script)
+		Script->Call("OnBeginOverlap", OtherActor);
 }
 
 void AActor::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	// TODO(A): if (Script) Script->Call("OnEndOverlap", OtherActor);
+	if (Script)
+		Script->Call("OnEndOverlap", OtherActor);
 }
 
 void AActor::NotifyHit(AActor* OtherActor)
 {
 	// TODO(A): if (Script) Script->Call("OnHit", OtherActor);
+	if (Script)
+		Script->Call("OnHit", OtherActor);
+	
 }
 
 bool AActor::IsOverlappingActor(const AActor* Other) const

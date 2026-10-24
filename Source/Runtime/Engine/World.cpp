@@ -31,6 +31,8 @@
 
 #include "UObject/UObjectGlobals.h"
 
+#include "Script/LuaBindings.h"
+
 namespace
 {
 	inline void WritePerObjectConstants(uint8* Dest, const FMatrix& LocalToWorld, const FMatrix& WorldToLocal)
@@ -135,6 +137,7 @@ void UWorld::Tick(float DeltaTime)
 			SCOPE_CYCLE_COUNTER(STAT_ActorTick);
 			// 모든 Actor를 도는 대신 등록된 Tick 함수만 실행한다
 			TickTaskManager.RunAllTickGroups(DeltaTime);
+			FCoroutineScheduler::Get().Tick(DeltaTime);
 
 			for (ULevel* Level : Levels)
 			{
@@ -142,6 +145,7 @@ void UWorld::Tick(float DeltaTime)
 			}
 
 			UpdateOverlaps();
+			FLuaBindings::FlushPendingDestroy(this);
 		}
 	}
 	else
@@ -183,6 +187,8 @@ void UWorld::ClearWorld()
 		for (AActor* Actor : Level->Actors)
 		{
 			if (!Actor) continue;
+			if (Actor->HasBegunPlay())
+				Actor->EndPlay();
 			Actor->UnregisterAllComponents();
 			Actor->RegisterAllActorTickFunctions(false);
 		}
@@ -573,6 +579,9 @@ bool UWorld::DestroyActor(AActor* Actor)
 
 	FString ActorName = Actor->GetName();
 	uint32 ActorUUID = Actor->GetUUID();
+
+	if (Actor->HasBegunPlay())
+		Actor->EndPlay();
 
 	// 5. 프록시 제거
 	Actor->UnregisterAllComponents();
