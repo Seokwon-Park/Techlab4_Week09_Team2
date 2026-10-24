@@ -57,7 +57,7 @@ public:
 			uint32 RegistedUUID = 0;
 
 			//실제 클래스별 검색표에 등록되어 있는지 확인한다.
-			if (!TryGetLiveObjectUUID(Object, ObjectClass, RegisterdUUID)) { ObjectClass = nullptr; }
+			if (!TryGetLiveObjectUUID(Object, ObjectClass, RegistedUUID)) { ObjectClass = nullptr; }
 			
 			//검색표에 없는 객체는 기존배열검색을 사용한다.
 			ObjectClass = nullptr;
@@ -189,7 +189,7 @@ private:
 
 	};
 
-	void AddInternal(HandlerType handler, const UObject* Instance, const void* Instance, const UObject* Object, const UClass* ObjectClass, uint32 UUID) 
+	void AddInternal(HandlerType handler, const void* Instance, const UObject* Object, const UClass* ObjectClass, uint32 UUID) 
 	{
 		if (!handler) return;
 
@@ -256,4 +256,4 @@ private:
 	std::vector<std::shared_ptr<FHandler>> Handlers;
 };
 
-#define DECLARE_DELEGATE(Name, ...) TDelegate<__VA_ARGS__> Name
+#define DECLARE_DELEGATE(Name, ...) using Name = TDelegate<__VA_ARGS__>

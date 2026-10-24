@@ -150,7 +150,14 @@ bool UPrimitiveComponent::TraceMeshLocal(const FRay& LocalRay, const FStaticMesh
 
 bool UPrimitiveComponent::IsOverlappingComponent(const UPrimitiveComponent* Other) const
 {
-	// TODO(C): OverlapInfos 검색
+	if (!Other) return false;
+
+	for (const FOverlapInfo& Info : OverlapInfos)
+	{
+		if (Info.OtherComp == Other)
+			return true;
+	}
+
 	return false;
 }
 

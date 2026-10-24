@@ -6,7 +6,7 @@
 #include "Render/RenderPacket.h"
 #include "Render/GeometryGenerator.h"
 #include "Collision/HitResult.h"
-#include "Core/Delegate.h"
+#include "Core/Delegate/Delegate.h"
 
 class FPrimitiveSceneProxy;
 class AActor;
@@ -94,9 +94,9 @@ public:
 	bool bReceiveShadow = true;
 
 	// ---- 충돌 이벤트 (담당: C) ----
-	FComponentOverlapSignature OnComponentBeginOverlap;
-	FComponentOverlapSignature OnComponentEndOverlap;
-	FComponentHitSignature OnComponentHit;
+	//FComponentOverlapSignature OnComponentBeginOverlap;
+	//FComponentOverlapSignature OnComponentEndOverlap;
+	//FComponentHitSignature OnComponentHit;
 
 	bool bGenerateOverlapEvents = true;
 	bool bBlockComponent = false;
