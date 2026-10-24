@@ -101,21 +101,17 @@ namespace
 			}
 		}
 
-		D3D11_TEXTURE2D_DESC D3DDesc{};
-		D3DDesc.Width = Desc.Width;
-		D3DDesc.Height = Desc.Height;
-		D3DDesc.MipLevels = 1;
-		D3DDesc.ArraySize = 1;
-		D3DDesc.SampleDesc.Count = 1;
-		D3DDesc.Usage = D3D11_USAGE_DEFAULT;
-		D3DDesc.BindFlags = Desc.BindFlags;
-		D3DDesc.Format = Desc.Format;
+		FTextureDesc TextureDesc{};
+		TextureDesc.Width = Desc.Width;
+		TextureDesc.Height = Desc.Height;
+		TextureDesc.BindFlags = Desc.BindFlags;
+		TextureDesc.Format = Desc.Format;
 
-		auto NewTex = RenderCommand::CreateTexture2D(D3DDesc);
+		auto NewTex = RenderCommand::CreateTexture2D(TextureDesc);
 		if (!NewTex || !NewTex->GetRawPtr() ||
-			((Desc.BindFlags & D3D11_BIND_RENDER_TARGET) && !NewTex->GetRTV()) ||
-			((Desc.BindFlags & D3D11_BIND_DEPTH_STENCIL) && !NewTex->GetDSV()) ||
-			((Desc.BindFlags & D3D11_BIND_SHADER_RESOURCE) && !NewTex->GetSRV())) return nullptr;
+			(HasFlag(Desc.BindFlags, ETextureBindFlags::RenderTarget) && !NewTex->GetRTV()) ||
+			(HasFlag(Desc.BindFlags, ETextureBindFlags::DepthStencil) && !NewTex->GetDSV()) ||
+			(HasFlag(Desc.BindFlags, ETextureBindFlags::ShaderResource) && !NewTex->GetSRV())) return nullptr;
 		FTexture2D* Ptr = NewTex.get();
 		GTexturePool.push_back({ std::move(NewTex), Desc, true });
 		return Ptr;
@@ -155,7 +151,7 @@ FRenderGraphTextureRef FRenderGraphBuilder::ImportTexture(FTexture2D* Texture, c
 	Entry.Name = Name ? Name : "";
 	Entry.Desc.Width = Texture->GetWidth();
 	Entry.Desc.Height = Texture->GetHeight();
-	Entry.Desc.Format = Texture->GetFormat();
+	Entry.Desc.Format = Texture->GetTextureFormat();
 	Textures.push_back(std::move(Entry));
 	return { Index, this };
 }
@@ -216,7 +212,7 @@ bool FRenderGraphBuilder::AddComputePass(FRenderGraphComputePassDesc Desc, std::
 
 bool FRenderGraphBuilder::Execute() // 등록되어 있던 
 {
-	if (bExecuted || !RenderCommand::GetContext()) return false;
+	if (bExecuted || !FRenderDevice::Get()) return false;
 	bExecuted = true;
 
 	for (auto& Entry : Textures)
@@ -228,7 +224,8 @@ bool FRenderGraphBuilder::Execute() // 등록되어 있던
 		}
 	}
 
-	ID3D11DeviceContext* Context = RenderCommand::GetContext();
+	// 바인딩 충돌 해제는 현재 D3D11 상태를 직접 조회해야 하므로 컨텍스트를 그대로 쓴다.
+	ID3D11DeviceContext* Context = FRenderDevice::Get()->GetContext();
 	for (FRasterPass& Pass : Passes)
 	{
 		if (Pass.bCompute)
@@ -245,14 +242,8 @@ bool FRenderGraphBuilder::Execute() // 등록되어 있던
 		// 이전 패스의 출력 바인딩을 먼저 해제해야 입력 SRV로 사용할 수 있다.
 		RenderCommand::EndRenderPass();
 
-		TArray<ID3D11ShaderResourceView*> SRVs;
-		for (int32 i = 0; i < Pass.Desc.ReadTextures.size(); i++)
-		{
-			SRVs.Add(Resolve(Pass.Desc.ReadTextures[i])->GetSRV());
-		}
-
 		std::vector<ID3D11Resource*> Outputs;
-		ID3D11RenderTargetView* RTVs[D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT]{};
+		FTexture2D* ColorTargets[D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT]{};
 
 		uint32 TexWidth = 0;
 		uint32 TexHeight = 0;
@@ -260,7 +251,7 @@ bool FRenderGraphBuilder::Execute() // 등록되어 있던
 		for (uint32 Index = 0; Index < Pass.Desc.ColorAttachments.size(); ++Index)
 		{
 			FTexture2D* Texture = Resolve(Pass.Desc.ColorAttachments[Index].Texture);
-			RTVs[Index] = Texture->GetRTV();
+			ColorTargets[Index] = Texture;
 			if (Texture)
 			{
 				Outputs.push_back(Texture->GetRawPtr());
@@ -270,20 +261,8 @@ bool FRenderGraphBuilder::Execute() // 등록되어 있던
 		}
 
 		FTexture2D* Depth = Resolve(Pass.Desc.DepthAttachment.Texture);
-
-		ID3D11DepthStencilView* DSV = nullptr;
 		if (Depth)
 		{
-			if (Depth->GetDimension() == ETextureDimension::Texture2D)
-			{
-				DSV = Depth->GetDSV();
-			}
-			else if (Depth->GetDimension() == ETextureDimension::Texture2DArray)
-			{
-				FTexture2DArray* Tex2DArray = static_cast<FTexture2DArray*>(Depth);
-				DSV = Tex2DArray->GetDSV(Pass.Desc.DepthAttachment.DSVIndex);
-			}
-
 			Outputs.push_back(Depth->GetRawPtr());
 			TexWidth = Depth->GetWidth();
 			TexHeight = Depth->GetHeight();
@@ -294,11 +273,11 @@ bool FRenderGraphBuilder::Execute() // 등록되어 있던
 		for (uint32 Index = 0; Index < Pass.Desc.ColorAttachments.size(); ++Index)
 		{
 			const FRenderGraphColorAttachment& Attachment = Pass.Desc.ColorAttachments[Index];
-			if (Attachment.LoadAction == ERenderGraphLoadAction::Clear && RTVs[Index])
+			if (Attachment.LoadAction == ERenderGraphLoadAction::Clear && ColorTargets[Index] && ColorTargets[Index]->GetRTV())
 			{
 				const float Color[4] = { Attachment.ClearColor[0], Attachment.ClearColor[1],
 					Attachment.ClearColor[2], Attachment.ClearColor[3] };
-				RenderCommand::ClearRenderTarget(RTVs[Index], Color);
+				RenderCommand::ClearRenderTarget(ColorTargets[Index], Color);
 			}
 		}
 
@@ -307,8 +286,10 @@ bool FRenderGraphBuilder::Execute() // 등록되어 있던
 			RenderCommand::ClearDepthStencil(Resolve(Pass.Desc.DepthAttachment.Texture), Pass.Desc.DepthAttachment.ClearDepth, Pass.Desc.DepthAttachment.ClearStencil);
 		}
 
-		RenderCommand::SetRenderTargets(RTVs, Pass.Desc.ColorAttachments.size(), DSV);
-		RenderCommand::BindShaderResources(0, SRVs.GetData(), SRVs.Num(), EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
+		RenderCommand::SetRenderTargets(static_cast<uint32>(Pass.Desc.ColorAttachments.size()), ColorTargets,
+			Depth, Pass.Desc.DepthAttachment.DSVIndex);
+		for (uint32 Slot = 0; Slot < Pass.Desc.ReadTextures.size(); ++Slot)
+			RenderCommand::BindShaderResource(Slot, Resolve(Pass.Desc.ReadTextures[Slot]), EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
 
 		FShadowAtlasRect Viewport = Pass.Desc.Viewport;
 		if (Viewport.Width == 0)

@@ -14,7 +14,7 @@ void FFXAARenderer::Init(FRenderer* InRenderer)
 
 	// depth buffer를 사용하지 않고, 별도의 shader를 통해 렌더링을 처리한다.
 	FXAAPipelineState.Shader = Shader;
-	FXAAPipelineState.Topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	FXAAPipelineState.Topology = EPrimitiveTopology::TriangleList;
 	FXAAPipelineState.RasterizerState = ERasterizerState::SolidNone;
 	FXAAPipelineState.BlendState = EBlendState::Opaque;
 	FXAAPipelineState.DepthStencilState = EDepthStencilState::Disabled;
@@ -38,15 +38,11 @@ bool FFXAARenderer::PrepareOutput(FTexture2D* ColorTarget)
 		CachedColorBuffer->GetHeight() != Height ||
 		CachedColorBuffer->GetFormat() != ColorTarget->GetFormat())
 	{
-		D3D11_TEXTURE2D_DESC Desc{};
+		FTextureDesc Desc{};
 		Desc.Width = Width;
 		Desc.Height = Height;
-		Desc.Format = ColorTarget->GetFormat();
-		Desc.MipLevels = 1;
-		Desc.ArraySize = 1;
-		Desc.SampleDesc.Count = 1;
-		Desc.Usage = D3D11_USAGE_DEFAULT;
-		Desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+		Desc.Format = ColorTarget->GetTextureFormat();
+		Desc.BindFlags = ETextureBindFlags::RenderTarget | ETextureBindFlags::ShaderResource;
 		auto NewTarget = RenderCommand::CreateTexture2D(Desc);
 		if (!NewTarget || !NewTarget->GetRawPtr() || !NewTarget->GetRTV() || !NewTarget->GetSRV())
 			return false;

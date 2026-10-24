@@ -75,6 +75,13 @@ public:
 		return Found ? *Found : ValueType();
 	}
 
+	// 키가 없으면 ValueType 기본값으로 추가하고, 있든 없든 그 값의 참조를 돌려준다.
+	// UE의 operator[]는 키가 없으면 assert하므로 "없으면 추가"는 이 함수로 쓴다.
+	ValueType& FindOrAdd(const KeyType& Key)
+	{
+		return mMap[Key];
+	}
+
 	bool Contains(const KeyType& Key) const
 	{
 		return mMap.find(Key) != mMap.end();

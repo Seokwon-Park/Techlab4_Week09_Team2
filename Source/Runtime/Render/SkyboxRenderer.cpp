@@ -51,15 +51,12 @@ bool FSkyboxRenderer::Init(const FString& PanoramaPath)
 		return false;
 	}
 
-	D3D11_TEXTURE2D_DESC Desc{};
+	// 포맷은 Image를 따른다(.hdr이면 R32G32B32A32_FLOAT).
+	FTextureDesc Desc{};
 	Desc.Width = Image.Width;
 	Desc.Height = Image.Height;
-	Desc.MipLevels = 1;
-	Desc.ArraySize = 1;
-	Desc.Format = Image.Format;          // .hdr이면 R32G32B32A32_FLOAT
-	Desc.SampleDesc.Count = 1;
-	Desc.Usage = D3D11_USAGE_IMMUTABLE;
-	Desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	Desc.Usage = ETextureUsage::Immutable;
+	Desc.BindFlags = ETextureBindFlags::ShaderResource;
 
 	PanoramaTexture = RenderCommand::CreateTexture2D(Desc, Image);
 	if (!PanoramaTexture) return false;
@@ -69,7 +66,7 @@ bool FSkyboxRenderer::Init(const FString& PanoramaPath)
 	ConstantBuffer = RenderCommand::CreateConstantBuffer(sizeof(FSkyboxConstants));
 
 	PipelineState.Shader = Shader;
-	PipelineState.Topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	PipelineState.Topology = EPrimitiveTopology::TriangleList;
 	// 전체 화면 삼각형이라 컬링 방향을 따질 필요가 없다.
 	PipelineState.RasterizerState = ERasterizerState::SolidNone;
 	PipelineState.BlendState = EBlendState::Opaque;

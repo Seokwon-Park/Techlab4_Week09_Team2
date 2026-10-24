@@ -109,8 +109,8 @@ namespace
 // - BC 압축 포맷은 RowPitch를 블록 단위로 채운다. 이 데이터로 텍스처를 만들 때 GENERATE_MIPS는 쓸 수 없다(BC는 RTV 불가).
 FImageData ImageLoader::LoadDDS(const FString& Path)
 {
-	ID3D11Device* Device{ RenderCommand::GetDevice() };
-	ID3D11DeviceContext* Context{ RenderCommand::GetContext() };
+	ID3D11Device* Device{ FRenderDevice::Get()->GetDevice() };
+	ID3D11DeviceContext* Context{ FRenderDevice::Get()->GetContext() };
 	if (!Device || !Context) {
 		HTR_LOG(Error, "[Image] DDS load requires a render device: {}", Path);
 		return FImageData();

@@ -11,35 +11,23 @@
 #include "MeshPassProcessor.h"
 #include <span>
 
+class FSkyboxRenderer;
+class FHeightFogRenderer;
+class FFXAARenderer;
+class FTextRenderer;
+
 class FRenderer
 {
 public:
+	// 전방 선언한 패스 객체를 TUniquePtr로 소유하므로 정의는 cpp에 둔다.
+	FRenderer();
+	~FRenderer();
+
 	bool Init();
 
 	// 패스의 의미를 해석하지 않고 준비된 GPU 상태와 드로우만 제출한다.
 	void UploadViewMatrix(const FMatrix& ViewProjection);
 	void DrawMeshes(std::span<const FMeshDrawBatch> Batches);
-	void BindPixelConstant(uint32 Slot, FConstantBuffer* Buffer);
-	void UpdateConstant(FConstantBuffer* Buffer, const void* Data, uint32 Size);
-	void BindConstant(uint32 Slot, FConstantBuffer* Buffer, EShaderBindFlagBits Stages);
-	void BindStructured(uint32 Slot, FStructuredBuffer* Buffer, EShaderBindFlagBits Stages);
-	void BindCube(uint32 Slot, const FTextureCube* Texture, EShaderBindFlagBits Stages);
-	void BindSampler(uint32 Slot, ESamplerState Sampler, EShaderBindFlagBits Stages);
-	void UnbindResources(uint32 FirstSlot, uint32 Count, EShaderBindFlagBits Stages);
-	void BindRawPixelConstant(uint32 Slot, ID3D11Buffer* Buffer);
-	void BindRawPixelResources(uint32 FirstSlot,
-		std::span<ID3D11ShaderResourceView* const> Resources);
-	void DispatchCompute(ID3D11ComputeShader* Shader, ID3D11Buffer* Constants,
-		uint32 SRVSlot, ID3D11ShaderResourceView* SRV,
-		std::span<ID3D11UnorderedAccessView* const> UAVs,
-		uint32 GroupsX, uint32 GroupsY, uint32 GroupsZ,
-		ID3D11SamplerState* Sampler = nullptr);
-	void DispatchCompute(ID3D11ComputeShader* Shader, ID3D11Buffer* Constants,
-		uint32 SRVSlot, std::span<ID3D11ShaderResourceView* const> SRVs,
-		std::span<ID3D11UnorderedAccessView* const> UAVs,
-		uint32 GroupsX, uint32 GroupsY, uint32 GroupsZ,
-		ID3D11SamplerState* Sampler = nullptr);
-	void ClearUnorderedAccess(ID3D11UnorderedAccessView* UAV, uint32 Value = 0);
 
 	// 오클루전 객체 조회
 	FGPUOcclusion& GetGPUOcclusion() { return GPUOcclusion; }
@@ -50,7 +38,13 @@ public:
 	uint8* BeginObjectConstants(uint32 MaxSlots);
 	void EndObjectConstants();
 
+	void InitScenePasses(const FString& SkyPanoramaPath);
 
+	// FSceneRenderer::Render가 쓰는 상주 패스 객체. UE에서는 렌더러 모듈의 글로벌 자원에 해당한다.
+	FSkyboxRenderer* GetSkybox() const { return Skybox.get(); }
+	FHeightFogRenderer* GetHeightFog() const { return HeightFog.get(); }
+	FFXAARenderer* GetFXAA() const { return FXAA.get(); }
+	FTextRenderer* GetSceneText() const { return SceneText.get(); }
 
 private:
 	void EnsurePerObjectSlotCapacity(uint32 SlotCount);
@@ -65,4 +59,9 @@ private:
 	TArray<ComPtr<ID3D11Query>> OcclusionQueries;
 	ComPtr<ID3D11DepthStencilState> DepthLessEqualReadOnly;
 	FGPUOcclusion GPUOcclusion;
+
+	TUniquePtr<FSkyboxRenderer> Skybox;
+	TUniquePtr<FHeightFogRenderer> HeightFog;
+	TUniquePtr<FFXAARenderer> FXAA;
+	TUniquePtr<FTextRenderer> SceneText;
 };

@@ -37,7 +37,7 @@ bool FGizmoRenderer::Init(FRenderer* InRenderer)
 	Shader = FRenderResourceManager::GetShaderProgram("Resources/Shader/GizmoShader.hlsl");
 
 	PipelineState.Shader = Shader;
-	PipelineState.Topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	PipelineState.Topology = EPrimitiveTopology::TriangleList;
 
 	return false;
 }

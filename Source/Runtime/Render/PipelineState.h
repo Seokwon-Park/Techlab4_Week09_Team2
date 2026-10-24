@@ -2,6 +2,7 @@
 
 #include "Shader.h"
 #include "RenderStates.h"
+#include "RenderTypes.h"
 
 
 struct FPipelineState
@@ -10,7 +11,7 @@ struct FPipelineState
 	~FPipelineState() = default;
 
 	FShaderProgram* Shader = nullptr;
-	D3D11_PRIMITIVE_TOPOLOGY Topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	EPrimitiveTopology       Topology = EPrimitiveTopology::TriangleList;
 	ERasterizerState         RasterizerState = ERasterizerState::SolidBack;
 	EBlendState              BlendState = EBlendState::Opaque;
 	EDepthStencilState       DepthStencilState = EDepthStencilState::Default;

@@ -5,11 +5,19 @@
 #include <chrono>
 #include <unordered_map>
 
+#include "Render/SkyboxRenderer.h"
+#include "Render/PostProcess/HeightFogRenderer.h"
+#include "Render/PostProcess/FXAARenderer.h"
+#include "Text/TextRenderer.h"
+
 namespace
 {
 	constexpr uint32 PerObjectSlotConstants = 16;
 	constexpr uint32 MinPerObjectSlots = 1024;
 }
+
+FRenderer::FRenderer() = default;
+FRenderer::~FRenderer() = default;
 
 bool FRenderer::Init()
 {
@@ -25,92 +33,6 @@ bool FRenderer::Init()
 void FRenderer::UploadViewMatrix(const FMatrix& ViewProjection)
 {
 	RenderCommand::UpdateBufferData(ViewCB.get(), &ViewProjection, sizeof(ViewProjection));
-}
-
-void FRenderer::BindPixelConstant(uint32 Slot, FConstantBuffer* Buffer)
-{
-	RenderCommand::BindConstantBuffer(Slot, Buffer, EShaderBindFlagBits::Pixel);
-}
-
-void FRenderer::UpdateConstant(FConstantBuffer* Buffer, const void* Data, uint32 Size)
-{
-	RenderCommand::UpdateBufferData(Buffer, Data, Size);
-}
-
-void FRenderer::BindConstant(uint32 Slot, FConstantBuffer* Buffer, EShaderBindFlagBits Stages)
-{
-	RenderCommand::BindConstantBuffer(Slot, Buffer, Stages);
-}
-
-void FRenderer::BindStructured(uint32 Slot, FStructuredBuffer* Buffer, EShaderBindFlagBits Stages)
-{
-	RenderCommand::BindShaderResource(Slot, Buffer, Stages);
-}
-
-void FRenderer::BindCube(uint32 Slot, const FTextureCube* Texture, EShaderBindFlagBits Stages)
-{
-	RenderCommand::BindShaderResource(Slot, Texture, Stages);
-}
-
-void FRenderer::BindSampler(uint32 Slot, ESamplerState Sampler, EShaderBindFlagBits Stages)
-{
-	RenderCommand::BindSamplerState(Slot, Sampler, Stages);
-}
-
-void FRenderer::UnbindResources(uint32 FirstSlot, uint32 Count, EShaderBindFlagBits Stages)
-{
-	RenderCommand::UnbindShaderResources(FirstSlot, Count, Stages);
-}
-
-void FRenderer::BindRawPixelConstant(uint32 Slot, ID3D11Buffer* Buffer)
-{
-	RenderCommand::GetContext()->PSSetConstantBuffers(Slot, 1, &Buffer);
-}
-
-void FRenderer::BindRawPixelResources(uint32 FirstSlot,
-	std::span<ID3D11ShaderResourceView* const> Resources)
-{
-	RenderCommand::GetContext()->PSSetShaderResources(FirstSlot,
-		static_cast<UINT>(Resources.size()), Resources.data());
-}
-
-void FRenderer::DispatchCompute(ID3D11ComputeShader* Shader, ID3D11Buffer* Constants,
-	uint32 SRVSlot, ID3D11ShaderResourceView* SRV,
-	std::span<ID3D11UnorderedAccessView* const> UAVs,
-	uint32 GroupsX, uint32 GroupsY, uint32 GroupsZ, ID3D11SamplerState* Sampler)
-{
-	const std::array<ID3D11ShaderResourceView*, 1> SRVs = { SRV };
-	DispatchCompute(Shader, Constants, SRVSlot, SRVs, UAVs, GroupsX, GroupsY, GroupsZ, Sampler);
-}
-
-void FRenderer::ClearUnorderedAccess(ID3D11UnorderedAccessView* UAV, uint32 Value)
-{
-	if (!UAV) return;
-	const uint32 Values[4] = {Value, Value, Value, Value};
-	RenderCommand::GetContext()->ClearUnorderedAccessViewUint(UAV, Values);
-}
-
-void FRenderer::DispatchCompute(ID3D11ComputeShader* Shader, ID3D11Buffer* Constants,
-	uint32 SRVSlot, std::span<ID3D11ShaderResourceView* const> SRVs,
-	std::span<ID3D11UnorderedAccessView* const> UAVs,
-	uint32 GroupsX, uint32 GroupsY, uint32 GroupsZ, ID3D11SamplerState* Sampler)
-{
-	if (!Shader || !GroupsX || !GroupsY || !GroupsZ || UAVs.empty()) return;
-	ID3D11DeviceContext* Context = RenderCommand::GetContext();
-	Context->CSSetShader(Shader, nullptr, 0);
-	Context->CSSetConstantBuffers(0, 1, &Constants);
-	Context->CSSetShaderResources(SRVSlot, static_cast<UINT>(SRVs.size()), SRVs.data());
-	Context->CSSetUnorderedAccessViews(0, static_cast<UINT>(UAVs.size()), UAVs.data(), nullptr);
-	if (Sampler) Context->CSSetSamplers(0, 1, &Sampler);
-	Context->Dispatch(GroupsX, GroupsY, GroupsZ);
-	
-	const std::vector<ID3D11ShaderResourceView*> NullSRVs(SRVs.size(), nullptr);
-	ID3D11Buffer* NullCB = nullptr;
-	ID3D11SamplerState* NullSampler = nullptr;
-	Context->CSSetShaderResources(SRVSlot, static_cast<UINT>(NullSRVs.size()), NullSRVs.data());
-	Context->CSSetConstantBuffers(0, 1, &NullCB);
-	Context->CSSetSamplers(0, 1, &NullSampler);
-	Context->CSSetShader(nullptr, nullptr, 0);
 }
 
 void FRenderer::BindBatch(const FMeshDrawBatch& Batch)
@@ -203,14 +125,33 @@ void FRenderer::EndObjectConstants()
 	if (PerObjectSlotCB) RenderCommand::Unmap(PerObjectSlotCB.get());
 }
 
+void FRenderer::InitScenePasses(const FString& SkyPanoramaPath)
+{
+	if (!SkyPanoramaPath.empty())
+	{
+		Skybox = MakeUnique<FSkyboxRenderer>();
+		if (!Skybox->Init(SkyPanoramaPath))
+		{
+			HTR_LOG(Warning, "Skybox panorama not loaded: {}", SkyPanoramaPath);
+			Skybox.reset();
+		}
+	}
+	HeightFog = MakeUnique<FHeightFogRenderer>();
+	HeightFog->Init(this);
+	FXAA = MakeUnique<FFXAARenderer>();
+	FXAA->Init(this);
+	SceneText = MakeUnique<FTextRenderer>();
+	SceneText->Init();
+}
+
 FOcclusionMeasureResult FRenderer::MeasureDrawVisibility(std::span<const FMeshDrawBatch> Batches)
 {
 	FOcclusionMeasureResult Result;
 	uint32 Count = 0;
 	for (const FMeshDrawBatch& Batch : Batches) Count += static_cast<uint32>(Batch.Items.Num());
 	if (!Count) return Result;
-	ID3D11Device* Device = RenderCommand::GetDevice();
-	ID3D11DeviceContext* Context = RenderCommand::GetContext();
+	ID3D11Device* Device = FRenderDevice::Get()->GetDevice();
+	ID3D11DeviceContext* Context = FRenderDevice::Get()->GetContext();
 	if (!Device || !Context) return Result;
 	const auto StartTime = std::chrono::high_resolution_clock::now();
 	if (!DepthLessEqualReadOnly)
@@ -277,3 +218,4 @@ FOcclusionMeasureResult FRenderer::MeasureDrawVisibility(std::span<const FMeshDr
 	Result.bValid = true;
 	return Result;
 }
+

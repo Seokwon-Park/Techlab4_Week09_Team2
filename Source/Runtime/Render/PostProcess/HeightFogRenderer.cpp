@@ -10,7 +10,7 @@ void FHeightFogRenderer::Init(FRenderer* InRenderer)
 	Renderer = InRenderer;
 	Shader = FRenderResourceManager::GetShaderProgram("Resources/Shader/HeightFogShader.hlsl");
 	PipelineState.Shader = Shader;
-	PipelineState.Topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	PipelineState.Topology = EPrimitiveTopology::TriangleList;
 	PipelineState.RasterizerState = ERasterizerState::SolidNone;
 	PipelineState.BlendState = EBlendState::AlphaBlend;
 	PipelineState.DepthStencilState = EDepthStencilState::Disabled;

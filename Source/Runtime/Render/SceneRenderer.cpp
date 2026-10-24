@@ -13,6 +13,11 @@
 #include "Asset/LOD/StaticMeshLODSelector.h"
 #include "Render/SkyLightEnvironment.h"
 #include "Engine/SceneManagement.h"
+#include "Components/ExponentialHeightFogComponent.h"
+#include "Render/PostProcess/HeightFogRenderer.h"
+#include "Render/PostProcess/FXAARenderer.h"
+#include "Text/TextRenderer.h"
+#include "UObject/UObjectIterator.h"
 
 #include <cmath>
 #include <algorithm>
@@ -102,6 +107,47 @@ bool FSceneRenderer::IntersectSphereFrustum(const FVector4& PositionRadius, cons
 	return true;
 }
 
+// 아래 두 함수는 UEditorEngine의 같은 이름 함수 본문이다. TargetWorld·SceneView 대신 멤버 World·View를 쓴다.
+bool FSceneRenderer::RenderHeightFog(FRenderer* Renderer, FTexture2D* DepthTarget, FTexture2D* ColorTarget)
+{
+	FHeightFogRenderer* FogRenderer = Renderer->GetHeightFog();
+	if (!World || !FogRenderer || !DepthTarget || !ColorTarget || !View.bIsPerspective)
+		return false;
+
+	for (TObjectIterator<UExponentialHeightFogComponent> Fog; Fog; ++Fog)
+	{
+		if (!Fog || !Fog->IsRegistered() || !Fog->IsShown(View.bGameView) || !Fog->GetOwner() ||
+			Fog->GetOwner()->GetWorld() != World)
+			continue;
+
+		FHeightFogSetting Setting;
+		Setting.FogDensity = Fog->GetFogDensity();
+		Setting.FogHeightFalloff = Fog->GetFogHeightFalloff();
+		Setting.FogHeight = Fog->GetFogHeight();
+		Setting.FogColor = Fog->GetFogColor();
+		Setting.StartDistance = Fog->GetStartDistance();
+		Setting.FogMaxOpacity = Fog->GetFogMaxOpacity();
+		Setting.FogCutoffDistance = Fog->GetFogCutoffDistance();
+		if (FogRenderer->OnRender(View, DepthTarget, ColorTarget, Setting))
+			return true;
+	}
+	return false;
+}
+
+void FSceneRenderer::RenderSceneText(FRenderer* Renderer)
+{
+	FTextRenderer* TextRenderer = Renderer->GetSceneText();
+	if (!World || !TextRenderer) return;
+	for (TObjectIterator<UTextRenderComponent> Text; Text; ++Text)
+	{
+		if (!Text || !Text->IsRegistered() || !Text->GetFont() || !Text->IsShown(View.bGameView) ||
+			!Text->GetOwner() || Text->GetOwner()->GetWorld() != World)
+			continue;
+		TextRenderer->OnRender(Text->GetText(), Text->GetWorldMatrix(), Text->GetTextSize(),
+			*Text->GetFont(), View.ViewProjectionMatrix);
+	}
+}
+
 // 가시성 검사 및 렌더 큐 수집
 void FSceneRenderer::InitViews(FRenderer* Renderer, const FSceneRenderOptions& Options)
 {
@@ -184,14 +230,14 @@ bool FSceneRenderer::BindDeferredLighting(FRenderer* Renderer, uint32 Width, uin
 	std::memcpy(Constants.LightOffsets, RenderData.LightParameterOffsets, sizeof(RenderData.LightParameterOffsets)); // LightOffset은 각 조명별로 시작하는 위치
 
 	Constants.ViewportSize = FVector4(static_cast<float>(Width), static_cast<float>(Height), 0.0f, 0.0f);
-	Renderer->UpdateConstant(DefferedConstants, &Constants, sizeof(Constants));
-	Renderer->BindConstant(0, DefferedConstants, EShaderBindFlagBits::Pixel);
-	Renderer->BindStructured(3, RenderData.HasLights() ? LightResources.GetSceneLights() : nullptr, EShaderBindFlagBits::Pixel);
-	Renderer->BindStructured(4, LightShadows, EShaderBindFlagBits::Pixel);
+	RenderCommand::UpdateBufferData(DefferedConstants, &Constants, sizeof(Constants));
+	RenderCommand::BindConstantBuffer(0, DefferedConstants, EShaderBindFlagBits::Pixel);
+	RenderCommand::BindShaderResource(3, RenderData.HasLights() ? LightResources.GetSceneLights() : nullptr, EShaderBindFlagBits::Pixel);
+	RenderCommand::BindShaderResource(4, LightShadows, EShaderBindFlagBits::Pixel);
 	RenderCommand::BindShaderResource(5, LightShadowAtlas, EShaderBindFlagBits::Pixel);
 
-	Renderer->BindSampler(2, ESamplerState::PointClamp, EShaderBindFlagBits::Pixel);
-	Renderer->BindSampler(3, ESamplerState::ShadowComparison, EShaderBindFlagBits::Pixel);
+	RenderCommand::BindSamplerState(2, ESamplerState::PointClamp, EShaderBindFlagBits::Pixel);
+	RenderCommand::BindSamplerState(3, ESamplerState::ShadowComparison, EShaderBindFlagBits::Pixel);
 
 	return true;
 }
@@ -234,36 +280,36 @@ bool FSceneRenderer::BindForwardLighting(FRenderer* Renderer, const FSceneRender
 	std::memcpy(Constants.LightOffsets, RenderData.LightParameterOffsets, sizeof(RenderData.LightParameterOffsets)); // LightOffset은 각 조명별로 시작하는 위치
 	std::memcpy(Constants.CascadeShadowDistances, RenderData.CascadeShadowDistances, sizeof(RenderData.CascadeShadowDistances));
 
-	Renderer->UpdateConstant(ForwardConstants, &Constants, sizeof(Constants));
-	Renderer->BindConstant(1, ForwardConstants, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
-	Renderer->BindCube(11, Sky ? Sky->GetIrradianceCube() : nullptr, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
-	Renderer->BindStructured(13, LightShadows, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
+	RenderCommand::UpdateBufferData(ForwardConstants, &Constants, sizeof(Constants));
+	RenderCommand::BindConstantBuffer(1, ForwardConstants, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
+	RenderCommand::BindShaderResource(11, Sky ? Sky->GetIrradianceCube() : nullptr, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
+	RenderCommand::BindShaderResource(13, LightShadows, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
 	RenderCommand::BindShaderResource(14, LightShadowAtlas, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
 
 	FForwardLightTileGrid& Tiles = LightResources.GetTiles();
 	Tiles.PreparePixelShader(Renderer, bTilesBuilt);
-	Renderer->BindPixelConstant(3, Tiles.GetPixelConstants());
-	const std::array<ID3D11ShaderResourceView*, 3> TileSRVs = Tiles.GetPixelResources();
-	Renderer->BindRawPixelResources(9, std::span<ID3D11ShaderResourceView* const>(TileSRVs.data(), 2));
-	Renderer->BindRawPixelResources(12, std::span<ID3D11ShaderResourceView* const>(TileSRVs.data() + 2, 1));
-	Renderer->BindStructured(8, RenderData.HasLights() && LightResources.GetSceneLights() && LightResources.GetSceneLights()->GetSRV() ? LightResources.GetSceneLights() : nullptr, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
+	RenderCommand::BindConstantBuffer(3, Tiles.GetPixelConstants(), EShaderBindFlagBits::Pixel);
+	const std::array<FStructuredBuffer*, 3> TileBuffers = Tiles.GetPixelResources();
+	RenderCommand::BindShaderResource(9, TileBuffers[0], EShaderBindFlagBits::Pixel);
+	RenderCommand::BindShaderResource(10, TileBuffers[1], EShaderBindFlagBits::Pixel);
+	RenderCommand::BindShaderResource(12, TileBuffers[2], EShaderBindFlagBits::Pixel);
+	RenderCommand::BindShaderResource(8, RenderData.HasLights() && LightResources.GetSceneLights() && LightResources.GetSceneLights()->GetSRV() ? LightResources.GetSceneLights() : nullptr, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
 
-	Renderer->BindSampler(1, ESamplerState::LinearClamp, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
-	Renderer->BindSampler(2, ESamplerState::PointClamp, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
-	Renderer->BindSampler(3, ESamplerState::ShadowComparison, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
+	RenderCommand::BindSamplerState(1, ESamplerState::LinearClamp, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
+	RenderCommand::BindSamplerState(2, ESamplerState::PointClamp, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
+	RenderCommand::BindSamplerState(3, ESamplerState::ShadowComparison, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
 
 	return true;
 }
 
 void FSceneRenderer::UnbindForwardLighting(FRenderer* Renderer)
 {
-	const std::array<ID3D11ShaderResourceView*, 2> NullSRVs{};
-	Renderer->BindRawPixelResources(9, NullSRVs);
-	Renderer->BindRawPixelConstant(3, nullptr);
-	Renderer->UnbindResources(12, 3, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
+	RenderCommand::UnbindShaderResources(9, 2, EShaderBindFlagBits::Pixel);
+	RenderCommand::BindConstantBuffer(3, nullptr, EShaderBindFlagBits::Pixel);
+	RenderCommand::UnbindShaderResources(12, 3, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
 	RenderData.ViewLightResources.GetTiles().ResetPixelState();
-	Renderer->UnbindResources(8, 1, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
-	Renderer->UnbindResources(11, 1, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
+	RenderCommand::UnbindShaderResources(8, 1, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
+	RenderCommand::UnbindShaderResources(11, 1, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
 }
 
 bool FSceneRenderer::AddWorldNormalPass(FRenderGraphBuilder& Graph, FRenderer* Renderer,
@@ -309,7 +355,7 @@ bool FSceneRenderer::AddCorePasses(FRenderGraphBuilder& Graph, FRenderer* Render
 	if (!SceneColor || !Depth)
 		return false;
 
-	const FRenderGraphTextureDesc HDRDesc{ Width, Height, DXGI_FORMAT_R16G16B16A16_FLOAT };
+	const FRenderGraphTextureDesc HDRDesc{ Width, Height, ETextureFormat::R16G16B16A16_Float };
 	const FRenderGraphTextureRef LightingHDR = Graph.CreateTexture(HDRDesc, "LightingHDR");
 	if (!LightingHDR)
 		return false;
@@ -383,7 +429,7 @@ bool FSceneRenderer::AddCorePasses(FRenderGraphBuilder& Graph, FRenderer* Render
 				const FLightShadowRenderData& LightShadow = RenderData.LightShadows[i];
 
 				RenderCommand::SetViewport(LightShadow.AtlasRect.X, LightShadow.AtlasRect.Y, LightShadow.AtlasRect.Width, LightShadow.AtlasRect.Height);
-				RenderCommand::SetRenderTargets(nullptr, 0, DepthArray->GetDSV(LightShadow.AtlasIndex));
+				RenderCommand::SetRenderTargets(0, nullptr, DepthArray, LightShadow.AtlasIndex);
 				if (!bClearWholeAtlas)
 				{
 					// 이 타일에 남은 지난 프레임 깊이를 1로 지운다. 뷰포트가 타일 크기라 다른 타일은 건드리지 않는다.
@@ -408,7 +454,7 @@ bool FSceneRenderer::AddCorePasses(FRenderGraphBuilder& Graph, FRenderer* Render
 
 	if (Options.RenderingPath == ERenderingPath::Deferred) // Deferred rendering
 	{
-		const FRenderGraphTextureDesc GBufferDesc{ Width, Height, DXGI_FORMAT_R8G8B8A8_UNORM };
+		const FRenderGraphTextureDesc GBufferDesc{ Width, Height, ETextureFormat::R8G8B8A8_UNorm };
 		const FRenderGraphTextureRef BaseColor = Graph.CreateTexture(GBufferDesc, "BaseColorMetallic"); // 임시 텍스쳐 생성
 		const FRenderGraphTextureRef Normal = Graph.CreateTexture(HDRDesc, "NormalRoughness");
 		if (!BaseColor || !Normal)
@@ -465,8 +511,8 @@ bool FSceneRenderer::AddCorePasses(FRenderGraphBuilder& Graph, FRenderer* Render
 					{
 						bCorePassSucceeded = false;
 					}
-					Renderer->UnbindResources(3, 2, EShaderBindFlagBits::Pixel);
-					Renderer->BindConstant(1, nullptr, EShaderBindFlagBits::Pixel);
+					RenderCommand::UnbindShaderResources(3, 2, EShaderBindFlagBits::Pixel);
+					RenderCommand::BindConstantBuffer(1, nullptr, EShaderBindFlagBits::Pixel);
 				})) return false;
 		}
 		else
@@ -670,14 +716,13 @@ bool FSceneRenderer::AddViewportPasses(FRenderGraphBuilder& Graph, FRenderer* Re
 				}
 				FForwardLightTileGrid& Tiles = RenderData.ViewLightResources.GetTiles();
 				Tiles.PreparePixelShader(Renderer, bTilesBuilt);
-				Renderer->BindPixelConstant(3, Tiles.GetPixelConstants());
-				const std::array<ID3D11ShaderResourceView*, 3> TileResources = Tiles.GetPixelResources();
-				Renderer->BindRawPixelResources(9, std::span<ID3D11ShaderResourceView* const>(TileResources.data(), 1));
+				RenderCommand::BindConstantBuffer(3, Tiles.GetPixelConstants(), EShaderBindFlagBits::Pixel);
+				RenderCommand::BindShaderResource(9, Tiles.GetPixelResources()[0], EShaderBindFlagBits::Pixel);
 				RenderCommand::BindPipelineState(*Pipeline);
 				RenderCommand::BindVertexBuffer(nullptr);
 				RenderCommand::Draw(3);
-				Renderer->UnbindResources(9, 1, EShaderBindFlagBits::Pixel);
-				Renderer->BindPixelConstant(3, nullptr);
+				RenderCommand::UnbindShaderResources(9, 1, EShaderBindFlagBits::Pixel);
+				RenderCommand::BindConstantBuffer(3, nullptr, EShaderBindFlagBits::Pixel);
 				Tiles.ResetPixelState();
 			})) return false;
 	}
@@ -708,6 +753,51 @@ bool FSceneRenderer::AddViewportPasses(FRenderGraphBuilder& Graph, FRenderer* Re
 }
 
 
+bool FSceneRenderer::Render(FRenderer* Renderer, FSceneViewTargets& Targets, const FSceneRenderOptions& Options, const std::function<void(FScenePassCallbacks&)>& ExtraPasses)
+{
+	FTexture2D* ColorTarget = Targets.SceneColor.get();
+	FTexture2D* DepthTarget = Targets.Depth.get();
+	if (!World || !Renderer || !ColorTarget || !DepthTarget)
+		return false;
+	const uint32 Width = ColorTarget->GetWidth();
+	const uint32 Height = ColorTarget->GetHeight();
+	if (!Width || !Height || !Targets.IsValidFor(Width, Height))
+		return false;
+
+	FScenePassCallbacks Callbacks;
+	Callbacks.HeightFog = [this, Renderer, DepthTarget, ColorTarget]
+		{
+			return RenderHeightFog(Renderer, DepthTarget, ColorTarget);
+		};
+	Callbacks.TranslucentFogConstants = [Renderer](bool bHasFog)
+		{
+			FHeightFogRenderer* Fog = Renderer->GetHeightFog();
+			return Fog ? Fog->GetTranslucentFogConstants(bHasFog) : nullptr;
+		};
+	Callbacks.SceneText = [this, Renderer] { RenderSceneText(Renderer); };
+
+	FFXAARenderer* FXAA = Renderer->GetFXAA();
+	const bool bUseFXAA = Options.bEnableFXAA && !Options.bShowSceneDepth &&
+		!Options.bShowWorldNormal && FXAA && FXAA->PrepareOutput(ColorTarget);
+	if (bUseFXAA)
+	{
+		Callbacks.FXAAOutput = FXAA->GetOutputTarget().get();
+		Callbacks.FXAA = [FXAA, ColorTarget] { return FXAA->OnRender(ColorTarget); };
+	}
+
+	if (ExtraPasses) ExtraPasses(Callbacks);
+
+	FRenderGraphBuilder Graph;
+	if (!AddViewportPasses(Graph, Renderer, Targets, Options, Renderer->GetSkybox(), Callbacks) ||
+		!Graph.Execute() || !DidCorePassSucceed() || !DidFXAAPassSucceed())
+		return false;
+	if (bUseFXAA && !Targets.SwapSceneColorAndBind(FXAA->GetOutputTarget()))
+		return false;
+
+	RenderCommand::EndRenderPass();
+	return true;
+}
+
 // 반투명 렌더링
 void FSceneRenderer::RenderTranslucent(FRenderer* Renderer, FConstantBuffer* FogConstants)
 {
@@ -716,7 +806,7 @@ void FSceneRenderer::RenderTranslucent(FRenderer* Renderer, FConstantBuffer* Fog
 		return;
 	}
 
-	Renderer->BindPixelConstant(3, FogConstants);
+	RenderCommand::BindConstantBuffer(3, FogConstants, EShaderBindFlagBits::Pixel);
 	PrepareDrawData(Renderer, RenderData);
 	TArray<FMeshDrawBatch> Batches;
 	FMeshPassProcessor Processor;
@@ -726,7 +816,7 @@ void FSceneRenderer::RenderTranslucent(FRenderer* Renderer, FConstantBuffer* Fog
 		Renderer->UploadViewMatrix(View.ViewProjectionMatrix);
 		Renderer->DrawMeshes(Batches);
 	}
-	Renderer->BindPixelConstant(3, nullptr);
+	RenderCommand::BindConstantBuffer(3, nullptr, EShaderBindFlagBits::Pixel);
 }
 
 void FSceneRenderer::GatherRenderPackets(FScene& Scene, FSceneRenderData& Data,

@@ -9,7 +9,7 @@ void FCascadeFloorRenderer::Init()
 {
 	Shader = FRenderResourceManager::GetShaderProgram("Resources/Shader/CascadeFloorShader.hlsl");
 	PipelineState.Shader = Shader;
-	PipelineState.Topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	PipelineState.Topology = EPrimitiveTopology::TriangleList;
 	PipelineState.RasterizerState = ERasterizerState::SolidNone;
 	PipelineState.BlendState = EBlendState::AlphaBlend;
 	PipelineState.DepthStencilState = EDepthStencilState::Disabled;

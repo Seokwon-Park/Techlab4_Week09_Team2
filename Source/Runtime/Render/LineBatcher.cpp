@@ -20,7 +20,7 @@ bool FLineBatcher::Init(FRenderer* InRenderer, UWorld* InWorld)
 	LineShader = FRenderResourceManager::GetShaderProgram("Resources/Shader/BoundingBoxShader.hlsl");
 
 	PipelineState.Shader = LineShader;
-	PipelineState.Topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+	PipelineState.Topology = EPrimitiveTopology::LineList;
 
 	MaxVertices = 65536;
 	VertexBufferBase = new FLineBatchVertex[MaxVertices];

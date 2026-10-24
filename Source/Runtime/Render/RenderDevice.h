@@ -27,6 +27,9 @@ public:
 	FRenderDevice();
 	~FRenderDevice();
 
+	// RenderCommand로 감싸지 않은 D3D11 기능(쿼리·Hi-Z·리소스 충돌 해제 등)을 직접 쓰는 백엔드 코드용.
+	static FRenderDevice* Get() { return Instance; }
+
 	ID3D11Device* GetDevice() const { return Device.Get(); }
 	ID3D11DeviceContext* GetContext() const { return DeviceContext.Get(); }
 	// D3D11.1 상수 버퍼 오프셋 바인딩(VSSetConstantBuffers1)을 지원하지 않으면 nullptr
@@ -77,4 +80,6 @@ private:
 	ComPtr<ID3D11DepthStencilState> DepthStencilStates[(uint8)EDepthStencilState::Count];
 	ComPtr<ID3D11BlendState>        BlendStates[(uint8)EBlendState::Count];
 	ComPtr<ID3D11SamplerState>      SamplerStates[(uint8)ESamplerState::Count];
+
+	inline static FRenderDevice* Instance = nullptr;
 };

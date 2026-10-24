@@ -97,6 +97,8 @@ bool FEngineLoop::PreInit(HINSTANCE hInstance, UClass* EngineClass)
 			FSplashScreen::SetProgress(AssetStart + (AssetEnd - AssetStart) * Loaded / Total);
 		});
 
+	Renderer->InitScenePasses(Config.SkyPanorama ? Config.SkyPanorama : "");
+
 	FSplashScreen::SetText(L"Initializing Engine...");
 	FSplashScreen::SetProgress(0.8f);
 	if (!GEngine->Init())
@@ -201,7 +203,7 @@ void FEngineLoop::BeginBackbufferPass()
 	RenderCommand::SetRasterizerState(ERasterizerState::SolidBack);
 	RenderCommand::SetBlendState(EBlendState::Opaque);
 	RenderCommand::SetDepthStencilState(EDepthStencilState::Default);
-	RenderCommand::SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	RenderCommand::SetPrimitiveTopology(EPrimitiveTopology::TriangleList);
 }
 
 void FEngineLoop::EndBackbufferPass()
@@ -243,15 +245,11 @@ void FEngineLoop::HandleResize()
 
 void FEngineLoop::CreateDepthBuffer(uint32 Width, uint32 Height)
 {
-	D3D11_TEXTURE2D_DESC Desc{};
+	FTextureDesc Desc{};
 	Desc.Width = Width;
 	Desc.Height = Height;
-	Desc.MipLevels = 1;
-	Desc.ArraySize = 1;
-	Desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;   // 깊이 24bit + 스텐실 8bit
-	Desc.SampleDesc.Count = 1;                     // 백버퍼와 동일해야 함 (MSAA 없음)
-	Desc.Usage = D3D11_USAGE_DEFAULT;
-	Desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;     // FTexture2D가 DSV를 만들어 준다
+	Desc.Format = ETextureFormat::D24_UNorm_S8_UInt;   // 깊이 24bit + 스텐실 8bit
+	Desc.BindFlags = ETextureBindFlags::DepthStencil;  // FTexture2D가 DSV를 만들어 준다
 
 	DepthBuffer = RenderCommand::CreateTexture2D(Desc);
 }

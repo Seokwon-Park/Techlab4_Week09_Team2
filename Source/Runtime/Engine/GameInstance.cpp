@@ -4,6 +4,8 @@
 #include "Engine/World.h"
 #include "Engine/GameViewportClient.h"
 
+#include "Serialization/JsonArchive.h"
+
 void UGameInstance::Shutdown()
 {
 	if (!WorldContext) return;
@@ -40,6 +42,27 @@ bool UGameInstance::InitializeForPlayInEditor(int32 PIEInstance)
 }
 
 bool UGameInstance::StartPlayInEditorGameInstance()
+{
+	return StartGameInstance();
+}
+
+bool UGameInstance::InitializeStandalone(const FString& MapPath)
+{
+	if (!WorldContext) return false;
+	UWorld* World = UWorld::CreateWorld(EWorldType::Game, true);
+	if (!World) return false;
+	// 로드에 실패해도 컨텍스트가 월드를 가지고 있어야 DestroyWorldContext가 지운다.
+	WorldContext->SetCurrentWorld(World);
+	if (!FJsonArchive::LoadWorld(World, MapPath))
+	{
+		HTR_LOG(Error, "Failed to load startup map: {}", MapPath);
+		return false;
+	}
+	Init();
+	return true;
+}
+
+bool UGameInstance::StartGameInstance()
 {
 	UWorld* World = GetWorld();
 	if (!World || !WorldContext) return false;

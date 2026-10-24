@@ -70,6 +70,9 @@ public:
 	bool DidCorePassSucceed() const { return bCorePassSucceeded; }
 	bool DidFXAAPassSucceed() const { return bFXAAPassSucceeded; }
 
+	bool Render(FRenderer* Renderer, FSceneViewTargets& Targets, const FSceneRenderOptions& Options,
+		const std::function<void(FScenePassCallbacks&)>& ExtraPasses = nullptr);
+
 	// 반투명 렌더링
 	void RenderTranslucent(FRenderer* Renderer, FConstantBuffer* FogConstants = nullptr);
 
@@ -90,6 +93,9 @@ private:
 	bool BindForwardLighting(FRenderer* Renderer, const FSceneRenderOptions& Options);
 	void UnbindForwardLighting(FRenderer* Renderer);
 	bool IntersectSphereFrustum(const FVector4& PositionRadius, const FPlane (&Planes)[6]) const;
+
+	bool RenderHeightFog(FRenderer* Renderer, FTexture2D* DepthTarget, FTexture2D* ColorTarget);
+	void RenderSceneText(FRenderer* Renderer);
 
 	UWorld* World = nullptr;
 	FSceneView View;

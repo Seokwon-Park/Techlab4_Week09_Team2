@@ -2,6 +2,8 @@
 
 #include "Render/TextureCube.h"
 #include "Render/Texture2D.h"
+#include "Render/Buffer.h"
+#include "Render/Shader.h"
 #include "Core/EngineString.h"
 
 class FRenderer;
@@ -28,10 +30,9 @@ private:
 	TUniquePtr<FTextureCube> EnvironmentCube;
 	TUniquePtr<FTextureCube> IrradianceCube;
 	TUniquePtr<FTexture2D> Panorama;
-	ComPtr<ID3D11ComputeShader> EnvironmentCS;
-	ComPtr<ID3D11ComputeShader> IrradianceCS;
-	ComPtr<ID3D11Buffer> ConstantsCB;
-	ComPtr<ID3D11SamplerState> Sampler;
+	TUniquePtr<FComputeShader> EnvironmentCS;
+	TUniquePtr<FComputeShader> IrradianceCS;
+	TUniquePtr<FConstantBuffer> ConstantsCB;
 	uint32 PanoramaHeight = 0;
 	bool bSourceIsLinear = false;
 	bool bReady = false;

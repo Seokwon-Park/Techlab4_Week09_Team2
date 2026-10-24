@@ -19,6 +19,11 @@ public:
 	void SetWorldContext(FWorldContext* Context);
 	virtual bool InitializeForPlayInEditor(int32 PIEInstance);
 	virtual bool StartPlayInEditorGameInstance();
+
+	// 패키징된 게임: 에디터 월드를 복제하지 않고 씬 파일에서 Game 월드를 만든다.
+	virtual bool InitializeStandalone(const FString& MapPath);
+	// 게임 뷰포트를 만들고 월드 BeginPlay를 호출한다. PIE와 패키징 게임이 같이 쓴다.
+	virtual bool StartGameInstance();
 	
 	UEngine* GetEngine() const;
 private:

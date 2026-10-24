@@ -2,6 +2,7 @@
 
 #include "Core/Types.h"
 #include "Render/Buffer.h"
+#include "Render/Shader.h"
 #include "Render/LightRenderData.h"
 #include "Render/RenderEnums.h"
 #include <array>
@@ -21,7 +22,7 @@ public:
 	void PreparePixelShader(FRenderer* Renderer, bool bBuildSucceeded);
 	FConstantBuffer* GetPixelConstants() const { return LightingInfoCB.get(); }
 	std::array<ID3D11Resource*, 4> GetWriteResources() const;
-	std::array<ID3D11ShaderResourceView*, 3> GetPixelResources() const;
+	std::array<FStructuredBuffer*, 3> GetPixelResources() const;
 	void ResetPixelState() { bPixelTilesValid = false; }
 
 private:
@@ -42,20 +43,11 @@ private:
 	};
 	static_assert(sizeof(FGridConstants) == 160);
 
-	struct FTileBuffer
-	{
-		ComPtr<ID3D11Buffer> Buffer;
-		ComPtr<ID3D11ShaderResourceView> SRV;
-		ComPtr<ID3D11UnorderedAccessView> UAV;
-		uint32 Capacity = 0;
-		bool EnsureCapacity(uint32 Count, uint32 Stride);
-	};
-
-	ComPtr<ID3D11ComputeShader> ComputeShader;
-	ComPtr<ID3D11ComputeShader> ClusterComputeShader;
+	TUniquePtr<FComputeShader> ComputeShader;
+	TUniquePtr<FComputeShader> ClusterComputeShader;
 	TUniquePtr<FConstantBuffer> CullingCB;
 	TUniquePtr<FConstantBuffer> LightingInfoCB;
-	FTileBuffer Ranges, PointIndices, SpotIndices, Allocator;
+	TUniquePtr<FStructuredBuffer> Ranges, PointIndices, SpotIndices, Allocator;
 	FGridConstants  Constants{};
 	bool bPixelTilesValid = false;
 };
