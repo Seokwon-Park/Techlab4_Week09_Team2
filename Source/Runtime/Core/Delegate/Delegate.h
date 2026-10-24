@@ -57,10 +57,9 @@ public:
 			uint32 RegistedUUID = 0;
 
 			//실제 클래스별 검색표에 등록되어 있는지 확인한다.
-			if (!TryGetLiveObjectUUID(Object, ObjectClass, RegistedUUID)) { ObjectClass = nullptr; }
+			if (!TryGetLiveObjectUUID(Object, ObjectClass, RegistedUUID) || RegistedUUID != UUID) { ObjectClass = nullptr; }
 			
 			//검색표에 없는 객체는 기존배열검색을 사용한다.
-			ObjectClass = nullptr;
 		
 		}
 		return AddInternal([Instance, Func](Args... args){

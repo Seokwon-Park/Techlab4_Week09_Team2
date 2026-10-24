@@ -163,15 +163,66 @@ bool UPrimitiveComponent::IsOverlappingComponent(const UPrimitiveComponent* Othe
 
 void UPrimitiveComponent::BeginComponentOverlap(UPrimitiveComponent* OtherComp)
 {
-	// TODO(C): OverlapInfos 추가 → OnComponentBeginOverlap.Broadcast → Owner->NotifyActorBeginOverlap
+	if (!OtherComp || OtherComp == this || IsOverlappingComponent(OtherComp))
+	{
+		return;
+	}
+
+	OverlapInfos.Add({ OtherComp });
+
+	AActor* Owner = GetOwner();
+	AActor* OtherActor = OtherComp->GetOwner();
+
+	OnComponentBeginOverlap.Broadcast(this, OtherActor, OtherComp);
+	if (Owner && OtherActor)
+	{
+		Owner->NotifyActorBeginOverlap(OtherActor);
+	}
 }
 
 void UPrimitiveComponent::EndComponentOverlap(UPrimitiveComponent* OtherComp)
 {
-	// TODO(C): OverlapInfos 제거 → OnComponentEndOverlap.Broadcast → Owner->NotifyActorEndOverlap
+	if (!OtherComp) return;
+
+	bool bRemoved = false;
+
+	for (int32 Index = 0;Index < OverlapInfos.Num(); ++Index)
+	{
+		if (OverlapInfos[Index].OtherComp == OtherComp)
+		{
+			OverlapInfos.RemoveAt(Index, 1);
+			bRemoved = true;
+			break;
+		}
+	}
+
+	if (!bRemoved)
+		return;
+
+
+	AActor* Owner = GetOwner();
+	AActor* OtherActor = OtherComp->GetOwner();
+
+	OnComponentEndOverlap.Broadcast(this, OtherActor, OtherComp);
+
+	if (Owner && OtherActor)
+	{
+		Owner->NotifyActorEndOverlap(OtherActor);
+	}
 }
 
 void UPrimitiveComponent::DispatchHit(UPrimitiveComponent* OtherComp)
 {
-	// TODO(C): OnComponentHit.Broadcast → Owner->NotifyHit
+	if (!OtherComp) 
+		return;
+
+	AActor* Owner = GetOwner();
+	AActor* OtherActor = OtherComp->GetOwner();
+
+	OnComponentHit.Broadcast(this, OtherActor, OtherComp);
+
+	if (Owner && OtherActor)
+	{
+		Owner->NotifyHit(OtherActor);
+	}
 }

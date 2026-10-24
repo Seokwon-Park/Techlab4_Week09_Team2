@@ -32,6 +32,8 @@
 #include "UObject/UObjectGlobals.h"
 
 #include "Script/LuaBindings.h"
+#include "Physics/Collision.h"
+#include "Components/ShapeComponent.h"
 
 namespace
 {
@@ -816,7 +818,93 @@ void UWorld::Serialize(FStructuredArchive::FRecord Record)
 
 void UWorld::UpdateOverlaps()
 {
-	// TODO(C): bGenerateOverlapEvents인 UShapeComponent 후보 쌍(BVH 또는 N²) → GetWorldAABB 1차 거름
-	//          → FCollision::Overlap → 지난 프레임 쌍과 비교해 EndComponentOverlap, BeginComponentOverlap 호출
-	//          둘 다 bBlockComponent면 DispatchHit
+	/*
+	* 이 코드는 우선 단순한 N² 방식입니다. 도형 10개면 45쌍, 100개면 4,950쌍을 검사합니다. 
+	* 지금 단계에서는 디버그와 기능 검증에 적합하고, 나중에 개수가 늘면 Scene의 BVH를 후보쌍 찾기에 활용하면 됩니다.
+	*/
+
+
+	// 1. 이 월드에서 살아 있고 등록된 모든 충돌 도형을 수집한다.
+	// bGenerateOverlapEvents가 false인 도형도 넣는다.
+	// 그래야 실행 중 이벤트를 껐을 때 기존 Overlap에 End를 보낼 수 있다.
+	TArray<UShapeComponent*> Shapes;
+
+	for (TObjectIterator<UShapeComponent> It; It; ++It)
+	{
+		UShapeComponent* Shape = *It;
+
+		if (!Shape ||
+			!Shape->IsRegistered() ||
+			Shape->GetWorld() != this ||
+			!Shape->GetOwner())
+		{
+			continue;
+		}
+
+		Shapes.Add(Shape);
+	}
+
+	// 2. 중복 없는 모든 쌍: 0-1, 0-2, 1-2 ...
+	for (int32 i = 0; i < Shapes.Num(); ++i)
+	{
+		UShapeComponent* A = Shapes[i];
+		AActor* OwnerA = A->GetOwner();
+
+		for (int32 j = i + 1; j < Shapes.Num(); ++j)
+		{
+			UShapeComponent* B = Shapes[j];
+			AActor* OwnerB = B->GetOwner();
+
+			// 같은 Actor의 콜라이더끼리는 여기서는 무시한다.
+			// 필요하면 나중에 self-collision 정책을 별도로 추가한다.
+			const bool bCanGenerateOverlap =
+				OwnerA &&
+				OwnerB &&
+				OwnerA != OwnerB &&
+				OwnerA->GetActorEnableCollision() &&
+				OwnerB->GetActorEnableCollision() &&
+				A->bGenerateOverlapEvents &&
+				B->bGenerateOverlapEvents;
+
+			bool bIsOverlappingNow = false;
+
+			if (bCanGenerateOverlap)
+			{
+				// 3. 값싼 AABB 검사에서 먼저 탈락시킨다.
+				const FBox BoundsA = A->GetWorldAABB();
+				const FBox BoundsB = B->GetWorldAABB();
+
+				if (AreAABBsOverlapping(BoundsA, BoundsB))
+				{
+					// 4. 실제 도형 충돌: Sphere/Box/Capsule 조합
+					bIsOverlappingNow = FCollision::Overlap(A, B);
+				}
+			}
+
+			// 5. 지난 프레임의 상태
+			const bool bWasOverlapping =
+				A->IsOverlappingComponent(B);
+
+			// false -> true: 첫 접촉
+			if (!bWasOverlapping && bIsOverlappingNow)
+			{
+				A->BeginComponentOverlap(B);
+				B->BeginComponentOverlap(A);
+
+				// 지금은 “처음 막혔을 때 한 번” Hit를 보내는 정책
+				if (A->bBlockComponent && B->bBlockComponent)
+				{
+					A->DispatchHit(B);
+					B->DispatchHit(A);
+				}
+			}
+			// true -> false: 분리
+			else if (bWasOverlapping && !bIsOverlappingNow)
+			{
+				A->EndComponentOverlap(B);
+				B->EndComponentOverlap(A);
+			}
+		}
+	}
 }
+

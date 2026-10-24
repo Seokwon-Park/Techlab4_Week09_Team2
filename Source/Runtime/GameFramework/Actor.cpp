@@ -430,8 +430,29 @@ void AActor::NotifyHit(AActor* OtherActor)
 
 bool AActor::IsOverlappingActor(const AActor* Other) const
 {
-	// TODO(C): 내 PrimitiveComponent들의 OverlapInfos 중 Owner가 Other인 것이 있는지
-	return false;
+	if (!Other)
+		return false;
+
+	for (UActorComponent* Component : Components)
+	{
+		UPrimitiveComponent* Primitive =
+			Cast<UPrimitiveComponent>(Component);
+
+		if (!Primitive)
+			continue;
+
+		for (const FOverlapInfo& Info :
+			Primitive->GetOverlapInfos())
+		{
+			if (Info.OtherComp &&
+				Info.OtherComp->GetOwner() == Other)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;	return false;
 }
 
 void AActor::GetOverlappingActors(TArray<AActor*>& OutActors) const

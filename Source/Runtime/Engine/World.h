@@ -34,7 +34,15 @@ public:
 	bool Init();
 	/*UPrimitiveComponent* SpawnPrimitive(FClass* Class);*/
 	AActor* SpawnActor(UClass* Class, FName InName = NAME_None, const FTransform* Transform = nullptr);
-
+	
+	static bool AreAABBsOverlapping(const FBox& A, const FBox& B)
+	{
+		return
+			A.Min.X <= B.Max.X && A.Max.X >= B.Min.X &&
+			A.Min.Y <= B.Max.Y && A.Max.Y >= B.Min.Y &&
+			A.Min.Z <= B.Max.Z && A.Max.Z >= B.Min.Z;
+	}
+	
 	template <class T>
 	T* SpawnActor(FName InName = NAME_None, const FTransform* Transform = nullptr)
 	{
