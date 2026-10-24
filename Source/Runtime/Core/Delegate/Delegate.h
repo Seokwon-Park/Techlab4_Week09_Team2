@@ -188,7 +188,7 @@ private:
 
 	};
 
-	void AddInternal(HandlerType handler, const void* Instance, const UObject* Object, const UClass* ObjectClass, uint32 UUID) 
+	FDelegateHandle AddInternal(HandlerType handler, const void* Instance, const UObject* Object, const UClass* ObjectClass, uint32 UUID)
 	{
 		if (!handler) return;
 
