@@ -1,5 +1,6 @@
 #include "EnginePCH.h"
 #include "Editor/Details/DetailsPanel.h"
+#include "Editor/Details/PropertyEditor.h"
 
 #include "imgui_internal.h"
 #include "Editor/HitoriEd/EditorDragDrop.h"
@@ -877,6 +878,21 @@ namespace
 			ImGui::EndPopup();
 		}
 		DrawScriptSection(Actor);
+	}
+}
+
+// UI 에디터처럼 다른 패널도 같은 속성 편집 UI를 쓰도록 위 함수들을 공개한다.
+// 보조 함수들이 이 파일의 익명 네임스페이스에 있어 구현은 옮기지 않고 넘겨 준다.
+namespace FPropertyEditor
+{
+	void DrawProperty(UObject* Object, const FProperty& Property, ImFont* CustomFont)
+	{
+		::DrawProperty(Object, Property, CustomFont);
+	}
+
+	void DrawObjectProperties(UObject* Object, ImFont* CustomFont)
+	{
+		DrawProperties(Object, CustomFont);
 	}
 }
 

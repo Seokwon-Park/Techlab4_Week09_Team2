@@ -11,6 +11,8 @@
 #pragma comment(lib, "d3dcompiler.lib")
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
+// imgui_impl_dx11.cpp에 정의만 있고 헤더에는 아직 선언이 없다.
+void ImGui_ImplDX11_SetSwapChainDescs(const DXGI_SWAP_CHAIN_DESC* desc_templates, int desc_templates_count);
 
 namespace
 {
@@ -227,6 +229,17 @@ bool FImGuiRenderer::Init(HWND WindowHandle, ID3D11Device* Device, ID3D11DeviceC
 
 	ImGui_ImplWin32_Init(WindowHandle);
 	ImGui_ImplDX11_Init(Device, DeviceContext);
+
+	// 분리된 ImGui 창의 스왑체인을 메인 창(FSwapchain)과 같은 플립 모델로 맞춘다.
+	// 백엔드 기본값(DISCARD, 버퍼 1개)을 플립 모델 메인 창과 섞어 Present하면 Present가 끝나지 않고 에디터가 멈췄다.
+	DXGI_SWAP_CHAIN_DESC ViewportSwapChainDesc{};
+	ViewportSwapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	ViewportSwapChainDesc.SampleDesc.Count = 1;
+	ViewportSwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	ViewportSwapChainDesc.BufferCount = 2;
+	ViewportSwapChainDesc.Windowed = TRUE;
+	ViewportSwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+	ImGui_ImplDX11_SetSwapChainDescs(&ViewportSwapChainDesc, 1);
 	// Reuse ImGui's vertex shader and draw commands; only array-depth sampling differs.
 	ComPtr<ID3DBlob> Bytecode;
 	ComPtr<ID3DBlob> Errors;

@@ -133,23 +133,23 @@ bool UEditorEngine::Init()
 	DetailsPanel->SetImGuiRenderer(ImGuiRenderer.get());
 	DetailsPanel->SetShadowPreviewQuery([this](const ULightComponent* Light, FTexture2DArray*& Atlas,
 		TArray<FLightShadowRenderData>& Shadows)
-	{
-		Atlas = nullptr;
-		Shadows.Reset();
-		if (!Light || !ViewportsPanel) return false;
-		const int32 Index = ViewportsPanel->GetActiveViewIndex();
-		FEditorViewportClient* Client = ViewportsPanel->GetViewportClient(Index);
-		if (!Client || !Client->IsActive() || Client->GetRect().Width <= 0 || Client->GetRect().Height <= 0)
-			return false;
-		if (PlayWorld && !IsPIEInWindow() && PlayMode == EPlayModeType::InViewport && Index == PIEStartEditorViewIndex)
 		{
-			FWorldContext* Context = GetPIEWorldContext();
-			if (!Context || !Context->GameViewport || Light->GetWorld() != Context->World()) return false;
-			return Context->GameViewport->GetRenderData().GetShadowPreview(Light, Atlas, Shadows);
-		}
-		if (Light->GetWorld() != (PlayWorld ? PlayWorld : EditorWorld)) return false;
-		return Client->GetRenderData().GetShadowPreview(Light, Atlas, Shadows);
-	});
+			Atlas = nullptr;
+			Shadows.Reset();
+			if (!Light || !ViewportsPanel) return false;
+			const int32 Index = ViewportsPanel->GetActiveViewIndex();
+			FEditorViewportClient* Client = ViewportsPanel->GetViewportClient(Index);
+			if (!Client || !Client->IsActive() || Client->GetRect().Width <= 0 || Client->GetRect().Height <= 0)
+				return false;
+			if (PlayWorld && !IsPIEInWindow() && PlayMode == EPlayModeType::InViewport && Index == PIEStartEditorViewIndex)
+			{
+				FWorldContext* Context = GetPIEWorldContext();
+				if (!Context || !Context->GameViewport || Light->GetWorld() != Context->World()) return false;
+				return Context->GameViewport->GetRenderData().GetShadowPreview(Light, Atlas, Shadows);
+			}
+			if (Light->GetWorld() != (PlayWorld ? PlayWorld : EditorWorld)) return false;
+			return Client->GetRenderData().GetShadowPreview(Light, Atlas, Shadows);
+		});
 
 
 	EditorControlsPanel = EditorUI->AddEditorPanel<FEditorControlsPanel>();
@@ -168,7 +168,8 @@ bool UEditorEngine::Init()
 	SettingsPanel = EditorUI->AddEditorPanel<FSettingsPanel>();
 	OutputLogPanel->SetEditorSettings(&SettingsPanel->GetMutableSettings());
 
-
+	UIEditorPanel = EditorUI->AddEditorPanel<FUIEditorPanel>();
+	ContentDrawerPanel->SetOpenWidgetCallback([this](const FString& Path) { UIEditorPanel->OpenAsset(Path); });
 
 	Outline = MakeUnique<FOutline>();
 
@@ -176,6 +177,9 @@ bool UEditorEngine::Init()
 
 	TextRenderer = MakeUnique<FTextRenderer>();
 	TextRenderer->Init();
+
+	UIRenderer = MakeUnique<FUIRenderer>();
+	UIRenderer->Init();
 
 	// 화면 나눔 비율 설정 가져오기
 	ViewportSplitRatio = {
@@ -292,7 +296,7 @@ bool UEditorEngine::Init()
 	StepFrame = { "Step", "Step One Frame", UAssetManager::GetAssetByPath<UTexture2D>("Assets/Icons/Toolbar/Step.png"),  White, {} };
 
 	StepFrame.CanExecute = [this]()->bool {return bIsPaused && PlayWorld; };
-	StepFrame.Execute = [this]() { bStepRequested= true; };
+	StepFrame.Execute = [this]() { bStepRequested = true; };
 
 
 	Stop = { "Stop",   "Stop",				UAssetManager::GetAssetByPath<UTexture2D>("Assets/Icons/Toolbar/Stop.png"),  White, { EKeyCode::Escape } };
@@ -380,7 +384,7 @@ void UEditorEngine::UpdateViewportState(const float DeltaTime)
 		{
 			ViewRects[i] = (i == SingleViewportIndex)
 				? FRect{ 0.0f, 0.0f, ViewportSize.X, ViewportSize.Y }
-				: FRect{};
+			: FRect{};
 		}
 	}
 	else
@@ -484,9 +488,15 @@ void UEditorEngine::TickWorldAndEditor(const float DeltaTime)
 			GetActiveWorld()->SetPaused(true);
 			bStepRequested = false;
 		}
-		else if(!bIsPaused)
+		else if (!bIsPaused)
 			GetActiveWorld()->Tick(DeltaTime);
 
+	}
+	if (PlayWorld && !bIsPaused)
+	{
+		FWorldContext* Context = GetWorldContextFromWorld(PlayWorld);
+		if (Context && Context->GameViewport)
+			Context->GameViewport->TickUI(DeltaTime);
 	}
 	{
 		SCOPE_CYCLE_COUNTER(STAT_EditorTick);
@@ -614,6 +624,8 @@ void UEditorEngine::RenderViewports()
 			}
 		}
 	}
+
+	UIEditorPanel->RenderPreview(*UIRenderer);
 }
 
 void UEditorEngine::UpdatePIEViewCamera()
@@ -668,9 +680,9 @@ void UEditorEngine::TickPIEInput(float DeltaTime)
 	const bool bFocused = IsPIEInWindow()
 		? ::GetForegroundWindow() == PIEWindow->GetHandle() || bEditorSIEFocus
 		: ::GetForegroundWindow() == MainWindow->GetHandle() &&
-			ActiveViewIdx == InputViewIndex &&
-			ViewportsPanel->IsHovered() &&
-			!ImGui::GetIO().WantTextInput && !ImGui::IsPopupOpen(nullptr, ImGuiPopupFlags_AnyPopup);
+		ActiveViewIdx == InputViewIndex &&
+		ViewportsPanel->IsHovered() &&
+		!ImGui::GetIO().WantTextInput && !ImGui::IsPopupOpen(nullptr, ImGuiPopupFlags_AnyPopup);
 	if (!bFocused) { GameViewport.LostFocus(); return; }
 	if (!IsPIEInWindow() &&
 		(FInputSystem::IsMousePressed(EMouseButton::Left) || FInputSystem::IsMousePressed(EMouseButton::Right)) &&
@@ -710,6 +722,23 @@ void UEditorEngine::TickPIEInput(float DeltaTime)
 			else GameViewport.InputKey(nullptr, static_cast<int32>(Key), false);
 		}
 	}
+
+	// UI 히트 테스트용 마우스 좌표 → 게임 렌더 타깃 기준
+	if (IsPIEInWindow())
+	{
+		// PIE 창은 렌더 타깃과 크기가 같고, FInputSystem 좌표가 그 창의 클라이언트 좌표다.
+		GameViewport.MouseMove(nullptr, FInputSystem::GetMouseX(), FInputSystem::GetMouseY());
+	}
+	else if (PIEViewRect.Width > 0.0f && PIEViewRect.Height > 0.0f)
+	{
+		// Mouse는 뷰포트 패널 기준, PIEViewRect는 그 안의 게임 뷰 영역이다.
+		const float U = (Mouse.X - PIEViewRect.X) / PIEViewRect.Width;
+		const float V = (Mouse.Y - PIEViewRect.Y) / PIEViewRect.Height;
+		GameViewport.MouseMove(nullptr,
+			static_cast<int32>(U * GameViewport.GetWidth()),
+			static_cast<int32>(V * GameViewport.GetHeight()));
+	}
+
 	constexpr EMouseButton MouseButtons[] = { EMouseButton::Left, EMouseButton::Right };
 	for (EMouseButton Button : MouseButtons)
 	{
@@ -797,7 +826,7 @@ void UEditorEngine::UpdateGizmoAndPicking()
 	const FVector2 LocalMousePosition = ViewportsPanel->GetLocalMousePosition();
 	ViewClient->UpdateGizmoAndPicking(Gizmo.get(), LocalMousePosition, [this](AActor* SelectedActor) {
 		OutlinerPanel->SelectActor(SelectedActor);
-	});
+		});
 }
 
 void UEditorEngine::BuildSceneRenderOptions(FGameViewportClient* ViewClient, FSceneRenderOptions& Options)
@@ -852,29 +881,40 @@ void UEditorEngine::RenderGameFrame(FGameViewportClient* GameClient, const FScen
 	FSceneViewTargets& Targets = GameClient->GetViewTargets();
 	UWorld* TargetWorld = GameClient->GetWorld();
 	const bool bRendered = RenderScene(Targets, SceneView, SceneRenderer, TargetWorld, RenderOptions,
-		[this, &Targets, &SceneView, bIsSIEMode, TargetWorld](FSceneOverlayCallbacks& Overlays)
-	{
-		Overlays.EditorLines = [this, &SceneView, TargetWorld]
+		[this, GameClient, &Targets, &SceneView, bIsSIEMode](FSceneOverlayCallbacks& Overlays)
 		{
-			LineBatcher->BeginFrame();
-			DrawCollisionShapes(TargetWorld, LineBatcher.get(), nullptr);
-			LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
-		};
-		if (!bIsSIEMode) return;
-		const FViewportSettings ViewportSetting{ 0, 0, Targets.SceneColor->GetWidth(),
-			Targets.SceneColor->GetHeight(), 0.0f, 1.0f };
-		if (Outline->GetTarget())
-			Overlays.SIEOutline = [this, &SceneView, ViewportSetting]
+			const uint32 Width = Targets.SceneColor->GetWidth();
+			const uint32 Height = Targets.SceneColor->GetHeight();
+			Overlays.GameUI = [this, GameClient, Width, Height]
+				{
+					if (!UIRenderer) return;
+					GameClient->PaintUI(UIDrawList);
+					UIRenderer->Render(UIDrawList, Width, Height);
+				};
+
+			if (!bIsSIEMode) return;
+
+			Overlays.EditorLines = [this, &SceneView, GameClient]
+				{
+					LineBatcher->BeginFrame();
+					DrawCollisionShapes(GameClient->GetWorld(), LineBatcher.get(), nullptr);
+					LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
+				};
+			if (!bIsSIEMode) return;
+			const FViewportSettings ViewportSetting{ 0, 0, Targets.SceneColor->GetWidth(),
+				Targets.SceneColor->GetHeight(), 0.0f, 1.0f };
+			if (Outline->GetTarget())
+				Overlays.SIEOutline = [this, &SceneView, ViewportSetting]
 				{
 					OutlineRenderer->OnRender(*Outline, SceneView.ViewProjectionMatrix, ViewportSetting);
 				};
-		if (Gizmo->GetTarget())
-			Overlays.SIEGizmo = [this, &SceneView]
+			if (Gizmo->GetTarget())
+				Overlays.SIEGizmo = [this, &SceneView]
 				{
 					GizmoRenderer->OnRender(*Gizmo, SceneView.ViewProjectionMatrix,
 						SceneView.ViewLocation, !SceneView.bIsPerspective);
 				};
-	});
+		});
 	if (!bRendered) return;
 }
 
@@ -999,113 +1039,113 @@ void UEditorEngine::RenderFrame(FEditorViewportClient* ViewClient,
 	FSceneViewTargets& Targets = ViewClient->GetViewTargets();
 	const bool bRendered = RenderScene(Targets, SceneView, SceneRenderer, TargetWorld, Options,
 		[this, ViewClient, &SceneView, &Targets, bIsPIE, TargetWorld](FSceneOverlayCallbacks& Overlays)
-	{
-		if (bIsPIE)
 		{
-			// PIE에서는 그리드, 기즈모 없이 충돌 도형만 그린다
-			Overlays.EditorLines = [this, &SceneView, TargetWorld]
+			if (bIsPIE)
 			{
-					LineBatcher->BeginFrame();
-					DrawCollisionShapes(TargetWorld, LineBatcher.get(), nullptr);
-					LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
-			};
-			return;
-		}
-		const FViewportSettings ViewportSetting{ 0, 0, Targets.SceneColor->GetWidth(),Targets.SceneColor->GetHeight(), 0.0f, 1.0f };
-		const bool bIsActiveViewport = ViewportsPanel && SceneView.ViewIndex == ViewportsPanel->GetActiveViewIndex();
-		
-		const bool bDrawSelectedLight = bIsActiveViewport && Gizmo->GetTarget() &&
-			(Cast<ASpotLightActor>(Gizmo->GetTarget()->GetOwner()) ||
-			 Cast<APointLightActor>(Gizmo->GetTarget()->GetOwner()) ||
-			 Cast<ARectLightActor>(Gizmo->GetTarget()->GetOwner()));
-
-		const bool bDrawCascadeBounds = SettingsPanel->GetSettings().bDrawCascadeBounds;
-		{
-			Overlays.EditorLines = [this, ViewClient, &SceneView, bDrawSelectedLight, bDrawCascadeBounds]
-				{
-					LineBatcher->BeginFrame();
-					if (bDrawCascadeBounds)
+				// PIE에서는 그리드, 기즈모 없이 충돌 도형만 그린다
+				Overlays.EditorLines = [this, &SceneView, TargetWorld]
 					{
-						FSceneRenderData& Data = ViewClient->GetRenderData();
-						const FVector4 Colors[4] = {
-							FVector4(1.f, 0.2f, 0.2f, 1.f),
-							FVector4(1.f, 0.8f, 0.2f, 1.f),
-							FVector4(0.2f, 1.f, 0.4f, 1.f),
-							FVector4(0.2f, 0.6f, 1.f, 1.f)
-						};
-						const FBox ClipBox{ FVector(-1.f, -1.f, 0.f), FVector(1.f, 1.f, 1.f) };
-						// 셰이더와 같이 광원의 ShadowIndex로 찾는다. 그림자를 끈 방향광은 cascade가 없으므로 건너뛴다.
-						const uint32 DirectionalOffset = Data.GetDirectionalLightOffset();
-						for (uint32 LightIndex = 0; LightIndex < Data.GetDirectionalLightCount(); ++LightIndex)
+						LineBatcher->BeginFrame();
+						DrawCollisionShapes(TargetWorld, LineBatcher.get(), nullptr);
+						LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
+					};
+				return;
+			}
+			const FViewportSettings ViewportSetting{ 0, 0, Targets.SceneColor->GetWidth(),Targets.SceneColor->GetHeight(), 0.0f, 1.0f };
+			const bool bIsActiveViewport = ViewportsPanel && SceneView.ViewIndex == ViewportsPanel->GetActiveViewIndex();
+
+			const bool bDrawSelectedLight = bIsActiveViewport && Gizmo->GetTarget() &&
+				(Cast<ASpotLightActor>(Gizmo->GetTarget()->GetOwner()) ||
+					Cast<APointLightActor>(Gizmo->GetTarget()->GetOwner()) ||
+					Cast<ARectLightActor>(Gizmo->GetTarget()->GetOwner()));
+
+			const bool bDrawCascadeBounds = SettingsPanel->GetSettings().bDrawCascadeBounds;
+			{
+				Overlays.EditorLines = [this, ViewClient, &SceneView, bDrawSelectedLight, bDrawCascadeBounds]
+					{
+						LineBatcher->BeginFrame();
+						if (bDrawCascadeBounds)
 						{
-							const uint32 FirstCascade = Data.VisibleLights[DirectionalOffset + LightIndex].ShadowIndex;
-							if (FirstCascade == FLightRenderParameters::InvalidShadowIndex) continue;
-							for (uint32 CascadeIndex = 0; CascadeIndex < Data.CascadeShadowCount; ++CascadeIndex)
+							FSceneRenderData& Data = ViewClient->GetRenderData();
+							const FVector4 Colors[4] = {
+								FVector4(1.f, 0.2f, 0.2f, 1.f),
+								FVector4(1.f, 0.8f, 0.2f, 1.f),
+								FVector4(0.2f, 1.f, 0.4f, 1.f),
+								FVector4(0.2f, 0.6f, 1.f, 1.f)
+							};
+							const FBox ClipBox{ FVector(-1.f, -1.f, 0.f), FVector(1.f, 1.f, 1.f) };
+							// 셰이더와 같이 광원의 ShadowIndex로 찾는다. 그림자를 끈 방향광은 cascade가 없으므로 건너뛴다.
+							const uint32 DirectionalOffset = Data.GetDirectionalLightOffset();
+							for (uint32 LightIndex = 0; LightIndex < Data.GetDirectionalLightCount(); ++LightIndex)
 							{
-								const uint32 ShadowIndex = FirstCascade + CascadeIndex;
-								if (ShadowIndex >= static_cast<uint32>(Data.LightShadows.Num())) break;
-								LineBatcher->AddOrientedBox(ClipBox, Data.LightShadows[ShadowIndex].ViewProjection.Inverse(), Colors[CascadeIndex]);
+								const uint32 FirstCascade = Data.VisibleLights[DirectionalOffset + LightIndex].ShadowIndex;
+								if (FirstCascade == FLightRenderParameters::InvalidShadowIndex) continue;
+								for (uint32 CascadeIndex = 0; CascadeIndex < Data.CascadeShadowCount; ++CascadeIndex)
+								{
+									const uint32 ShadowIndex = FirstCascade + CascadeIndex;
+									if (ShadowIndex >= static_cast<uint32>(Data.LightShadows.Num())) break;
+									LineBatcher->AddOrientedBox(ClipBox, Data.LightShadows[ShadowIndex].ViewProjection.Inverse(), Colors[CascadeIndex]);
+								}
 							}
 						}
-					}
-					if (SettingsPanel->GetSettings().bDrawBatchLine && SettingsPanel->GetSettings().bDrawBoundingBox)
-					{
-						LineBatcher->BuildVertexBuffer();
-					}
-					if (bDrawSelectedLight)
-					{
-						if (ASpotLightActor* Light = Cast<ASpotLightActor>(Gizmo->GetTarget()->GetOwner()))
-							Light->GetSpotLightComponent()->DrawDebug(LineBatcher.get());
-						else if (APointLightActor* Light = Cast<APointLightActor>(Gizmo->GetTarget()->GetOwner()))
-							Light->GetPointLightComponent()->DrawDebug(LineBatcher.get());
-						else if (ARectLightActor* Light = Cast<ARectLightActor>(Gizmo->GetTarget()->GetOwner()))
-							Light->GetRectLightComponent()->DrawDebug(LineBatcher.get());
-					}
+						if (SettingsPanel->GetSettings().bDrawBatchLine && SettingsPanel->GetSettings().bDrawBoundingBox)
+						{
+							LineBatcher->BuildVertexBuffer();
+						}
+						if (bDrawSelectedLight)
+						{
+							if (ASpotLightActor* Light = Cast<ASpotLightActor>(Gizmo->GetTarget()->GetOwner()))
+								Light->GetSpotLightComponent()->DrawDebug(LineBatcher.get());
+							else if (APointLightActor* Light = Cast<APointLightActor>(Gizmo->GetTarget()->GetOwner()))
+								Light->GetPointLightComponent()->DrawDebug(LineBatcher.get());
+							else if (ARectLightActor* Light = Cast<ARectLightActor>(Gizmo->GetTarget()->GetOwner()))
+								Light->GetRectLightComponent()->DrawDebug(LineBatcher.get());
+						}
 
-					const AActor* SelectedActor =
-						Gizmo->GetTarget() ? Gizmo->GetTarget()->GetOwner() : nullptr;
+						const AActor* SelectedActor =
+							Gizmo->GetTarget() ? Gizmo->GetTarget()->GetOwner() : nullptr;
 
-					DrawCollisionShapes(EditorWorld, LineBatcher.get(), SelectedActor);
+						DrawCollisionShapes(EditorWorld, LineBatcher.get(), SelectedActor);
 
-					LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
-				};
-		}
-		if (SettingsPanel->GetSettings().bDrawBatchLine)
-		{
-			Overlays.EditorGrid = [this, ViewClient, &SceneView, ViewportSetting]
-				{
-					EGridPlane GridPlane = EGridPlane::XY;
-					switch (ViewClient->GetViewportType())
+						LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
+					};
+			}
+			if (SettingsPanel->GetSettings().bDrawBatchLine)
+			{
+				Overlays.EditorGrid = [this, ViewClient, &SceneView, ViewportSetting]
 					{
-					case ELevelViewportType::Front: GridPlane = EGridPlane::YZ; break;
-					case ELevelViewportType::Right: GridPlane = EGridPlane::XZ; break;
-					default: break;
-					}
-					if (SettingsPanel->GetSettings().bDrawPSGrid && SceneView.bIsPerspective)
-						GridRenderer->OnRenderPSGrid(SceneView.ViewProjectionMatrix, SceneView.ViewLocation,
-							SettingsPanel->GetSettings(), ViewportSetting);
-					else
-						GridRenderer->OnRenderBatchGrid(SceneView.ViewProjectionMatrix, SceneView.ViewLocation,
-							SceneView.ViewForward, GridPlane,
-							static_cast<float>(SettingsPanel->GetSettings().GridSpacing),
-							SceneView.bIsPerspective, ViewportSetting);
-				};
-		}
-		if (bIsActiveViewport && Outline->GetTarget())
-			Overlays.EditorOutline = [this, &SceneView, ViewportSetting]
+						EGridPlane GridPlane = EGridPlane::XY;
+						switch (ViewClient->GetViewportType())
+						{
+						case ELevelViewportType::Front: GridPlane = EGridPlane::YZ; break;
+						case ELevelViewportType::Right: GridPlane = EGridPlane::XZ; break;
+						default: break;
+						}
+						if (SettingsPanel->GetSettings().bDrawPSGrid && SceneView.bIsPerspective)
+							GridRenderer->OnRenderPSGrid(SceneView.ViewProjectionMatrix, SceneView.ViewLocation,
+								SettingsPanel->GetSettings(), ViewportSetting);
+						else
+							GridRenderer->OnRenderBatchGrid(SceneView.ViewProjectionMatrix, SceneView.ViewLocation,
+								SceneView.ViewForward, GridPlane,
+								static_cast<float>(SettingsPanel->GetSettings().GridSpacing),
+								SceneView.bIsPerspective, ViewportSetting);
+					};
+			}
+			if (bIsActiveViewport && Outline->GetTarget())
+				Overlays.EditorOutline = [this, &SceneView, ViewportSetting]
 				{
 					OutlineRenderer->OnRender(*Outline, SceneView.ViewProjectionMatrix, ViewportSetting);
 				};
-		if (bIsActiveViewport && Gizmo->GetTarget())
-			Overlays.EditorGizmo = [this, &SceneView]
+			if (bIsActiveViewport && Gizmo->GetTarget())
+				Overlays.EditorGizmo = [this, &SceneView]
 				{
 					GizmoRenderer->OnRender(*Gizmo, SceneView.ViewProjectionMatrix,
 						SceneView.ViewLocation, !SceneView.bIsPerspective);
 				};
-		Overlays.bClearEditorDepth = true;
-		if (SettingsPanel->GetSettings().bShowUUID)
-			Overlays.EditorUUID = [this, &SceneView] { RenderActorUUIDs(SceneView); };
-	});
+			Overlays.bClearEditorDepth = true;
+			if (SettingsPanel->GetSettings().bShowUUID)
+				Overlays.EditorUUID = [this, &SceneView] { RenderActorUUIDs(SceneView); };
+		});
 	if (!bRendered) return;
 }
 

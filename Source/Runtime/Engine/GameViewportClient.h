@@ -7,8 +7,11 @@
 #include "Render/SceneView.h"
 #include "Render/SceneRenderData.h"
 #include "Render/SceneViewTargets.h"
+#include "UI/UIDrawList.h"
 
 class UWorld;
+class UUserWidget;
+class UWidget;
 class UGameInstance;
 class UEngine;
 class UCameraComponent;
@@ -75,13 +78,29 @@ public:
 
 	virtual void LostFocus() override;
 
+	// 화면에 올라간 UI
+	void AddViewportWidget(UUserWidget* Widget);
+	void RemoveViewportWidget(UUserWidget* Widget);
+	void TickUI(float DeltaTime);
+	// 화면 크기로 배치하고 DrawList를 채운다 (GameUI 오버레이 패스에서 호출)
+	void PaintUI(FUIDrawList& DrawList);
+
+	static constexpr float UIDesignHeight = 1080.0f;
+
 protected:
-	virtual bool HandleUIKey(int32 Key, bool bDown) { return false; }
-	virtual bool HandleUIAxis(EGameInputAxis AxisKey, float Delta) { return false; }
-	virtual bool HandleUIMouseMove(int32 X, int32 Y) { return false; }
+	virtual bool HandleUIKey(int32 Key, bool bDown);
+	virtual bool HandleUIAxis(EGameInputAxis AxisKey, float Delta);
+	virtual bool HandleUIMouseMove(int32 X, int32 Y);
 
 private:
 	UCameraComponent* FindPlayerCamera() const;
+	UWidget* HitTestUI(float X, float Y) const;
+
+	TArray<UUserWidget*> ViewportWidgets;   // ZOrder 오름차순
+	UWidget* HoveredWidget = nullptr;
+	UWidget* PressedWidget = nullptr;
+	int32 UIMouseX = 0;
+	int32 UIMouseY = 0;
 
 	UWorld* World = nullptr;
 	UGameInstance* GameInstance = nullptr;
