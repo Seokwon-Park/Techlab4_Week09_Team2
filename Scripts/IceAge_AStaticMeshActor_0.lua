@@ -47,6 +47,14 @@ local function OnLeftMousePressed()
         print("start: ", origin)
         print("direction: ", direction)
     end
+
+    local hitPosition = Raycast(origin, direction)
+    if hitPosition then
+        print("hit world position: ",
+            hitPosition.x,
+            hitPosition.y,
+            hitPosition.z)
+    end
 end
 
 function MouseInputCoroutine()

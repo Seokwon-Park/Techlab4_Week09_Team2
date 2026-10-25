@@ -285,6 +285,33 @@ namespace
 			}
 		);
 
+		Lua.set_function("Raycast",
+			[](sol::this_environment Env,
+				const FVector& Origin,
+				const FVector& Direction) -> sol::optional<FVector>
+			{
+				AActor* Owner = OwnerFromEnv(Env);
+				UWorld* World = Owner ? Owner->GetWorld() : nullptr;
+
+				if (!World || Direction.Dot(Direction) <= 0.0000001f)
+				{
+					return sol::nullopt;
+				}
+
+				FRay Ray{
+					Origin,
+					Direction.Normalized()
+				};
+
+				FHitResult Hit;
+				if (!World->LineTraceSingle(Ray, Hit))
+				{
+					return sol::nullopt;
+				}
+
+				return Hit.ImpactPoint;
+			});
+
 		// Tick(dt)의 dt를 쓰는 게 원칙. 코루틴처럼 dt를 못 받는 곳에서만 쓴다
 		Lua.set_function("GetDeltaTime", []() {
 			return EngineTimer::GetDeltaTime();
