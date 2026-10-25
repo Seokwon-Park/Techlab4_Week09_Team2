@@ -38,9 +38,9 @@ function ProcessKeyboardInput(dt)
     end
 end
 
-local function OnLeftMousePressed()
+local function OnRightMousePressed()
     local x, y = GetMousePosition()
-    print("[OnLeftMousePressed] " .. x, y)
+    print("[OnRightMousePressed] " .. x, y)
 
     local origin, direction = ScreenToWorldRay(x, y)
     if origin then
@@ -54,15 +54,21 @@ local function OnLeftMousePressed()
             hitPosition.x,
             hitPosition.y,
             hitPosition.z)
+
+        print("start move")
+            
+        local targetLocation = FVector(hitPosition.x, hitPosition.y, obj.Location.z)
+        print("target location: ", targetLocation)
+        move_to(targetLocation, 10)
     end
 end
 
 function MouseInputCoroutine()
     while true do
         wait_until(function()
-            return IsLeftMouseButtonPressed()
+            return IsRightMouseButtonPressed()
         end)
 
-        OnLeftMousePressed()
+        OnRightMousePressed()
     end
 end

@@ -210,6 +210,10 @@ namespace
 			return FInputSystem::IsMousePressed(EMouseButton::Left);
 			});
 
+		Lua.set_function("IsRightMouseButtonPressed", []() {
+			return FInputSystem::IsMousePressed(EMouseButton::Right);
+			});
+
 		// Viewport 포지션을 반환한다.
 		Lua.set_function("GetMousePosition", [](sol::this_environment ThisEnv) {
 			AActor* Owner = OwnerFromEnv(ThisEnv);
