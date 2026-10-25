@@ -428,6 +428,12 @@ void AActor::NotifyHit(AActor* OtherActor)
 
 }
 
+void AActor::NotifyDeath(AActor* OtherActor)
+{
+	if (Script)
+		Script->Call("OnDeath", OtherActor);
+}
+
 bool AActor::IsOverlappingActor(const AActor* Other) const
 {
 	if (!Other)

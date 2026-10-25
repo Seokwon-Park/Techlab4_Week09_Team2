@@ -80,6 +80,7 @@ public:
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor);
 	virtual void NotifyActorEndOverlap(AActor* OtherActor);
 	virtual void NotifyHit(AActor* OtherActor);
+	virtual void NotifyDeath(AActor* OtherActor);
 
 	// 담당: C
 	bool IsOverlappingActor(const AActor* Other) const;

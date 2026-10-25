@@ -4,6 +4,7 @@
 #include <sol/sol.hpp>
 
 #include "Components/MovementComponent.h"
+#include "Components/SlidingMovementComponent.h"
 #include "Core/EngineTimer.h"
 #include "GameFramework/Actor.h"
 #include "Input/InputSystem.h"
@@ -67,6 +68,13 @@ namespace
 		return nullptr;
 	}
 
+	USlidingMovementComponent& SlidingMovement(const FLuaActorRef& Ref)
+	{
+		for (UActorComponent* Comp : Deref(Ref).GetComponents())
+			if (auto* Movement = Cast<USlidingMovementComponent>(Comp)) return *Movement;
+		throw sol::error("Actor does not have a SlidingMovementComponent.");
+	}
+
 	void RegisterActor(sol::state& Lua)
 	{
 		Lua.new_usertype<FLuaActorRef>("Actor",
@@ -75,6 +83,15 @@ namespace
 			"UUID", sol::property([](const FLuaActorRef& Ref) { return Ref.UUID; }),
 			"IsValid", [](const FLuaActorRef& Ref) { return Ref.Get() != nullptr; },
 			"Name", sol::property([](const FLuaActorRef& Ref) { return Deref(Ref).GetName(); }),
+			"IsOnIce", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsOnIce(); }),
+			"IsDead", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsDead(); }),
+			"SetMoveInput", [](const FLuaActorRef& Ref, const FVector& Direction) { SlidingMovement(Ref).SetMoveInput(Direction); },
+			"Respawn", [](const FLuaActorRef& Ref, sol::optional<FVector> Location)
+			{
+				auto& Movement = SlidingMovement(Ref);
+				if (Location) Movement.Respawn(*Location);
+				else Movement.Respawn();
+			},
 
 			"Location", sol::property(
 				// Getter
