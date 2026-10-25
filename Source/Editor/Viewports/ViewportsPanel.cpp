@@ -156,6 +156,17 @@ void FViewportsPanel::OnRender() {
 			ViewMin.y + Rect.Height};
 
 		const bool bGameViewport = GameViewportClient && ViewIndex == GameViewportIndex;
+		if (bGameViewport)
+		{
+			GameViewportClient->SetRect(FRect{
+				ViewMin.x,
+				ViewMin.y,
+				Rect.Width,
+				Rect.Height
+				});
+		}
+
+
 		if (ViewIndex == 0 && bShowNoCamera && !bGameViewport)
 		{
 			// 메인 원근 뷰포트 영역을 어두운 회색으로 채움
