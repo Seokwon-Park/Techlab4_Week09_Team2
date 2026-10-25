@@ -91,6 +91,37 @@ void FGameViewportClient::LostFocus()
 	}
 }
 
+bool FGameViewportClient::ScreenToWorldRay(
+	float X, float Y, FRay* OutRay)
+{
+	assert(OutRay);
+
+	const FRect& Rect = GetRect();
+
+	if (!CameraComponent ||
+		Rect.Width <= 0.0f || Rect.Height <= 0.0f ||
+		Width == 0 || Height == 0)
+	{
+		return false;
+	}
+
+	if (X < 0.0f || Y < 0.0f ||
+		X >= Rect.Width || Y >= Rect.Height)
+	{
+		return false;
+	}
+
+	const float RenderX = X * Width / Rect.Width;
+	const float RenderY = Y * Height / Rect.Height;
+
+	*OutRay = CameraComponent->DeProjection(
+		FVector2(RenderX, RenderY),
+		static_cast<float>(Width),
+		static_cast<float>(Height));
+
+	return true;
+}
+
 UCameraComponent* FGameViewportClient::FindPlayerCamera() const
 {
 	if (!World) return nullptr;

@@ -252,6 +252,39 @@ namespace
 				LocalY);
 			});
 
+		Lua.set_function("ScreenToWorldRay",
+			[](sol::this_environment Env, float X, float Y)
+			-> std::tuple<sol::optional<FVector>, sol::optional<FVector>>
+			{
+				AActor* Owner = OwnerFromEnv(Env);
+				UWorld* World = Owner ? Owner->GetWorld() : nullptr;
+
+				if (!GEngine || !World)
+				{
+					return {};
+				}
+
+				FWorldContext* Context =
+					GEngine->GetWorldContextFromWorld(World);
+
+				if (!Context || !Context->GameViewport)
+				{
+					return {};
+				}
+
+				FRay Ray;
+				if (!Context->GameViewport->ScreenToWorldRay(X, Y, &Ray))
+				{
+					return {};
+				}
+
+				return {
+					sol::optional<FVector>(Ray.Origin),
+					sol::optional<FVector>(Ray.Direction)
+				};
+			}
+		);
+
 		// Tick(dt)의 dt를 쓰는 게 원칙. 코루틴처럼 dt를 못 받는 곳에서만 쓴다
 		Lua.set_function("GetDeltaTime", []() {
 			return EngineTimer::GetDeltaTime();

@@ -90,6 +90,9 @@ public:
 
 	static constexpr float UIDesignHeight = 1080.0f;
 
+	bool ScreenToWorldRay(
+		float X, float Y, FRay* OutRay);
+
 protected:
 	virtual bool HandleUIKey(int32 Key, bool bDown);
 	virtual bool HandleUIAxis(EGameInputAxis AxisKey, float Delta);

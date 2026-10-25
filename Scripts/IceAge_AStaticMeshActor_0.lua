@@ -41,6 +41,12 @@ end
 local function OnLeftMousePressed()
     local x, y = GetMousePosition()
     print("[OnLeftMousePressed] " .. x, y)
+
+    local origin, direction = ScreenToWorldRay(x, y)
+    if origin then
+        print("start: ", origin)
+        print("direction: ", direction)
+    end
 end
 
 function MouseInputCoroutine()
