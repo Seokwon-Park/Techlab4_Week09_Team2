@@ -169,6 +169,7 @@ bool UEditorEngine::Init()
 	OutputLogPanel->SetEditorSettings(&SettingsPanel->GetMutableSettings());
 
 	UIEditorPanel = EditorUI->AddEditorPanel<FUIEditorPanel>();
+	ContentDrawerPanel->SetCreateWidgetCallback([this](const FString& Path) { UIEditorPanel->NewAsset(Path); });
 	ContentDrawerPanel->SetOpenWidgetCallback([this](const FString& Path) { UIEditorPanel->OpenAsset(Path); });
 
 	Outline = MakeUnique<FOutline>();

@@ -49,6 +49,18 @@ void UPrimitiveComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
+void UPrimitiveComponent::OnUnregister()
+{
+	Super::OnUnregister();
+	// 삭제/등록 해제된 도형을 상대의 OverlapInfos에 남기지 않는다.
+	while (!OverlapInfos.IsEmpty())
+	{
+		UPrimitiveComponent* Other = OverlapInfos[OverlapInfos.Num() - 1].OtherComp;
+		EndComponentOverlap(Other);
+		if (Other) Other->EndComponentOverlap(this);
+	}
+}
+
 
 void UPrimitiveComponent::SubmitToRenderQueue(FRenderQueue& RenderQueue, const FViewContext& ViewContext)
 {

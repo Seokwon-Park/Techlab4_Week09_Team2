@@ -4,17 +4,25 @@
 #include <sol/sol.hpp>
 
 #include "Components/MovementComponent.h"
+#include "Components/SlidingMovementComponent.h"
 #include "Core/EngineTimer.h"
 #include "GameFramework/Actor.h"
 #include "Input/InputSystem.h"
 #include "Script/LuaActorRef.h"
+#include "Script/LuaWidgetRef.h"
 #include "Script/CoroutineScheduler.h"
 #include "Engine/World.h"
 #include "Engine/Engine.h"
 #include "Engine/GameViewportClient.h"
+#include "UI/UserWidget.h"
+#include "UI/Button.h"
+#include "UI/TextBlock.h"
 
 namespace
 {
+	struct FLuaClickBinding { AActor* Owner; FLuaWidgetRef Button; };
+	TArray<FLuaClickBinding> ClickBindings;
+
 	TArray<FLuaActorRef> PendingDestroies;
 
 	AActor* OwnerFromEnv(sol::this_environment& ThisEnv)
@@ -27,6 +35,50 @@ namespace
 		return Ref
 			? Ref->Get()
 			: nullptr;
+	}
+
+	void RegisterWidget(sol::state& Lua)
+	{
+		Lua.new_usertype<FLuaWidgetRef>("Widget", sol::no_constructor,
+			"IsValid", [](const FLuaWidgetRef& R) { return R.Get() != nullptr; },
+			"Name", sol::property([](const FLuaWidgetRef& R) { return DerefWidget<UWidget>(R).WidgetName; }),
+			"Visible", sol::property(
+				[](const FLuaWidgetRef& R) { return DerefWidget<UWidget>(R).IsVisible(); },
+				[](const FLuaWidgetRef& R, bool b) { DerefWidget<UWidget>(R).Visibility = b ? 0 : 1; }),
+			"Find", [](const FLuaWidgetRef& R, const std::string& Name) -> sol::optional<FLuaWidgetRef>
+			{
+				UWidget* Found = DerefWidget<UUserWidget>(R).FindWidget(Name);
+				return Found ? sol::optional(FLuaWidgetRef::Make(Found)) : sol::nullopt;
+			},
+			"AddToViewport", [](const FLuaWidgetRef& R, sol::optional<int> Z) { DerefWidget<UUserWidget>(R).AddToViewport(Z.value_or(0)); },
+			"RemoveFromViewport", [](const FLuaWidgetRef& R) { DerefWidget<UUserWidget>(R).RemoveFromViewport(); },
+			"Destroy", [](const FLuaWidgetRef& R) { DerefWidget<UUserWidget>(R).Destroy(); },
+			"SetText", [](const FLuaWidgetRef& R, const std::string& T) { DerefWidget<UTextBlock>(R).SetText(T); },
+			"BindClick", [](sol::this_environment Env, const FLuaWidgetRef& R, sol::protected_function Fn)
+			{
+				AActor* Owner = OwnerFromEnv(Env);
+				if (!Owner) throw sol::error("BindClick needs an Actor script context.");
+				UButton& Button = DerefWidget<UButton>(R);
+				const FLuaActorRef OwnerRef = FLuaActorRef::Make(Owner);
+				Button.OnClicked = [OwnerRef, Fn]
+					{
+						if (!OwnerRef.Get()) return;              // 액터가 이미 지워졌다
+						sol::protected_function_result Result = Fn();
+						if (!Result.valid())
+						{
+							sol::error Err = Result;
+							HTR_LOG(Error, "[Lua] OnClicked: {}", Err.what());
+						}
+					};
+				ClickBindings.Add({ Owner, R });
+			});
+
+		Lua.set_function("CreateWidget", [](sol::this_environment Env, const std::string& Path) -> sol::optional<FLuaWidgetRef>
+			{
+				AActor* Owner = OwnerFromEnv(Env);
+				UUserWidget* W = Owner ? ::CreateWidget(Owner->GetWorld(), Path) : nullptr;
+				return W ? sol::optional(FLuaWidgetRef::Make(W)) : sol::nullopt;
+			});
 	}
 
 	// FVector, FRotator
@@ -64,6 +116,7 @@ namespace
 			"yaw", &FRotator::Yaw,
 			"roll", &FRotator::Roll,
 
+			"LookDirection", &FRotator::LookDirection,
 			sol::meta_function::to_string, [](const FRotator& R)
 			{ return std::format("(P={:.1f}, Y={:.1f}, R={:.1f})", R.Pitch, R.Yaw, R.Roll); }
 		);
@@ -81,6 +134,13 @@ namespace
 		return nullptr;
 	}
 
+	USlidingMovementComponent& SlidingMovement(const FLuaActorRef& Ref)
+	{
+		for (UActorComponent* Comp : Deref(Ref).GetComponents())
+			if (auto* Movement = Cast<USlidingMovementComponent>(Comp)) return *Movement;
+		throw sol::error("Actor does not have a SlidingMovementComponent.");
+	}
+
 	void RegisterActor(sol::state& Lua)
 	{
 		Lua.new_usertype<FLuaActorRef>("Actor",
@@ -89,6 +149,33 @@ namespace
 			"UUID", sol::property([](const FLuaActorRef& Ref) { return Ref.UUID; }),
 			"IsValid", [](const FLuaActorRef& Ref) { return Ref.Get() != nullptr; },
 			"Name", sol::property([](const FLuaActorRef& Ref) { return Deref(Ref).GetName(); }),
+			"HasComponent", [](const FLuaActorRef& Ref, const FString& ClassName)
+			{
+				for (UActorComponent* Component : Deref(Ref).GetComponents())
+				{
+					if (!Component || !Component->IsRegistered()) continue;
+					for (UClass* Class = Component->GetClass(); Class; Class = Class->Super)
+						if (Class->Name == ClassName) return true;
+				}
+				return false;
+			},
+			"GetOverlappingActors", [](const FLuaActorRef& Ref, sol::this_state State)
+			{
+				TArray<AActor*> Actors;
+				Deref(Ref).GetOverlappingActors(Actors);
+				sol::state_view Lua(State);
+				sol::table Result = Lua.create_table();
+				for (int32 Index = 0; Index < Actors.Num(); ++Index)
+					Result[Index + 1] = FLuaActorRef::Make(Actors[Index]);
+				return Result;
+			},
+			"IsOnIce", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsOnIce(); }),
+			"SetOnIce", [](const FLuaActorRef& Ref, bool bOnIce) { SlidingMovement(Ref).SetOnIce(bOnIce); },
+			"IsMovementEnabled", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsMovementEnabled(); }),
+			"SetMovementEnabled", [](const FLuaActorRef& Ref, bool bEnabled) { SlidingMovement(Ref).SetMovementEnabled(bEnabled); },
+			"ResetMovement", [](const FLuaActorRef& Ref) { SlidingMovement(Ref).ResetMovement(); },
+			"SetMoveInput", [](const FLuaActorRef& Ref, const FVector& Direction) { SlidingMovement(Ref).SetMoveInput(Direction); },
+			"GetSteeringDirection", [](const FLuaActorRef& Ref) { return SlidingMovement(Ref).GetSteeringDirection(); },
 
 			"Location", sol::property(
 				// Getter
@@ -255,6 +342,38 @@ namespace
 				LocalX,
 				LocalY);
 			});
+		Lua.set_function("GetViewportSize",
+			[](sol::this_environment ThisEnv) -> std::tuple<float, float>
+			{
+				AActor* Owner = OwnerFromEnv(ThisEnv);
+				if (!Owner)
+				{
+					throw sol::error("GetMousePosition must be called from a coroutine with an Actor context.");
+				}
+
+				UWorld* World = Owner->GetWorld();
+				if (!World)
+				{
+					throw sol::error("GetMousePosition must be called from a coroutine with an Actor context.");
+				}
+
+				FWorldContext* Context =
+					GEngine ? GEngine->GetWorldContextFromWorld(World) : nullptr;
+
+				if (!Context || !Context->GameViewport)
+				{
+					throw sol::error("GetMousePosition must be called from a coroutine with an Actor context.");
+				}
+
+				FGameViewportClient* Viewport = Context->GameViewport.get();
+
+				const FRect& ViewportRect = Viewport->GetRect();
+
+				return  std::make_tuple(
+					static_cast<float>(ViewportRect.Width),
+					static_cast<float>(ViewportRect.Height));
+			}
+		);
 
 		Lua.set_function("ScreenToWorldRay",
 			[](sol::this_environment Env, float X, float Y)
@@ -375,6 +494,7 @@ namespace FLuaBindings
 		RegisterActor(Lua);
 		RegisterInput(Lua);
 		RegisterCoroutine(Lua);
+		RegisterWidget(Lua);
 	}
 
 	void FlushPendingDestroy(UWorld* World)
@@ -397,6 +517,12 @@ namespace FLuaBindings
 
 	void ReleaseCallbacks(AActor* Owner)
 	{
-		// TODO
+		for (int32 i = ClickBindings.Num() - 1; i >= 0; --i)
+		{
+			if (ClickBindings[i].Owner != Owner) continue;
+			if (UButton* B = Cast<UButton>(ClickBindings[i].Button.Get()))
+				B->OnClicked = nullptr;
+			ClickBindings.RemoveAt(i);
+		}
 	}
 }

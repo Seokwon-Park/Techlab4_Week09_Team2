@@ -13,19 +13,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
+                                        "X": 0.0,
+                                        "Y": 0.0,
                                         "Z": -0.5
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 80,
-                                        "Y": 40,
-                                        "Z": 1
+                                        "X": 80.0,
+                                        "Y": 40.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -42,23 +42,25 @@
                                 "StaticMesh": "Cube",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -67,6 +69,7 @@
                     ],
                     "Name": "Floor_0",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -80,19 +83,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -106,27 +109,27 @@
                             "Parent": "",
                             "Properties": {
                                 "AngularRadiusDegrees": 0.5,
-                                "Intensity": 0.6,
+                                "Intensity": 0.6000000238418579,
                                 "LightColor": 4294967295,
                                 "ShadowBias": 0.009999999776482582,
-                                "ShadowResolutionScale": 1,
-                                "ShadowSharpen": 0,
+                                "ShadowResolutionScale": 1.0,
+                                "ShadowSharpen": 0.0,
                                 "ShadowSlopeBias": 0.009999999776482582,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 30
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 30.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 55,
-                                        "Roll": 0,
-                                        "Yaw": 35
+                                        "Pitch": 55.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 35.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -141,28 +144,28 @@
                                 "Base": "BillboardMaterial",
                                 "Instance": {
                                     "BaseColor": {
-                                        "W": 1,
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "W": 1.0,
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     },
                                     "BlendState": "AlphaBlend",
                                     "FlipNormalY": false,
                                     "PSOType": 14,
                                     "Properties": {},
                                     "SamplerState": "LinearClamp",
-                                    "Shininess": 32,
+                                    "Shininess": 32.0,
                                     "SpecularColor": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     },
                                     "Textures": [
                                         "Assets/Icons/Directional.png"
                                     ],
                                     "UVScrollSpeed": [
-                                        0,
-                                        0
+                                        0.0,
+                                        0.0
                                     ]
                                 }
                             },
@@ -171,23 +174,25 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": false,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": true
@@ -206,14 +211,14 @@
                                 "StaticMesh": "Arrow",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 90,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 0.30000001192092896,
@@ -222,7 +227,9 @@
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": false,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": false,
                                 "bVisible": true
@@ -231,6 +238,7 @@
                     ],
                     "Name": "DirectionalLight_0",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -244,19 +252,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": -3,
-                                        "Y": -4,
-                                        "Z": 3
+                                        "X": -3.0,
+                                        "Y": -4.0,
+                                        "Z": 3.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 0.6,
-                                        "Y": 0.6,
-                                        "Z": 6
+                                        "X": 0.6000000238418579,
+                                        "Y": 0.6000000238418579,
+                                        "Z": 6.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -273,23 +281,25 @@
                                 "StaticMesh": "Cylinder",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -298,6 +308,7 @@
                     ],
                     "Name": "DirPillar_0",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -311,19 +322,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 3,
-                                        "Y": 3,
+                                        "X": 3.0,
+                                        "Y": 3.0,
                                         "Z": 1.5
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 2,
-                                        "Y": 2,
-                                        "Z": 3
+                                        "X": 2.0,
+                                        "Y": 2.0,
+                                        "Z": 3.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -340,23 +351,25 @@
                                 "StaticMesh": "Cube",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -365,6 +378,7 @@
                     ],
                     "Name": "DirBox_0",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -378,14 +392,14 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 200
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 200.0
                                     },
                                     "Scale": {
                                         "X": 1.5,
@@ -407,23 +421,25 @@
                                 "StaticMesh": "Models/Hitori/Hitori.obj",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -432,6 +448,7 @@
                     ],
                     "Name": "Hitori_0",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -445,19 +462,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -470,31 +487,32 @@
                             "Name": "USpotLightComponent",
                             "Parent": "",
                             "Properties": {
-                                "AttenuationRadius": 30,
-                                "InnerConeAngle": 22,
-                                "Intensity": 220,
+                                "AttenuationRadius": 30.0,
+                                "InnerConeAngle": 22.0,
+                                "Intensity": 220.0,
                                 "LightColor": 4289386239,
-                                "LightFalloffExponent": 1,
-                                "OuterConeAngle": 34,
+                                "LightFalloffExponent": 1.0,
+                                "OuterConeAngle": 34.0,
                                 "ShadowBias": 0.009999999776482582,
-                                "ShadowResolutionScale": 1,
-                                "ShadowSharpen": 0,
+                                "ShadowResolutionScale": 1.0,
+                                "ShadowSharpen": 0.0,
                                 "ShadowSlopeBias": 0.009999999776482582,
+                                "SourceRadius": 0.019999999552965164,
                                 "Transform": {
                                     "Location": {
-                                        "X": -30,
-                                        "Y": 0,
-                                        "Z": 12
+                                        "X": -30.0,
+                                        "Y": 0.0,
+                                        "Z": 12.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 70,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 70.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -509,28 +527,28 @@
                                 "Base": "BillboardMaterial",
                                 "Instance": {
                                     "BaseColor": {
-                                        "W": 1,
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "W": 1.0,
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     },
                                     "BlendState": "AlphaBlend",
                                     "FlipNormalY": false,
                                     "PSOType": 14,
                                     "Properties": {},
                                     "SamplerState": "LinearClamp",
-                                    "Shininess": 32,
+                                    "Shininess": 32.0,
                                     "SpecularColor": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     },
                                     "Textures": [
                                         "Assets/Icons/Spot.png"
                                     ],
                                     "UVScrollSpeed": [
-                                        0,
-                                        0
+                                        0.0,
+                                        0.0
                                     ]
                                 }
                             },
@@ -539,23 +557,25 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": false,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": true
@@ -574,14 +594,14 @@
                                 "StaticMesh": "Arrow",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 90,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 0.30000001192092896,
@@ -590,7 +610,9 @@
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": false,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": false,
                                 "bVisible": true
@@ -599,6 +621,7 @@
                     ],
                     "Name": "SpotLight_0",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -612,14 +635,14 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": -28,
-                                        "Y": -2,
-                                        "Z": 3
+                                        "X": -28.0,
+                                        "Y": -2.0,
+                                        "Z": 3.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.5,
@@ -641,23 +664,25 @@
                                 "StaticMesh": "Sphere",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -666,6 +691,7 @@
                     ],
                     "Name": "SpotBall_0",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -679,19 +705,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": -23,
-                                        "Y": 2,
-                                        "Z": 1
+                                        "X": -23.0,
+                                        "Y": 2.0,
+                                        "Z": 1.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 2,
-                                        "Y": 2,
-                                        "Z": 2
+                                        "X": 2.0,
+                                        "Y": 2.0,
+                                        "Z": 2.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -708,23 +734,25 @@
                                 "StaticMesh": "Cube",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -733,6 +761,7 @@
                     ],
                     "Name": "SpotBox_0",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -746,19 +775,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": -26,
-                                        "Y": 4,
+                                        "X": -26.0,
+                                        "Y": 4.0,
                                         "Z": 2.5
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 0.4,
-                                        "Y": 0.4,
-                                        "Z": 5
+                                        "X": 0.4000000059604645,
+                                        "Y": 0.4000000059604645,
+                                        "Z": 5.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -775,23 +804,25 @@
                                 "StaticMesh": "Cylinder",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -800,6 +831,7 @@
                     ],
                     "Name": "SpotPillar_0",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -813,19 +845,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -838,29 +870,30 @@
                             "Name": "UPointLightComponent",
                             "Parent": "",
                             "Properties": {
-                                "AttenuationRadius": 18,
-                                "Intensity": 4,
+                                "AttenuationRadius": 18.0,
+                                "Intensity": 4.0,
                                 "LightColor": 4294955690,
-                                "LightFalloffExponent": 1,
+                                "LightFalloffExponent": 1.0,
                                 "ShadowBias": 0.009999999776482582,
-                                "ShadowResolutionScale": 1,
-                                "ShadowSharpen": 0,
+                                "ShadowResolutionScale": 1.0,
+                                "ShadowSharpen": 0.0,
                                 "ShadowSlopeBias": 0.009999999776482582,
+                                "SourceRadius": 0.019999999552965164,
                                 "Transform": {
                                     "Location": {
-                                        "X": 26,
-                                        "Y": 0,
-                                        "Z": 3
+                                        "X": 26.0,
+                                        "Y": 0.0,
+                                        "Z": 3.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -875,28 +908,28 @@
                                 "Base": "BillboardMaterial",
                                 "Instance": {
                                     "BaseColor": {
-                                        "W": 1,
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "W": 1.0,
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     },
                                     "BlendState": "AlphaBlend",
                                     "FlipNormalY": false,
                                     "PSOType": 14,
                                     "Properties": {},
                                     "SamplerState": "LinearClamp",
-                                    "Shininess": 32,
+                                    "Shininess": 32.0,
                                     "SpecularColor": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     },
                                     "Textures": [
                                         "Assets/Icons/Point.png"
                                     ],
                                     "UVScrollSpeed": [
-                                        0,
-                                        0
+                                        0.0,
+                                        0.0
                                     ]
                                 }
                             },
@@ -905,23 +938,25 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": false,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": true
@@ -930,6 +965,7 @@
                     ],
                     "Name": "PointLight_0",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -943,19 +979,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 31,
-                                        "Y": 0,
-                                        "Z": 2
+                                        "X": 31.0,
+                                        "Y": 0.0,
+                                        "Z": 2.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 0.4,
-                                        "Y": 0.4,
-                                        "Z": 4
+                                        "X": 0.4000000059604645,
+                                        "Y": 0.4000000059604645,
+                                        "Z": 4.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -972,23 +1008,25 @@
                                 "StaticMesh": "Cylinder",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -997,6 +1035,7 @@
                     ],
                     "Name": "PointPillar_0",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -1010,19 +1049,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 29.535533905932738,
-                                        "Y": 3.5355339059327373,
-                                        "Z": 2
+                                        "X": 29.535533905029297,
+                                        "Y": 3.535533905029297,
+                                        "Z": 2.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 0.4,
-                                        "Y": 0.4,
-                                        "Z": 4
+                                        "X": 0.4000000059604645,
+                                        "Y": 0.4000000059604645,
+                                        "Z": 4.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -1039,23 +1078,25 @@
                                 "StaticMesh": "Cylinder",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -1064,6 +1105,7 @@
                     ],
                     "Name": "PointPillar_1",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -1077,19 +1119,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 26,
-                                        "Y": 5,
-                                        "Z": 2
+                                        "X": 26.0,
+                                        "Y": 5.0,
+                                        "Z": 2.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 0.4,
-                                        "Y": 0.4,
-                                        "Z": 4
+                                        "X": 0.4000000059604645,
+                                        "Y": 0.4000000059604645,
+                                        "Z": 4.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -1106,23 +1148,25 @@
                                 "StaticMesh": "Cylinder",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -1131,6 +1175,7 @@
                     ],
                     "Name": "PointPillar_2",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -1144,19 +1189,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 22.464466094067262,
-                                        "Y": 3.5355339059327378,
-                                        "Z": 2
+                                        "X": 22.464466094970703,
+                                        "Y": 3.535533905029297,
+                                        "Z": 2.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 0.4,
-                                        "Y": 0.4,
-                                        "Z": 4
+                                        "X": 0.4000000059604645,
+                                        "Y": 0.4000000059604645,
+                                        "Z": 4.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -1173,23 +1218,25 @@
                                 "StaticMesh": "Cylinder",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -1198,6 +1245,7 @@
                     ],
                     "Name": "PointPillar_3",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -1211,19 +1259,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 21,
-                                        "Y": 6.123233995736766e-16,
-                                        "Z": 2
+                                        "X": 21.0,
+                                        "Y": 6.123233998228043e-16,
+                                        "Z": 2.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 0.4,
-                                        "Y": 0.4,
-                                        "Z": 4
+                                        "X": 0.4000000059604645,
+                                        "Y": 0.4000000059604645,
+                                        "Z": 4.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -1240,23 +1288,25 @@
                                 "StaticMesh": "Cylinder",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -1265,6 +1315,7 @@
                     ],
                     "Name": "PointPillar_4",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -1278,19 +1329,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 22.464466094067262,
-                                        "Y": -3.5355339059327373,
-                                        "Z": 2
+                                        "X": 22.464466094970703,
+                                        "Y": -3.535533905029297,
+                                        "Z": 2.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 0.4,
-                                        "Y": 0.4,
-                                        "Z": 4
+                                        "X": 0.4000000059604645,
+                                        "Y": 0.4000000059604645,
+                                        "Z": 4.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -1307,23 +1358,25 @@
                                 "StaticMesh": "Cylinder",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -1332,6 +1385,7 @@
                     ],
                     "Name": "PointPillar_5",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -1345,19 +1399,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 26,
-                                        "Y": -5,
-                                        "Z": 2
+                                        "X": 26.0,
+                                        "Y": -5.0,
+                                        "Z": 2.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 0.4,
-                                        "Y": 0.4,
-                                        "Z": 4
+                                        "X": 0.4000000059604645,
+                                        "Y": 0.4000000059604645,
+                                        "Z": 4.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -1374,23 +1428,25 @@
                                 "StaticMesh": "Cylinder",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -1399,6 +1455,7 @@
                     ],
                     "Name": "PointPillar_6",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -1412,19 +1469,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 29.535533905932738,
-                                        "Y": -3.5355339059327386,
-                                        "Z": 2
+                                        "X": 29.535533905029297,
+                                        "Y": -3.535533905029297,
+                                        "Z": 2.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 0.4,
-                                        "Y": 0.4,
-                                        "Z": 4
+                                        "X": 0.4000000059604645,
+                                        "Y": 0.4000000059604645,
+                                        "Z": 4.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -1441,23 +1498,25 @@
                                 "StaticMesh": "Cylinder",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -1466,6 +1525,7 @@
                     ],
                     "Name": "PointPillar_7",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -1479,19 +1539,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 28,
-                                        "Y": 0,
-                                        "Z": 1
+                                        "X": 28.0,
+                                        "Y": 0.0,
+                                        "Z": 1.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 0.6,
-                                        "Y": 0.6,
-                                        "Z": 0.6
+                                        "X": 0.6000000238418579,
+                                        "Y": 0.6000000238418579,
+                                        "Z": 0.6000000238418579
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -1508,23 +1568,25 @@
                                 "StaticMesh": "Sphere",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -1533,6 +1595,7 @@
                     ],
                     "Name": "PointBallLow_0",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
                     }
                 },
@@ -1546,19 +1609,19 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 26,
-                                        "Y": 0,
-                                        "Z": 7.15
+                                        "X": 26.0,
+                                        "Y": 0.0,
+                                        "Z": 7.150000095367432
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 3,
-                                        "Y": 3,
-                                        "Z": 0.3
+                                        "X": 3.0,
+                                        "Y": 3.0,
+                                        "Z": 0.30000001192092896
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -1575,23 +1638,25 @@
                                 "StaticMesh": "Cube",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0,
-                                        "Y": 0,
-                                        "Z": 0
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 0,
-                                        "Roll": 0,
-                                        "Yaw": 0
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
@@ -1600,7 +1665,50 @@
                     ],
                     "Name": "PointCeiling_0",
                     "Properties": {
+                        "ScriptPath": "",
                         "bActorEnableCollision": true
+                    }
+                },
+                {
+                    "Class": "AScoreboardManager",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "AScoreboardManager_0",
+                    "Properties": {
+                        "Score": 0,
+                        "ScriptPath": "",
+                        "TimeLeft": 0.0,
+                        "TimeLimit": 120.0,
+                        "WidgetAssetPath": "Assets/UI/Scoreboard.widget",
+                        "bActorEnableCollision": true,
+                        "bStartTimerOnBeginPlay": true
                     }
                 }
             ],

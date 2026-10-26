@@ -190,7 +190,7 @@ private:
 
 	FDelegateHandle AddInternal(HandlerType handler, const void* Instance, const UObject* Object, const UClass* ObjectClass, uint32 UUID)
 	{
-		if (!handler) return;
+		if (!handler) return 0;
 
 		// 번호가 순환했다면 발급중단.
 		// 과거에 사용한 번호를 다시 발급하지 않는다.
