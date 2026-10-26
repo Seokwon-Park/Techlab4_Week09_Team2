@@ -7,6 +7,7 @@ class UIceVolumeComponent : public UBoxComponent
 {
 	DECLARE_CLASS(UIceVolumeComponent, UBoxComponent)
 	REFLECT_START(ClassName)
+		PROPERTY(IceType)
 	REFLECT_END()
 
 public:
@@ -15,4 +16,10 @@ public:
 		ShapeColor = FColor(100, 190, 255, 255);
 		bBlockComponent = false;
 	}
+
+	FString GetIceType() const { return IceType; }
+	void SetIceType(const FString& InIceType);
+
+private:
+	FString IceType = "default"; // default, slippery, reverse
 };

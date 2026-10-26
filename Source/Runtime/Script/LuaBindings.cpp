@@ -5,6 +5,8 @@
 
 #include "Components/MovementComponent.h"
 #include "Components/SlidingMovementComponent.h"
+#include "Components/IceVolumeComponent.h"
+#include "Components/PrimitiveComponent.h"
 #include "Core/EngineTimer.h"
 #include "GameFramework/Actor.h"
 #include "Input/InputSystem.h"
@@ -169,6 +171,52 @@ namespace
 				for (int32 Index = 0; Index < Actors.Num(); ++Index)
 					Result[Index + 1] = FLuaActorRef::Make(Actors[Index]);
 				return Result;
+			},
+			"GetIceType", [](const FLuaActorRef& Ref) -> sol::optional<FString>
+			{
+				for (UActorComponent* Component : Deref(Ref).GetComponents())
+				{
+					if (!Component || !Component->IsRegistered())
+						continue;
+
+					if (auto* Ice = Cast<UIceVolumeComponent>(Component))
+					{
+						return Ice->GetIceType();
+					}
+				}
+				return sol::nullopt;
+			},
+			"GetOverlappingIceType", [](const FLuaActorRef& Ref) -> sol::optional<FString>
+			{
+				AActor& Actor = Deref(Ref);
+
+				for (UActorComponent* Component : Actor.GetComponents())
+				{
+					auto* Primitive = Cast<UPrimitiveComponent>(Component);
+					if (!Primitive || !Primitive->IsRegistered())
+						continue;
+
+					for (const FOverlapInfo& Info : Primitive->GetOverlapInfos())
+					{
+						auto* OtherComp = Info.OtherComp;
+						if (!OtherComp || !OtherComp->IsRegistered())
+							continue;
+
+						AActor* OtherActor = OtherComp->GetOwner();
+						if (!OtherActor ||
+							OtherActor == &Actor ||
+							OtherActor->GetWorld() != Actor.GetWorld())
+						{
+							continue;
+						}
+
+						if (auto* Ice = Cast<UIceVolumeComponent>(OtherComp))
+						{
+							return Ice->GetIceType();
+						}
+					}
+				}
+				return sol::nullopt;
 			},
 			"IsOnIce", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsOnIce(); }),
 			"SetOnIce", [](const FLuaActorRef& Ref, bool bOnIce) { SlidingMovement(Ref).SetOnIce(bOnIce); },
@@ -343,7 +391,7 @@ namespace
 			FGameViewportClient* Viewport = Context->GameViewport.get();
 
 			const FRect& ViewportRect = Viewport->GetRect();
-			
+
 			//const float MouseX = FInputSystem::GetMouseX();
 			//const float MouseY = FInputSystem::GetMouseY();
 			POINT Mouse{};

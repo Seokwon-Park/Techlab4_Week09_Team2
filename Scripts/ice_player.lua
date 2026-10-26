@@ -5,6 +5,7 @@ local targetLocation = FVector(0, 0, 0)
 local targetDirection = FVector(0, 0, 0)
 local bIsMoving = false
 local bWasOnIce = false
+local currentIceType = nil
 
 local function InitMovementState()
     targetLocation = FVector(0, 0, 0)
@@ -39,13 +40,37 @@ end
 local function UpdateIceState()
     -- World가 FCollision::Overlap으로 관리한 결과를 사용한다.
     -- 한 액터의 여러 도형 또는 여러 빙판이 겹쳐도 하나라도 남으면 빙판이다.
-    for _, other in ipairs(obj:GetOverlappingActors()) do
-        if other:IsValid() and other:HasComponent("UIceVolumeComponent") then
-            obj:SetOnIce(true)
-            return
-        end
+    local nextIceType = obj:GetOverlappingIceType() -- nil, "default", "slippery", "reverse"
+
+    -- 이동 컴포넌트에는 기존처럼 얼음 여부를 전달한다
+    obj:SetOnIce(nextIceType ~= nil)
+
+    -- 종류가 같으면 진입 처리를 반복하지 않는다
+    if nextIceType == currentIceType then
+        return
     end
-    obj:SetOnIce(false)
+
+    local previousIceType = currentIceType
+    currentIceType = nextIceType
+
+    print(
+        "[Ice] "
+        .. tostring(previousIceType)
+        .. " -> "
+        .. tostring(currentIceType)
+    )
+
+    if currentIceType == "default" then
+        print("[Ice] Entered default ice")
+    elseif currentIceType == "slippery" then
+        print("[Ice] Entered slippery ice")
+    elseif currentIceType == "reverse" then
+        print("[Ice] Entered reverse ice")
+    elseif currentIceType == nil then
+        print("[Ice] Exited ice")
+    else
+        print("[Ice] Entered unknown ice type: " .. tostring(currentIceType))
+    end
 end
 
 
