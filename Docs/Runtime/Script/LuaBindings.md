@@ -101,7 +101,13 @@ local same = actor == obj -- UUID가 같으면 true
 tostring(actor)           -- "Actor#123" (UUID가 123인 경우)
 
 actor:Destroy()		-- 액터 파괴 예약 (즉시 파괴되지 않음)
+actor:HasComponent("UBoxComponent") -- 등록된 컴포넌트 검사. 파생 클래스도 포함
+local others = actor:GetOverlappingActors() -- 기존 겹침 목록. 액터 중복 없는 배열
 ```
+
+`GetOverlappingActors()`는 `UWorld::UpdateOverlaps`가 관리하는 결과를 반환합니다.
+양쪽에 Overlap 이벤트가 켜진 충돌 도형(`UShapeComponent`)이 필요합니다.
+일반 표시용 메시만 붙이면 이 Overlap 검사에 참여하지 않습니다.
 
 ### Input
 

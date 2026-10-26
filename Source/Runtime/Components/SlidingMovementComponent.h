@@ -27,6 +27,8 @@ public:
 
 	// 매 프레임 입력을 전달한다. 입력이 없으면 ZeroVector를 전달한다.
 	void SetMoveInput(const FVector& Direction);
+	// 빙판 여부는 Lua가 기존 Overlap 이벤트를 받아 결정한다.
+	void SetOnIce(bool bInOnIce) { bOnIce = bInOnIce; }
 	void Respawn();
 	void Respawn(const FVector& Location);
 	bool IsOnIce() const { return bOnIce; }
@@ -43,7 +45,6 @@ public:
 	FSlidingDeathSignature OnDeath;
 
 private:
-	bool CheckIce() const;
 	FVector InputDirection = FVector::ZeroVector;
 	FVector SteeringDirection = FVector::ZeroVector;
 	FVector SpawnLocation = FVector::ZeroVector;

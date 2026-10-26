@@ -1,13 +1,35 @@
 -- SlidingMovementComponent가 있는 플레이어에 연결한다. W/S: X축, A/D: Y축.
 local respawnTime = 0
 
+local function UpdateIceState()
+    -- World가 FCollision::Overlap으로 관리한 결과를 사용한다.
+    -- 한 액터의 여러 도형 또는 여러 빙판이 겹쳐도 하나라도 남으면 빙판이다.
+    for _, other in ipairs(obj:GetOverlappingActors()) do
+        if other:IsValid() and other:HasComponent("UIceVolumeComponent") then
+            obj:SetOnIce(true)
+            return
+        end
+    end
+    obj:SetOnIce(false)
+end
+
 function BeginPlay()
+    UpdateIceState()
     print("[Ice] WASD: 이동 / R: 시작 위치로 복귀")
 end
 
 function OnReload()
     respawnTime = 0
     obj:Respawn()
+    UpdateIceState()
+end
+
+function OnBeginOverlap(other)
+    UpdateIceState()
+end
+
+function OnEndOverlap(other)
+    UpdateIceState()
 end
 
 function Tick(dt)

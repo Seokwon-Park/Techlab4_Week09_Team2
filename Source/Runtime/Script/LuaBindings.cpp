@@ -83,7 +83,28 @@ namespace
 			"UUID", sol::property([](const FLuaActorRef& Ref) { return Ref.UUID; }),
 			"IsValid", [](const FLuaActorRef& Ref) { return Ref.Get() != nullptr; },
 			"Name", sol::property([](const FLuaActorRef& Ref) { return Deref(Ref).GetName(); }),
+			"HasComponent", [](const FLuaActorRef& Ref, const FString& ClassName)
+			{
+				for (UActorComponent* Component : Deref(Ref).GetComponents())
+				{
+					if (!Component || !Component->IsRegistered()) continue;
+					for (UClass* Class = Component->GetClass(); Class; Class = Class->Super)
+						if (Class->Name == ClassName) return true;
+				}
+				return false;
+			},
+			"GetOverlappingActors", [](const FLuaActorRef& Ref, sol::this_state State)
+			{
+				TArray<AActor*> Actors;
+				Deref(Ref).GetOverlappingActors(Actors);
+				sol::state_view Lua(State);
+				sol::table Result = Lua.create_table();
+				for (int32 Index = 0; Index < Actors.Num(); ++Index)
+					Result[Index + 1] = FLuaActorRef::Make(Actors[Index]);
+				return Result;
+			},
 			"IsOnIce", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsOnIce(); }),
+			"SetOnIce", [](const FLuaActorRef& Ref, bool bOnIce) { SlidingMovement(Ref).SetOnIce(bOnIce); },
 			"IsDead", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsDead(); }),
 			"SetMoveInput", [](const FLuaActorRef& Ref, const FVector& Direction) { SlidingMovement(Ref).SetMoveInput(Direction); },
 			"Respawn", [](const FLuaActorRef& Ref, sol::optional<FVector> Location)

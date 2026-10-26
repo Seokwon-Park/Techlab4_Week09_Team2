@@ -463,6 +463,18 @@ bool AActor::IsOverlappingActor(const AActor* Other) const
 
 void AActor::GetOverlappingActors(TArray<AActor*>& OutActors) const
 {
-	// TODO(C): 중복 없이 모은다
 	OutActors.Reset();
+	TSet<AActor*> Seen;
+	for (UActorComponent* Component : Components)
+	{
+		const UPrimitiveComponent* Primitive = Cast<UPrimitiveComponent>(Component);
+		if (!Primitive || !Primitive->IsRegistered()) continue;
+		for (const FOverlapInfo& Info : Primitive->GetOverlapInfos())
+		{
+			if (!Info.OtherComp || !Info.OtherComp->IsRegistered()) continue;
+			AActor* Other = Info.OtherComp->GetOwner();
+			if (Other && Other != this && Other->GetWorld() == GetWorld() && Seen.Add(Other))
+				OutActors.Add(Other);
+		}
+	}
 }

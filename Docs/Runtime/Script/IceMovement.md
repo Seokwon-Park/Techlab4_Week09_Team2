@@ -12,13 +12,21 @@
    기존 위치 변경 스크립트나 다른 이동 컴포넌트와 함께 사용하지 않는다.
    플레이어가 `APawn`이면 기본 PlayerController가 이 Pawn을 선택한다.
    `ADefaultPawn`은 별도의 직접 이동 로직이 있으므로 사용하지 않는다.
-2. 아래 이동 설정과 `CollisionRadius`(월드 단위)를 조절한다.
+2. 플레이어에 **USphereComponent**를 추가하고 루트에 붙인다. 상대 위치는 0으로 두고
+   `bGenerateOverlapEvents=true`, `bBlockComponent=false`로 설정한다.
+   `SphereRadius`와 이동 컴포넌트의 `CollisionRadius`를 같은 크기로 맞춘다
+   (기본 0.5, 콜라이더 월드 스케일 1 기준). 전자는 Overlap, 후자는 벽 Sweep에 사용된다.
+   표시용 플레이어 메시의 `bGenerateOverlapEvents`는 끈다.
    플레이어 루트가 이동하며 Z 높이는 유지된다. 초기 입력 전에는 정지한다.
 3. 플레이어의 `ScriptPath`를 `Scripts/ice_player.lua`로 지정한다.
 4. 빙판 액터에 **UIceVolumeComponent**를 추가한다. `BoxExtent`와 Transform으로
    플레이어 높이를 포함하는 영역을 잡는다. 표시용 바닥 메시의 `bBlockComponent`는 끈다.
-   빙판 감지는 플레이어의 `CollisionRadius` 구와 영역의 회전된 박스로 검사한다.
-   겹친 영역 중 하나라도 닿으면 빙판이다. 영역 진입/이탈 이벤트를 따로 연결할 필요는 없다.
+   빙판 영역의 `bGenerateOverlapEvents`를 켠다.
+   `UWorld::UpdateOverlaps → FCollision::Overlap → Begin/EndComponentOverlap → Lua` 경로로
+   플레이어의 `OnBeginOverlap` / `OnEndOverlap`이 호출된다. 샘플 Lua는 기존 겹침 목록에서
+   `UIceVolumeComponent`가 있는 액터를 찾아 `SetOnIce`를 호출한다.
+   한 액터의 여러 영역이나 여러 빙판 액터 중 하나라도 겹쳐 있으면 빙판이다.
+   이동 컴포넌트가 빙판을 직접 순회하거나 `SphereBox`를 별도로 호출하지 않는다.
 5. 벽의 **UBoxComponent 또는 UStaticMeshComponent에서 bBlockComponent를 켠다.**
    벽 액터와 플레이어의 `bActorEnableCollision`도 켠다.
    트리거/바닥/빙판 영역의 `bBlockComponent`는 끈다.
@@ -45,6 +53,7 @@
 
 ```lua
 obj:SetMoveInput(FVector(1, 0, 0)) -- 매 Tick 호출. 입력이 없으면 FVector(0, 0, 0)
+obj:SetOnIce(true)                -- Lua가 Overlap 결과에 따라 이동 모드를 설정
 local onIce = obj.IsOnIce          -- 읽기 전용
 local dead = obj.IsDead            -- 읽기 전용
 obj:Respawn(FVector(0, 0, 1))      -- 위치 변경, 속도/입력/사망 상태 초기화
@@ -57,6 +66,14 @@ end
 ```
 
 위 API는 `USlidingMovementComponent`가 있는 액터에서만 사용할 수 있다.
+범용 Actor API인 `obj:GetOverlappingActors()`는 기존 Overlap 목록의 액터를 중복 없는 Lua 배열로
+반환하고, `other:HasComponent("UIceVolumeComponent")`는 등록된 컴포넌트의 종류를 확인한다.
+이 API는 별도 충돌 검사를 수행하지 않는다. Lua가 진입/이탈 이벤트마다 전체 겹침 목록을 확인하므로
+한 영역에서 나와도 다른 영역에 남아 있으면 빙판 상태를 유지한다.
+핫 리로드 시 기존 겹침 목록으로 Lua 상태를 복구한다. 도형 등록 해제/삭제 시에는 양쪽 겹침 참조를
+해제하고 EndOverlap을 전달한다.
+Overlap 갱신은 월드의 모든 이동 Tick 뒤에 실행되므로 진입/이탈 결과는 다음 이동 Tick부터 적용된다.
+부활 직후의 빙판 상태도 이 갱신에서 결정된다.
 샘플 스크립트는 WASD 입력과 1초 뒤 시작 위치 부활을 제공한다.
 R로 즉시 복귀할 수 있다. 부활 대기는 Lua Tick에서 관리해 수동 복귀 뒤 이전 타이머가 다시 부활시키지 않는다.
 `obj.Location` 직접 변경이나 `move_to`는 충돌 이동을 우회하므로 이 이동과 섞지 않는다.
@@ -80,7 +97,7 @@ R로 즉시 복귀할 수 있다. 부활 대기는 Lua Tick에서 관리해 수�
 표시되지 않는 콜라이더도 검사하며, 일반 투사체의 기존 Sweep 동작은 유지한다.
 벽 판정은 기존 메시 Sweep과 같은 **반지름으로 확장한 월드 AABB**를 사용한다.
 회전/곡면 메시에서는 보수적으로 일찍 충돌할 수 있으므로 벽은 축에 정렬된 Box로 배치한다.
-일반 바닥에서도 벽 접촉은 사망이다. 빙판 이탈은 현재 위치에서 다시 판정한다.
+일반 바닥에서도 벽 접촉은 사망이다. 빙판 진입/이탈은 기존 Overlap 이벤트로 판정한다.
 
 ## 테스트 씬
 
@@ -101,6 +118,9 @@ R로 즉시 복귀할 수 있다. 부활 대기는 Lua Tick에서 관리해 수�
 | 역방향 조향 | 빙판에서 반대 방향 S 누르기 | 제동으로 멈추는 대신 돌아서 방향을 바꾼다. |
 | 접지력 | IceGrip을 0.5와 4로 각각 설정하고 같은 코너 돌기 | 0.5에서 더 크게 미끄러지고, 4에서 더 빨리 방향을 잡는다. |
 | 인접 빙판 | W로 파란 바닥 중앙을 통과하며 키 놓기 | 두 영역 경계에서도 미끄러짐이 끊기지 않는다. |
+| Overlap 설정 | 빙판의 bGenerateOverlapEvents를 끄고 진입하기 | 해당 영역은 빙판 이동을 활성화하지 않는다. |
+| 중첩 영역 | 두 영역을 겹치게 배치하고 하나에서만 벗어나기 | 나머지 영역을 벗어나기 전까지 빙판 상태가 유지된다. |
+| 영역 제거 | 플레이어와 겹친 빙판 액터를 삭제하거나 도형 등록을 해제하기 | 남은 빙판이 없다면 일반 이동으로 복귀하고 오래된 도형 참조가 남지 않는다. |
 | 빙판 이탈 | W로 파란 바닥을 지나 반대쪽 회색 바닥에 도달한 뒤 키 놓기 | 일반 감속이 적용되어 멈춘다. |
 | 사망/부활 | 빨간 벽으로 이동하기 | 접촉 위치에서 정지하고 Output Log에 사망 로그 한 번, 1초 뒤 출발점 복귀. |
 | 수동 복귀 | 사망 대기 중 R을 누른 뒤 다시 이동하기 | 즉시 복귀하며 이전 사망 타이머가 다시 위치를 초기화하지 않는다. |

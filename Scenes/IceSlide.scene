@@ -41,6 +41,16 @@
                             }
                         },
                         {
+                            "Class": "USphereComponent",
+                            "Name": "PlayerCollider",
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "SphereRadius": 0.5,
+                                "bGenerateOverlapEvents": true,
+                                "bBlockComponent": false
+                            }
+                        },
+                        {
                             "Class": "UStaticMeshComponent",
                             "Name": "PlayerMesh",
                             "Parent": "DefaultSceneRoot",
@@ -68,7 +78,7 @@
                                 "StaticMesh": "Sphere",
                                 "bCastShadow": true,
                                 "bReceiveShadow": true,
-                                "bGenerateOverlapEvents": true,
+                                "bGenerateOverlapEvents": false,
                                 "bBlockComponent": false
                             },
                             "OverrideMaterials": [

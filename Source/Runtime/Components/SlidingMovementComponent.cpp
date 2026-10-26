@@ -1,9 +1,6 @@
 #include "EnginePCH.h"
 #include "SlidingMovementComponent.h"
-#include "IceVolumeComponent.h"
 #include "Engine/World.h"
-#include "Physics/Collision.h"
-#include "UObject/UObjectIterator.h"
 #include <cmath>
 
 USlidingMovementComponent::USlidingMovementComponent()
@@ -25,28 +22,12 @@ void USlidingMovementComponent::BeginPlay()
 	if (UpdatedComponent) SpawnLocation = UpdatedComponent->GetWorldLocation();
 	OnDeath.Remove(DeathNotifyHandle);
 	DeathNotifyHandle = OnDeath.AddDynamic(GetOwner(), &AActor::NotifyDeath);
-	bOnIce = CheckIce();
+	bOnIce = false;
 }
 
 void USlidingMovementComponent::SetMoveInput(const FVector& Direction)
 {
 	InputDirection = FVector(Direction.X, Direction.Y, 0.0f).GetClampedToMaxSize(1.0f);
-}
-
-bool USlidingMovementComponent::CheckIce() const
-{
-	if (!UpdatedComponent || !GetOwner() || !GetOwner()->GetActorEnableCollision()) return false;
-	const FWorldSphere Player{ UpdatedComponent->GetWorldLocation(), std::max(CollisionRadius, 0.0f) };
-	// 현재 위치에서 검사하므로 시작 위치, 인접/중첩 영역, 삭제된 영역도 같은 규칙으로 처리된다.
-	for (TObjectIterator<UIceVolumeComponent> It; It; ++It)
-	{
-		const UIceVolumeComponent* Ice = *It;
-		if (!Ice->IsRegistered() || Ice->GetWorld() != GetWorld() ||
-			!Ice->GetOwner() || Ice->GetOwner() == GetOwner() ||
-			!Ice->GetOwner()->GetActorEnableCollision()) continue;
-		if (FCollision::SphereBox(Player, FCollision::ToWorld(Ice))) return true;
-	}
-	return false;
 }
 
 void USlidingMovementComponent::TickComponent(float DeltaTime)
@@ -55,7 +36,6 @@ void USlidingMovementComponent::TickComponent(float DeltaTime)
 	if (bDead || !UpdatedComponent || !GetWorld() || !GetWorld()->IsGameWorld() ||
 		DeltaTime <= 0.0f || !std::isfinite(DeltaTime)) return;
 
-	bOnIce = CheckIce();
 	const float Speed = std::max(MoveSpeed, 0.0f);
 	const float Accel = std::max(Acceleration, 0.0f);
 	const bool bHasInput = InputDirection.SizeSquared() > SMALL_NUMBER;
@@ -119,7 +99,6 @@ void USlidingMovementComponent::TickComponent(float DeltaTime)
 		FRay(Start, Delta / Distance), Distance, std::max(CollisionRadius, 0.0f), Hit, GetOwner(), true);
 	// SweepSingle은 이동 경로 전체를 검사하므로 빠른 이동도 얇은 벽에서 멈춘다.
 	MoveUpdatedComponent(Delta * Hit.Time, UpdatedComponent->GetWorldRotation(), false, nullptr);
-	bOnIce = CheckIce();
 	if (bHit) HandleImpact(Hit, DeltaTime, Delta);
 }
 
@@ -144,6 +123,6 @@ void USlidingMovementComponent::Respawn(const FVector& Location)
 	SteeringDirection = FVector::ZeroVector;
 	StopMovementImmediately();
 	UpdatedComponent->SetWorldLocation(Location, false);
-	bOnIce = CheckIce();
+	// 이동 후 World::UpdateOverlaps가 진입/이탈 이벤트로 빙판 상태를 갱신한다.
 	bDead = false;
 }
