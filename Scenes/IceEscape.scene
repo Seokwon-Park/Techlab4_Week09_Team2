@@ -39,7 +39,7 @@
                             "Parent": "DefaultSceneRoot",
                             "Properties": {
                                 "ShapeColor": 4286105710,
-                                "SphereRadius": 0.5,
+                                "SphereRadius": 0.30000001192092896,
                                 "Transform": {
                                     "Location": {
                                         "X": -0.03081643581390381,
