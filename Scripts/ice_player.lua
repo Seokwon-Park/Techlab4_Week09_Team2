@@ -17,6 +17,8 @@ local timerText = nil
 local deathCount = 0
 local playedTime = 0
 
+local bCleared = false
+
 local function InitMovementState()
     targetLocation = FVector(0, 0, 0)
     targetDirection = FVector(0, 0, 0)
@@ -49,6 +51,15 @@ local function Respawn()
     if restartWidget and restartWidget:IsValid() then
         restartWidget.Visible = false
     end
+
+    bCleared = false
+end
+
+local function ShowClearWidget()
+    restartWidget:Find("TextLabel"):SetText("클리어!")
+    restartWidget.Visible = true
+
+    bCleared = true
 end
 
 -- 개발자 테스트용: 가장 가까운 StageN_Start를 현재 Stage로 보고 앞/뒤 Stage 시작 위치로 옮긴다.
@@ -63,7 +74,10 @@ local function MoveStage(offset)
         start = GetActorByName("Stage" .. index .. "_Start")
     end
     local target = current and GetActorByName("Stage" .. (current + offset) .. "_Start")
-    if not target then return end
+    if not target then 
+        ShowClearWidget()
+        return 
+    end
 
     _G.RespawnLocation = target.Location + FVector(0, 0, 0.5)
     Respawn()
@@ -98,6 +112,7 @@ local function Die(wall)
 
     -- 리스타트 위젯 띄우기
     if restartWidget and restartWidget:IsValid() then
+        restartWidget:Find("TextLabel"):SetText("실패!")
         restartWidget.Visible = true
     end
     -- 스탯 업데이트
@@ -169,7 +184,16 @@ function BeginPlay()
     restartWidget.Visible = false
     restartWidget:AddToViewport()
     restartWidget:Find("RestartButton"):BindClick(function()
-        Respawn()
+        if bCleared then
+            deathCount = 0
+            playedTime = 0
+            if deathCountText and deathCountText:IsValid() then
+                deathCountText:SetText(tostring(deathCount))
+            end
+            MoveStage(-18)
+        else
+            Respawn()
+        end
     end)
     restartWidget:Find("TitleButton"):BindClick(GoToTitle)
 
@@ -183,8 +207,31 @@ function BeginPlay()
     obj:SetMovementEnabled(true)
     print("[Ice] WASD: 카메라이동 / R: 시작 위치로 복귀")
 
+    StartCoroutine(MouseInputCoroutine)
     InitMovementState()
     UpdateIceState()
+
+    -- delegate 등록
+    _G.GameEvents = _G.GameEvents or {}
+    _G.GameEvents.RespawnPlayer = Respawn
+    _G.GameEvents.ShowClearWidget = ShowClearWidget
+end
+
+function EndPlay()
+    if restartWidget and restartWidget:IsValid() then
+        restartWidget:Destroy()
+    end
+    if statsWidget and statsWidget:IsValid() then
+        statsWidget:Destroy()
+    end
+    if _G.GameEvents then
+        if _G.GameEvents.RespawnPlayer then
+            _G.GameEvents.RespawnPlayer = nil
+        end
+        if _G.GameEvents.ShowClearWidget then
+            _G.GameEvents.ShowClearWidget = nil
+        end
+    end
 end
 
 function OnReload()
@@ -196,7 +243,7 @@ end
 function Tick(dt)
     -- 스탯 업데이트
     -- 플레이어가 살아있을 때만 시간이 흐르게 한다
-    if not player.isDead then
+    if not player.isDead and not bCleared then
         playedTime = playedTime + dt
         if timerText and timerText:IsValid() then
             timerText:SetText(string.format("%.2f", playedTime))

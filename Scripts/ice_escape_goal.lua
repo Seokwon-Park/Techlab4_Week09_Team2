@@ -5,8 +5,31 @@ local SPAWN_HEIGHT = 0.5
 local GOAL_FREEZE_SECONDS = 1.0 -- 골에 닿은 뒤 다음 Stage로 넘어가기 전까지 조작을 멈추는 시간
 local state = script_state
 
+local restartWidget = nil
+
 function BeginPlay()
     state.used = false
+
+    -- restartWidget = CreateWidget("Assets/UI/RestartWidget.widget")
+    -- restartWidget.Visible = false
+    -- restartWidget:AddToViewport()
+    -- restartWidget:Find("TextLabel"):SetText("클리어!")
+    -- restartWidget:Find("RestartButton"):BindClick(function()
+    --     local events = _G.GameEvents
+    --     if events and events.RespawnPlayer then
+    --         restartWidget.Visible = false
+    --         events.RespawnPlayer()
+    --     end
+    -- end)
+    -- restartWidget:Find("TitleButton"):BindClick(function()
+    --     OpenLevel("TitleScene")
+    -- end)
+end
+
+function EndPlay()
+    -- if restartWidget and restartWidget:IsValid() then
+    --     restartWidget:Destroy()
+    -- end
 end
 
 function OnBeginOverlap(other)
@@ -31,6 +54,10 @@ function OnBeginOverlap(other)
         if not nextStart then
             other:SetMovementEnabled(true)
             print("[Stage] 모든 Stage 완료")
+            local events = _G.GameEvents
+            if events and events.ShowClearWidget then
+                events.ShowClearWidget()
+            end
             return
         end
 

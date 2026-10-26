@@ -4,7 +4,7 @@ local titleWidget
 
 local function GameStart()
     print("Game Start")
-    OpenLevel("IceSlide")
+    OpenLevel("IceEscape")
 end
 
 function BeginPlay()

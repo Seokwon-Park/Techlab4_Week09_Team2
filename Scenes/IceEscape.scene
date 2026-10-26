@@ -105,7 +105,7 @@
                             "Name": "SlidingMovement",
                             "Parent": "",
                             "Properties": {
-                                "CollisionRadius": 0.5,
+                                "CollisionRadius": 0.20000000298023224,
                                 "IceGrip": 5.0,
                                 "MoveSpeed": 6.0,
                                 "TurnRate": 360.0,

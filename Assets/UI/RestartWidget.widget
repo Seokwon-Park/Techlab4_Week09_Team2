@@ -37,7 +37,7 @@
               "RenderOpacity": 1.0,
               "Text": "실패!",
               "Visibility": 0,
-              "WidgetName": "TextBlock160",
+              "WidgetName": "TextLabel",
               "ZOrder": 0,
               "bAutoSize": false
             }
