@@ -4,10 +4,10 @@ local GROUND_MOVE_SPEED <const> = 3.0
 local ICE_MOVE_SPEED <const> = 6.0
 local player = script_state -- 이 플레이어의 사망 상태와 시작 위치. 핫 리로드에도 유지한다.
 local targetLocation = FVector(0, 0, 0)
-local targetDirection = FVector(0, 0, 0)
+local targetDirection = FVector(0, 0, 0) -- 입력 규칙을 적용한 월드 이동 방향. 빙판 전환으로 다시 반전하지 않는다.
 _G._G.bIsMoving = false
-local bWasOnIce = false
-local currentIceType = "ground"
+local currentIceType = nil
+local OnRightMousePressed
 
 local restartWidget = nil
 local statsWidget = nil
@@ -19,6 +19,10 @@ local playedTime = 0
 
 local function InitMovementState()
     targetLocation = FVector(0, 0, 0)
+    targetDirection = FVector(0, 0, 0)
+    currentIceType = nil
+    obj:SetOnIce(false)
+    obj:SetMoveSpeed(GROUND_MOVE_SPEED)
     _G._G.bIsMoving = false
 
     local events = _G.GameEvents
@@ -119,6 +123,16 @@ local function UpdateIceState()
     local previousIceType = currentIceType
     currentIceType = nextIceType
 
+    -- 빙판 종류는 다음 클릭의 해석만 바꾼다. 이미 결정한 진행 방향은
+    -- 진입/이탈 경계에서도 유지해야 클릭 없는 유턴과 경계 왕복이 생기지 않는다.
+    if not currentIceType then
+        -- 이탈 즉시 이전 클릭과 조향을 비워 다음 클릭에 reverse 상태가 남지 않게 한다.
+        obj:ResetMovement()
+        targetDirection = FVector(0, 0, 0)
+        targetLocation = obj.Location
+        _G.bIsMoving = false
+    end
+
     print(
         "[Ice] "
         .. tostring(previousIceType)
@@ -167,24 +181,15 @@ function BeginPlay()
     timerText:SetText("0")
 
     obj:SetMovementEnabled(true)
-    UpdateIceState()
     print("[Ice] WASD: 카메라이동 / R: 시작 위치로 복귀")
 
     InitMovementState()
-    StartCoroutine(MouseInputCoroutine)
+    UpdateIceState()
 end
 
 function OnReload()
     if not player.spawnLocation then player.spawnLocation = obj.Location end
     Respawn()
-    UpdateIceState()
-end
-
-function OnBeginOverlap(other)
-    UpdateIceState()
-end
-
-function OnEndOverlap(other)
     UpdateIceState()
 end
 
@@ -212,26 +217,27 @@ function Tick(dt)
     --     return
     -- end
 
-    local bIsOnIce = obj.IsOnIce
-    -- 얼음 위에 있다가 밖으로 나가면 정지한다
-    if bWasOnIce and not bIsOnIce then
-        obj:SetMoveInput(FVector(0, 0, 0))
-        targetDirection = FVector(0, 0, 0)
-        targetLocation = obj.Location
-        _G.bIsMoving = false
-        print("[ICE] Obj got out from the ice")
-        bWasOnIce = bIsOnIce
+    -- 모든 Begin/EndOverlap 처리가 끝난 목록을 읽는다. 인접 빙판 사이의
+    -- 일시적인 빈 목록을 이탈로 처리하지 않고, 새 클릭보다 먼저 상태를 갱신한다.
+    UpdateIceState()
+
+    -- 이동 후/Overlap 갱신 전인 코루틴에서 클릭을 처리하면 이전 빙판 규칙이
+    -- 적용될 수 있다. 이동 전 Tick에서 상태 확인 -> 클릭 해석 -> 이동을 처리한다.
+    if IsRightMouseButtonPressed() then
+        OnRightMousePressed()
     end
-    bWasOnIce = bIsOnIce
 
     -- 얼음위가 아니면 매 프레임 도착지점까지 이동 입력을 준다
     if not obj.IsOnIce and _G.bIsMoving then
         local direction = (targetLocation - obj.Location)
         if direction:Length() > 0.1 then
-            obj:SetMoveInput(direction:Normalize())
+            -- 이 방향으로 빙판에 진입하면 그대로 미끄러진다(reverse 포함).
+            targetDirection = direction:Normalize()
+            obj:SetMoveInput(targetDirection)
         else
             -- 남은 거리가 0.1 미만이면 정지
             obj:SetMoveInput(FVector(0, 0, 0))
+            targetDirection = FVector(0, 0, 0)
             _G.bIsMoving = false
             print("Actor reached to the target location")
         end
@@ -261,7 +267,8 @@ function OnHit(wall)
     Die(wall) -- 벽 충돌을 사망으로 해석하는 규칙은 Lua에 둔다.
 end
 
-local function OnRightMousePressed()
+OnRightMousePressed = function()
+    if player.isDead then return end
     if currentIceType == "slippery" then
         print("Mouse input is disabled on the slippery ice")
         return
@@ -272,10 +279,9 @@ local function OnRightMousePressed()
     print("[OnRightMousePressed] " .. x, y)
 
     local origin, direction = ScreenToWorldRay(x, y)
-    if origin then
-        print("start: ", origin)
-        print("direction: ", direction)
-    end
+    if not origin or not direction then return end
+    print("start: ", origin)
+    print("direction: ", direction)
 
     local hitPosition = Raycast(origin, direction)
     if hitPosition then
@@ -287,25 +293,12 @@ local function OnRightMousePressed()
         print("start move")
             
         targetLocation = FVector(hitPosition.x, hitPosition.y, obj.Location.z)
-        if currentIceType == "default" then
-            targetDirection = (targetLocation - obj.Location)
-        elseif currentIceType == "reverse" then
-            -- 얼음 타입이 reverse이면 마우스 클릭의 반대 방향으로 간다
-            targetDirection = (obj.Location - targetLocation)
-        end
+        -- 반전은 새 클릭을 이동 명령으로 변환하는 이 지점에서만 한 번 적용한다.
+        local clickDirection = targetLocation - obj.Location
+        targetDirection = currentIceType == "reverse" and -clickDirection or clickDirection
         _G.bIsMoving = true;
         print("target location: ", targetLocation)
         print("target direction: ", targetDirection)
         --move_to(targetLocation, 10)
-    end
-end
-
-function MouseInputCoroutine()
-    while true do
-        wait_until(function()
-            return IsRightMouseButtonPressed()
-        end)
-
-        OnRightMousePressed()
     end
 end

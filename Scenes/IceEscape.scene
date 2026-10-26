@@ -39,7 +39,7 @@
                             "Parent": "DefaultSceneRoot",
                             "Properties": {
                                 "ShapeColor": 4286105710,
-                                "SphereRadius": 0.30000001192092896,
+                                "SphereRadius": 0.20000000298023224,
                                 "Transform": {
                                     "Location": {
                                         "X": -0.03081643581390381,
@@ -5494,12 +5494,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -5624,12 +5662,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -5754,12 +5830,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -5884,12 +5998,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -6014,12 +6166,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -6144,12 +6334,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -6274,12 +6502,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -6404,12 +6670,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -6534,12 +6838,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -8732,12 +9074,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -21358,12 +21738,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -21488,12 +21906,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -21618,12 +22074,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -21748,12 +22242,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -21878,12 +22410,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -31206,12 +31776,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -39996,12 +40604,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -40126,12 +40772,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -40256,12 +40940,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -40386,12 +41108,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -40516,12 +41276,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -40646,12 +41444,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -40776,12 +41612,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -40906,12 +41780,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         }
                     ],
@@ -41007,12 +41919,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         }
                     ],
@@ -44862,8 +45812,8 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": -11.25,
-                                        "Y": 9000.0,
+                                        "X": -18.0,
+                                        "Y": 8997.75,
                                         "Z": 0.0
                                     },
                                     "Rotation": {
@@ -44872,8 +45822,8 @@
                                         "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1.5,
-                                        "Y": 6.0,
+                                        "X": 18.0,
+                                        "Y": 4.5,
                                         "Z": 1.0
                                     }
                                 },
@@ -45484,8 +46434,8 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": -12.75,
-                                        "Y": 8998.5,
+                                        "X": -11.25,
+                                        "Y": 9001.5,
                                         "Z": 0.0
                                     },
                                     "Rotation": {
@@ -45494,7 +46444,7 @@
                                         "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1.5,
+                                        "X": 4.5,
                                         "Y": 3.0,
                                         "Z": 1.0
                                     }
@@ -45624,8 +46574,8 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": -19.5,
-                                        "Y": 8997.75,
+                                        "X": -24.75,
+                                        "Y": 9001.5,
                                         "Z": 0.0
                                     },
                                     "Rotation": {
@@ -45634,8 +46584,8 @@
                                         "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 12.0,
-                                        "Y": 1.5,
+                                        "X": 4.5,
+                                        "Y": 3.0,
                                         "Z": 1.0
                                     }
                                 },
@@ -46511,286 +47461,6 @@
                         }
                     ],
                     "Name": "Stage10_Floor_8",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": true
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -24.0,
-                                        "Y": 8999.25,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 3.0,
-                                        "Y": 1.5,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Floor",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 1.0,
-                                            "Y": 1.0,
-                                            "Z": 1.0
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 96.0,
-                                        "SpecularColor": {
-                                            "X": 0.6499999761581421,
-                                            "Y": 0.800000011920929,
-                                            "Z": 0.8999999761581421
-                                        },
-                                        "Textures": [
-                                            "Assets/textures/ice_real_s303_seamless.png",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": -0.3499999940395355
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 0.699999988079071
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": true,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UIceVolumeComponent",
-                            "Name": "IceVolume",
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "BoxExtent": {
-                                    "X": 0.5,
-                                    "Y": 0.5,
-                                    "Z": 1.5
-                                },
-                                "IceType": "default",
-                                "ShapeColor": 4294950500,
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 1.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bDrawOnlyIfSelected": false,
-                                "bGenerateOverlapEvents": true,
-                                "bHiddenInGame": true,
-                                "bReceiveShadow": false,
-                                "bVisible": false
-                            }
-                        }
-                    ],
-                    "Name": "Stage10_Ice_default_17",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": true
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -24.75,
-                                        "Y": 9001.5,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.5,
-                                        "Y": 3.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Floor",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 1.0,
-                                            "Y": 1.0,
-                                            "Z": 1.0
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 96.0,
-                                        "SpecularColor": {
-                                            "X": 0.6499999761581421,
-                                            "Y": 0.800000011920929,
-                                            "Z": 0.8999999761581421
-                                        },
-                                        "Textures": [
-                                            "Assets/textures/ice_real_s303_seamless.png",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": -0.3499999940395355
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 0.699999988079071
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": true,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UIceVolumeComponent",
-                            "Name": "IceVolume",
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "BoxExtent": {
-                                    "X": 0.5,
-                                    "Y": 0.5,
-                                    "Z": 1.5
-                                },
-                                "IceType": "default",
-                                "ShapeColor": 4294950500,
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 1.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bDrawOnlyIfSelected": false,
-                                "bGenerateOverlapEvents": true,
-                                "bHiddenInGame": true,
-                                "bReceiveShadow": false,
-                                "bVisible": false
-                            }
-                        }
-                    ],
-                    "Name": "Stage10_Ice_default_18",
                     "Properties": {
                         "ScriptPath": "",
                         "bActorEnableCollision": true
@@ -49975,7 +50645,7 @@
                                 "StaticMesh": "Cube",
                                 "Transform": {
                                     "Location": {
-                                        "X": -17.25,
+                                        "X": -3.0,
                                         "Y": 8996.25,
                                         "Z": 0.5
                                     },
@@ -49985,7 +50655,7 @@
                                         "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 40.5,
+                                        "X": 12.0,
                                         "Y": 1.5,
                                         "Z": 1.0
                                     }
@@ -50039,7 +50709,7 @@
                                 "StaticMesh": "Cube",
                                 "Transform": {
                                     "Location": {
-                                        "X": -17.25,
+                                        "X": -3.0,
                                         "Y": 8996.25,
                                         "Z": 1.0299999713897705
                                     },
@@ -50049,7 +50719,135 @@
                                         "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 40.5,
+                                        "X": 12.0,
+                                        "Y": 1.5,
+                                        "Z": 0.05999999865889549
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": false,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UStaticMeshComponent",
+                            "Name": "Wall_56",
+                            "OverrideMaterials": [
+                                {
+                                    "Base": "DefaultMaterial",
+                                    "Instance": {
+                                        "BaseColor": {
+                                            "W": 1.0,
+                                            "X": 0.1599999964237213,
+                                            "Y": 0.30000001192092896,
+                                            "Z": 0.4000000059604645
+                                        },
+                                        "BlendState": "Opaque",
+                                        "FlipNormalY": false,
+                                        "PSOType": 0,
+                                        "Properties": {},
+                                        "SamplerState": "LinearClamp",
+                                        "Shininess": 24.0,
+                                        "SpecularColor": {
+                                            "X": 0.18000000715255737,
+                                            "Y": 0.2199999988079071,
+                                            "Z": 0.25
+                                        },
+                                        "Textures": [
+                                            "WhiteTexture",
+                                            "FlatNormalTexture"
+                                        ],
+                                        "UVScrollSpeed": [
+                                            0.0,
+                                            0.0
+                                        ]
+                                    }
+                                }
+                            ],
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "StaticMesh": "Cube",
+                                "Transform": {
+                                    "Location": {
+                                        "X": -32.25,
+                                        "Y": 8996.25,
+                                        "Z": 0.5
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 10.5,
+                                        "Y": 1.5,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UStaticMeshComponent",
+                            "Name": "FrostCap_56",
+                            "OverrideMaterials": [
+                                {
+                                    "Base": "DefaultMaterial",
+                                    "Instance": {
+                                        "BaseColor": {
+                                            "W": 1.0,
+                                            "X": 0.6899999976158142,
+                                            "Y": 0.9100000262260437,
+                                            "Z": 0.9599999785423279
+                                        },
+                                        "BlendState": "Opaque",
+                                        "FlipNormalY": false,
+                                        "PSOType": 0,
+                                        "Properties": {},
+                                        "SamplerState": "LinearClamp",
+                                        "Shininess": 24.0,
+                                        "SpecularColor": {
+                                            "X": 0.18000000715255737,
+                                            "Y": 0.2199999988079071,
+                                            "Z": 0.25
+                                        },
+                                        "Textures": [
+                                            "WhiteTexture",
+                                            "FlatNormalTexture"
+                                        ],
+                                        "UVScrollSpeed": [
+                                            0.0,
+                                            0.0
+                                        ]
+                                    }
+                                }
+                            ],
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "StaticMesh": "Cube",
+                                "Transform": {
+                                    "Location": {
+                                        "X": -32.25,
+                                        "Y": 8996.25,
+                                        "Z": 1.0299999713897705
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 10.5,
                                         "Y": 1.5,
                                         "Z": 0.05999999865889549
                                     }
@@ -50999,7 +51797,7 @@
                                 "StaticMesh": "Cube",
                                 "Transform": {
                                     "Location": {
-                                        "X": -6.75,
+                                        "X": -6.0,
                                         "Y": 9000.0,
                                         "Z": 0.5
                                     },
@@ -51009,7 +51807,7 @@
                                         "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 7.5,
+                                        "X": 6.0,
                                         "Y": 6.0,
                                         "Z": 1.0
                                     }
@@ -51063,7 +51861,7 @@
                                 "StaticMesh": "Cube",
                                 "Transform": {
                                     "Location": {
-                                        "X": -6.75,
+                                        "X": -6.0,
                                         "Y": 9000.0,
                                         "Z": 1.0299999713897705
                                     },
@@ -51073,7 +51871,7 @@
                                         "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 7.5,
+                                        "X": 6.0,
                                         "Y": 6.0,
                                         "Z": 0.05999999865889549
                                     }
@@ -52545,7 +53343,7 @@
                                         "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 12.0,
+                                        "X": 9.0,
                                         "Y": 3.0,
                                         "Z": 1.0
                                     }
@@ -52609,136 +53407,8 @@
                                         "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 12.0,
+                                        "X": 9.0,
                                         "Y": 3.0,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": true,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Wall_28",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.1599999964237213,
-                                            "Y": 0.30000001192092896,
-                                            "Z": 0.4000000059604645
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": -18.0,
-                                        "Y": 8999.25,
-                                        "Z": 0.5
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 9.0,
-                                        "Y": 1.5,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": true,
-                                "bCastShadow": true,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "FrostCap_28",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.6899999976158142,
-                                            "Y": 0.9100000262260437,
-                                            "Z": 0.9599999785423279
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": -18.0,
-                                        "Y": 8999.25,
-                                        "Z": 1.0299999713897705
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 9.0,
-                                        "Y": 1.5,
                                         "Z": 0.05999999865889549
                                     }
                                 },
@@ -53943,7 +54613,7 @@
                                 "StaticMesh": "Cube",
                                 "Transform": {
                                     "Location": {
-                                        "X": -31.5,
+                                        "X": -32.25,
                                         "Y": 9000.0,
                                         "Z": 0.5
                                     },
@@ -53953,7 +54623,7 @@
                                         "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 12.0,
+                                        "X": 10.5,
                                         "Y": 6.0,
                                         "Z": 1.0
                                     }
@@ -54007,7 +54677,7 @@
                                 "StaticMesh": "Cube",
                                 "Transform": {
                                     "Location": {
-                                        "X": -31.5,
+                                        "X": -32.25,
                                         "Y": 9000.0,
                                         "Z": 1.0299999713897705
                                     },
@@ -54017,7 +54687,7 @@
                                         "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 12.0,
+                                        "X": 10.5,
                                         "Y": 6.0,
                                         "Z": 0.05999999865889549
                                     }
@@ -56206,6 +56876,134 @@
                                 "bReceiveShadow": true,
                                 "bVisible": true
                             }
+                        },
+                        {
+                            "Class": "UStaticMeshComponent",
+                            "Name": "Wall_57",
+                            "OverrideMaterials": [
+                                {
+                                    "Base": "DefaultMaterial",
+                                    "Instance": {
+                                        "BaseColor": {
+                                            "W": 1.0,
+                                            "X": 0.1599999964237213,
+                                            "Y": 0.30000001192092896,
+                                            "Z": 0.4000000059604645
+                                        },
+                                        "BlendState": "Opaque",
+                                        "FlipNormalY": false,
+                                        "PSOType": 0,
+                                        "Properties": {},
+                                        "SamplerState": "LinearClamp",
+                                        "Shininess": 24.0,
+                                        "SpecularColor": {
+                                            "X": 0.18000000715255737,
+                                            "Y": 0.2199999988079071,
+                                            "Z": 0.25
+                                        },
+                                        "Textures": [
+                                            "WhiteTexture",
+                                            "FlatNormalTexture"
+                                        ],
+                                        "UVScrollSpeed": [
+                                            0.0,
+                                            0.0
+                                        ]
+                                    }
+                                }
+                            ],
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "StaticMesh": "Cube",
+                                "Transform": {
+                                    "Location": {
+                                        "X": -15.0,
+                                        "Y": 8994.75,
+                                        "Z": 0.5
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 45.0,
+                                        "Y": 1.5,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UStaticMeshComponent",
+                            "Name": "FrostCap_57",
+                            "OverrideMaterials": [
+                                {
+                                    "Base": "DefaultMaterial",
+                                    "Instance": {
+                                        "BaseColor": {
+                                            "W": 1.0,
+                                            "X": 0.6899999976158142,
+                                            "Y": 0.9100000262260437,
+                                            "Z": 0.9599999785423279
+                                        },
+                                        "BlendState": "Opaque",
+                                        "FlipNormalY": false,
+                                        "PSOType": 0,
+                                        "Properties": {},
+                                        "SamplerState": "LinearClamp",
+                                        "Shininess": 24.0,
+                                        "SpecularColor": {
+                                            "X": 0.18000000715255737,
+                                            "Y": 0.2199999988079071,
+                                            "Z": 0.25
+                                        },
+                                        "Textures": [
+                                            "WhiteTexture",
+                                            "FlatNormalTexture"
+                                        ],
+                                        "UVScrollSpeed": [
+                                            0.0,
+                                            0.0
+                                        ]
+                                    }
+                                }
+                            ],
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "StaticMesh": "Cube",
+                                "Transform": {
+                                    "Location": {
+                                        "X": -15.0,
+                                        "Y": 8994.75,
+                                        "Z": 1.0299999713897705
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 45.0,
+                                        "Y": 1.5,
+                                        "Z": 0.05999999865889549
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": false,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
                         }
                     ],
                     "Name": "Stage10_Walls",
@@ -56300,12 +57098,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -56430,12 +57266,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -56560,12 +57434,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -56690,12 +57602,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -62321,12 +63271,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -65475,12 +66463,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -72998,12 +74024,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -73128,12 +74192,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -73258,12 +74360,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -73388,12 +74528,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -80767,12 +81945,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -80897,12 +82113,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -81027,12 +82281,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -81157,12 +82449,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -81287,12 +82617,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -81417,12 +82785,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -81547,12 +82953,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         }
                     ],
@@ -94741,12 +96185,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -94871,12 +96353,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -95001,12 +96521,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -95131,12 +96689,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -99128,12 +100724,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -99258,12 +100892,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -99388,12 +101060,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -99518,12 +101228,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -99648,12 +101396,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -99778,12 +101564,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -99908,12 +101732,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -103738,12 +105600,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -103868,12 +105768,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -106981,12 +108919,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -107111,12 +109087,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {
@@ -107241,12 +109255,50 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bBlockComponent": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": true,
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
                                 "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EnemyHitbox",
+                            "Parent": "Body",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.7099096059799195,
+                                    "Y": 0.36835920810699463,
+                                    "Z": 0.5524171710014343
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.523129016160965,
+                                        "Y": 0.0,
+                                        "Z": -0.3147795349359511
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bHiddenInGame": true,
+                                "bReceiveShadow": false,
+                                "bVisible": false
                             }
                         },
                         {

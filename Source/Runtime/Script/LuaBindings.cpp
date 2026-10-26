@@ -268,9 +268,11 @@ namespace
 					if (!Primitive || !Primitive->IsRegistered())
 						continue;
 
-					for (const FOverlapInfo& Info : Primitive->GetOverlapInfos())
+					// OverlapInfos는 들어간 순서로 쌓인다. 두 빙판 경계에 걸쳐 있을 때 막 들어간 빙판을 따르도록 뒤에서부터 본다.
+					const auto& Infos = Primitive->GetOverlapInfos();
+					for (int32 Index = Infos.Num() - 1; Index >= 0; --Index)
 					{
-						auto* OtherComp = Info.OtherComp;
+						auto* OtherComp = Infos[Index].OtherComp;
 						if (!OtherComp || !OtherComp->IsRegistered())
 							continue;
 
