@@ -45,6 +45,7 @@ function OnBeginOverlap(other)
 
     state.used = true
     other:SetMovementEnabled(false) -- 멈춰 있는 동안 클릭/관성/장애물 충돌을 받지 않는다
+    PlaySound2D("Assets/Sounds/Levelup.mp3")
     StartCoroutine(function()
         wait(GOAL_FREEZE_SECONDS)
         state.used = false -- Q로 되돌아와 다시 도착해도 동작하도록 푼다

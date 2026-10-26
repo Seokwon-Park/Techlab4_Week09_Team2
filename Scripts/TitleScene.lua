@@ -4,6 +4,7 @@ local titleWidget
 
 local function GameStart()
     print("Game Start")
+    PlaySound2D("Assets/Sounds/Click.wav")
     OpenLevel("IceEscape")
 end
 

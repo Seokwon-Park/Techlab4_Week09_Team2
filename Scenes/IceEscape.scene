@@ -245,7 +245,7 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bCastShadows": true,
+                                "bCastShadows": false,
                                 "bHiddenInGame": false,
                                 "bVisible": true
                             }
@@ -5508,16 +5508,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -5538,35 +5538,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 15.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 4.0,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -5676,16 +5647,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -5706,35 +5677,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 15.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 4.0,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -5844,16 +5786,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -5874,35 +5816,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -15.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 4.0,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -6012,16 +5925,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -6042,35 +5955,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -15.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 4.0,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -6180,16 +6064,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -6210,35 +6094,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 4.875,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 4.875,
-                                    "Y": 4.875,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 4.875,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 3,
-                                "Speed": 3.5999999046325684,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": true,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -6348,16 +6203,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -6378,35 +6233,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -4.875,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 2.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -6516,16 +6342,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -6546,35 +6372,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -4.875,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 2.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -6684,16 +6481,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -6714,35 +6511,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -4.875,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 2.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -6852,16 +6620,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -6882,35 +6650,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -4.875,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 2.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -9088,16 +8827,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -9118,35 +8857,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 4.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 3.5999999046325684,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -21752,16 +21462,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -21782,35 +21492,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -15.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -21920,16 +21601,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -21950,35 +21631,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 15.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -22088,16 +21740,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -22118,35 +21770,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -15.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -22256,16 +21879,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -22286,35 +21909,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 15.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -22424,16 +22018,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -22454,35 +22048,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "UPatrolMovementComponent_0",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -6.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 3.0,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -31790,16 +31355,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -31820,35 +31385,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -9.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -40618,16 +40154,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -40648,35 +40184,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -4.5,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": -4.5,
-                                    "Y": 4.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 4.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 3,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": true,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -40786,16 +40293,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -40816,35 +40323,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -4.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": -4.5,
-                                    "Y": -4.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": -4.5,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 3,
-                                "Speed": 3.5999999046325684,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": true,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -40954,16 +40432,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -40984,35 +40462,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -4.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -41122,16 +40571,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -41152,35 +40601,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -4.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -41290,16 +40710,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -41320,35 +40740,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -4.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -41458,16 +40849,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -41488,35 +40879,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -4.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -41626,16 +40988,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -41656,35 +41018,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -1.875,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": -1.875,
-                                    "Y": 4.875,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 4.875,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 3,
-                                "Speed": 4.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": true,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -41794,16 +41127,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -41933,16 +41266,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -57112,16 +56445,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -57142,35 +56475,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -7.5,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": -7.5,
-                                    "Y": 7.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 7.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 3,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": true,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -57280,16 +56584,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -57310,35 +56614,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 4.5,
-                                    "Y": 4.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -57448,16 +56723,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -57478,35 +56753,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -18.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": -18.0,
-                                    "Y": -12.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 2,
-                                "Speed": 5.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -57616,16 +56862,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -57646,35 +56892,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 19.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 7.199999809265137,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -63285,16 +62502,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -63315,35 +62532,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -6.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 1.0,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -66477,16 +65665,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -66507,35 +65695,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -4.875,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": -4.875,
-                                    "Y": 4.875,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 4.875,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 3,
-                                "Speed": 3.5999999046325684,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": true,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -74038,16 +73197,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -74068,35 +73227,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 31.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -74206,16 +73336,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -74236,35 +73366,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -39.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -74374,16 +73475,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -74404,35 +73505,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -39.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -74542,16 +73614,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -74572,35 +73644,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -39.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -81959,16 +81002,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -81989,35 +81032,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -6.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": -6.0,
-                                    "Y": 6.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 6.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 3,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": true,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -82127,16 +81141,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -82157,35 +81171,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 7.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": true,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -82295,16 +81280,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -82325,35 +81310,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 7.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": true,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -82463,16 +81419,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -82493,35 +81449,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -7.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": true,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -82631,16 +81558,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -82661,35 +81588,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 7.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": true,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -82799,16 +81697,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -82829,35 +81727,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 4.5,
-                                    "Y": -4.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 4.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -82967,16 +81836,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -96199,16 +95068,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -96229,35 +95098,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -10.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -96367,16 +95207,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -96397,35 +95237,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -10.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -96535,16 +95346,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -96565,35 +95376,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 10.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -96703,16 +95485,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -96733,35 +95515,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -10.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -100738,16 +99491,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -100768,35 +99521,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -37.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -100906,16 +99630,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -100936,35 +99660,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 4.875,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 4.875,
-                                    "Y": -4.875,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": -4.875,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 3,
-                                "Speed": 5.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": true,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -101074,16 +99769,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -101104,35 +99799,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -4.875,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -101242,16 +99908,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -101272,35 +99938,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -10.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 7.199999809265137,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -101410,16 +100047,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -101440,35 +100077,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 10.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 7.199999809265137,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -101578,16 +100186,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -101608,35 +100216,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -10.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 7.199999809265137,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -101746,16 +100325,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -101776,35 +100355,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 10.5,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 7.199999809265137,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -105614,16 +104164,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -105644,35 +104194,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 4.875,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 4.875,
-                                    "Y": 4.875,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 4.875,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 3,
-                                "Speed": 4.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": true,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -105782,16 +104303,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -105812,35 +104333,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": -4.875,
-                                    "Y": 4.875,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 4.5,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -108933,16 +107425,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -108963,35 +107455,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -39.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 5.599999904632568,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -109101,16 +107564,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -109131,35 +107594,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": -39.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 7.199999809265137,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -109269,16 +107703,16 @@
                             "Parent": "Body",
                             "Properties": {
                                 "BoxExtent": {
-                                    "X": 0.7099096059799195,
+                                    "X": 0.7099096179008484,
                                     "Y": 0.36835920810699463,
-                                    "Z": 0.5524171710014343
+                                    "Z": 0.5524171590805054
                                 },
                                 "ShapeColor": 4286105710,
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.523129016160965,
+                                        "X": 0.5231289863586426,
                                         "Y": 0.0,
-                                        "Z": -0.3147795349359511
+                                        "Z": -0.31477952003479004
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -109299,35 +107733,6 @@
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": false
-                            }
-                        },
-                        {
-                            "Class": "UPatrolMovementComponent",
-                            "Name": "PatrolMovement",
-                            "Parent": "",
-                            "Properties": {
-                                "PatrolPoint1": {
-                                    "X": 0.0,
-                                    "Y": 38.25,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint2": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPoint3": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "PatrolPointCount": 1,
-                                "Speed": 7.199999809265137,
-                                "bAutoActivate": true,
-                                "bFaceMoveDirection": true,
-                                "bHiddenInGame": false,
-                                "bLoop": false,
-                                "bVisible": true
                             }
                         }
                     ],
@@ -111252,6 +109657,111 @@
                     "Properties": {
                         "ScriptPath": "",
                         "bActorEnableCollision": false
+                    }
+                },
+                {
+                    "Class": "AStaticMeshActor",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": -8.218215942382813,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UStaticMeshComponent",
+                            "Name": "UStaticMeshComponent",
+                            "OverrideMaterials": [],
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "StaticMesh": "Cube",
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": false,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
+                                "bHiddenInGame": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UAudioComponent",
+                            "Name": "UAudioComponent_0",
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "AttenuationFalloffDistance": 3600.0,
+                                "AttenuationInnerRadius": 400.0,
+                                "PitchMultiplier": 1.0,
+                                "SoundPath": "Assets/Sounds/GameBGM.mp3",
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "VolumeMultiplier": 1.0,
+                                "bAllowSpatialization": true,
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bIsUISound": false,
+                                "bLooping": false,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "AStaticMeshActor_0",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
                     }
                 }
             ],

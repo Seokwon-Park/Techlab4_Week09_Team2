@@ -20,9 +20,9 @@
                 1.0
               ],
               "ColorAndOpacity": [
-                0.6754385828971863,
-                0.6754385828971863,
-                0.6754385828971863,
+                1.0,
+                1.0,
+                1.0,
                 1.0
               ],
               "Offsets": [
@@ -32,43 +32,9 @@
                 0.0
               ],
               "RenderOpacity": 1.0,
-              "TexturePath": "",
+              "TexturePath": "Title.png",
               "Visibility": 0,
               "WidgetName": "TitleBackground",
-              "ZOrder": 0,
-              "bAutoSize": false
-            }
-          },
-          {
-            "Class": "UTextBlock",
-            "Properties": {
-              "AlignmentX": 0.0,
-              "AlignmentY": 0.0,
-              "Anchors": [
-                0.5,
-                0.0,
-                0.5,
-                0.0
-              ],
-              "ColorAndOpacity": [
-                1.0,
-                1.0,
-                1.0,
-                1.0
-              ],
-              "FontPath": "Assets/Fonts/Pretendard.json",
-              "FontSize": 100.0,
-              "Justification": 1,
-              "Offsets": [
-                -500.0,
-                150.0,
-                1000.0,
-                250.0
-              ],
-              "RenderOpacity": 1.0,
-              "Text": "맹독충의 빙판탈출",
-              "Visibility": 0,
-              "WidgetName": "TitleNameLabel",
               "ZOrder": 0,
               "bAutoSize": false
             }
@@ -97,9 +63,9 @@
                   "Justification": 1,
                   "Offsets": [
                     0.0,
+                    6.103515625e-05,
                     0.0,
-                    0.0,
-                    0.0
+                    -6.103515625e-05
                   ],
                   "RenderOpacity": 1.0,
                   "Text": "게임 시작",
@@ -133,8 +99,8 @@
                 0.8999999761581421
               ],
               "Offsets": [
-                -300.0,
-                600.0,
+                -628.5171508789063,
+                784.9429321289063,
                 600.0,
                 150.0
               ],
@@ -157,23 +123,23 @@
               "AlignmentX": 0.0,
               "AlignmentY": 0.0,
               "Anchors": [
-                0.0,
                 1.0,
-                0.0,
+                1.0,
+                1.0,
                 1.0
               ],
               "ColorAndOpacity": [
-                1.0,
-                1.0,
-                1.0,
+                0.0,
+                0.0,
+                0.0,
                 1.0
               ],
               "FontPath": "Assets/Fonts/Pretendard.json",
               "FontSize": 60.0,
               "Justification": 0,
               "Offsets": [
-                0.0,
-                -150.0,
+                -829.859130859375,
+                -172.83905029296875,
                 800.0,
                 150.0
               ],

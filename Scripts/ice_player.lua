@@ -58,6 +58,7 @@ end
 local function ShowClearWidget()
     restartWidget:Find("TextLabel"):SetText("클리어!")
     restartWidget.Visible = true
+    PlaySound2D("Assets/Sounds/Clear.mp3")
 
     bCleared = true
 end
@@ -105,6 +106,8 @@ local function Die(wall)
         effect.Location = obj.Location
         effect:PlayParticle(3.0) -- 기본 크기의 3배
     end
+
+    PlaySound2D("Assets/Sounds/Die.wav")
 
     -- 목숨 감소, 사망 연출, 게임 오버 같은 규칙도 여기서 처리한다.
     local cause = wall and wall:IsValid() and wall.Name or "알 수 없는 충돌"
@@ -171,6 +174,7 @@ local function UpdateIceState()
 end
 
 local function GoToTitle()
+    PlaySound2D("Assets/Sounds/Click.wav")
     OpenLevel("TitleScene")
 end
 
@@ -184,6 +188,7 @@ function BeginPlay()
     restartWidget.Visible = false
     restartWidget:AddToViewport()
     restartWidget:Find("RestartButton"):BindClick(function()
+        PlaySound2D("Assets/Sounds/Click.wav")
         if bCleared then
             deathCount = 0
             playedTime = 0

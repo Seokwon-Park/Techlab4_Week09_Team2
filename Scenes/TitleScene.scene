@@ -65,6 +65,41 @@
                                 "bReceiveShadow": true,
                                 "bVisible": true
                             }
+                        },
+                        {
+                            "Class": "UAudioComponent",
+                            "Name": "UAudioComponent_1",
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "AttenuationFalloffDistance": 3600.0,
+                                "AttenuationInnerRadius": 400.0,
+                                "PitchMultiplier": 1.0,
+                                "SoundPath": "Assets/Sounds/BGM.mp3",
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "VolumeMultiplier": 1.0,
+                                "bAllowSpatialization": true,
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bIsUISound": false,
+                                "bLooping": false,
+                                "bVisible": true
+                            }
                         }
                     ],
                     "Name": "AStaticMeshActor_0",

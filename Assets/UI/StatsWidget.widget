@@ -30,7 +30,7 @@
               "Justification": 2,
               "Offsets": [
                 -300.0,
-                50.0,
+                48.84407043457031,
                 300.0,
                 100.0
               ],
@@ -131,8 +131,8 @@
               "FontSize": 48.0,
               "Justification": 0,
               "Offsets": [
-                0.0,
-                -100.0,
+                -0.8170166015625,
+                -93.84785461425781,
                 150.0,
                 100.0
               ],
@@ -141,6 +141,37 @@
               "Visibility": 0,
               "WidgetName": "Timer",
               "ZOrder": 0,
+              "bAutoSize": false
+            }
+          },
+          {
+            "Class": "UImage",
+            "Properties": {
+              "AlignmentX": 0.0,
+              "AlignmentY": 0.0,
+              "Anchors": [
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "ColorAndOpacity": [
+                0.0,
+                0.0,
+                0.0,
+                0.501960813999176
+              ],
+              "Offsets": [
+                -260.608642578125,
+                -98.67314147949219,
+                435.8619384765625,
+                257.42767333984375
+              ],
+              "RenderOpacity": 1.0,
+              "TexturePath": "",
+              "Visibility": 0,
+              "WidgetName": "Image15242",
+              "ZOrder": -1,
               "bAutoSize": false
             }
           }
@@ -156,10 +187,10 @@
             0.0
           ],
           "Offsets": [
-            -800.0,
-            0.0,
-            800.0,
-            300.0
+            -441.5694580078125,
+            3.4244956970214844,
+            441.5694580078125,
+            265.75506591796875
           ],
           "RenderOpacity": 1.0,
           "Visibility": 0,
