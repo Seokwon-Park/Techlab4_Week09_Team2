@@ -10,6 +10,12 @@ local bWasOnIce = false
 local currentIceType = "ground"
 
 local restartWidget = nil
+local statsWidget = nil
+local deathCountText = nil
+local timerText = nil
+
+local deathCount = 0
+local playedTime = 0
 
 local function InitMovementState()
     targetLocation = FVector(0, 0, 0)
@@ -90,6 +96,11 @@ local function Die(wall)
     if restartWidget and restartWidget:IsValid() then
         restartWidget.Visible = true
     end
+    -- 스탯 업데이트
+    deathCount = deathCount + 1
+    if deathCountText and deathCountText:IsValid() then
+        deathCountText:SetText(tostring(deathCount))
+    end
 end
 
 local function UpdateIceState()
@@ -148,6 +159,13 @@ function BeginPlay()
     end)
     restartWidget:Find("TitleButton"):BindClick(GoToTitle)
 
+    statsWidget = CreateWidget("Assets/UI/StatsWidget.widget")
+    statsWidget:AddToViewport()
+    deathCountText = statsWidget:Find("DeathCount")
+    deathCountText:SetText("0")
+    timerText = statsWidget:Find("Timer")
+    timerText:SetText("0")
+
     obj:SetMovementEnabled(true)
     UpdateIceState()
     print("[Ice] WASD: 카메라이동 / R: 시작 위치로 복귀")
@@ -171,6 +189,15 @@ function OnEndOverlap(other)
 end
 
 function Tick(dt)
+    -- 스탯 업데이트
+    -- 플레이어가 살아있을 때만 시간이 흐르게 한다
+    if not player.isDead then
+        playedTime = playedTime + dt
+        if timerText and timerText:IsValid() then
+            timerText:SetText(string.format("%.2f", playedTime))
+        end
+    end
+
     if IsKeyPressed("r") then
         Respawn()
         return
