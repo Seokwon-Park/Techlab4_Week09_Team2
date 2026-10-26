@@ -146,7 +146,11 @@ function Tick(dt)
     -- 방향이 0이면 회전하지 않는다
     if steeringDirection:Length() > 0.01 then
         local rotation = obj.Rotation
-        rotation:LookDirection(steeringDirection)
+        if currentIceType == "reverse" then
+            rotation:LookDirection(-steeringDirection)
+        else
+            rotation:LookDirection(steeringDirection)
+        end
         obj.Rotation = rotation
     end
 end
@@ -156,6 +160,12 @@ function OnHit(wall)
 end
 
 local function OnRightMousePressed()
+    if currentIceType == "slippery" then
+        print("Mouse input is disabled on the slippery ice")
+        return
+    end
+
+
     local x, y = GetMousePosition()
     print("[OnRightMousePressed] " .. x, y)
 
@@ -175,7 +185,12 @@ local function OnRightMousePressed()
         print("start move")
             
         targetLocation = FVector(hitPosition.x, hitPosition.y, obj.Location.z)
-        targetDirection = (targetLocation - obj.Location)
+        if currentIceType == "default" then
+            targetDirection = (targetLocation - obj.Location)
+        elseif currentIceType == "reverse" then
+            -- 얼음 타입이 reverse이면 마우스 클릭의 반대 방향으로 간다
+            targetDirection = (obj.Location - targetLocation)
+        end
         bIsMoving = true;
         print("target location: ", targetLocation)
         print("target direction: ", targetDirection)

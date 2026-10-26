@@ -328,6 +328,7 @@
                                     "Y": 8.0,
                                     "Z": 2.0
                                 },
+                                "IceType": "default",
                                 "ShapeColor": 4294950500,
                                 "Transform": {
                                     "Location": {
@@ -366,6 +367,7 @@
                                     "Y": 8.0,
                                     "Z": 2.0
                                 },
+                                "IceType": "slippery",
                                 "ShapeColor": 4294950500,
                                 "Transform": {
                                     "Location": {
