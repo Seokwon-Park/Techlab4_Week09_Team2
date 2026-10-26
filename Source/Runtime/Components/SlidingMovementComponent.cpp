@@ -44,16 +44,17 @@ void USlidingMovementComponent::TickComponent(float DeltaTime)
 		DeltaTime <= 0.0f || !std::isfinite(DeltaTime)) return;
 
 	const float Speed = std::max(MoveSpeed, 0.0f);
-	const float Accel = std::max(Acceleration, 0.0f);
+	//const float Accel = std::max(Acceleration, 0.0f);
 	const bool bHasInput = InputDirection.SizeSquared() > SMALL_NUMBER;
 	const FVector OldVelocity = FVector(Velocity.X, Velocity.Y, 0.0f);
 	Velocity = OldVelocity;
 	if (!bOnIce)
 	{
 		// 일반 바닥에서는 목표 속도까지 가속하고, 입력을 놓으면 감속한다.
-		const FVector TargetVelocity = InputDirection * Speed;
-		const float Rate = bHasInput ? Accel : std::max(Deceleration, 0.0f);
-		Velocity += (TargetVelocity - Velocity).GetClampedToMaxSize(Rate * DeltaTime);
+		//const FVector TargetVelocity = InputDirection * Speed;
+		//const float Rate = bHasInput ? Accel : std::max(Deceleration, 0.0f);
+		//Velocity += (TargetVelocity - Velocity).GetClampedToMaxSize(Rate * DeltaTime);
+		Velocity = InputDirection * Speed;
 		SteeringDirection = Velocity.GetSafeNormal();
 	}
 	else
@@ -90,13 +91,18 @@ void USlidingMovementComponent::TickComponent(float DeltaTime)
 			Direction = FVector(Direction.X * C - Direction.Y * S, Direction.X * S + Direction.Y * C, 0.0f);
 		}
 		// 빙판의 입력은 조향/가속이다. 역방향도 브레이크 대신 선회하므로 멈추지 않는다.
-		const float NewSpeed = std::min(OldSpeed + Accel * InputDirection.Size() * DeltaTime, Speed);
-		Velocity = Direction * NewSpeed;
+		//const float NewSpeed = std::min(OldSpeed + Accel * InputDirection.Size() * DeltaTime, Speed);
+		//Velocity = Direction * NewSpeed;
+		const bool bShouldMove = OldSpeed > SMALL_NUMBER || bHasInput;
+		Velocity = bShouldMove
+			? Direction * Speed
+			: FVector::ZeroVector;
 	}
 	UpdateComponentVelocity();
 
 	// 가속 중 이동 거리는 프레임 시작/끝 속도의 평균으로 적분한다.
-	const FVector Delta = (OldVelocity + Velocity) * (0.5f * DeltaTime);
+	//const FVector Delta = (OldVelocity + Velocity) * (0.5f * DeltaTime);
+	const FVector Delta = Velocity * DeltaTime;
 	const float Distance = Delta.Size();
 	if (Distance <= SMALL_NUMBER) return;
 

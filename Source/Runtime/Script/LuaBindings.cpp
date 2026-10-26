@@ -18,6 +18,8 @@
 #include "Engine/Level.h"
 #include "Engine/Engine.h"
 #include "Engine/GameViewportClient.h"
+#include "Engine/GameplayStatics.h"
+#include "Engine/GameInstance.h"
 #include "UI/UserWidget.h"
 #include "UI/Button.h"
 #include "UI/TextBlock.h"
@@ -39,6 +41,33 @@ namespace
 		return Ref
 			? Ref->Get()
 			: nullptr;
+	}
+
+
+	UWorld* WorldFromEnv(sol::this_environment& ThisEnv, const char* FuncName)
+	{
+		AActor* Owner = OwnerFromEnv(ThisEnv);
+		UWorld* World = Owner ? Owner->GetWorld() : nullptr;
+		if (!World)
+			throw sol::error(FString(FuncName) + " must be called from an actor script.");
+		return World;
+	}
+
+	void RegisterGameplay(sol::state& Lua)
+	{
+		// 실제 전환은 다음 Tick 시작. 호출한 뒤의 코드도 이번 프레임에는 그대로 실행된다.
+		Lua.set_function("OpenLevel", [](sol::this_environment ThisEnv, const FString& LevelName) {
+			UGameplayStatics::OpenLevel(WorldFromEnv(ThisEnv, "OpenLevel"), LevelName);
+			});
+		Lua.set_function("SetGameValue", [](sol::this_environment ThisEnv, const FString& Key, double Value) {
+			if (UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(WorldFromEnv(ThisEnv, "SetGameValue")))
+				GameInstance->SetValue(Key, Value);
+			});
+		Lua.set_function("GetGameValue", [](sol::this_environment ThisEnv, const FString& Key, sol::optional<double> Default) {
+			const double Fallback = Default.value_or(0.0);
+			UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(WorldFromEnv(ThisEnv, "GetGameValue"));
+			return GameInstance ? GameInstance->GetValue(Key, Fallback) : Fallback;
+			});
 	}
 
 	void RegisterWidget(sol::state& Lua)
@@ -233,16 +262,14 @@ namespace
 			"ResetMovement", [](const FLuaActorRef& Ref) { SlidingMovement(Ref).ResetMovement(); },
 			"SetMoveInput", [](const FLuaActorRef& Ref, const FVector& Direction) { SlidingMovement(Ref).SetMoveInput(Direction); },
 			"GetSteeringDirection", [](const FLuaActorRef& Ref) { return SlidingMovement(Ref).GetSteeringDirection(); },
-			"SetParticleTexture", [](const FLuaActorRef& Ref, const FString& Path) { return ParticleComponent(Ref).SetParticleTexture(Path); },
-			"SetSubUVSize", [](const FLuaActorRef& Ref, int32 Cols, int32 Rows)
+			"SetMoveSpeed", [](const FLuaActorRef& Ref, float MoveSpeed)
 			{
-				if (Cols < 1 || Rows < 1 || Cols > 4096 || Rows > 4096)
-					throw sol::error("SubUV columns and rows must be between 1 and 4096.");
-				ParticleComponent(Ref).SetSubUVSize(Cols, Rows);
+				SlidingMovement(Ref).MoveSpeed = MoveSpeed;
 			},
-			"SetParticleFrameRate", [](const FLuaActorRef& Ref, float FPS) { ParticleComponent(Ref).SetFrameRate(FPS); },
-			"PlayParticle", [](const FLuaActorRef& Ref, sol::optional<float> Scale) { ParticleComponent(Ref).PlayOnce(Scale.value_or(1.0f)); },
-
+			"GetMoveSpeed", [](const FLuaActorRef& Ref)
+			{
+				return SlidingMovement(Ref).MoveSpeed;
+			},
 			"Location", sol::property(
 				// Getter
 				[](const FLuaActorRef& Ref) { return Deref(Ref).GetActorLocation(); },
@@ -577,6 +604,7 @@ namespace FLuaBindings
 		RegisterInput(Lua);
 		RegisterCoroutine(Lua);
 		RegisterWidget(Lua);
+		RegisterGameplay(Lua);
 	}
 
 	void FlushPendingDestroy(UWorld* World)

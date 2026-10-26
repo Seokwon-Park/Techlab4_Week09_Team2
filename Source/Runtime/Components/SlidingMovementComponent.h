@@ -8,8 +8,8 @@ class USlidingMovementComponent : public UMovementComponent
 	DECLARE_CLASS(USlidingMovementComponent, UMovementComponent)
 	REFLECT_START(ClassName)
 		PROPERTY(MoveSpeed)
-		PROPERTY(Acceleration)
-		PROPERTY(Deceleration)
+		//PROPERTY(Acceleration)
+		//PROPERTY(Deceleration)
 		PROPERTY(TurnRate)
 		PROPERTY(IceGrip)
 		PROPERTY(CollisionRadius)
@@ -32,8 +32,8 @@ public:
 	FVector GetSteeringDirection() const { return SteeringDirection; }
 
 	float MoveSpeed = 6.0f; // 최대 속력
-	float Acceleration = 8.0f; // world units/second^2
-	float Deceleration = 18.0f; // 일반 바닥의 감속도
+	//float Acceleration = 8.0f; // world units/second^2
+	//float Deceleration = 18.0f; // 일반 바닥의 감속도
 	float TurnRate = 180.0f; // degrees/second
 	float IceGrip = 1.5f; // 1/second. 낮을수록 옆으로 오래 미끄러진다.
 	float CollisionRadius = 0.5f;

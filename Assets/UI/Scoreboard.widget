@@ -140,41 +140,42 @@
         }
       },
       {
-        "Class": "UTextBlock",
-        "Properties": {
-          "AlignmentX": 0.0,
-          "AlignmentY": 0.0,
-          "Anchors": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "ColorAndOpacity": [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-          ],
-          "FontPath": "Assets/Fonts/Pretendard.json",
-          "FontSize": 32.0,
-          "Justification": 1,
-          "Offsets": [
-            696.4830932617188,
-            59.38451385498047,
-            586.0686645507813,
-            80.39688110351563
-          ],
-          "RenderOpacity": 1.0,
-          "Text": "좋은 코드가 살아남는다",
-          "Visibility": 0,
-          "WidgetName": "TextBlock143",
-          "ZOrder": 0,
-          "bAutoSize": false
-        }
-      },
-      {
-        "Children": [],
+        "Children": [
+          {
+            "Class": "UTextBlock",
+            "Properties": {
+              "AlignmentX": 0.0,
+              "AlignmentY": 0.0,
+              "Anchors": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "ColorAndOpacity": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "FontPath": "Assets/Fonts/Pretendard.json",
+              "FontSize": 32.0,
+              "Justification": 1,
+              "Offsets": [
+                -13.39276123046875,
+                21.27037811279297,
+                586.0686645507813,
+                80.39688110351563
+              ],
+              "RenderOpacity": 1.0,
+              "Text": "좋은 코드가 살아남는다",
+              "Visibility": 0,
+              "WidgetName": "TextBlock143",
+              "ZOrder": 0,
+              "bAutoSize": false
+            }
+          }
+        ],
         "Class": "UButton",
         "Properties": {
           "AlignmentX": 0.0,
@@ -198,8 +199,8 @@
             0.8999999761581421
           ],
           "Offsets": [
-            725.114501953125,
-            457.68853759765625,
+            734.8734130859375,
+            50.692138671875,
             531.0259399414063,
             132.27737426757813
           ],

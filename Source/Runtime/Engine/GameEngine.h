@@ -18,17 +18,15 @@ public:
 	void Tick(float DeltaTime) override;
 	void PreExit() override;
 
-	// 현재 Game 월드를 버리고 씬 파일로 새 월드를 연다.
-	bool LoadMap(const FString& MapPath);
-	// 게임 로직(Lua 등)에서 레벨을 바꿀 때 쓴다. 월드 Tick 도중 월드를 지우지 않도록 다음 프레임에 연다.
-	void RequestLoadMap(const FString& MapPath) { PendingMap = MapPath; }
+	// 첫 맵: 컨텍스트와 게임 인스턴스를 만들고 씬 파일로 Game 월드를 연다.
+	// 이후 전환은 UGameplayStatics::OpenLevel → UEngine::LoadMap으로 간다.
+	bool OpenStartupMap(const FString& MapPath);
 private:
 	void DispatchInput(FGameViewportClient& Viewport, float DeltaTime);
 	void RenderFrame(FGameViewportClient& Viewport, UWorld* World);
 
 	// GetConfig는 창을 만들기 전에 const로 불리므로 거기서 읽어 둔다.
 	mutable FGameSettings Settings;
-	FString PendingMap;
 
 	TUniquePtr<FUIRenderer> UIRenderer;
 	FUIDrawList UIDrawList;
