@@ -10,6 +10,7 @@
 struct FLuaScriptInstance::FImpl
 {
 	sol::environment Env;
+	sol::table PersistentState;
 	fs::file_time_type LastWriteTime;
 	float CheckTimer = 0.0f;
 	bool bTickBroken = false; // Tick에서 에러가나면 다음 Reload 전까지 Tick 멈춤
@@ -75,6 +76,9 @@ bool FLuaScriptInstance::Load(AActor* InOwner, const FString& InPath)
 
 	sol::environment NewEnv(Lua, sol::create, Lua.globals());
 	NewEnv["obj"] = FLuaActorRef::Make(Owner);
+	// 액터별 Lua 상태를 핫 리로드에도 유지한다. 인스턴스가 끝나면 함께 해제된다.
+	if (!Impl->PersistentState.valid()) Impl->PersistentState = Lua.create_table();
+	NewEnv["script_state"] = Impl->PersistentState;
 
 	sol::protected_function_result Result = Lua.safe_script(Code, NewEnv, sol::script_pass_on_error, "@" + Path);
 	if (!Result.valid())

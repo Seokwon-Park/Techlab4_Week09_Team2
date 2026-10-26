@@ -119,14 +119,10 @@ namespace
 			},
 			"IsOnIce", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsOnIce(); }),
 			"SetOnIce", [](const FLuaActorRef& Ref, bool bOnIce) { SlidingMovement(Ref).SetOnIce(bOnIce); },
-			"IsDead", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsDead(); }),
+			"IsMovementEnabled", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsMovementEnabled(); }),
+			"SetMovementEnabled", [](const FLuaActorRef& Ref, bool bEnabled) { SlidingMovement(Ref).SetMovementEnabled(bEnabled); },
+			"ResetMovement", [](const FLuaActorRef& Ref) { SlidingMovement(Ref).ResetMovement(); },
 			"SetMoveInput", [](const FLuaActorRef& Ref, const FVector& Direction) { SlidingMovement(Ref).SetMoveInput(Direction); },
-			"Respawn", [](const FLuaActorRef& Ref, sol::optional<FVector> Location)
-			{
-				auto& Movement = SlidingMovement(Ref);
-				if (Location) Movement.Respawn(*Location);
-				else Movement.Respawn();
-			},
 
 			"Location", sol::property(
 				// Getter

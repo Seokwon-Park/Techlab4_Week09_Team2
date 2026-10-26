@@ -11,18 +11,12 @@ USlidingMovementComponent::USlidingMovementComponent()
 	PrimaryComponentTick.TickGroup = ETickingGroup::DuringPhysics;
 }
 
-USlidingMovementComponent::~USlidingMovementComponent()
-{
-	OnDeath.Remove(DeathNotifyHandle);
-}
-
 void USlidingMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	if (UpdatedComponent) SpawnLocation = UpdatedComponent->GetWorldLocation();
-	OnDeath.Remove(DeathNotifyHandle);
-	DeathNotifyHandle = OnDeath.AddDynamic(GetOwner(), &AActor::NotifyDeath);
 	bOnIce = false;
+	bMovementEnabled = true;
+	ResetMovement();
 }
 
 void USlidingMovementComponent::SetMoveInput(const FVector& Direction)
@@ -30,10 +24,23 @@ void USlidingMovementComponent::SetMoveInput(const FVector& Direction)
 	InputDirection = FVector(Direction.X, Direction.Y, 0.0f).GetClampedToMaxSize(1.0f);
 }
 
+void USlidingMovementComponent::SetMovementEnabled(bool bEnabled)
+{
+	bMovementEnabled = bEnabled;
+	if (!bEnabled) ResetMovement();
+}
+
+void USlidingMovementComponent::ResetMovement()
+{
+	InputDirection = FVector::ZeroVector;
+	SteeringDirection = FVector::ZeroVector;
+	StopMovementImmediately();
+}
+
 void USlidingMovementComponent::TickComponent(float DeltaTime)
 {
 	Super::TickComponent(DeltaTime);
-	if (bDead || !UpdatedComponent || !GetWorld() || !GetWorld()->IsGameWorld() ||
+	if (!bMovementEnabled || !UpdatedComponent || !GetWorld() || !GetWorld()->IsGameWorld() ||
 		DeltaTime <= 0.0f || !std::isfinite(DeltaTime)) return;
 
 	const float Speed = std::max(MoveSpeed, 0.0f);
@@ -104,25 +111,9 @@ void USlidingMovementComponent::TickComponent(float DeltaTime)
 
 void USlidingMovementComponent::HandleImpact(const FHitResult& Hit, float TimeSlice, const FVector& MoveDelta)
 {
-	if (bDead || !Hit.bBlockingHit) return;
-	bDead = true;
-	InputDirection = FVector::ZeroVector;
+	if (!bMovementEnabled || !Hit.bBlockingHit) return;
 	StopMovementImmediately();
-	OnDeath.Broadcast(Hit.HitComponent ? Hit.HitComponent->GetOwner() : nullptr);
-}
-
-void USlidingMovementComponent::Respawn()
-{
-	Respawn(SpawnLocation);
-}
-
-void USlidingMovementComponent::Respawn(const FVector& Location)
-{
-	if (!UpdatedComponent) return;
-	InputDirection = FVector::ZeroVector;
-	SteeringDirection = FVector::ZeroVector;
-	StopMovementImmediately();
-	UpdatedComponent->SetWorldLocation(Location, false);
-	// 이동 후 World::UpdateOverlaps가 진입/이탈 이벤트로 빙판 상태를 갱신한다.
-	bDead = false;
+	// 충돌 사실만 알린다. 사망 여부와 이후 행동은 플레이어 Lua가 결정한다.
+	if (AActor* Owner = GetOwner())
+		Owner->NotifyHit(Hit.HitComponent ? Hit.HitComponent->GetOwner() : nullptr);
 }
