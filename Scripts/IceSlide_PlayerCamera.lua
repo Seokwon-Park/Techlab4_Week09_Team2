@@ -2,6 +2,12 @@
 local cameraSpeed = 5
 local EDGE_THRESHOLD = 0.1
 
+_G.GameEvents = _G.GameEvents or {}
+
+local function MoveToPlayer()
+    obj.Location = playerActor.Location + initialPosition
+end
+
 function BeginPlay()
     print("[BeginPlay] " .. obj.UUID)
 
@@ -13,10 +19,17 @@ function BeginPlay()
     end
     initialPosition = obj.Location - playerActor.Location
     print("[BeginPlay] Initial Position: ", initialPosition)
+
+    _G.GameEvents.ResetCamera = function()
+        MoveToPlayer()
+    end
 end
 
 function EndPlay()
     print("[EndPlay] " .. obj.UUID)
+    if _G.GameEvents then
+        _G.GameEvents.ResetCamera = nil
+    end
 end
 
 function OnBeginOverlap(OtherActor)
@@ -40,10 +53,6 @@ end
 
 local function MoveBack(dt)
     obj.Location = obj.Location + FVector(-cameraSpeed, 0, 0) * dt
-end
-
-local function MoveToPlayer()
-    obj.Location = playerActor.Location + initialPosition
 end
 
 function Tick(dt)

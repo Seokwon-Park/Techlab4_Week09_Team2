@@ -9,6 +9,11 @@ local bWasOnIce = false
 local function InitMovementState()
     targetLocation = FVector(0, 0, 0)
     bIsMoving = false
+
+    local events = _G.GameEvents
+    if events and events.ResetCamera then
+        events.ResetCamera()
+    end
 end
 
 local function Respawn()
