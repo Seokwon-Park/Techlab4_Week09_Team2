@@ -23,6 +23,12 @@
 #include "Asset/LOD/StaticMeshLODSelector.h"
 
 #include "Math/Frustum.h"
+#include "Math/BVH.h"
+
+#include <algorithm>
+#include <span>
+#include <unordered_map>
+#include <vector>
 
 #include "Core/Stats/LightweightStats.h"
 #include "Core/Stats/EditorStats.h"
@@ -868,12 +874,6 @@ void UWorld::Serialize(FStructuredArchive::FRecord Record)
 
 void UWorld::UpdateOverlaps()
 {
-	/*
-	* 이 코드는 우선 단순한 N² 방식입니다. 도형 10개면 45쌍, 100개면 4,950쌍을 검사합니다. 
-	* 지금 단계에서는 디버그와 기능 검증에 적합하고, 나중에 개수가 늘면 Scene의 BVH를 후보쌍 찾기에 활용하면 됩니다.
-	*/
-
-
 	// 1. 이 월드에서 살아 있고 등록된 모든 충돌 도형을 수집한다.
 	// bGenerateOverlapEvents가 false인 도형도 넣는다.
 	// 그래야 실행 중 이벤트를 껐을 때 기존 Overlap에 End를 보낼 수 있다.
@@ -894,13 +894,51 @@ void UWorld::UpdateOverlaps()
 		Shapes.Add(Shape);
 	}
 
-	// 2. 중복 없는 모든 쌍: 0-1, 0-2, 1-2 ...
+	// 2. 도형은 렌더용 Scene.BVH에 없으므로 이번 프레임의 도형 전용 BVH를 만든다.
+	std::vector<int32> Indices;
+	std::unordered_map<UPrimitiveComponent*, int32> ShapeIndices;
+	Indices.reserve(Shapes.Num());
+	ShapeIndices.reserve(Shapes.Num());
+	for (int32 i = 0; i < Shapes.Num(); ++i)
+	{
+		Indices.push_back(i);
+		ShapeIndices.emplace(Shapes[i], i);
+	}
+
+	TBVH<int32> OverlapBVH([&](const int32& Index) -> FBox
+		{
+			return Shapes[Index]->GetWorldAABB();
+		});
+	OverlapBVH.Build(std::span<const int32>(Indices.data(), Indices.size()));
+
+	std::vector<int32> Candidates;
 	for (int32 i = 0; i < Shapes.Num(); ++i)
 	{
 		UShapeComponent* A = Shapes[i];
 		AActor* OwnerA = A->GetOwner();
 
-		for (int32 j = i + 1; j < Shapes.Num(); ++j)
+		Candidates.clear();
+		const FBox QueryBounds = A->GetWorldAABB();
+		OverlapBVH.Query(
+			[&](const FBox& Bounds) { return AreAABBsOverlapping(QueryBounds, Bounds); },
+			[&](int32 j)
+			{
+				if (j > i) Candidates.push_back(j);
+			});
+
+		// BVH 후보에서 빠진 이전 겹침도 검사해야 분리/충돌 설정 해제 시 End를 보낼 수 있다.
+		for (const FOverlapInfo& Info : A->GetOverlapInfos())
+		{
+			const auto It = ShapeIndices.find(Info.OtherComp);
+			if (It != ShapeIndices.end() && It->second > i)
+				Candidates.push_back(It->second);
+		}
+
+		// 후보 중복을 없애고 기존 i < j 순서대로 이벤트를 전달한다.
+		std::sort(Candidates.begin(), Candidates.end());
+		Candidates.erase(std::unique(Candidates.begin(), Candidates.end()), Candidates.end());
+
+		for (int32 j : Candidates)
 		{
 			UShapeComponent* B = Shapes[j];
 			AActor* OwnerB = B->GetOwner();
