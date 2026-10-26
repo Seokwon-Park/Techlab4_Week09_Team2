@@ -51,7 +51,7 @@ local function Die(wall)
         effect:SetSubUVSize(4, 4)
         effect:SetParticleFrameRate(60)
         effect.Location = obj.Location
-        effect:PlayParticle()
+        effect:PlayParticle(3.0) -- 기본 크기의 3배
     end
 
     -- 목숨 감소, 사망 연출, 게임 오버 같은 규칙도 여기서 처리한다.

@@ -241,7 +241,7 @@ namespace
 				ParticleComponent(Ref).SetSubUVSize(Cols, Rows);
 			},
 			"SetParticleFrameRate", [](const FLuaActorRef& Ref, float FPS) { ParticleComponent(Ref).SetFrameRate(FPS); },
-			"PlayParticle", [](const FLuaActorRef& Ref) { ParticleComponent(Ref).PlayOnce(); },
+			"PlayParticle", [](const FLuaActorRef& Ref, sol::optional<float> Scale) { ParticleComponent(Ref).PlayOnce(Scale.value_or(1.0f)); },
 
 			"Location", sol::property(
 				// Getter

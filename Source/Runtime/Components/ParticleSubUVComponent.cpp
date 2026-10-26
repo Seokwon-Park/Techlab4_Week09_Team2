@@ -55,7 +55,7 @@ bool UParticleSubUVComponent::SetParticleTexture(const FString& Path)
 }
 
 // 사망 연출: 제자리에서 한 장을 0번 프레임부터 끝까지 재생한다.
-void UParticleSubUVComponent::PlayOnce()
+void UParticleSubUVComponent::PlayOnce(float ScaleMultiplier)
 {
 	SetSubUVSize(ColSize, RowSize);
 	SetFrameRate(FrameRate);
@@ -64,7 +64,7 @@ void UParticleSubUVComponent::PlayOnce()
 	FParticle Particle{};
 	Particle.Location = GetWorldLocation();
 	Particle.LifeTime = (ColSize * RowSize) / FrameRate;
-	Particle.Scale = StartScale;
+	Particle.Scale = StartScale * std::max(0.0f, ScaleMultiplier);
 	Particle.Alpha = 1.0f;
 	Particle.bAlive = true;
 	Particles.Add(Particle);

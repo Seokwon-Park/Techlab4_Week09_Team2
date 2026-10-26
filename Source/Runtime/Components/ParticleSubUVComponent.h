@@ -54,7 +54,7 @@ public:
 	void SetSubUVSize(uint32 Cols, uint32 Rows);
 	void SetFrameRate(float InFrameRate);
 	bool SetParticleTexture(const FString& Path);
-	void PlayOnce();
+	void PlayOnce(float ScaleMultiplier = 1.0f);
 
 	void SetParticles(int32 InParticleCount = 10);
 
