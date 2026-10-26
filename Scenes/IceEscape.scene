@@ -107295,9 +107295,9 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 3.410125255584717,
-                                        "Y": 0.0,
-                                        "Z": 3.526721477508545
+                                        "X": 6.678181171417236,
+                                        "Y": -3.087153673171997,
+                                        "Z": 6.084264278411865
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -107353,7 +107353,7 @@
                             }
                         }
                     ],
-                    "Name": "AParticleActor_0",
+                    "Name": "DeathParticle",
                     "Properties": {
                         "ScriptPath": "",
                         "bActorEnableCollision": true
