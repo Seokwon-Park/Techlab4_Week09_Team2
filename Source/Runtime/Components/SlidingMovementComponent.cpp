@@ -11,18 +11,12 @@ USlidingMovementComponent::USlidingMovementComponent()
 	PrimaryComponentTick.TickGroup = ETickingGroup::DuringPhysics;
 }
 
-USlidingMovementComponent::~USlidingMovementComponent()
-{
-	OnDeath.Remove(DeathNotifyHandle);
-}
-
 void USlidingMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	if (UpdatedComponent) SpawnLocation = UpdatedComponent->GetWorldLocation();
-	OnDeath.Remove(DeathNotifyHandle);
-	DeathNotifyHandle = OnDeath.AddDynamic(GetOwner(), &AActor::NotifyDeath);
 	bOnIce = false;
+	bMovementEnabled = true;
+	ResetMovement();
 }
 
 void USlidingMovementComponent::SetMoveInput(const FVector& Direction)
@@ -30,23 +24,37 @@ void USlidingMovementComponent::SetMoveInput(const FVector& Direction)
 	InputDirection = FVector(Direction.X, Direction.Y, 0.0f).GetClampedToMaxSize(1.0f);
 }
 
+void USlidingMovementComponent::SetMovementEnabled(bool bEnabled)
+{
+	bMovementEnabled = bEnabled;
+	if (!bEnabled) ResetMovement();
+}
+
+void USlidingMovementComponent::ResetMovement()
+{
+	InputDirection = FVector::ZeroVector;
+	SteeringDirection = FVector::ZeroVector;
+	StopMovementImmediately();
+}
+
 void USlidingMovementComponent::TickComponent(float DeltaTime)
 {
 	Super::TickComponent(DeltaTime);
-	if (bDead || !UpdatedComponent || !GetWorld() || !GetWorld()->IsGameWorld() ||
+	if (!bMovementEnabled || !UpdatedComponent || !GetWorld() || !GetWorld()->IsGameWorld() ||
 		DeltaTime <= 0.0f || !std::isfinite(DeltaTime)) return;
 
 	const float Speed = std::max(MoveSpeed, 0.0f);
-	const float Accel = std::max(Acceleration, 0.0f);
+	//const float Accel = std::max(Acceleration, 0.0f);
 	const bool bHasInput = InputDirection.SizeSquared() > SMALL_NUMBER;
 	const FVector OldVelocity = FVector(Velocity.X, Velocity.Y, 0.0f);
 	Velocity = OldVelocity;
 	if (!bOnIce)
 	{
 		// 일반 바닥에서는 목표 속도까지 가속하고, 입력을 놓으면 감속한다.
-		const FVector TargetVelocity = InputDirection * Speed;
-		const float Rate = bHasInput ? Accel : std::max(Deceleration, 0.0f);
-		Velocity += (TargetVelocity - Velocity).GetClampedToMaxSize(Rate * DeltaTime);
+		//const FVector TargetVelocity = InputDirection * Speed;
+		//const float Rate = bHasInput ? Accel : std::max(Deceleration, 0.0f);
+		//Velocity += (TargetVelocity - Velocity).GetClampedToMaxSize(Rate * DeltaTime);
+		Velocity = InputDirection * Speed;
 		SteeringDirection = Velocity.GetSafeNormal();
 	}
 	else
@@ -83,13 +91,18 @@ void USlidingMovementComponent::TickComponent(float DeltaTime)
 			Direction = FVector(Direction.X * C - Direction.Y * S, Direction.X * S + Direction.Y * C, 0.0f);
 		}
 		// 빙판의 입력은 조향/가속이다. 역방향도 브레이크 대신 선회하므로 멈추지 않는다.
-		const float NewSpeed = std::min(OldSpeed + Accel * InputDirection.Size() * DeltaTime, Speed);
-		Velocity = Direction * NewSpeed;
+		//const float NewSpeed = std::min(OldSpeed + Accel * InputDirection.Size() * DeltaTime, Speed);
+		//Velocity = Direction * NewSpeed;
+		const bool bShouldMove = OldSpeed > SMALL_NUMBER || bHasInput;
+		Velocity = bShouldMove
+			? Direction * Speed
+			: FVector::ZeroVector;
 	}
 	UpdateComponentVelocity();
 
 	// 가속 중 이동 거리는 프레임 시작/끝 속도의 평균으로 적분한다.
-	const FVector Delta = (OldVelocity + Velocity) * (0.5f * DeltaTime);
+	//const FVector Delta = (OldVelocity + Velocity) * (0.5f * DeltaTime);
+	const FVector Delta = Velocity * DeltaTime;
 	const float Distance = Delta.Size();
 	if (Distance <= SMALL_NUMBER) return;
 
@@ -104,25 +117,9 @@ void USlidingMovementComponent::TickComponent(float DeltaTime)
 
 void USlidingMovementComponent::HandleImpact(const FHitResult& Hit, float TimeSlice, const FVector& MoveDelta)
 {
-	if (bDead || !Hit.bBlockingHit) return;
-	bDead = true;
-	InputDirection = FVector::ZeroVector;
+	if (!bMovementEnabled || !Hit.bBlockingHit) return;
 	StopMovementImmediately();
-	OnDeath.Broadcast(Hit.HitComponent ? Hit.HitComponent->GetOwner() : nullptr);
-}
-
-void USlidingMovementComponent::Respawn()
-{
-	Respawn(SpawnLocation);
-}
-
-void USlidingMovementComponent::Respawn(const FVector& Location)
-{
-	if (!UpdatedComponent) return;
-	InputDirection = FVector::ZeroVector;
-	SteeringDirection = FVector::ZeroVector;
-	StopMovementImmediately();
-	UpdatedComponent->SetWorldLocation(Location, false);
-	// 이동 후 World::UpdateOverlaps가 진입/이탈 이벤트로 빙판 상태를 갱신한다.
-	bDead = false;
+	// 충돌 사실만 알린다. 사망 여부와 이후 행동은 플레이어 Lua가 결정한다.
+	if (AActor* Owner = GetOwner())
+		Owner->NotifyHit(Hit.HitComponent ? Hit.HitComponent->GetOwner() : nullptr);
 }

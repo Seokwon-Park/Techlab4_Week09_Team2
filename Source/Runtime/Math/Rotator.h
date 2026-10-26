@@ -22,6 +22,9 @@ struct FRotator
 
 	FQuat Quaternion() const;
 
+	// Helper
+	void LookDirection(const FVector& Direction);
+
 	float operator[] (int32 Index) const
 	{
 		return V[Index];

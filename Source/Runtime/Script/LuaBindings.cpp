@@ -5,6 +5,8 @@
 
 #include "Components/MovementComponent.h"
 #include "Components/SlidingMovementComponent.h"
+#include "Components/IceVolumeComponent.h"
+#include "Components/PrimitiveComponent.h"
 #include "Core/EngineTimer.h"
 #include "GameFramework/Actor.h"
 #include "Input/InputSystem.h"
@@ -12,6 +14,7 @@
 #include "Script/LuaWidgetRef.h"
 #include "Script/CoroutineScheduler.h"
 #include "Engine/World.h"
+#include "Engine/Level.h"
 #include "Engine/Engine.h"
 #include "Engine/GameViewportClient.h"
 #include "Engine/GameplayStatics.h"
@@ -145,6 +148,7 @@ namespace
 			"yaw", &FRotator::Yaw,
 			"roll", &FRotator::Roll,
 
+			"LookDirection", &FRotator::LookDirection,
 			sol::meta_function::to_string, [](const FRotator& R)
 			{ return std::format("(P={:.1f}, Y={:.1f}, R={:.1f})", R.Pitch, R.Yaw, R.Roll); }
 		);
@@ -197,17 +201,67 @@ namespace
 					Result[Index + 1] = FLuaActorRef::Make(Actors[Index]);
 				return Result;
 			},
+			"GetIceType", [](const FLuaActorRef& Ref) -> sol::optional<FString>
+			{
+				for (UActorComponent* Component : Deref(Ref).GetComponents())
+				{
+					if (!Component || !Component->IsRegistered())
+						continue;
+
+					if (auto* Ice = Cast<UIceVolumeComponent>(Component))
+					{
+						return Ice->GetIceType();
+					}
+				}
+				return sol::nullopt;
+			},
+			"GetOverlappingIceType", [](const FLuaActorRef& Ref) -> sol::optional<FString>
+			{
+				AActor& Actor = Deref(Ref);
+
+				for (UActorComponent* Component : Actor.GetComponents())
+				{
+					auto* Primitive = Cast<UPrimitiveComponent>(Component);
+					if (!Primitive || !Primitive->IsRegistered())
+						continue;
+
+					for (const FOverlapInfo& Info : Primitive->GetOverlapInfos())
+					{
+						auto* OtherComp = Info.OtherComp;
+						if (!OtherComp || !OtherComp->IsRegistered())
+							continue;
+
+						AActor* OtherActor = OtherComp->GetOwner();
+						if (!OtherActor ||
+							OtherActor == &Actor ||
+							OtherActor->GetWorld() != Actor.GetWorld())
+						{
+							continue;
+						}
+
+						if (auto* Ice = Cast<UIceVolumeComponent>(OtherComp))
+						{
+							return Ice->GetIceType();
+						}
+					}
+				}
+				return sol::nullopt;
+			},
 			"IsOnIce", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsOnIce(); }),
 			"SetOnIce", [](const FLuaActorRef& Ref, bool bOnIce) { SlidingMovement(Ref).SetOnIce(bOnIce); },
-			"IsDead", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsDead(); }),
+			"IsMovementEnabled", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsMovementEnabled(); }),
+			"SetMovementEnabled", [](const FLuaActorRef& Ref, bool bEnabled) { SlidingMovement(Ref).SetMovementEnabled(bEnabled); },
+			"ResetMovement", [](const FLuaActorRef& Ref) { SlidingMovement(Ref).ResetMovement(); },
 			"SetMoveInput", [](const FLuaActorRef& Ref, const FVector& Direction) { SlidingMovement(Ref).SetMoveInput(Direction); },
-			"Respawn", [](const FLuaActorRef& Ref, sol::optional<FVector> Location)
+			"GetSteeringDirection", [](const FLuaActorRef& Ref) { return SlidingMovement(Ref).GetSteeringDirection(); },
+			"SetMoveSpeed", [](const FLuaActorRef& Ref, float MoveSpeed)
 			{
-				auto& Movement = SlidingMovement(Ref);
-				if (Location) Movement.Respawn(*Location);
-				else Movement.Respawn();
+				SlidingMovement(Ref).MoveSpeed = MoveSpeed;
 			},
-
+			"GetMoveSpeed", [](const FLuaActorRef& Ref)
+			{
+				return SlidingMovement(Ref).MoveSpeed;
+			},
 			"Location", sol::property(
 				// Getter
 				[](const FLuaActorRef& Ref) { return Deref(Ref).GetActorLocation(); },
@@ -277,6 +331,22 @@ namespace
 				return std::format("Actor#{}", Ref.UUID);
 			}
 		);
+
+		Lua.set_function("GetActorByName", [](sol::this_environment Env, const std::string& Name) -> sol::optional<FLuaActorRef>
+			{
+				AActor* Owner = OwnerFromEnv(Env);
+				if (!Owner) throw sol::error("GetActorByName needs an Actor script context.");
+				UWorld* World = Owner->GetWorld();
+				if (!World) throw sol::error("GetActorByName needs an Actor script context.");
+				for (AActor* Actor : World->GetCurrentLevel()->GetActors())
+				{
+					if (Actor && Actor->GetName() == Name)
+					{
+						return FLuaActorRef::Make(Actor);
+					}
+				}
+				return sol::nullopt;
+			});
 	}
 
 	EKeyCode ToKeyCode(const std::string& Name)
@@ -357,7 +427,7 @@ namespace
 			FGameViewportClient* Viewport = Context->GameViewport.get();
 
 			const FRect& ViewportRect = Viewport->GetRect();
-			
+
 			//const float MouseX = FInputSystem::GetMouseX();
 			//const float MouseY = FInputSystem::GetMouseY();
 			POINT Mouse{};
@@ -373,6 +443,38 @@ namespace
 				LocalX,
 				LocalY);
 			});
+		Lua.set_function("GetViewportSize",
+			[](sol::this_environment ThisEnv) -> std::tuple<float, float>
+			{
+				AActor* Owner = OwnerFromEnv(ThisEnv);
+				if (!Owner)
+				{
+					throw sol::error("GetMousePosition must be called from a coroutine with an Actor context.");
+				}
+
+				UWorld* World = Owner->GetWorld();
+				if (!World)
+				{
+					throw sol::error("GetMousePosition must be called from a coroutine with an Actor context.");
+				}
+
+				FWorldContext* Context =
+					GEngine ? GEngine->GetWorldContextFromWorld(World) : nullptr;
+
+				if (!Context || !Context->GameViewport)
+				{
+					throw sol::error("GetMousePosition must be called from a coroutine with an Actor context.");
+				}
+
+				FGameViewportClient* Viewport = Context->GameViewport.get();
+
+				const FRect& ViewportRect = Viewport->GetRect();
+
+				return  std::make_tuple(
+					static_cast<float>(ViewportRect.Width),
+					static_cast<float>(ViewportRect.Height));
+			}
+		);
 
 		Lua.set_function("ScreenToWorldRay",
 			[](sol::this_environment Env, float X, float Y)
