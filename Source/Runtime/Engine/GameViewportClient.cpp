@@ -341,9 +341,7 @@ void FGameViewportClient::Resize(uint32 InWidth, uint32 InHeight)
 void FGameViewportClient::Reset()
 {
 	// PIE가 끝나면 화면에 남은 위젯을 정리한다.
-	const TArray<UUserWidget*> Widgets = ViewportWidgets;
-	for (UUserWidget* Widget : Widgets)
-		Widget->Destroy();
+	ClearViewportWidgets();
 
 	RenderData.ResetScene();
 	EndSIEMode();
@@ -380,6 +378,16 @@ void FGameViewportClient::RemoveViewportWidget(UUserWidget* Widget)
 	Widget->OwningViewport = nullptr;
 
 	// 빠진 트리 안을 가리키고 있을 수 있으니 비운다.
+	HoveredWidget = nullptr;
+	PressedWidget = nullptr;
+}
+
+void FGameViewportClient::ClearViewportWidgets()
+{
+	const TArray<UUserWidget*> Widgets = ViewportWidgets;
+	for (UUserWidget* Widget : Widgets)
+		Widget->Destroy();
+	ViewportWidgets.Empty();
 	HoveredWidget = nullptr;
 	PressedWidget = nullptr;
 }

@@ -325,12 +325,30 @@ void UEditorEngine::Tick(const float DeltaTime)
 		RequestEndPlayMap();
 	if (bRequestEndPlayMapQueued) { bRequestEndPlayMapQueued = false; EndPlayMap(); }
 	if (bPlaySessionRequested) { bPlaySessionRequested = false; if (!PlayWorld) StartPlayInEditorSession(); }
+	// PIE 중 OpenLevel 요청 처리. 월드 Tick 전에 해야 지운 월드를 Tick하지 않는다.
+	if (PlayWorld)
+		if (FWorldContext* PIEContext = GetWorldContextFromWorld(PlayWorld))
+			TickWorldTravel(*PIEContext);
 
 	BeginFrame(DeltaTime);
 	UpdateViewportState(DeltaTime);
 	TickWorldAndEditor(DeltaTime);
 	RenderViewports();
 	EndFrame();
+}
+
+void UEditorEngine::PreLoadMap(FWorldContext& Context)
+{
+	if (Context.WorldType == EWorldType::PIE)
+		ResetSceneSelection();
+}
+
+void UEditorEngine::PostLoadMap(FWorldContext& Context)
+{
+	if (Context.WorldType != EWorldType::PIE) return;
+	// GameViewport 객체는 그대로라 ViewportsPanel 연결은 다시 하지 않아도 된다.
+	PlayWorld = Context.World();
+	OnActiveWorldChanged();
 }
 
 // DeltaTime을 패널에 전달하고 에디터 단축키를 처리한다.

@@ -1279,6 +1279,33 @@
                         "ScriptPath": "Scripts/IceSlide_PlayerCamera.lua",
                         "bActorEnableCollision": true
                     }
+                },
+                {
+                    "Class": "AParticleActor",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {}
+                        },
+                        {
+                            "Class": "UParticleSubUVComponent",
+                            "Name": "UParticleSubUVComponent",
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "ColSize": 4,
+                                "RowSize": 4,
+                                "FrameRate": 16.0,
+                                "bAutoActivate": false
+                            }
+                        }
+                    ],
+                    "Name": "DeathParticle",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": false
+                    }
                 }
             ],
             "Properties": {}

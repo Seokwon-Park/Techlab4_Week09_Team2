@@ -10,6 +10,8 @@
 #include "Components/IceVolumeComponent.h"
 #include "Components/SlidingMovementComponent.h"
 
+#include "Serialization/JsonArchive.h"
+
 UEngine* GEngine = nullptr;
 
 bool UEngine::Init()
@@ -100,19 +102,68 @@ void UEngine::DestroyWorldContext(UWorld* InWorld)
 			}
 			WorldContextlist[idx].SetCurrentWorld(nullptr);
 			WorldContextlist.RemoveAt(idx);
-			if (InWorld && (ContextType == EWorldType::PIE || ContextType == EWorldType::Game))
-			{
-				ACameraActor* Camera = InWorld->GetMainCamera();
-				const bool bOwnsCamera = Camera && !Camera->GetLevel();
-				InWorld->SetMainCamera(nullptr);
-				InWorld->ClearWorld();
-				for (ULevel* Level : InWorld->GetLevels()) delete Level;
-				if (bOwnsCamera) delete Camera;
-				delete InWorld;
-			}
+			if (ContextType == EWorldType::PIE || ContextType == EWorldType::Game)
+				DestroyWorld(InWorld);
 			break;
 		}
 	}
+}
+
+void UEngine::DestroyWorld(UWorld* InWorld)
+{
+	if (!InWorld) return;
+	ACameraActor* Camera = InWorld->GetMainCamera();
+	const bool bOwnsCamera = Camera && !Camera->GetLevel();
+	InWorld->SetMainCamera(nullptr);
+	InWorld->ClearWorld();
+	for (ULevel* Level : InWorld->GetLevels()) delete Level;
+	if (bOwnsCamera) delete Camera;
+	delete InWorld;
+}
+
+void UEngine::SetClientTravel(UWorld* InWorld, const FString& MapPath)
+{
+	if (FWorldContext* Context = GetWorldContextFromWorld(InWorld))
+		Context->TravelURL = MapPath;
+}
+
+void UEngine::TickWorldTravel(FWorldContext& Context)
+{
+	if (Context.TravelURL.empty()) return;
+	const FString MapPath = Context.TravelURL;
+	Context.TravelURL.clear();
+	LoadMap(Context, MapPath);
+}
+
+bool UEngine::LoadMap(FWorldContext& Context, const FString& MapPath)
+{
+	// 새 월드를 먼저 읽는다. 파일이 없거나 깨졌으면 지금 월드를 그대로 둔다.
+	UWorld* NewWorld = UWorld::CreateWorld(Context.WorldType, true);
+	if (!NewWorld) return false;
+	if (!FJsonArchive::LoadWorld(NewWorld, MapPath))
+	{
+		HTR_LOG(Error, "Failed to load map: {}", MapPath);
+		DestroyWorld(NewWorld);
+		return false;
+	}
+
+	PreLoadMap(Context);
+	if (Context.GameViewport)
+	{
+		Context.GameViewport->ClearViewportWidgets();
+		Context.GameViewport->SetWorld(nullptr);
+	}
+	
+	DestroyWorld(Context.World());
+
+	Context.SetCurrentWorld(NewWorld);
+	if (Context.GameViewport)
+		Context.GameViewport->SetWorld(NewWorld);
+	NewWorld->BeginPlay();
+	PostLoadMap(Context);
+
+	HTR_LOG(Info, "Map loaded: {}", MapPath);
+	return true;
 }
 
 void FWorldContext::SetCurrentWorld(UWorld* World)

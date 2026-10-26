@@ -14,6 +14,8 @@
 #include "Render/GeometryGenerator.h"
 #include "UObject/UObjectGlobals.h"
 
+#include "Engine/Classes/Sound/SoundWave.h"
+
 #include "Render/ImageLoader.h"
 #include <cctype>
 
@@ -343,6 +345,7 @@ void UAssetManager::CreateEditorArrowMaterial() {
 void UAssetManager::Shutdown()
 {
 	Get().AssetMap.Empty();
+	Get().SoundMap.Empty();
 }
 
 
@@ -406,6 +409,20 @@ UFont* UAssetManager::LoadFontAtlas(const FString& JsonPath, const FString& Atla
 
 	RegisterAsset(JsonPath, Font);
 	return Font;
+}
+
+USoundWave* UAssetManager::LoadSound(const FString& Path)
+{
+	if (USoundWave** Found = SoundMap.Find(Path)) return *Found;
+
+	USoundWave* Wave = NewObject<USoundWave>();
+	if (!Wave->LoadFromFile(Path))
+	{
+		// 실패한 객체는 텍스처 로드 실패 때와 같은 방식으로 정리
+		return nullptr;
+	}
+	SoundMap[Path] = Wave;
+	return Wave;
 }
 
 UStaticMesh* UAssetManager::LoadObjStaticMesh(const FString& Path)

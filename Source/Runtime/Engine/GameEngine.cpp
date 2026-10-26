@@ -44,7 +44,7 @@ bool UGameEngine::Init()
 	UIRenderer = MakeUnique<FUIRenderer>();
 	UIRenderer->Init();
 
-	if (!LoadMap(Settings.StartupMap))
+	if(!OpenStartupMap(Settings.StartupMap))
 	{
 		const FString Message = "Cannot open startup map:\n" + Settings.StartupMap +
 			"\n\nCheck GameDefaultMap in Config/DefaultGame.ini and the Scenes folder.";
@@ -55,34 +55,12 @@ bool UGameEngine::Init()
 	return true;
 }
 
-bool UGameEngine::LoadMap(const FString& MapPath)
-{
-	if (FWorldContext* Previous = GetWorldContextFromType(EWorldType::Game))
-		DestroyWorldContext(Previous->World());
-
-	FWorldContext& Context = CreateNewWorldContext(EWorldType::Game);
-	UGameInstance* GameInstance = NewObject<UGameInstance>();
-	GameInstance->SetWorldContext(&Context);
-	if (!GameInstance->InitializeStandalone(MapPath) || !GameInstance->StartGameInstance())
-	{
-		DestroyWorldContext(Context.World());
-		return false;
-	}
-	HTR_LOG(Info, "Game map loaded: {}", MapPath);
-	return true;
-}
-
 void UGameEngine::Tick(float DeltaTime)
 {
-	if (!PendingMap.empty())
-	{
-		const FString Map = PendingMap;
-		PendingMap.clear();
-		LoadMap(Map);
-	}
-
 	FWorldContext* Context = GetWorldContextFromType(EWorldType::Game);
-	if (!Context || !Context->World() || !Context->GameViewport)
+	if (!Context) return;
+	TickWorldTravel(*Context);
+	if (!Context->World() || !Context->GameViewport)
 		return;
 	FGameViewportClient& Viewport = *Context->GameViewport;
 	UWorld* World = Context->World();
@@ -98,6 +76,23 @@ void UGameEngine::Tick(float DeltaTime)
 	Viewport.TickUI(DeltaTime);
 	RenderFrame(Viewport, World);
 	FStatRegistry::EndFrame();
+}
+
+bool UGameEngine::OpenStartupMap(const FString& MapPath)
+{
+	if (FWorldContext* Previous = GetWorldContextFromType(EWorldType::Game))
+		DestroyWorldContext(Previous->World());
+
+	FWorldContext& Context = CreateNewWorldContext(EWorldType::Game);
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->SetWorldContext(&Context);
+	if (!GameInstance->InitializeStandalone(MapPath) || !GameInstance->StartGameInstance())
+	{
+		DestroyWorldContext(Context.World());
+		return false;
+	}
+	HTR_LOG(Info, "Game map loaded: {}", MapPath);
+	return true;
 }
 
 void UGameEngine::DispatchInput(FGameViewportClient& Viewport, float DeltaTime)
@@ -173,7 +168,6 @@ void UGameEngine::RenderFrame(FGameViewportClient& Viewport, UWorld* World)
 // UObject 일괄 삭제와 Device 해제 전에 월드와 GPU 자원을 먼저 정리한다.
 void UGameEngine::PreExit()
 {
-	PendingMap.clear();
 	if (FWorldContext* Context = GetWorldContextFromType(EWorldType::Game))
 		DestroyWorldContext(Context->World());
 	UIRenderer.reset();

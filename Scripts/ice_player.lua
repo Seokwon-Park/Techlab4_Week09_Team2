@@ -1,11 +1,13 @@
 -- SlidingMovementComponent가 있는 플레이어에 연결한다. W/S: X축, A/D: Y축.
 local RESPAWN_DELAY = 1.0
+local GROUND_MOVE_SPEED <const> = 3.0
+local ICE_MOVE_SPEED <const> = 6.0
 local player = script_state -- 이 플레이어의 사망 상태와 시작 위치. 핫 리로드에도 유지한다.
 local targetLocation = FVector(0, 0, 0)
 local targetDirection = FVector(0, 0, 0)
 _G._G.bIsMoving = false
 local bWasOnIce = false
-local currentIceType = nil
+local currentIceType = "ground"
 
 local function InitMovementState()
     targetLocation = FVector(0, 0, 0)
@@ -22,6 +24,12 @@ local function Respawn()
     obj.Location = _G.RespawnLocation or player.spawnLocation
     player.isDead = false
     player.respawnTime = 0
+
+    -- 부활 시 뒤집힌 상태를 원상복귀
+    if player.aliveRotation then
+    obj.Rotation = player.aliveRotation
+    end
+
     obj:SetMovementEnabled(true)
     InitMovementState()
 end
@@ -30,7 +38,23 @@ local function Die(wall)
     if player.isDead then return end
     player.isDead = true
     player.respawnTime = RESPAWN_DELAY
+
+    -- 사망 시 뒤집기
+    player.aliveRotation = obj.Rotation
+    local rotation = obj.Rotation
+    rotation.roll = rotation.roll + 180
+    obj.Rotation = rotation
     obj:SetMovementEnabled(false)
+
+    -- 기존 ParticleActor의 아틀라스를 바꿔 사망 위치에서 한 번만 재생한다.
+    local effect = GetActorByName("DeathParticle")
+    if effect and effect:HasComponent("UParticleSubUVComponent")
+        and effect:SetParticleTexture("Assets/SubUV/GreenBlood.png") then
+        effect:SetSubUVSize(4, 4)
+        effect:SetParticleFrameRate(60)
+        effect.Location = obj.Location
+        effect:PlayParticle(3.0) -- 기본 크기의 3배
+    end
 
     -- 목숨 감소, 사망 연출, 게임 오버 같은 규칙도 여기서 처리한다.
     local cause = wall and wall:IsValid() and wall.Name or "알 수 없는 충돌"
@@ -60,6 +84,7 @@ local function UpdateIceState()
         .. tostring(currentIceType)
     )
 
+    obj:SetMoveSpeed(ICE_MOVE_SPEED)
     if currentIceType == "default" then
         print("[Ice] Entered default ice")
     elseif currentIceType == "slippery" then
@@ -68,6 +93,7 @@ local function UpdateIceState()
         print("[Ice] Entered reverse ice")
     elseif currentIceType == nil then
         print("[Ice] Exited ice")
+        obj:SetMoveSpeed(GROUND_MOVE_SPEED)
     else
         print("[Ice] Entered unknown ice type: " .. tostring(currentIceType))
     end
@@ -129,16 +155,18 @@ function Tick(dt)
     if not obj.IsOnIce and _G.bIsMoving then
         local direction = (targetLocation - obj.Location)
         if direction:Length() > 0.1 then
-            obj:SetMoveInput(direction)
+            obj:SetMoveInput(direction:Normalize())
         else
             -- 남은 거리가 0.1 미만이면 정지
             obj:SetMoveInput(FVector(0, 0, 0))
             _G.bIsMoving = false
+            print("Actor reached to the target location")
         end
     elseif _G.bIsMoving then
         -- 얼음 위면 처음 지정한 방향 그대로 간다
-        obj:SetMoveInput(targetDirection)
-    else -- _G.bIsMoving == false
+
+        obj:SetMoveInput(targetDirection:Normalize())
+    else -- bIsMoving == false
         obj:SetMoveInput(FVector(0, 0, 0))
     end
 
