@@ -291,6 +291,38 @@ namespace
 				LocalX,
 				LocalY);
 			});
+		Lua.set_function("GetViewportSize",
+			[](sol::this_environment ThisEnv) -> std::tuple<float, float>
+			{
+				AActor* Owner = OwnerFromEnv(ThisEnv);
+				if (!Owner)
+				{
+					throw sol::error("GetMousePosition must be called from a coroutine with an Actor context.");
+				}
+
+				UWorld* World = Owner->GetWorld();
+				if (!World)
+				{
+					throw sol::error("GetMousePosition must be called from a coroutine with an Actor context.");
+				}
+
+				FWorldContext* Context =
+					GEngine ? GEngine->GetWorldContextFromWorld(World) : nullptr;
+
+				if (!Context || !Context->GameViewport)
+				{
+					throw sol::error("GetMousePosition must be called from a coroutine with an Actor context.");
+				}
+
+				FGameViewportClient* Viewport = Context->GameViewport.get();
+
+				const FRect& ViewportRect = Viewport->GetRect();
+
+				return  std::make_tuple(
+					static_cast<float>(ViewportRect.Width),
+					static_cast<float>(ViewportRect.Height));
+			}
+		);
 
 		Lua.set_function("ScreenToWorldRay",
 			[](sol::this_environment Env, float X, float Y)

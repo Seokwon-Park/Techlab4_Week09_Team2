@@ -4,7 +4,7 @@
         "PersistentLevel": {
             "Actors": [
                 {
-                    "Class": "APawn",
+                    "Class": "AActor",
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -112,33 +112,6 @@
                                 "MoveSpeed": 6.0,
                                 "TurnRate": 360.0,
                                 "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UCameraComponent",
-                            "Name": "PlayerCamera",
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -15.0,
-                                        "Y": 0.0,
-                                        "Z": 15.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 45.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": false,
                                 "bHiddenInGame": false,
                                 "bVisible": true
                             }
@@ -1238,6 +1211,70 @@
                     "Name": "Sun",
                     "Properties": {
                         "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
+                },
+                {
+                    "Class": "APawn",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": -24.399999618530273,
+                                        "Y": 0.0,
+                                        "Z": 15.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UCameraComponent",
+                            "Name": "UCameraComponent_0",
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 45.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": false,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "PlayerCamera",
+                    "Properties": {
+                        "ScriptPath": "Scripts/IceSlide_PlayerCamera.lua",
                         "bActorEnableCollision": true
                     }
                 }
