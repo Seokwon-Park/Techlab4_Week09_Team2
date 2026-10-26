@@ -83,7 +83,7 @@
                                     "Rotation": {
                                         "Pitch": 0.0,
                                         "Roll": 0.0,
-                                        "Yaw": 0.0
+                                        "Yaw": 180.0
                                     },
                                     "Scale": {
                                         "X": 0.5,

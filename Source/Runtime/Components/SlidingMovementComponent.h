@@ -33,6 +33,7 @@ public:
 	void Respawn(const FVector& Location);
 	bool IsOnIce() const { return bOnIce; }
 	bool IsDead() const { return bDead; }
+	FVector GetSteeringDirection() const { return SteeringDirection; }
 
 	float MoveSpeed = 6.0f; // 최대 속력
 	float Acceleration = 8.0f; // world units/second^2

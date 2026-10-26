@@ -65,6 +65,7 @@ namespace
 			"yaw", &FRotator::Yaw,
 			"roll", &FRotator::Roll,
 
+			"LookDirection", &FRotator::LookDirection,
 			sol::meta_function::to_string, [](const FRotator& R)
 			{ return std::format("(P={:.1f}, Y={:.1f}, R={:.1f})", R.Pitch, R.Yaw, R.Roll); }
 		);
@@ -121,6 +122,7 @@ namespace
 			"SetOnIce", [](const FLuaActorRef& Ref, bool bOnIce) { SlidingMovement(Ref).SetOnIce(bOnIce); },
 			"IsDead", sol::property([](const FLuaActorRef& Ref) { return SlidingMovement(Ref).IsDead(); }),
 			"SetMoveInput", [](const FLuaActorRef& Ref, const FVector& Direction) { SlidingMovement(Ref).SetMoveInput(Direction); },
+			"GetSteeringDirection", [](const FLuaActorRef& Ref) { return SlidingMovement(Ref).GetSteeringDirection(); },
 			"Respawn", [](const FLuaActorRef& Ref, sol::optional<FVector> Location)
 			{
 				auto& Movement = SlidingMovement(Ref);

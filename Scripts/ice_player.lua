@@ -96,6 +96,15 @@ function Tick(dt)
     else -- bIsMoving == false
         obj:SetMoveInput(FVector(0, 0, 0))
     end
+
+    -- 실제 이동 방향으로 회전한다.
+    local steeringDirection = obj:GetSteeringDirection()
+    -- 방향이 0이면 회전하지 않는다
+    if steeringDirection:Length() > 0.01 then
+        local rotation = obj.Rotation
+        rotation:LookDirection(steeringDirection)
+        obj.Rotation = rotation
+    end
 end
 
 function OnDeath(wall)
