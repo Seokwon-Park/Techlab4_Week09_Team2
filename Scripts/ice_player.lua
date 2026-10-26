@@ -5,13 +5,13 @@ local ICE_MOVE_SPEED <const> = 6.0
 local player = script_state -- 이 플레이어의 사망 상태와 시작 위치. 핫 리로드에도 유지한다.
 local targetLocation = FVector(0, 0, 0)
 local targetDirection = FVector(0, 0, 0)
-local bIsMoving = false
+_G._G.bIsMoving = false
 local bWasOnIce = false
 local currentIceType = "ground"
 
 local function InitMovementState()
     targetLocation = FVector(0, 0, 0)
-    bIsMoving = false
+    _G._G.bIsMoving = false
 
     local events = _G.GameEvents
     if events and events.ResetCamera then
@@ -21,18 +21,59 @@ end
 
 local function Respawn()
     obj:ResetMovement()
-    obj.Location = player.spawnLocation -- 부활할 때만 시작 위치로 텔레포트한다.
+    obj.Location = _G.RespawnLocation or player.spawnLocation
     player.isDead = false
     player.respawnTime = 0
+
+    -- 부활 시 뒤집힌 상태를 원상복귀
+    if player.aliveRotation then
+    obj.Rotation = player.aliveRotation
+    end
+
     obj:SetMovementEnabled(true)
     InitMovementState()
+end
+
+-- 개발자 테스트용: 가장 가까운 StageN_Start를 현재 Stage로 보고 앞/뒤 Stage 시작 위치로 옮긴다.
+local function MoveStage(offset)
+    local current, nearest = nil, math.huge
+    local index = 1
+    local start = GetActorByName("Stage1_Start")
+    while start do
+        local distance = (start.Location - obj.Location):Length()
+        if distance < nearest then current, nearest = index, distance end
+        index = index + 1
+        start = GetActorByName("Stage" .. index .. "_Start")
+    end
+    local target = current and GetActorByName("Stage" .. (current + offset) .. "_Start")
+    if not target then return end
+
+    _G.RespawnLocation = target.Location + FVector(0, 0, 0.5)
+    Respawn()
+    print("[Dev] Stage " .. current .. " -> " .. (current + offset))
 end
 
 local function Die(wall)
     if player.isDead then return end
     player.isDead = true
     player.respawnTime = RESPAWN_DELAY
+
+    -- 사망 시 뒤집기
+    player.aliveRotation = obj.Rotation
+    local rotation = obj.Rotation
+    rotation.roll = rotation.roll + 180
+    obj.Rotation = rotation
     obj:SetMovementEnabled(false)
+
+    -- 기존 ParticleActor의 아틀라스를 바꿔 사망 위치에서 한 번만 재생한다.
+    local effect = GetActorByName("DeathParticle")
+    if effect and effect:HasComponent("UParticleSubUVComponent")
+        and effect:SetParticleTexture("Assets/SubUV/GreenBlood.png") then
+        effect:SetSubUVSize(4, 4)
+        effect:SetParticleFrameRate(60)
+        effect.Location = obj.Location
+        effect:PlayParticle(3.0) -- 기본 크기의 3배
+    end
 
     -- 목숨 감소, 사망 연출, 게임 오버 같은 규칙도 여기서 처리한다.
     local cause = wall and wall:IsValid() and wall.Name or "알 수 없는 충돌"
@@ -79,12 +120,13 @@ end
 
 
 function BeginPlay()
+    _G.RespawnLocation = nil
     player.spawnLocation = obj.Location
     player.isDead = false
     player.respawnTime = 0
     obj:SetMovementEnabled(true)
     UpdateIceState()
-    print("[Ice] WASD: 이동 / R: 시작 위치로 복귀")
+    print("[Ice] WASD: 카메라이동 / R: 시작 위치로 복귀")
 
     InitMovementState()
     StartCoroutine(MouseInputCoroutine)
@@ -109,6 +151,8 @@ function Tick(dt)
         Respawn()
         return
     end
+    if IsKeyPressed("q") then MoveStage(-1) return end
+    if IsKeyPressed("e") then MoveStage(1) return end
 
     if player.isDead then
         player.respawnTime = player.respawnTime - dt
@@ -122,25 +166,26 @@ function Tick(dt)
         obj:SetMoveInput(FVector(0, 0, 0))
         targetDirection = FVector(0, 0, 0)
         targetLocation = obj.Location
-        bIsMoving = false
+        _G.bIsMoving = false
         print("[ICE] Obj got out from the ice")
         bWasOnIce = bIsOnIce
     end
     bWasOnIce = bIsOnIce
 
     -- 얼음위가 아니면 매 프레임 도착지점까지 이동 입력을 준다
-    if not obj.IsOnIce and bIsMoving then
+    if not obj.IsOnIce and _G.bIsMoving then
         local direction = (targetLocation - obj.Location)
         if direction:Length() > 0.1 then
             obj:SetMoveInput(direction:Normalize())
         else
             -- 남은 거리가 0.1 미만이면 정지
             obj:SetMoveInput(FVector(0, 0, 0))
+            _G.bIsMoving = false
             print("Actor reached to the target location")
-            bIsMoving = false
         end
-    elseif bIsMoving then
+    elseif _G.bIsMoving then
         -- 얼음 위면 처음 지정한 방향 그대로 간다
+
         obj:SetMoveInput(targetDirection:Normalize())
     else -- bIsMoving == false
         obj:SetMoveInput(FVector(0, 0, 0))
@@ -196,7 +241,7 @@ local function OnRightMousePressed()
             -- 얼음 타입이 reverse이면 마우스 클릭의 반대 방향으로 간다
             targetDirection = (obj.Location - targetLocation)
         end
-        bIsMoving = true;
+        _G.bIsMoving = true;
         print("target location: ", targetLocation)
         print("target direction: ", targetDirection)
         --move_to(targetLocation, 10)

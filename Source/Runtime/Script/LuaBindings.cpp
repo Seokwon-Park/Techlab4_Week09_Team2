@@ -7,6 +7,7 @@
 #include "Components/SlidingMovementComponent.h"
 #include "Components/IceVolumeComponent.h"
 #include "Components/PrimitiveComponent.h"
+#include "Components/ParticleSubUVComponent.h"
 #include "Core/EngineTimer.h"
 #include "GameFramework/Actor.h"
 #include "Input/InputSystem.h"
@@ -198,6 +199,13 @@ namespace
 		throw sol::error("Actor does not have a SlidingMovementComponent.");
 	}
 
+	UParticleSubUVComponent& ParticleComponent(const FLuaActorRef& Ref)
+	{
+		for (UActorComponent* Comp : Deref(Ref).GetComponents())
+			if (auto* Particle = Cast<UParticleSubUVComponent>(Comp)) return *Particle;
+		throw sol::error("Actor does not have a ParticleSubUVComponent.");
+	}
+
 	void RegisterActor(sol::state& Lua)
 	{
 		Lua.new_usertype<FLuaActorRef>("Actor",
@@ -297,6 +305,16 @@ namespace
 			{
 				return SlidingMovement(Ref).MoveSpeed;
 			},
+			"SetParticleTexture", [](const FLuaActorRef& Ref, const FString& Path) { return ParticleComponent(Ref).SetParticleTexture(Path); },
+			"SetSubUVSize", [](const FLuaActorRef& Ref, int32 Cols, int32 Rows)
+			{
+				if (Cols < 1 || Rows < 1 || Cols > 4096 || Rows > 4096)
+					throw sol::error("SubUV columns and rows must be between 1 and 4096.");
+				ParticleComponent(Ref).SetSubUVSize(Cols, Rows);
+			},
+			"SetParticleFrameRate", [](const FLuaActorRef& Ref, float FPS) { ParticleComponent(Ref).SetFrameRate(FPS); },
+			"PlayParticle", [](const FLuaActorRef& Ref, sol::optional<float> Scale) { ParticleComponent(Ref).PlayOnce(Scale.value_or(1.0f)); },
+
 			"Location", sol::property(
 				// Getter
 				[](const FLuaActorRef& Ref) { return Deref(Ref).GetActorLocation(); },

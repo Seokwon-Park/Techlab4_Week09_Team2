@@ -189,6 +189,14 @@ void AActor::Serialize(FStructuredArchive::FRecord Record)
 			continue;
 		}
 
+		// AddComponent는 SceneComponent를 기본 Root에 자동 부착한다. 저장 데이터에서
+		// Parent가 비어 있으면 이 자동 부착을 먼저 풀어 Transform을 독립 월드 Transform으로 읽는다.
+		if (USceneComponent* SceneComponent = Cast<USceneComponent>(Component);
+			SceneComponent && ParentName.empty() && SceneComponent != RootComponent)
+		{
+			SceneComponent->DetachFromParent(EAttachmentRule::KeepRelative);
+		}
+
 		Component->Serialize(ComponentRecord);
 		if (USceneComponent* SceneComponent = Cast<USceneComponent>(Component))
 		{
