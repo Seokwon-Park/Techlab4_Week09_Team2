@@ -1,11 +1,13 @@
 -- SlidingMovementComponent가 있는 플레이어에 연결한다. W/S: X축, A/D: Y축.
 local RESPAWN_DELAY = 1.0
+local GROUND_MOVE_SPEED <const> = 3.0
+local ICE_MOVE_SPEED <const> = 6.0
 local player = script_state -- 이 플레이어의 사망 상태와 시작 위치. 핫 리로드에도 유지한다.
 local targetLocation = FVector(0, 0, 0)
 local targetDirection = FVector(0, 0, 0)
 local bIsMoving = false
 local bWasOnIce = false
-local currentIceType = nil
+local currentIceType = "ground"
 
 local function InitMovementState()
     targetLocation = FVector(0, 0, 0)
@@ -60,6 +62,7 @@ local function UpdateIceState()
         .. tostring(currentIceType)
     )
 
+    obj:SetMoveSpeed(ICE_MOVE_SPEED)
     if currentIceType == "default" then
         print("[Ice] Entered default ice")
     elseif currentIceType == "slippery" then
@@ -68,6 +71,7 @@ local function UpdateIceState()
         print("[Ice] Entered reverse ice")
     elseif currentIceType == nil then
         print("[Ice] Exited ice")
+        obj:SetMoveSpeed(GROUND_MOVE_SPEED)
     else
         print("[Ice] Entered unknown ice type: " .. tostring(currentIceType))
     end
@@ -128,15 +132,16 @@ function Tick(dt)
     if not obj.IsOnIce and bIsMoving then
         local direction = (targetLocation - obj.Location)
         if direction:Length() > 0.1 then
-            obj:SetMoveInput(direction)
+            obj:SetMoveInput(direction:Normalize())
         else
             -- 남은 거리가 0.1 미만이면 정지
             obj:SetMoveInput(FVector(0, 0, 0))
+            print("Actor reached to the target location")
             bIsMoving = false
         end
     elseif bIsMoving then
         -- 얼음 위면 처음 지정한 방향 그대로 간다
-        obj:SetMoveInput(targetDirection)
+        obj:SetMoveInput(targetDirection:Normalize())
     else -- bIsMoving == false
         obj:SetMoveInput(FVector(0, 0, 0))
     end

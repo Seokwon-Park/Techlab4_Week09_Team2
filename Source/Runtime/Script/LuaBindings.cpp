@@ -225,7 +225,14 @@ namespace
 			"ResetMovement", [](const FLuaActorRef& Ref) { SlidingMovement(Ref).ResetMovement(); },
 			"SetMoveInput", [](const FLuaActorRef& Ref, const FVector& Direction) { SlidingMovement(Ref).SetMoveInput(Direction); },
 			"GetSteeringDirection", [](const FLuaActorRef& Ref) { return SlidingMovement(Ref).GetSteeringDirection(); },
-
+			"SetMoveSpeed", [](const FLuaActorRef& Ref, float MoveSpeed)
+			{
+				SlidingMovement(Ref).MoveSpeed = MoveSpeed;
+			},
+			"GetMoveSpeed", [](const FLuaActorRef& Ref)
+			{
+				return SlidingMovement(Ref).MoveSpeed;
+			},
 			"Location", sol::property(
 				// Getter
 				[](const FLuaActorRef& Ref) { return Deref(Ref).GetActorLocation(); },
