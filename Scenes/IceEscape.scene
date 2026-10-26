@@ -5509,7 +5509,7 @@
                             "Properties": {
                                 "PatrolPoint1": {
                                     "X": 0.0,
-                                    "Y": 10.5,
+                                    "Y": 15.0,
                                     "Z": 0.0
                                 },
                                 "PatrolPoint2": {
@@ -5639,7 +5639,7 @@
                             "Properties": {
                                 "PatrolPoint1": {
                                     "X": 0.0,
-                                    "Y": 10.5,
+                                    "Y": 15.0,
                                     "Z": 0.0
                                 },
                                 "PatrolPoint2": {
@@ -5678,7 +5678,7 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 5.25,
+                                        "X": 5.245530605316162,
                                         "Y": 1020.25,
                                         "Z": 0.0
                                     },
@@ -5769,7 +5769,7 @@
                             "Properties": {
                                 "PatrolPoint1": {
                                     "X": 0.0,
-                                    "Y": -10.5,
+                                    "Y": -15.0,
                                     "Z": 0.0
                                 },
                                 "PatrolPoint2": {
@@ -5899,7 +5899,7 @@
                             "Properties": {
                                 "PatrolPoint1": {
                                     "X": 0.0,
-                                    "Y": -10.5,
+                                    "Y": -15.0,
                                     "Z": 0.0
                                 },
                                 "PatrolPoint2": {
@@ -6173,7 +6173,7 @@
                                     "Z": 0.0
                                 },
                                 "PatrolPointCount": 1,
-                                "Speed": 4.5,
+                                "Speed": 2.5,
                                 "bAutoActivate": true,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
@@ -6303,7 +6303,7 @@
                                     "Z": 0.0
                                 },
                                 "PatrolPointCount": 1,
-                                "Speed": 4.5,
+                                "Speed": 2.5,
                                 "bAutoActivate": true,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
@@ -6433,7 +6433,7 @@
                                     "Z": 0.0
                                 },
                                 "PatrolPointCount": 1,
-                                "Speed": 4.5,
+                                "Speed": 2.5,
                                 "bAutoActivate": true,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
@@ -6563,7 +6563,7 @@
                                     "Z": 0.0
                                 },
                                 "PatrolPointCount": 1,
-                                "Speed": 4.5,
+                                "Speed": 2.5,
                                 "bAutoActivate": true,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
@@ -6576,107 +6576,6 @@
                     "Properties": {
                         "ScriptPath": "",
                         "bActorEnableCollision": true
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": 7.5,
-                                        "Y": 1043.5,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage2_Marker_10_ZergFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
                     }
                 },
                 {
@@ -21474,7 +21373,7 @@
                             "Properties": {
                                 "PatrolPoint1": {
                                     "X": 0.0,
-                                    "Y": -7.5,
+                                    "Y": -15.0,
                                     "Z": 0.0
                                 },
                                 "PatrolPoint2": {
@@ -21604,7 +21503,7 @@
                             "Properties": {
                                 "PatrolPoint1": {
                                     "X": 0.0,
-                                    "Y": 7.5,
+                                    "Y": 15.0,
                                     "Z": 0.0
                                 },
                                 "PatrolPoint2": {
@@ -21734,7 +21633,7 @@
                             "Properties": {
                                 "PatrolPoint1": {
                                     "X": 0.0,
-                                    "Y": -7.5,
+                                    "Y": -15.0,
                                     "Z": 0.0
                                 },
                                 "PatrolPoint2": {
@@ -21864,7 +21763,7 @@
                             "Properties": {
                                 "PatrolPoint1": {
                                     "X": 0.0,
-                                    "Y": 7.5,
+                                    "Y": 15.0,
                                     "Z": 0.0
                                 },
                                 "PatrolPoint2": {
@@ -21984,6 +21883,35 @@
                                 "bGenerateOverlapEvents": false,
                                 "bHiddenInGame": false,
                                 "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UPatrolMovementComponent",
+                            "Name": "UPatrolMovementComponent_0",
+                            "Parent": "",
+                            "Properties": {
+                                "PatrolPoint1": {
+                                    "X": -6.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
+                                "PatrolPoint2": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
+                                "PatrolPoint3": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
+                                "PatrolPointCount": 1,
+                                "Speed": 3.0,
+                                "bAutoActivate": true,
+                                "bFaceMoveDirection": true,
+                                "bHiddenInGame": false,
+                                "bLoop": false,
                                 "bVisible": true
                             }
                         }
@@ -40902,107 +40830,6 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": -23.25,
-                                        "Y": 8006.75,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage9_Marker_08_TerranFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
                                         "X": -48.75,
                                         "Y": 8020.25,
                                         "Z": 0.0
@@ -41092,208 +40919,6 @@
                     "Properties": {
                         "ScriptPath": "",
                         "bActorEnableCollision": true
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -21.75,
-                                        "Y": 8008.25,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage9_Marker_10_TerranFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -21.75,
-                                        "Y": 8015.75,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage9_Marker_11_TerranFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
                     }
                 },
                 {
@@ -62725,7 +62350,7 @@
                                     "Z": 0.0
                                 },
                                 "PatrolPointCount": 1,
-                                "Speed": 5.5,
+                                "Speed": 1.0,
                                 "bAutoActivate": true,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
@@ -66756,7 +66381,7 @@
                                 "Transform": {
                                     "Location": {
                                         "X": -9.0,
-                                        "Y": 12004.5,
+                                        "Y": 12005.93359375,
                                         "Z": 0.0
                                     },
                                     "Rotation": {
@@ -66766,7 +66391,7 @@
                                     },
                                     "Scale": {
                                         "X": 3.0,
-                                        "Y": 3.0,
+                                        "Y": 6.21258544921875,
                                         "Z": 1.0
                                     }
                                 },
@@ -66880,107 +66505,6 @@
                         }
                     ],
                     "Name": "Stage13_Ice_default_1",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": true
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -9.0,
-                                        "Y": 12007.5,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 3.0,
-                                        "Y": 3.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Floor",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.46000000834465027,
-                                            "Y": 0.4699999988079071,
-                                            "Z": 0.49000000953674316
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": -0.3499999940395355
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 0.699999988079071
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": true,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage13_Floor_6",
                     "Properties": {
                         "ScriptPath": "",
                         "bActorEnableCollision": true
@@ -69959,915 +69483,6 @@
                     "Properties": {
                         "ScriptPath": "",
                         "bActorEnableCollision": true
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -9.0,
-                                        "Y": 12004.5,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage13_Marker_01_ZergFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -10.5,
-                                        "Y": 12024.0,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage13_Marker_02_ZergFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -15.0,
-                                        "Y": 12001.5,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage13_Marker_03_ZergFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -13.5,
-                                        "Y": 12021.0,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage13_Marker_04_ZergFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -9.0,
-                                        "Y": 12001.5,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage13_Marker_05_ZergFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -12.0,
-                                        "Y": 12001.5,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage13_Marker_06_ZergFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -4.5,
-                                        "Y": 12024.0,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage13_Marker_07_ZergFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -16.5,
-                                        "Y": 12021.0,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage13_Marker_08_ZergFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -9.0,
-                                        "Y": 12007.5,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage13_Marker_09_ZergFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
                     }
                 },
                 {
@@ -82844,107 +81459,6 @@
                     "Properties": {
                         "ScriptPath": "",
                         "bActorEnableCollision": true
-                    }
-                },
-                {
-                    "Class": "AActor",
-                    "Components": [
-                        {
-                            "Class": "USceneComponent",
-                            "Name": "DefaultSceneRoot",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -4.5,
-                                        "Y": 14024.0,
-                                        "Z": 0.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        },
-                        {
-                            "Class": "UStaticMeshComponent",
-                            "Name": "Marker",
-                            "OverrideMaterials": [
-                                {
-                                    "Base": "DefaultMaterial",
-                                    "Instance": {
-                                        "BaseColor": {
-                                            "W": 1.0,
-                                            "X": 0.9599999785423279,
-                                            "Y": 0.7400000095367432,
-                                            "Z": 0.20000000298023224
-                                        },
-                                        "BlendState": "Opaque",
-                                        "FlipNormalY": false,
-                                        "PSOType": 0,
-                                        "Properties": {},
-                                        "SamplerState": "LinearClamp",
-                                        "Shininess": 24.0,
-                                        "SpecularColor": {
-                                            "X": 0.18000000715255737,
-                                            "Y": 0.2199999988079071,
-                                            "Z": 0.25
-                                        },
-                                        "Textures": [
-                                            "WhiteTexture",
-                                            "FlatNormalTexture"
-                                        ],
-                                        "UVScrollSpeed": [
-                                            0.0,
-                                            0.0
-                                        ]
-                                    }
-                                }
-                            ],
-                            "Parent": "DefaultSceneRoot",
-                            "Properties": {
-                                "StaticMesh": "Cube",
-                                "Transform": {
-                                    "Location": {
-                                        "X": 0.0,
-                                        "Y": 0.0,
-                                        "Z": 0.029999999329447746
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 0.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.350000023841858,
-                                        "Y": 1.350000023841858,
-                                        "Z": 0.05999999865889549
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bBlockComponent": false,
-                                "bCastShadow": false,
-                                "bGenerateOverlapEvents": false,
-                                "bHiddenInGame": false,
-                                "bReceiveShadow": true,
-                                "bVisible": true
-                            }
-                        }
-                    ],
-                    "Name": "Stage15_Marker_07_ZergFlagBeacon",
-                    "Properties": {
-                        "ScriptPath": "",
-                        "bActorEnableCollision": false
                     }
                 },
                 {
@@ -108766,6 +107280,80 @@
                         }
                     ],
                     "Name": "Stage19_Obstacle_03_Vulture",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
+                },
+                {
+                    "Class": "AParticleActor",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 3.410125255584717,
+                                        "Y": 0.0,
+                                        "Z": 3.526721477508545
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UParticleSubUVComponent",
+                            "Material": {
+                                "Asset": "SubUVMaterial"
+                            },
+                            "Name": "UParticleSubUVComponent",
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "ColSize": 8,
+                                "FrameRate": 12.0,
+                                "RowSize": 8,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": false,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
+                                "bHiddenInGame": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "AParticleActor_0",
                     "Properties": {
                         "ScriptPath": "",
                         "bActorEnableCollision": true
