@@ -84,6 +84,7 @@ public:
 	// 화면에 올라간 UI
 	void AddViewportWidget(UUserWidget* Widget);
 	void RemoveViewportWidget(UUserWidget* Widget);
+	void ClearViewportWidgets();
 	void TickUI(float DeltaTime);
 	// 화면 크기로 배치하고 DrawList를 채운다 (GameUI 오버레이 패스에서 호출)
 	void PaintUI(FUIDrawList& DrawList);

@@ -21,6 +21,8 @@ struct FWorldContext
 	int32 PIEInstance = 0;
 	TSharedPtr<FGameViewportClient> GameViewport;
 
+	FString TravelURL;
+
 	void SetCurrentWorld(UWorld* World);
 
 	inline UWorld* World() const
@@ -85,7 +87,20 @@ public:
 	// PIE 컨텍스트는 게임 인스턴스와 복제 월드까지 함께 정리한다.
 	void DestroyWorldContext(UWorld* InWorld);
 
+	// 레벨 전환. UE의 SetClientTravel → TickWorldTravel → LoadMap 흐름을 따른다.
+	// 월드 Tick 도중 월드를 지우지 않도록 요청만 기록하고 다음 Tick 시작에 연다.
+	void SetClientTravel(UWorld* InWorld, const FString& MapPath);
+	void TickWorldTravel(FWorldContext& Context);
+	// 컨텍스트와 게임 인스턴스는 두고 월드만 씬 파일로 바꾼다. 읽기에 실패하면 지금 월드를 유지한다.
+	bool LoadMap(FWorldContext& Context, const FString& MapPath);
+	// 월드 하나를 정리하고 지운다. DestroyWorldContext와 LoadMap이 같이 쓴다.
+	void DestroyWorld(UWorld* InWorld);
+
 protected:
+	// 맵 교체 직전·직후 알림. 에디터는 PIE 월드 포인터와 패널을 여기서 갱신한다.
+	virtual void PreLoadMap(FWorldContext& Context) {}
+	virtual void PostLoadMap(FWorldContext& Context) {}
+
 	UAssetManager* AssetManager;
 
 	FEngineLoop& GetEngineLoop() const { return *EngineLoop; }

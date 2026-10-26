@@ -14,6 +14,8 @@
 #include "Engine/World.h"
 #include "Engine/Engine.h"
 #include "Engine/GameViewportClient.h"
+#include "Engine/GameplayStatics.h"
+#include "Engine/GameInstance.h"
 #include "UI/UserWidget.h"
 #include "UI/Button.h"
 #include "UI/TextBlock.h"
@@ -35,6 +37,33 @@ namespace
 		return Ref
 			? Ref->Get()
 			: nullptr;
+	}
+
+
+	UWorld* WorldFromEnv(sol::this_environment& ThisEnv, const char* FuncName)
+	{
+		AActor* Owner = OwnerFromEnv(ThisEnv);
+		UWorld* World = Owner ? Owner->GetWorld() : nullptr;
+		if (!World)
+			throw sol::error(FString(FuncName) + " must be called from an actor script.");
+		return World;
+	}
+
+	void RegisterGameplay(sol::state& Lua)
+	{
+		// 실제 전환은 다음 Tick 시작. 호출한 뒤의 코드도 이번 프레임에는 그대로 실행된다.
+		Lua.set_function("OpenLevel", [](sol::this_environment ThisEnv, const FString& LevelName) {
+			UGameplayStatics::OpenLevel(WorldFromEnv(ThisEnv, "OpenLevel"), LevelName);
+			});
+		Lua.set_function("SetGameValue", [](sol::this_environment ThisEnv, const FString& Key, double Value) {
+			if (UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(WorldFromEnv(ThisEnv, "SetGameValue")))
+				GameInstance->SetValue(Key, Value);
+			});
+		Lua.set_function("GetGameValue", [](sol::this_environment ThisEnv, const FString& Key, sol::optional<double> Default) {
+			const double Fallback = Default.value_or(0.0);
+			UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(WorldFromEnv(ThisEnv, "GetGameValue"));
+			return GameInstance ? GameInstance->GetValue(Key, Fallback) : Fallback;
+			});
 	}
 
 	void RegisterWidget(sol::state& Lua)
@@ -465,6 +494,7 @@ namespace FLuaBindings
 		RegisterInput(Lua);
 		RegisterCoroutine(Lua);
 		RegisterWidget(Lua);
+		RegisterGameplay(Lua);
 	}
 
 	void FlushPendingDestroy(UWorld* World)

@@ -24,8 +24,16 @@ public:
 	virtual bool InitializeStandalone(const FString& MapPath);
 	// 게임 뷰포트를 만들고 월드 BeginPlay를 호출한다. PIE와 패키징 게임이 같이 쓴다.
 	virtual bool StartGameInstance();
+
+	void SetValue(const FString& Key, double Value) { Values.FindOrAdd(Key) = Value; }
+	double GetValue(const FString& Key, double Default = 0.0) const
+	{
+		const double* Found = Values.Find(Key);
+		return Found ? *Found : Default;
+	}
 	
 	UEngine* GetEngine() const;
 private:
 	FWorldContext* WorldContext = nullptr;
+	TMap<FString, double> Values;
 };

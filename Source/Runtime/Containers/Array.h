@@ -288,6 +288,16 @@ public:
 		return mDatas.emplace_back();
 	}
 
+	template<typename... ArgsType>
+	[[nodiscard]] T& Emplace_GetRef(ArgsType&&... Args)
+	{
+		return mDatas.emplace_back(std::forward<ArgsType>(Args)...);
+	}
+
+	void Swap(TArray<T>& Other)
+	{
+		mDatas.swap(Other.mDatas);
+	}
 
 private:
 	std::vector<T> mDatas;

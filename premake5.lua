@@ -24,6 +24,7 @@ IncludeDir["json"]  = "Source/ThirdParty/json"
 IncludeDir["DDSLoader"] = "Source/ThirdParty/DDSLoader"
 IncludeDir["lua"]   = "Source/ThirdParty/lua/src"
 IncludeDir["sol2"]  = "Source/ThirdParty/sol2/include"
+IncludeDir["miniaudio"]  = "Source/ThirdParty/miniaudio"
 
 -- premake의 filter는 project()를 만나면 초기화된다.
 -- 두 프로젝트가 같은 런타임(/MDd vs /MD)으로 컴파일되지 않으면 링크가 실패하므로
@@ -167,6 +168,7 @@ project "HitoriEngine"
 		"%{IncludeDir.stb}",
 		"%{IncludeDir.json}",
 		"%{IncludeDir.DDSLoader}",
+		"%{IncludeDir.miniaudio}",
 		"%{IncludeDir.lua}",
 		"%{IncludeDir.sol2}",
 	}
@@ -183,6 +185,10 @@ project "HitoriEngine"
 	-- __NULL_IMPORT_DESCRIPTOR 중복 정의(LNK2005)가 난다.
 
 	filter "files:Source/ThirdParty/DDSLoader/**.cpp"
+		enablepch "Off"
+	filter {}
+
+	filter "files:Source/Runtime/Audio/MiniaudioImpl.cpp"
 		enablepch "Off"
 	filter {}
 
