@@ -69,6 +69,8 @@ public:
 	void SetWorld(UWorld* InWorld);
 
 	void SetCameraComponent(UCameraComponent* InCameraComponent);
+	// 이 뷰포트가 실제로 그리고 마우스 Ray를 만드는 카메라. 첫 CalcSceneView 전에는 null일 수 있다.
+	UCameraComponent* GetCameraComponent() const { return CameraComponent; }
 
 	void Reset();
 

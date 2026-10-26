@@ -48,22 +48,21 @@ struct FViewContext
 
 	FMatrix BuildBillboardMatrix(const FVector& WorldPosition, float Width, float Height) const
 	{
-		// 뷰포트 카메라를 바라보는 방향 벡터 계산
-		FVector Facing = bOrthographic
-			? (CameraForward * -1.0f)
-			: (CameraPosition - WorldPosition).Normalized();
-		FVector Up = FVector(0.0f, 0.0f, 1.0f);
-		FVector Right = FVector::Cross(Up, Facing).Normalized();
+		// 카메라 화면에 나란하게 세운다. 면은 카메라 쪽(앞쪽의 반대)을 보고, 가로는 화면 오른쪽, 세로는 화면 위쪽이다.
+		// 카메라 위치 대신 카메라 방향을 쓰므로 화면 가장자리에서도 기울지 않고, 텍스처 좌우도 뒤집히지 않는다.
+		FVector Forward = CameraForward.Normalized();
+		if (Forward.Length() <= 1e-6f)
+			Forward = (WorldPosition - CameraPosition).Normalized(); // 방향 정보가 없는 뷰는 카메라에서 빌보드 쪽을 앞으로 본다
+		// 왼손 좌표계(X 앞, Y 오른쪽, Z 위)에서 Up × Forward가 화면 오른쪽이다.
+		FVector Right = FVector::Cross(FVector(0.0f, 0.0f, 1.0f), Forward).Normalized();
 		if (Right.Length() <= 1e-6f)
-		{
-			Up = FVector(0.0f, 1.0f, 0.0f);
-			Right = FVector::Cross(Up, Facing).Normalized();
-		}
-		FVector RealUp = FVector::Cross(Facing, Right).Normalized();
+			Right = FVector(0.0f, 1.0f, 0.0f); // 수직으로 내려다보거나 올려다보는 카메라
+		const FVector Up = FVector::Cross(Forward, Right).Normalized();
+		const FVector Facing = Forward * -1.0f;
 		FMatrix Matrix = FMatrix::Identity;
 		Matrix.M[0][0] = Facing.X;  Matrix.M[0][1] = Facing.Y;  Matrix.M[0][2] = Facing.Z;
 		Matrix.M[1][0] = Right.X * Width;  Matrix.M[1][1] = Right.Y * Width;  Matrix.M[1][2] = Right.Z * Width;
-		Matrix.M[2][0] = RealUp.X * Height; Matrix.M[2][1] = RealUp.Y * Height; Matrix.M[2][2] = RealUp.Z * Height;
+		Matrix.M[2][0] = Up.X * Height; Matrix.M[2][1] = Up.Y * Height; Matrix.M[2][2] = Up.Z * Height;
 		Matrix.M[3][0] = WorldPosition.X; Matrix.M[3][1] = WorldPosition.Y; Matrix.M[3][2] = WorldPosition.Z;
 		return Matrix;
 	}

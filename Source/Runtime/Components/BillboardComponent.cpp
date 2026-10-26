@@ -6,6 +6,29 @@
 
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
+#include "Engine/Engine.h"
+#include "Engine/GameViewportClient.h"
+#include "Camera/CameraActor.h"
+#include "Camera/CameraComponent.h"
+#include "Render/RenderPacket.h"
+
+namespace
+{
+	// 판정 면은 그려지는 면과 같은 카메라를 봐야 한다. 게임 월드는 게임 뷰포트가 실제로 그리고
+	// 마우스 Ray(ScreenToWorldRay)를 만드는 카메라(PlayerCamera)를, 그 밖의 월드는 MainCamera를 쓴다.
+	UCameraComponent* FindTraceCamera(const UWorld* World)
+	{
+		if (!World) return nullptr;
+		if (GEngine)
+		{
+			FWorldContext* Context = GEngine->GetWorldContextFromWorld(World);
+			if (Context && Context->GameViewport && Context->GameViewport->GetCameraComponent())
+				return Context->GameViewport->GetCameraComponent();
+		}
+		ACameraActor* MainCamera = World->GetMainCamera();
+		return MainCamera ? MainCamera->GetCameraComponent() : nullptr;
+	}
+}
 
 // Billboard 컴포넌트의 초기 상태를 구성한다.
 UBillboardComponent::UBillboardComponent()
@@ -116,55 +139,27 @@ void UBillboardComponent::Serialize(json& Handle, bool bIsLoading)
 	}
 }
 
-// 카메라를 향하는 기저와 위치·크기로 Billboard 행렬을 구성한다.
+// 판정용 Billboard 행렬. 렌더(SubmitToRenderQueue)와 같은 FViewContext::BuildBillboardMatrix로 만들어
+// 화면에 보이는 면과 Raycast에 맞는 면이 같도록 한다.
 void UBillboardComponent::GetWorldTransformedMatrix(FMatrix* OutWorldMatrix) const
 {
-	OutWorldMatrix->SetIdentity();
-
-	const FTransform& Transform = GetOwner()->GetWorld()->GetMainCamera()->GetCameraComponent()->GetTransform();
-
-	FVector Right = Transform.GetRight().Normalized();
-	FVector Up = Transform.GetUp().Normalized();
-	FVector Forward = Transform.GetForward().Normalized();
-
-	FVector BbUp = Transform.GetUp().Normalized();
-	FVector BbRight = FVector::Cross(BbUp, Forward).Normalized();
-	FVector BbFwd = FVector::Cross(BbUp, BbRight);
-
-	if (BbRight.Length() <= 1e-6f)
-	{
-		BbRight = Right;
-		BbFwd = FVector::Cross(BbUp, BbRight);
-	}
-
 	const FVector WorldPos = GetWorldLocation();
+	const FVector WorldScale = GetWorldScale3D();
+	const float Width = bEditorIcon ? IconSize : WorldScale.Y;
+	const float Height = bEditorIcon ? IconSize : WorldScale.Z;
 
-	// Icon 일 때만 IconSize 넘기기
-	const FVector Scale = IsEditorIcon() ? FVector(IconSize, IconSize, IconSize) : GetWorldScale3D();
-	
-	// X -> Billboard Forward
-	OutWorldMatrix->M[0][0] = BbFwd.X * Scale.X;
-	OutWorldMatrix->M[0][1] = BbFwd.Y * Scale.X;
-	OutWorldMatrix->M[0][2] = BbFwd.Z * Scale.X;
-	OutWorldMatrix->M[0][3] = 0.0f;
-
-	// Y -> Billboard Right
-	OutWorldMatrix->M[1][0] = BbRight.X * Scale.Y;
-	OutWorldMatrix->M[1][1] = BbRight.Y * Scale.Y;
-	OutWorldMatrix->M[1][2] = BbRight.Z * Scale.Y;
-	OutWorldMatrix->M[1][3] = 0.0f;
-
-	// Z -> Billboard Up
-	OutWorldMatrix->M[2][0] = BbUp.X * Scale.Z;
-	OutWorldMatrix->M[2][1] = BbUp.Y * Scale.Z;
-	OutWorldMatrix->M[2][2] = BbUp.Z * Scale.Z;
-	OutWorldMatrix->M[2][3] = 0.0f;
-
-	// Position
-	OutWorldMatrix->M[3][0] = WorldPos.X;
-	OutWorldMatrix->M[3][1] = WorldPos.Y;
-	OutWorldMatrix->M[3][2] = WorldPos.Z;
-	OutWorldMatrix->M[3][3] = 1.0f;
+	FViewContext View;
+	if (UCameraComponent* Camera = FindTraceCamera(GetOwner() ? GetOwner()->GetWorld() : nullptr))
+	{
+		View.CameraPosition = Camera->GetWorldLocation();
+		View.CameraForward = Camera->GetWorldRotation().Quaternion().GetForwardVector();
+		View.bOrthographic = Camera->GetIsOrthogonal();
+	}
+	else
+	{
+		View.CameraPosition = WorldPos - FVector(1.0f, 0.0f, 0.0f); // 카메라가 없으면 -X 쪽에서 보는 것으로 둔다
+	}
+	*OutWorldMatrix = View.BuildBillboardMatrix(WorldPos, Width, Height);
 }
 
 void UBillboardComponent::Serialize(FStructuredArchive::FRecord Record)
