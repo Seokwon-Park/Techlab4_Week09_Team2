@@ -3,7 +3,7 @@
 function BeginPlay()
     mywidget = CreateWidget("Assets/UI/MinsangUI.widget")
     mywidget:AddToViewport();
-    mywidget:Find("MinsangButton"):BindClick(function() OpenLevel("test") end)
+    mywidget:Find("MinsangButton"):BindClick(function() PlaySound2D("Assets/Sounds/Click.wav") end)
 end
 
 function EndPlay()

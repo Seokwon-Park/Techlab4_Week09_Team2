@@ -12,7 +12,7 @@
 #include "Render/SceneRenderer.h"
 #include "Render/Swapchain.h"
 #include "Render/Texture2D.h"
-
+#include "Audio/AudioDevice.h"
 namespace
 {
 	constexpr const char* GameConfigPath = "Config/DefaultGame.ini";
@@ -73,6 +73,16 @@ void UGameEngine::Tick(float DeltaTime)
 	}
 
 	World->Tick(DeltaTime);
+	if (FAudioDevice* AudioDevice = GetMainAudioDevice())
+	{
+		if (APlayerController* PC = World->GetPlayerController())
+		{
+			FVector Location, Front, Right;
+			//PC->GetAudioListenerPosition(Location, Front, Right);
+			AudioDevice->SetListener(World, Location, Front, Right);
+		}
+		AudioDevice->Update(true);
+	}
 	Viewport.TickUI(DeltaTime);
 	RenderFrame(Viewport, World);
 	FStatRegistry::EndFrame();

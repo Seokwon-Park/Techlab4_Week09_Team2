@@ -12,6 +12,7 @@
 
 class UGameInstance;
 class FGameViewportClient;
+class FAudioDevice;
 
 struct FWorldContext
 {
@@ -96,12 +97,17 @@ public:
 	// 월드 하나를 정리하고 지운다. DestroyWorldContext와 LoadMap이 같이 쓴다.
 	void DestroyWorld(UWorld* InWorld);
 
+	FAudioDevice* GetMainAudioDevice() const { return MainAudioDevice; }
+	void InitializeAudioDevice();     // UE UEngine::InitializeAudioDeviceManager
+	void ShutdownAudioDevice();
+
 protected:
 	// 맵 교체 직전·직후 알림. 에디터는 PIE 월드 포인터와 패널을 여기서 갱신한다.
 	virtual void PreLoadMap(FWorldContext& Context) {}
 	virtual void PostLoadMap(FWorldContext& Context) {}
 
 	UAssetManager* AssetManager;
+	FAudioDevice* MainAudioDevice = nullptr;
 
 	FEngineLoop& GetEngineLoop() const { return *EngineLoop; }
 

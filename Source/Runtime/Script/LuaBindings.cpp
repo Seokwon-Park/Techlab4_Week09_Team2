@@ -23,6 +23,11 @@
 #include "UI/Button.h"
 #include "UI/TextBlock.h"
 
+
+#include "Asset/AssetManager.h"
+#include "Components/AudioComponent.h"
+#include "Engine/Classes/Sound/SoundWave.h"
+
 namespace
 {
 	struct FLuaClickBinding { AActor* Owner; FLuaWidgetRef Button; };
@@ -50,6 +55,26 @@ namespace
 		if (!World)
 			throw sol::error(FString(FuncName) + " must be called from an actor script.");
 		return World;
+	}
+
+
+	void RegisterAudio(sol::state& Lua)
+	{
+		Lua.set_function("PlaySound2D", [](sol::this_environment ThisEnv, const FString& Path,
+			sol::optional<float> Volume, sol::optional<float> Pitch)
+			{
+				if (USoundWave* Sound = UAssetManager::Get().LoadSound(Path))
+					UGameplayStatics::PlaySound2D(WorldFromEnv(ThisEnv, "PlaySound2D"), Sound,
+						Volume.value_or(1.0f), Pitch.value_or(1.0f));
+			});
+
+		Lua.set_function("PlaySoundAtLocation", [](sol::this_environment ThisEnv, const FString& Path,
+			const FVector& Location, sol::optional<float> Volume, sol::optional<float> Pitch)
+			{
+				if (USoundWave* Sound = UAssetManager::Get().LoadSound(Path))
+					UGameplayStatics::PlaySoundAtLocation(WorldFromEnv(ThisEnv, "PlaySoundAtLocation"), Sound,
+						Location, Volume.value_or(1.0f), Pitch.value_or(1.0f));
+			});
 	}
 
 	void RegisterGameplay(sol::state& Lua)
@@ -178,6 +203,16 @@ namespace
 		Lua.new_usertype<FLuaActorRef>("Actor",
 			sol::no_constructor, // 액터는 Lua에서 생성할 수 없음
 
+			"PlayAudio", [](const FLuaActorRef& Ref)
+			{
+				for (UActorComponent* Component : Deref(Ref).GetComponents())
+					if (UAudioComponent* Audio = Cast<UAudioComponent>(Component)) { Audio->Play(); return; }
+			},
+			"StopAudio", [](const FLuaActorRef& Ref)
+			{
+				for (UActorComponent* Component : Deref(Ref).GetComponents())
+					if (UAudioComponent* Audio = Cast<UAudioComponent>(Component)) { Audio->Stop(); return; }
+			},
 			"UUID", sol::property([](const FLuaActorRef& Ref) { return Ref.UUID; }),
 			"IsValid", [](const FLuaActorRef& Ref) { return Ref.Get() != nullptr; },
 			"Name", sol::property([](const FLuaActorRef& Ref) { return Deref(Ref).GetName(); }),
@@ -597,6 +632,7 @@ namespace FLuaBindings
 		RegisterCoroutine(Lua);
 		RegisterWidget(Lua);
 		RegisterGameplay(Lua);
+		RegisterAudio(Lua);
 	}
 
 	void FlushPendingDestroy(UWorld* World)

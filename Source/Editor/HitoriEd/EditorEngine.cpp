@@ -50,6 +50,8 @@
 
 #include "Physics/Collision.h"
 
+#include "Audio/AudioDevice.h"
+
 namespace
 {
 	DECLARE_CYCLE_STAT("Viewport Update", STAT_ViewportUpdate);
@@ -333,6 +335,23 @@ void UEditorEngine::Tick(const float DeltaTime)
 	BeginFrame(DeltaTime);
 	UpdateViewportState(DeltaTime);
 	TickWorldAndEditor(DeltaTime);
+	if (FAudioDevice* AudioDevice = GetMainAudioDevice())
+	{
+		UWorld* ActiveWorld = GetActiveWorld();
+		APlayerController* PC = PlayWorld ? PlayWorld->GetPlayerController() : nullptr;
+		if (PC)
+		{
+			FVector Location, Front, Right;
+			//PC->GetAudioListenerPosition(Location, Front, Right);
+			AudioDevice->SetListener(PlayWorld, Location, Front, Right);
+		}
+		else
+		{
+			// 에디터 뷰포트 카메라: 활성 FEditorViewportClient의 GetViewLocation() / 회전으로 채운다.
+			// (뷰포트 레이아웃 재구성 작업과 겹치므로, 그 작업에서 "활성 뷰포트 클라이언트" 접근자를 쓰는 게 깔끔하다)
+		}
+		AudioDevice->Update(!bIsPaused);
+	}
 	RenderViewports();
 	EndFrame();
 }

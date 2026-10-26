@@ -9,6 +9,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/IceVolumeComponent.h"
 #include "Components/SlidingMovementComponent.h"
+#include "Audio/AudioDevice.h"
+#include "Components/AudioComponent.h"
 
 #include "Serialization/JsonArchive.h"
 
@@ -23,13 +25,35 @@ bool UEngine::Init()
 	UCapsuleComponent::StaticClass();
 	UIceVolumeComponent::StaticClass();
 	USlidingMovementComponent::StaticClass();
+	UAudioComponent::StaticClass();   // Add Component 목록에 뜨도록 (다른 컴포넌트와 동일)
+
 
 	AssetManager = NewObject<UAssetManager>();
+	InitializeAudioDevice();          // 실패해도 엔진은 계속 (UE도 장치가 없으면 Null 디바이스로 돈다)
 	/*World = FObjectFactory::ConstructObject<UWorld>();
 
 	if (!World || !World->Init()) return false;*/
 
  	return true;
+}
+
+void UEngine::InitializeAudioDevice()
+{
+	MainAudioDevice = new FAudioDevice();
+	if (!MainAudioDevice->Init())
+	{
+		HTR_LOG(Warning, "[Audio] No audio device. Sound disabled.");
+		delete MainAudioDevice;
+		MainAudioDevice = nullptr;
+	}
+}
+
+void UEngine::ShutdownAudioDevice()
+{
+	if (!MainAudioDevice) return;
+	MainAudioDevice->Teardown();      // 오디오 스레드 종료. 이후 USoundWave를 지워도 안전
+	delete MainAudioDevice;
+	MainAudioDevice = nullptr;
 }
 
 FWorldContext& UEngine::CreateNewWorldContext(EWorldType WorldType)
@@ -103,7 +127,10 @@ void UEngine::DestroyWorldContext(UWorld* InWorld)
 			WorldContextlist[idx].SetCurrentWorld(nullptr);
 			WorldContextlist.RemoveAt(idx);
 			if (ContextType == EWorldType::PIE || ContextType == EWorldType::Game)
+			{
+				if (MainAudioDevice) MainAudioDevice->Flush(InWorld);
 				DestroyWorld(InWorld);
+			}
 			break;
 		}
 	}
