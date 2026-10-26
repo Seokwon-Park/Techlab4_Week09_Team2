@@ -437,6 +437,29 @@ void FUIEditorPanel::HandleShortcuts()
 	if (ImGui::IsKeyPressed(ImGuiKey_Delete)) DeleteSelected();
 }
 
+void FUIEditorPanel::NewAsset(const FString& Path)
+{
+	UCanvasPanel* NewRoot = NewObject<UCanvasPanel>();
+	NewRoot->WidgetName = "Root";
+	NewRoot->Anchors = FVector4(0.0f, 0.0f, 1.0f, 1.0f);   // 화면 전체
+	NewRoot->Offsets = FVector4(0.0f, 0.0f, 0.0f, 0.0f);
+	NewRoot->Visibility = 0;   // HitTestInvisible이면 자식 버튼이 클릭을 못 받는다
+
+	delete Root;
+	Root = NewRoot;
+	Selected = nullptr;
+	AssetPath = Path;
+	ParentClassName = "UUserWidget";
+	PreviewSize = FVector2(1920.0f, 1080.0f);
+
+	UndoStack.Reset();
+	RedoStack.Reset();
+	LastSnapshot = Snapshot();
+
+	Save();          // 디스크에 바로 만든다 (콘텐츠 드로어에 곧장 보이도록)
+	SetOpen(true);
+}
+
 void FUIEditorPanel::OpenAsset(const FString& Path)
 {
 	std::ifstream In(Path);

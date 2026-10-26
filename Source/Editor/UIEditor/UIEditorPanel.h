@@ -16,6 +16,7 @@ public:
 	virtual void OnRender() override;
 	virtual const char* GetPanelName() const override { return "UI Editor"; }
 
+	void NewAsset(const FString& Path);
 	void OpenAsset(const FString& Path);
 	void Save();
 
@@ -44,6 +45,7 @@ private:
 	void CommitUndoIfChanged();
 	void Undo();
 	void Redo();
+
 
 	ImVec2 ToScreen(float X, float Y) const { return ImVec2(CanvasMin.x + X * ViewScale, CanvasMin.y + Y * ViewScale); }
 

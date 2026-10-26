@@ -504,17 +504,6 @@ void FSettingsPanel::DrawDefaultPawnSettings()
         UStaticMesh* Mesh = PawnMesh->GetStaticMesh();
         if (DrawMeshPicker("Pawn Mesh", Mesh)) PawnMesh->SetStaticMesh(Mesh);
     }
-    int Type = Pawn->UsesStaticMeshProjectiles() ? 1 : 0;
-    const char* Types[] = {"FireBall", "StaticMesh"};
-    if (ImGui::Combo("Projectile Type", &Type, Types, IM_ARRAYSIZE(Types)))
-        Pawn->SetUseStaticMeshProjectiles(Type == 1);
-    if (Pawn->UsesStaticMeshProjectiles())
-    {
-        UStaticMesh* Mesh = Pawn->GetProjectileMesh();
-        if (DrawMeshPicker("Projectile Mesh", Mesh)) Pawn->SetProjectileMesh(Mesh);
-        if (!Mesh) ImGui::TextDisabled("Select a projectile mesh to fire.");
-    }
-    ImGui::TextDisabled("Projectile settings apply to the next shot.");
 }
 
 void FSettingsPanel::DrawShadowMapSettings()

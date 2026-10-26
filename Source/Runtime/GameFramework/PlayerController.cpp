@@ -1,7 +1,6 @@
 #include "EnginePCH.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/Pawn.h"
-#include "GameFramework/DefaultPawn.h"
 #include <cstring>
 
 APlayerController::APlayerController()
@@ -33,13 +32,6 @@ void APlayerController::ProcessPlayerInput(float DeltaTime)
 	if (Right != 0.0f) PossessedPawn->AddMovementInput(Rotation.GetRightVector(), Right * DeltaTime);
 }
 
-void APlayerController::GetPlayerViewCamera(FVector& OutLocation, FRotator& OutRotation) const
-{
-	if (!PossessedPawn) return;
-	OutLocation = PossessedPawn->GetActorLocation();
-	OutRotation = PossessedPawn->GetActorRotation();
-}
-
 void APlayerController::Possess(APawn* InPawn)
 {
 	if (PossessedPawn == InPawn) return;
@@ -57,10 +49,7 @@ void APlayerController::UnPossess()
 void APlayerController::InputKey(int32 Key, bool bDown)
 {
 	if (Key < 0 || Key >= 256) return;
-	const bool bPressed = bDown && !bKeyDown[Key];
 	bKeyDown[Key] = bDown;
-	if (bPressed && Key == static_cast<int32>(EKeyCode::LButton))
-		if (ADefaultPawn* Pawn = Cast<ADefaultPawn>(PossessedPawn)) Pawn->FireProjectile();
 }
 
 void APlayerController::InputAxis(EGameInputAxis Axis, float Delta)

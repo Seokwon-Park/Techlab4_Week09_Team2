@@ -53,6 +53,37 @@ void FContentDrawerPanel::OnRender()
 
 	ImGui::BeginChild("AssetGridView");
 	{
+		// 빈 곳 우클릭 (항목 위 우클릭은 제외)
+		if (ImGui::BeginPopupContextWindow("##DrawerContext", ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems))
+		{
+			if (ImGui::MenuItem("Create Widget"))
+			{
+				strcpy_s(NewAssetName, "NewWidget");
+				bOpenCreateWidget = true;   // 메뉴 팝업 안에서 바로 다른 팝업을 열 수 없어 다음 줄에서 연다
+			}
+			ImGui::EndPopup();
+		}
+		if (bOpenCreateWidget) { ImGui::OpenPopup("Create Widget"); bOpenCreateWidget = false; }
+
+		if (ImGui::BeginPopupModal("Create Widget", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			ImGui::InputText("Name", NewAssetName, sizeof(NewAssetName));
+			const fs::path Target = CurrentPath / (FString(NewAssetName) + ".widget");
+			const bool bExists = fs::exists(Target);
+			if (bExists) ImGui::TextColored(ImVec4(1, 0.4f, 0.4f, 1), "A file with this name already exists.");
+
+			ImGui::BeginDisabled(bExists || NewAssetName[0] == '\0');
+			if (ImGui::Button("Create") && OnCreateWidget)
+			{
+				OnCreateWidget(Target.generic_string());   // "Assets/UI/GameOver.widget" 형식
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::EndDisabled();
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel")) ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
+		}
+
 		// 그리드 레이아웃 계산
 		float padding = 16.0f;
 		float thumbnailSize = 80.0f;

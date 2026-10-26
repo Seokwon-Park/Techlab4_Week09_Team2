@@ -41,6 +41,9 @@ bool UGameEngine::Init()
 {
 	if (!Super::Init()) return false;
 
+	UIRenderer = MakeUnique<FUIRenderer>();
+	UIRenderer->Init();
+
 	if (!LoadMap(Settings.StartupMap))
 	{
 		const FString Message = "Cannot open startup map:\n" + Settings.StartupMap +
@@ -92,6 +95,7 @@ void UGameEngine::Tick(float DeltaTime)
 	}
 
 	World->Tick(DeltaTime);
+	Viewport.TickUI(DeltaTime);
 	RenderFrame(Viewport, World);
 	FStatRegistry::EndFrame();
 }
@@ -112,6 +116,8 @@ void UGameEngine::DispatchInput(FGameViewportClient& Viewport, float DeltaTime)
 		if (FInputSystem::IsKeyPressed(Key))  Viewport.InputKey(nullptr, static_cast<int32>(Key), true);
 		if (FInputSystem::IsKeyReleased(Key)) Viewport.InputKey(nullptr, static_cast<int32>(Key), false);
 	}
+
+	Viewport.MouseMove(nullptr, FInputSystem::GetMouseX(), FInputSystem::GetMouseY());
 
 	constexpr EMouseButton MouseButtons[] = { EMouseButton::Left, EMouseButton::Right };
 	for (EMouseButton Button : MouseButtons)
@@ -143,7 +149,16 @@ void UGameEngine::RenderFrame(FGameViewportClient& Viewport, UWorld* World)
 	FSceneRenderer SceneRenderer(World, SceneView, Viewport.GetRenderData());
 	SceneRenderer.InitViews(Loop.GetRenderer(), Options);
 	// 에디터와 같은 FSceneRenderer::Render. 에디터 전용 패스가 없으니 ExtraPasses는 넘기지 않는다.
-	if (!SceneRenderer.Render(Loop.GetRenderer(), Viewport.GetViewTargets(), Options))
+	if (!SceneRenderer.Render(Loop.GetRenderer(), Viewport.GetViewTargets(), Options, 
+		[this, &Viewport, Width, Height](FScenePassCallbacks& Callbacks)
+		{
+			Callbacks.Overlays.GameUI = [this, &Viewport, Width, Height]
+				{
+					if (!UIRenderer) return;
+					Viewport.PaintUI(UIDrawList);
+					UIRenderer->Render(UIDrawList, Width, Height);
+				};
+		}))
 		return;
 
 	// FXAA를 켜면 SceneColor가 FXAA 결과로 바뀌어 있다. PIE 별도 창과 같은 방식으로 복사한다.
@@ -161,4 +176,5 @@ void UGameEngine::PreExit()
 	PendingMap.clear();
 	if (FWorldContext* Context = GetWorldContextFromType(EWorldType::Game))
 		DestroyWorldContext(Context->World());
+	UIRenderer.reset();
 }
