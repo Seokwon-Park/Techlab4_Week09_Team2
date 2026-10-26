@@ -61,6 +61,8 @@ bool FSceneLightResources::Init()
 
 void FSceneLightResources::CreateShadowAtlasIfNeed(uint32 ShadowAtlasMapWidth, uint32 ShadowAtlasMapHeight, uint32 NeedAtlasCount)
 {
+	// 그림자 뷰가 없어도 렌더 그래프가 아틀라스를 import하므로 최소 1장은 만든다. ArraySize 0이면 생성이 실패해 씬 패스 전체가 빠진다.
+	NeedAtlasCount = std::max(NeedAtlasCount, 1u);
 	if (!SceneLightShadowMapAtlas || ShadowAtlasMapWidth > SceneLightShadowMapAtlas->GetWidth() || ShadowAtlasMapHeight > SceneLightShadowMapAtlas->GetHeight() || NeedAtlasCount > SceneLightShadowMapAtlas->GetArraySize())
 	{
 		FTextureDesc Desc{};
