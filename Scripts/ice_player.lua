@@ -34,6 +34,25 @@ local function Respawn()
     InitMovementState()
 end
 
+-- 개발자 테스트용: 가장 가까운 StageN_Start를 현재 Stage로 보고 앞/뒤 Stage 시작 위치로 옮긴다.
+local function MoveStage(offset)
+    local current, nearest = nil, math.huge
+    local index = 1
+    local start = GetActorByName("Stage1_Start")
+    while start do
+        local distance = (start.Location - obj.Location):Length()
+        if distance < nearest then current, nearest = index, distance end
+        index = index + 1
+        start = GetActorByName("Stage" .. index .. "_Start")
+    end
+    local target = current and GetActorByName("Stage" .. (current + offset) .. "_Start")
+    if not target then return end
+
+    _G.RespawnLocation = target.Location + FVector(0, 0, 0.5)
+    Respawn()
+    print("[Dev] Stage " .. current .. " -> " .. (current + offset))
+end
+
 local function Die(wall)
     if player.isDead then return end
     player.isDead = true
@@ -132,6 +151,8 @@ function Tick(dt)
         Respawn()
         return
     end
+    if IsKeyPressed("q") then MoveStage(-1) return end
+    if IsKeyPressed("e") then MoveStage(1) return end
 
     if player.isDead then
         player.respawnTime = player.respawnTime - dt

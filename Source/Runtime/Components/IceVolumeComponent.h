@@ -18,8 +18,8 @@ public:
 	}
 
 	FString GetIceType() const { return IceType; }
-	void SetIceType(const FString& InIceType);
-
+	void SetIceType(const FString& InIceType);  
+	 
 private:
 	FString IceType = "default"; // default, slippery, reverse
 };

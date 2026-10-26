@@ -1,5 +1,5 @@
 -- 액터마다 별도 environment에서 실행된다. obj는 이 스크립트가 붙은 액터다.
-local cameraSpeed = 10
+local cameraSpeed = 15
 local EDGE_THRESHOLD = 0.1
 
 _G.GameEvents = _G.GameEvents or {}

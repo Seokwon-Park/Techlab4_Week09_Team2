@@ -2,6 +2,7 @@
 -- 골 액터 이름(StageN_Goal)에서 번호를 읽고 StageN+1_Start 액터 위치로 보낸다.
 -- 다음 Start가 없으면 마지막 Stage다. 그래서 Stage 개수나 간격이 바뀌어도 이 스크립트는 그대로 쓴다.
 local SPAWN_HEIGHT = 0.5
+local GOAL_FREEZE_SECONDS = 1.0 -- 골에 닿은 뒤 다음 Stage로 넘어가기 전까지 조작을 멈추는 시간
 local state = script_state
 
 function BeginPlay()
@@ -20,23 +21,32 @@ function OnBeginOverlap(other)
     end
 
     state.used = true
-    local nextStart = GetActorByName("Stage" .. (stageNumber + 1) .. "_Start")
-    if not nextStart then
-        print("[Stage] 모든 Stage 완료")
-        return
-    end
+    other:SetMovementEnabled(false) -- 멈춰 있는 동안 클릭/관성/장애물 충돌을 받지 않는다
+    StartCoroutine(function()
+        wait(GOAL_FREEZE_SECONDS)
+        state.used = false -- Q로 되돌아와 다시 도착해도 동작하도록 푼다
+        if not other:IsValid() then return end
 
-    local nextSpawn = nextStart.Location + FVector(0, 0, SPAWN_HEIGHT)
-    _G.RespawnLocation = nextSpawn
+        local nextStart = GetActorByName("Stage" .. (stageNumber + 1) .. "_Start")
+        if not nextStart then
+            other:SetMovementEnabled(true)
+            print("[Stage] 모든 Stage 완료")
+            return
+        end
 
-    other:ResetMovement()
-    other.Velocity = FVector(0, 0, 0)
-    other.Location = nextSpawn
-    _G.bIsMoving = false
+        local nextSpawn = nextStart.Location + FVector(0, 0, SPAWN_HEIGHT)
+        _G.RespawnLocation = nextSpawn
 
-    local events = _G.GameEvents
-    if events and events.ResetCamera then
-        events.ResetCamera()
-    end
-    print("[Stage] " .. stageNumber .. " -> " .. (stageNumber + 1))
+        other:ResetMovement()
+        other.Velocity = FVector(0, 0, 0)
+        other.Location = nextSpawn
+        _G.bIsMoving = false
+        other:SetMovementEnabled(true)
+
+        local events = _G.GameEvents
+        if events and events.ResetCamera then
+            events.ResetCamera()
+        end
+        print("[Stage] " .. stageNumber .. " -> " .. (stageNumber + 1))
+    end)
 end

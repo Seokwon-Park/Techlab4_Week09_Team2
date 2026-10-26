@@ -8,7 +8,8 @@
 - 점프는 구현하지 않는다. 원본에서 점프로 건너는 간극은 STAGES의 bridges로 일반 바닥을 깐다.
 - 맵 편집이 쉽도록 바닥/빙판 조각마다 액터 하나를 만들고 루트를 월드 좌표에 둔다.
   조각 크기는 루트 Scale이라 Scale만 바꾸면 바닥과 빙판 판정이 함께 늘어난다. 벽만 스테이지당 액터 하나로 묶는다.
-- 원본 장애물(original_map.json의 Obstacles)은 정지 장애물로 둔다. 길을 막는 것은 빼고 출력한다.
+- 원본 장애물(Obstacles)과 이동 경로(MovePaths)로 장애물을 둔다. 경로가 있으면 UPatrolMovementComponent로
+  스크립트 없이 왕복/순환하고, 경로가 없으면 정지 장애물이다. 시작 블록을 덮거나 길을 끊는 것은 빼고 출력한다.
 - 스크립트는 플레이어, 카메라, 골에만 붙인다.
 """
 import json
@@ -65,12 +66,13 @@ STAGES = [
 
 BRIDGE = "="  # 간극을 메운 타일. 일반 바닥으로 만든다.
 
+# 바닥 색은 IceType별로 하나씩: default 파랑, slippery 흰색, reverse 보라, 일반 바닥 회색, 시작/골 진회색.
 COLORS = {
-    "start": (0.19, 0.25, 0.28),
-    "floor": (0.32, 0.36, 0.40),
-    "default": (0.18, 0.62, 0.88),
-    "slippery": (0.62, 0.88, 0.98),
-    "reverse": (0.58, 0.42, 0.86),
+    "start": (0.17, 0.18, 0.20),
+    "floor": (0.46, 0.47, 0.49),
+    "default": (0.15, 0.45, 0.95),
+    "slippery": (0.95, 0.97, 1.00),
+    "reverse": (0.55, 0.30, 0.85),
     "wall": (0.16, 0.30, 0.40),
     "cap": (0.69, 0.91, 0.96),
 }
@@ -101,6 +103,19 @@ OBSTACLE_SIZES = {
 # 스타에서 비콘은 유닛이 밟고 지나가는 표식이라 충돌 없는 마커로 둔다.
 MARKER_UNITS = ("ZergFlagBeacon", "TerranFlagBeacon")
 BUILDING_UNITS = ("InfestedCommandCenter",)
+# 원본 유닛 이동 속도(월드 유닛/초). 원본 최고 속도(픽셀/프레임) × 24프레임 ÷ 32 × TILE로 어림잡았다.
+# 같은 방식으로 저글링은 약 6.2라 플레이어 MoveSpeed 6과 비율이 맞는다.
+UNIT_SPEEDS = {
+    "Zealot": 4.5,
+    "Dragoon": 5.6,
+    "HighTemplar": 3.6,
+    "SCV": 5.5,
+    "Vulture": 7.2,
+    "TassadarZeratulArchon": 5.5,
+    "Mojo": 5.6,
+}
+PATH_MATCH_PIXELS = 48  # 정지 장애물 생성 위치가 이 거리 안의 경로 지점이면 그 장애물이 경로를 따라 움직인다.
+PATH_STAGE_REACH = 4  # 경로 지점이 스테이지 영역 밖이면 이 타일 수 안의 스테이지에 배정한다(공중 유닛은 벽 위로 다닌다).
 
 
 # ------------------------------------------------------------------ 타일 영역
@@ -398,7 +413,24 @@ def obstacle_half_extent(unit):
     return 0.4475 * scale, 0.328 * scale  # baneling.obj 엔진 축 AABB: X -0.353~0.542, Y -0.328~0.328
 
 
-def obstacle_actor(name, unit, cx, cy):
+def patrol_component(offsets, loop, speed):
+    """UPatrolMovementComponent. offsets는 시작 위치 기준 월드 오프셋(최대 3개)."""
+    properties = {
+        "PatrolPointCount": len(offsets),
+        "Speed": speed,
+        "bLoop": loop,
+        "bFaceMoveDirection": True,
+        "bAutoActivate": True,
+        "bHiddenInGame": False,
+        "bVisible": True,
+    }
+    for index in range(3):
+        x, y = offsets[index] if index < len(offsets) else (0.0, 0.0)
+        properties["PatrolPoint%d" % (index + 1)] = {"X": r4(x), "Y": r4(y), "Z": 0.0}
+    return {"Class": "UPatrolMovementComponent", "Name": "PatrolMovement", "Parent": "", "Properties": properties}
+
+
+def obstacle_actor(name, unit, cx, cy, patrol=None):
     if unit in MARKER_UNITS:
         size = 0.9 * TILE
         components = [scene_root((cx, cy, 0.0)),
@@ -411,7 +443,61 @@ def obstacle_actor(name, unit, cx, cy):
         scale = half_x / 0.4475
         # 메시 원점이 앞쪽으로 치우쳐 있어 AABB 중심이 원본 위치에 오도록 X를 당긴다.
         body = mesh("Body", OBSTACLE_MESH, (-0.0945 * scale, 0.0, 0.0), (scale, scale, scale), OBSTACLE_COLOR, True)
-    return actor(name, [scene_root((cx, cy, 0.0)), body])
+    components = [scene_root((cx, cy, 0.0)), body]
+    if patrol:
+        offsets, loop = patrol
+        components.append(patrol_component(offsets, loop, UNIT_SPEEDS.get(unit, 4.0)))
+    return actor(name, components)
+
+
+def build_patrol_routes(move_paths):
+    """원본 Order(Move) 출발→도착 쌍을 유닛별 경로로 묶는다.
+    모든 지점이 들어오고 나가는 화살표를 하나씩 가지면 순환(사각형 순찰), 아니면 끝에서 되돌아오는 왕복이다."""
+    edges = {}
+    for path in move_paths:
+        start = (path["Unit"], tuple(path["From"]))
+        end = (path["Unit"], tuple(path["To"]))
+        edges.setdefault(start, set()).add(end)
+    neighbors = {}
+    for start, ends in edges.items():
+        for end in ends:
+            neighbors.setdefault(start, set()).add(end)
+            neighbors.setdefault(end, set()).add(start)
+
+    routes, seen = [], set()
+    for node in sorted(neighbors):
+        if node in seen:
+            continue
+        group, stack = {node}, [node]
+        while stack:
+            for other in neighbors[stack.pop()]:
+                if other not in group:
+                    group.add(other)
+                    stack.append(other)
+        seen |= group
+        indegree = {n: sum(n in edges.get(m, ()) for m in group) for n in group}
+        loop = all(len(edges.get(n, ())) == 1 and indegree[n] == 1 for n in group)
+        current = min(group) if loop else min(n for n in group if indegree[n] == 0) if any(
+            indegree[n] == 0 for n in group) else min(group)
+        order = [current]
+        while True:
+            following = sorted(edges.get(current, set()) - set(order))
+            if not following:
+                break
+            current = following[0]
+            order.append(current)
+        routes.append({"Unit": node[0], "Points": [list(point) for _, point in order[:4]], "Loop": loop})
+    return routes
+
+
+def route_samples(route, step=8.0):
+    """경로를 따라 step 픽셀마다 지점을 뽑는다. 순환이면 마지막에서 처음으로 가는 구간도 포함한다."""
+    points = route["Points"] + (route["Points"][:1] if route["Loop"] else [])
+    samples = [tuple(points[0])]
+    for (x0, y0), (x1, y1) in zip(points, points[1:]):
+        count = max(1, int(max(abs(x1 - x0), abs(y1 - y0)) / step))
+        samples += [(x0 + (x1 - x0) * i / count, y0 + (y1 - y0) * i / count) for i in range(1, count + 1)]
+    return samples
 
 
 def tiles_blocked_by(unit, px, py):
@@ -428,25 +514,64 @@ def tiles_blocked_by(unit, px, py):
     }
 
 
-def assign_obstacles(stages, obstacles):
-    """원본 장애물을 스테이지에 배정한다. 시작/골을 덮거나 길을 끊는 장애물은 빼고 사유를 남긴다."""
-    def owner(tile):
-        for stage in stages:
-            if tile in stage["Region"]:
-                return stage
-        x, y = tile
-        for stage in stages:
-            if any((x + dx, y + dy) in stage["Region"] for dx in (-1, 0, 1) for dy in (-1, 0, 1)):
-                return stage
-        return None
+def assign_obstacles(stages, obstacles, move_paths):
+    """원본 장애물을 스테이지에 배정한다.
+    이동 경로가 있는 장애물은 경로를 따라 움직이고, 생성 위치를 못 찾은 경로도 경로 첫 지점에 장애물을 만든다.
+    시작 블록을 덮거나(이동 장애물은 경로 전체 기준), 정지 장애물이 길을 끊으면 빼고 사유를 남긴다."""
+    def owner(tiles, reach=1):
+        for tile in tiles:
+            for stage in stages:
+                if tile in stage["Region"]:
+                    return stage
+        best, best_distance = None, reach + 1
+        for x, y in tiles:
+            for stage in stages:
+                for dx in range(-reach, reach + 1):
+                    for dy in range(-reach, reach + 1):
+                        if (x + dx, y + dy) in stage["Region"] and max(abs(dx), abs(dy)) < best_distance:
+                            best, best_distance = stage, max(abs(dx), abs(dy))
+        return best
 
     placed = {stage["Number"]: [] for stage in stages}
     blocked = {stage["Number"]: set() for stage in stages}
     skipped = []
-    for obstacle in obstacles:
+
+    statics = list(obstacles)
+    for route in build_patrol_routes(move_paths):
+        unit, points = route["Unit"], route["Points"]
+        # 같은 유닛의 정지 장애물이 경로 지점 근처에서 만들어졌다면 그 지점에서 출발시킨다.
+        candidates = [
+            (abs(o["Pixel"][0] - p[0]) + abs(o["Pixel"][1] - p[1]), i, o)
+            for o in statics if o["Unit"] == unit
+            for i, p in enumerate(points)
+            if abs(o["Pixel"][0] - p[0]) <= PATH_MATCH_PIXELS and abs(o["Pixel"][1] - p[1]) <= PATH_MATCH_PIXELS
+        ]
+        if candidates:
+            _, index, matched = min(candidates, key=lambda c: c[0])
+            statics.remove(matched)
+            if route["Loop"]:
+                points = points[index:] + points[:index]
+            elif index == len(points) - 1:
+                points = points[::-1]
+        route = {"Unit": unit, "Points": points, "Loop": route["Loop"]}
+        stage = owner([(int(x // 32), int(y // 32)) for x, y in points], PATH_STAGE_REACH)
+        if stage is None:
+            skipped.append((unit, points[0], "route outside stages"))
+            continue
+        swept = set()
+        for x, y in route_samples(route):
+            swept |= tiles_blocked_by(unit, x, y)
+        if swept & stage["Start"]:
+            skipped.append((unit, points[0], "route crosses stage %d start" % stage["Number"]))
+            continue
+        placed[stage["Number"]].append({
+            "Unit": unit, "Pixel": points[0], "Tile": [int(points[0][0] // 32), int(points[0][1] // 32)], "Route": route,
+        })
+
+    for obstacle in statics:
         unit = obstacle["Unit"]
         px, py = obstacle["Pixel"]
-        stage = owner(tuple(obstacle["Tile"]))
+        stage = owner([tuple(obstacle["Tile"])])
         if stage is None:
             skipped.append((unit, obstacle["Tile"], "outside stages"))
             continue
@@ -502,7 +627,14 @@ def build_stage_actors(stage, surface_map, obstacles):
         unit = obstacle["Unit"]
         kind = "Marker" if unit in MARKER_UNITS else "Obstacle"
         cx, cy = frame.point(obstacle["Pixel"][0] / 32.0, obstacle["Pixel"][1] / 32.0)
-        actors.append(obstacle_actor("Stage%d_%s_%02d_%s" % (number, kind, index, unit), unit, cx, cy))
+        patrol = None
+        route = obstacle.get("Route")
+        if route:
+            # 경로 지점을 출발 지점 기준 월드 오프셋으로 바꾼다. 원본 행은 -X, 열은 +Y 방향이다.
+            x0, y0 = route["Points"][0]
+            offsets = [(-(y - y0) / 32.0 * TILE, (x - x0) / 32.0 * TILE) for x, y in route["Points"][1:]]
+            patrol = (offsets, route["Loop"])
+        actors.append(obstacle_actor("Stage%d_%s_%02d_%s" % (number, kind, index, unit), unit, cx, cy, patrol))
     return actors
 
 
@@ -622,7 +754,7 @@ def build(surface_map):
         original = json.load(f)
     stages = build_stage_regions(TileMap(original["Rows"]))
     validate_surface_map(stages, surface_map)
-    placed, skipped = assign_obstacles(stages, original.get("Obstacles", []))
+    placed, skipped = assign_obstacles(stages, original.get("Obstacles", []), original.get("MovePaths", []))
     actors = common_actors()
     for stage in stages:
         actors += build_stage_actors(stage, surface_map, placed[stage["Number"]])
@@ -634,7 +766,14 @@ def preview(stage, obstacles=()):
     region = stage["Region"]
     marks = {}
     for obstacle in obstacles:
-        marks[tuple(obstacle["Tile"])] = "m" if obstacle["Unit"] in MARKER_UNITS else "X"
+        if obstacle["Unit"] in MARKER_UNITS:
+            marks[tuple(obstacle["Tile"])] = "m"
+        elif obstacle.get("Route"):
+            for x, y in obstacle["Route"]["Points"]:
+                marks.setdefault((int(x // 32), int(y // 32)), "o")
+            marks[tuple(obstacle["Tile"])] = "M"
+        else:
+            marks[tuple(obstacle["Tile"])] = "X"
     xs = [x for x, _ in region]
     ys = [y for _, y in region]
     lines = ["Stage %d  tiles x%d-%d y%d-%d" % (stage["Number"], min(xs), max(xs), min(ys), max(ys))]
@@ -660,7 +799,9 @@ def main():
             print(preview(stage, placed[stage["Number"]]) + "\n")
     for number, obstacles in placed.items():
         if obstacles:
-            print("Stage %d obstacles: %s" % (number, ", ".join(o["Unit"] for o in obstacles)))
+            print("Stage %d obstacles: %s" % (number, ", ".join(
+                o["Unit"] + ("(loop)" if o.get("Route", {}).get("Loop") else "(patrol)" if o.get("Route") else "")
+                for o in obstacles)))
     for unit, tile, reason in skipped:
         print("skipped %s at tile %s: %s" % (unit, tile, reason))
     with open(SCENE_PATH, "w", encoding="utf-8", newline="\r\n") as f:
