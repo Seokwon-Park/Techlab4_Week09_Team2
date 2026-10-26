@@ -727,7 +727,7 @@ void UWorld::BeginPlay()
 	for (AActor* Actor : InitialActors)
 		Actor->BeginPlay();
 
-	// PIE 입력 전에 DefaultPawn의 투사체 풀까지 시작한다.
+	// BeginPlay 중 생성된 액터도 PIE 입력 전에 시작한다.
 	while (!BeginPlayList.IsEmpty())
 	{
 		AActor* Actor = BeginPlayList.Peek();

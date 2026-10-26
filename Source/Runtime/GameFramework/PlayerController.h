@@ -14,7 +14,6 @@ public:
 	APlayerController();
 	void Tick(float DeltaTime) override;
 	void ProcessPlayerInput(float DeltaTime);
-	void GetPlayerViewCamera(FVector& OutLocation, FRotator& OutRotation) const;
 	void Possess(APawn* InPawn);
 	void UnPossess();
 	APawn* GetPawn() const { return PossessedPawn; }

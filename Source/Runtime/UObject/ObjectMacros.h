@@ -12,3 +12,14 @@ enum class EObjectFlags : uint32
 };
 
 DEFINE_ENUM_OPERATORS(EObjectFlags)
+
+#define USTRUCT(...)
+#define UCLASS(...)
+#define UPROPERTY(...)
+#define UFUNCTION(...)
+#define UENUM(...)
+#define UMETA(...)
+
+#define BODY_MACRO_COMBINE_INNER(A,B,C,D) A##B##C##D
+#define BODY_MACRO_COMBINE(A,B,C,D) BODY_MACRO_COMBINE_INNER(A,B,C,D)
+#define GENERATED_BODY(...) BODY_MACRO_COMBINE(CURRENT_FILE_ID, _, __LINE__, _GENERATED_BODY)

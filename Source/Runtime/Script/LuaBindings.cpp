@@ -8,13 +8,20 @@
 #include "GameFramework/Actor.h"
 #include "Input/InputSystem.h"
 #include "Script/LuaActorRef.h"
+#include "Script/LuaWidgetRef.h"
 #include "Script/CoroutineScheduler.h"
 #include "Engine/World.h"
 #include "Engine/Engine.h"
 #include "Engine/GameViewportClient.h"
+#include "UI/UserWidget.h"
+#include "UI/Button.h"
+#include "UI/TextBlock.h"
 
 namespace
 {
+	struct FLuaClickBinding { AActor* Owner; FLuaWidgetRef Button; };
+	TArray<FLuaClickBinding> ClickBindings;
+
 	TArray<FLuaActorRef> PendingDestroies;
 
 	AActor* OwnerFromEnv(sol::this_environment& ThisEnv)
@@ -27,6 +34,50 @@ namespace
 		return Ref
 			? Ref->Get()
 			: nullptr;
+	}
+
+	void RegisterWidget(sol::state& Lua)
+	{
+		Lua.new_usertype<FLuaWidgetRef>("Widget", sol::no_constructor,
+			"IsValid", [](const FLuaWidgetRef& R) { return R.Get() != nullptr; },
+			"Name", sol::property([](const FLuaWidgetRef& R) { return DerefWidget<UWidget>(R).WidgetName; }),
+			"Visible", sol::property(
+				[](const FLuaWidgetRef& R) { return DerefWidget<UWidget>(R).IsVisible(); },
+				[](const FLuaWidgetRef& R, bool b) { DerefWidget<UWidget>(R).Visibility = b ? 0 : 1; }),
+			"Find", [](const FLuaWidgetRef& R, const std::string& Name) -> sol::optional<FLuaWidgetRef>
+			{
+				UWidget* Found = DerefWidget<UUserWidget>(R).FindWidget(Name);
+				return Found ? sol::optional(FLuaWidgetRef::Make(Found)) : sol::nullopt;
+			},
+			"AddToViewport", [](const FLuaWidgetRef& R, sol::optional<int> Z) { DerefWidget<UUserWidget>(R).AddToViewport(Z.value_or(0)); },
+			"RemoveFromViewport", [](const FLuaWidgetRef& R) { DerefWidget<UUserWidget>(R).RemoveFromViewport(); },
+			"Destroy", [](const FLuaWidgetRef& R) { DerefWidget<UUserWidget>(R).Destroy(); },
+			"SetText", [](const FLuaWidgetRef& R, const std::string& T) { DerefWidget<UTextBlock>(R).SetText(T); },
+			"BindClick", [](sol::this_environment Env, const FLuaWidgetRef& R, sol::protected_function Fn)
+			{
+				AActor* Owner = OwnerFromEnv(Env);
+				if (!Owner) throw sol::error("BindClick needs an Actor script context.");
+				UButton& Button = DerefWidget<UButton>(R);
+				const FLuaActorRef OwnerRef = FLuaActorRef::Make(Owner);
+				Button.OnClicked = [OwnerRef, Fn]
+					{
+						if (!OwnerRef.Get()) return;              // 액터가 이미 지워졌다
+						sol::protected_function_result Result = Fn();
+						if (!Result.valid())
+						{
+							sol::error Err = Result;
+							HTR_LOG(Error, "[Lua] OnClicked: {}", Err.what());
+						}
+					};
+				ClickBindings.Add({ Owner, R });
+			});
+
+		Lua.set_function("CreateWidget", [](sol::this_environment Env, const std::string& Path) -> sol::optional<FLuaWidgetRef>
+			{
+				AActor* Owner = OwnerFromEnv(Env);
+				UUserWidget* W = Owner ? ::CreateWidget(Owner->GetWorld(), Path) : nullptr;
+				return W ? sol::optional(FLuaWidgetRef::Make(W)) : sol::nullopt;
+			});
 	}
 
 	// FVector, FRotator
@@ -375,6 +426,7 @@ namespace FLuaBindings
 		RegisterActor(Lua);
 		RegisterInput(Lua);
 		RegisterCoroutine(Lua);
+		RegisterWidget(Lua);
 	}
 
 	void FlushPendingDestroy(UWorld* World)
@@ -397,6 +449,12 @@ namespace FLuaBindings
 
 	void ReleaseCallbacks(AActor* Owner)
 	{
-		// TODO
+		for (int32 i = ClickBindings.Num() - 1; i >= 0; --i)
+		{
+			if (ClickBindings[i].Owner != Owner) continue;
+			if (UButton* B = Cast<UButton>(ClickBindings[i].Button.Get()))
+				B->OnClicked = nullptr;
+			ClickBindings.RemoveAt(i);
+		}
 	}
 }

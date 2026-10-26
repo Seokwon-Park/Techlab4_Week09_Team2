@@ -654,7 +654,10 @@ namespace
 		ImGui::TextWrapped("%s", DisplayName);
 
 		if (bInline)
-			ImGui::SameLine(StartX + LabelWidth);
+		{
+			ImGui::SameLine();
+			ImGui::SetCursorPosX(StartX + LabelWidth);
+		}
 
 		ImGui::SetNextItemWidth(-1.0f);
 

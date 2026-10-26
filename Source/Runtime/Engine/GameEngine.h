@@ -3,6 +3,9 @@
 #include "Engine.h"
 #include "Engine/GameSettings.h"
 
+#include "UI/UIRenderer.h"
+#include "UI/UIDrawList.h"
+
 class FGameViewportClient;
 
 class UGameEngine : public UEngine
@@ -26,4 +29,7 @@ private:
 	// GetConfig는 창을 만들기 전에 const로 불리므로 거기서 읽어 둔다.
 	mutable FGameSettings Settings;
 	FString PendingMap;
+
+	TUniquePtr<FUIRenderer> UIRenderer;
+	FUIDrawList UIDrawList;
 };
