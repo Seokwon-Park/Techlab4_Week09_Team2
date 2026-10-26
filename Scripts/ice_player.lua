@@ -3,13 +3,13 @@ local RESPAWN_DELAY = 1.0
 local player = script_state -- 이 플레이어의 사망 상태와 시작 위치. 핫 리로드에도 유지한다.
 local targetLocation = FVector(0, 0, 0)
 local targetDirection = FVector(0, 0, 0)
-local bIsMoving = false
+_G._G.bIsMoving = false
 local bWasOnIce = false
 local currentIceType = nil
 
 local function InitMovementState()
     targetLocation = FVector(0, 0, 0)
-    bIsMoving = false
+    _G._G.bIsMoving = false
 
     local events = _G.GameEvents
     if events and events.ResetCamera then
@@ -19,7 +19,7 @@ end
 
 local function Respawn()
     obj:ResetMovement()
-    obj.Location = player.spawnLocation -- 부활할 때만 시작 위치로 텔레포트한다.
+    obj.Location = _G.RespawnLocation or player.spawnLocation
     player.isDead = false
     player.respawnTime = 0
     obj:SetMovementEnabled(true)
@@ -75,12 +75,13 @@ end
 
 
 function BeginPlay()
+    _G.RespawnLocation = nil
     player.spawnLocation = obj.Location
     player.isDead = false
     player.respawnTime = 0
     obj:SetMovementEnabled(true)
     UpdateIceState()
-    print("[Ice] WASD: 이동 / R: 시작 위치로 복귀")
+    print("[Ice] WASD: 카메라이동 / R: 시작 위치로 복귀")
 
     InitMovementState()
     StartCoroutine(MouseInputCoroutine)
@@ -118,26 +119,26 @@ function Tick(dt)
         obj:SetMoveInput(FVector(0, 0, 0))
         targetDirection = FVector(0, 0, 0)
         targetLocation = obj.Location
-        bIsMoving = false
+        _G.bIsMoving = false
         print("[ICE] Obj got out from the ice")
         bWasOnIce = bIsOnIce
     end
     bWasOnIce = bIsOnIce
 
     -- 얼음위가 아니면 매 프레임 도착지점까지 이동 입력을 준다
-    if not obj.IsOnIce and bIsMoving then
+    if not obj.IsOnIce and _G.bIsMoving then
         local direction = (targetLocation - obj.Location)
         if direction:Length() > 0.1 then
             obj:SetMoveInput(direction)
         else
             -- 남은 거리가 0.1 미만이면 정지
             obj:SetMoveInput(FVector(0, 0, 0))
-            bIsMoving = false
+            _G.bIsMoving = false
         end
-    elseif bIsMoving then
+    elseif _G.bIsMoving then
         -- 얼음 위면 처음 지정한 방향 그대로 간다
         obj:SetMoveInput(targetDirection)
-    else -- bIsMoving == false
+    else -- _G.bIsMoving == false
         obj:SetMoveInput(FVector(0, 0, 0))
     end
 
@@ -191,7 +192,7 @@ local function OnRightMousePressed()
             -- 얼음 타입이 reverse이면 마우스 클릭의 반대 방향으로 간다
             targetDirection = (obj.Location - targetLocation)
         end
-        bIsMoving = true;
+        _G.bIsMoving = true;
         print("target location: ", targetLocation)
         print("target direction: ", targetDirection)
         --move_to(targetLocation, 10)
