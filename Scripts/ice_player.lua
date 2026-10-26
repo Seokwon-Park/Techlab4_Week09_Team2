@@ -9,6 +9,8 @@ _G._G.bIsMoving = false
 local bWasOnIce = false
 local currentIceType = "ground"
 
+local restartWidget = nil
+
 local function InitMovementState()
     targetLocation = FVector(0, 0, 0)
     _G._G.bIsMoving = false
@@ -32,6 +34,11 @@ local function Respawn()
 
     obj:SetMovementEnabled(true)
     InitMovementState()
+
+    -- 리스타트 위젯 숨기기
+    if restartWidget and restartWidget:IsValid() then
+        restartWidget.Visible = false
+    end
 end
 
 -- 개발자 테스트용: 가장 가까운 StageN_Start를 현재 Stage로 보고 앞/뒤 Stage 시작 위치로 옮긴다.
@@ -78,6 +85,11 @@ local function Die(wall)
     -- 목숨 감소, 사망 연출, 게임 오버 같은 규칙도 여기서 처리한다.
     local cause = wall and wall:IsValid() and wall.Name or "알 수 없는 충돌"
     print("[Ice] 벽 충돌로 사망: " .. cause)
+
+    -- 리스타트 위젯 띄우기
+    if restartWidget and restartWidget:IsValid() then
+        restartWidget.Visible = true
+    end
 end
 
 local function UpdateIceState()
@@ -124,6 +136,14 @@ function BeginPlay()
     player.spawnLocation = obj.Location
     player.isDead = false
     player.respawnTime = 0
+
+    restartWidget = CreateWidget("Assets/UI/RestartWidget.widget")
+    restartWidget.Visible = false
+    restartWidget:AddToViewport()
+    restartWidget:Find("RestartButton"):BindClick(function()
+        Respawn()
+    end)
+
     obj:SetMovementEnabled(true)
     UpdateIceState()
     print("[Ice] WASD: 카메라이동 / R: 시작 위치로 복귀")
@@ -154,11 +174,12 @@ function Tick(dt)
     if IsKeyPressed("q") then MoveStage(-1) return end
     if IsKeyPressed("e") then MoveStage(1) return end
 
-    if player.isDead then
-        player.respawnTime = player.respawnTime - dt
-        if player.respawnTime <= 0 then Respawn() end
-        return
-    end
+    -- 자동 리스폰 비활성화
+    -- if player.isDead then
+    --     player.respawnTime = player.respawnTime - dt
+    --     if player.respawnTime <= 0 then Respawn() end
+    --     return
+    -- end
 
     local bIsOnIce = obj.IsOnIce
     -- 얼음 위에 있다가 밖으로 나가면 정지한다
