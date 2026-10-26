@@ -12,6 +12,7 @@
 #include "Script/LuaWidgetRef.h"
 #include "Script/CoroutineScheduler.h"
 #include "Engine/World.h"
+#include "Engine/Level.h"
 #include "Engine/Engine.h"
 #include "Engine/GameViewportClient.h"
 #include "UI/UserWidget.h"
@@ -246,6 +247,22 @@ namespace
 				return std::format("Actor#{}", Ref.UUID);
 			}
 		);
+
+		Lua.set_function("GetActorByName", [](sol::this_environment Env, const std::string& Name) -> sol::optional<FLuaActorRef>
+			{
+				AActor* Owner = OwnerFromEnv(Env);
+				if (!Owner) throw sol::error("GetActorByName needs an Actor script context.");
+				UWorld* World = Owner->GetWorld();
+				if (!World) throw sol::error("GetActorByName needs an Actor script context.");
+				for (AActor* Actor : World->GetCurrentLevel()->GetActors())
+				{
+					if (Actor && Actor->GetName() == Name)
+					{
+						return FLuaActorRef::Make(Actor);
+					}
+				}
+				return sol::nullopt;
+			});
 	}
 
 	EKeyCode ToKeyCode(const std::string& Name)

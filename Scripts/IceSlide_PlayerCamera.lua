@@ -4,6 +4,15 @@ local EDGE_THRESHOLD = 0.1
 
 function BeginPlay()
     print("[BeginPlay] " .. obj.UUID)
+
+    playerActor = GetActorByName("IcePlayer")
+    if not playerActor:IsValid() then
+        print("[BeginPlay] Error: playerActor is not valid")
+    else
+        print("[BeginPlay] Actor found. Name: " .. playerActor.Name .. "UUID: " .. playerActor.UUID)
+    end
+    initialPosition = obj.Location - playerActor.Location
+    print("[BeginPlay] Initial Position: ", initialPosition)
 end
 
 function EndPlay()
@@ -33,6 +42,10 @@ local function MoveBack(dt)
     obj.Location = obj.Location + FVector(-cameraSpeed, 0, 0) * dt
 end
 
+local function MoveToPlayer()
+    obj.Location = playerActor.Location + initialPosition
+end
+
 function Tick(dt)
     if IsKeyDown('w') then
         MoveForward(dt)
@@ -45,6 +58,9 @@ function Tick(dt)
     end
     if IsKeyDown('d') then
         MoveRight(dt)
+    end
+    if IsKeyDown('space') then
+        MoveToPlayer()
     end
 
     local viewportX, viewportY = GetViewportSize()
