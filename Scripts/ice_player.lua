@@ -1,9 +1,35 @@
 -- SlidingMovementComponent가 있는 플레이어에 연결한다. W/S: X축, A/D: Y축.
-local respawnTime = 0
+local RESPAWN_DELAY = 1.0
+local player = script_state -- 이 플레이어의 사망 상태와 시작 위치. 핫 리로드에도 유지한다.
 local targetLocation = FVector(0, 0, 0)
 local targetDirection = FVector(0, 0, 0)
 local bIsMoving = false
 local bWasOnIce = false
+
+local function InitMovementState()
+    targetLocation = FVector(0, 0, 0)
+    bIsMoving = false
+end
+
+local function Respawn()
+    obj:ResetMovement()
+    obj.Location = player.spawnLocation -- 부활할 때만 시작 위치로 텔레포트한다.
+    player.isDead = false
+    player.respawnTime = 0
+    obj:SetMovementEnabled(true)
+    InitMovementState()
+end
+
+local function Die(wall)
+    if player.isDead then return end
+    player.isDead = true
+    player.respawnTime = RESPAWN_DELAY
+    obj:SetMovementEnabled(false)
+
+    -- 목숨 감소, 사망 연출, 게임 오버 같은 규칙도 여기서 처리한다.
+    local cause = wall and wall:IsValid() and wall.Name or "알 수 없는 충돌"
+    print("[Ice] 벽 충돌로 사망: " .. cause)
+end
 
 local function UpdateIceState()
     -- World가 FCollision::Overlap으로 관리한 결과를 사용한다.
@@ -17,18 +43,12 @@ local function UpdateIceState()
     obj:SetOnIce(false)
 end
 
-local function InitMovementState()
-    targetLocation = FVector(0, 0, 0)
-    bIsMoving = false
-end
-
-local function Respawn()
-    respawnTime = 0
-    obj:Respawn()
-    InitMovementState()
-end
 
 function BeginPlay()
+    player.spawnLocation = obj.Location
+    player.isDead = false
+    player.respawnTime = 0
+    obj:SetMovementEnabled(true)
     UpdateIceState()
     print("[Ice] WASD: 이동 / R: 시작 위치로 복귀")
 
@@ -37,6 +57,7 @@ function BeginPlay()
 end
 
 function OnReload()
+    if not player.spawnLocation then player.spawnLocation = obj.Location end
     Respawn()
     UpdateIceState()
 end
@@ -54,18 +75,12 @@ function Tick(dt)
         Respawn()
         return
     end
-    if obj.IsDead then
-        respawnTime = respawnTime - dt
-        if respawnTime <= 0 then 
-            Respawn()
-        end
+
+    if player.isDead then
+        player.respawnTime = player.respawnTime - dt
+        if player.respawnTime <= 0 then Respawn() end
         return
     end
-    -- local x, y = 0, 0
-    -- if IsKeyDown("w") then x = x + 1 end
-    -- if IsKeyDown("s") then x = x - 1 end
-    -- if IsKeyDown("d") then y = y + 1 end
-    -- if IsKeyDown("a") then y = y - 1 end
 
     local bIsOnIce = obj.IsOnIce
     -- 얼음 위에 있다가 밖으로 나가면 정지한다
@@ -76,7 +91,6 @@ function Tick(dt)
         bIsMoving = false
         print("[ICE] Obj got out from the ice")
         bWasOnIce = bIsOnIce
-        return
     end
     bWasOnIce = bIsOnIce
 
@@ -107,9 +121,8 @@ function Tick(dt)
     end
 end
 
-function OnDeath(wall)
-    print("[Ice] 벽 충돌로 사망: " .. wall.Name)
-    respawnTime = 1.0
+function OnHit(wall)
+    Die(wall) -- 벽 충돌을 사망으로 해석하는 규칙은 Lua에 둔다.
 end
 
 local function OnRightMousePressed()
