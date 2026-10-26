@@ -65,6 +65,23 @@ void UGameEngine::Tick(float DeltaTime)
 	FGameViewportClient& Viewport = *Context->GameViewport;
 	UWorld* World = Context->World();
 
+	FEngineLoop& Loop = GetEngineLoop();
+	HWND WindowHandle = Loop.GetMainWindow()->GetHandle();
+
+	RECT ClientRect{};
+	POINT ClientOrigin{ 0, 0 };
+
+	if (::GetClientRect(WindowHandle, &ClientRect) &&
+		::ClientToScreen(WindowHandle, &ClientOrigin))
+	{
+		Viewport.SetRect(FRect{
+			static_cast<float>(ClientOrigin.x),
+			static_cast<float>(ClientOrigin.y),
+			static_cast<float>(ClientRect.right - ClientRect.left),
+			static_cast<float>(ClientRect.bottom - ClientRect.top)
+			});
+	}
+
 	DispatchInput(Viewport, DeltaTime);
 	if (Viewport.ConsumeExitRequest())
 	{
