@@ -130,6 +130,9 @@ local function UpdateIceState()
     end
 end
 
+local function GoToTitle()
+    OpenLevel("TitleScene")
+end
 
 function BeginPlay()
     _G.RespawnLocation = nil
@@ -143,6 +146,7 @@ function BeginPlay()
     restartWidget:Find("RestartButton"):BindClick(function()
         Respawn()
     end)
+    restartWidget:Find("TitleButton"):BindClick(GoToTitle)
 
     obj:SetMovementEnabled(true)
     UpdateIceState()
