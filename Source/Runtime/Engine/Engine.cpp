@@ -7,6 +7,8 @@
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/IceVolumeComponent.h"
+#include "Components/SlidingMovementComponent.h"
 
 UEngine* GEngine = nullptr;
 
@@ -17,6 +19,8 @@ bool UEngine::Init()
 	UBoxComponent::StaticClass();
 	USphereComponent::StaticClass();
 	UCapsuleComponent::StaticClass();
+	UIceVolumeComponent::StaticClass();
+	USlidingMovementComponent::StaticClass();
 
 	AssetManager = NewObject<UAssetManager>();
 	/*World = FObjectFactory::ConstructObject<UWorld>();

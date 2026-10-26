@@ -110,6 +110,7 @@ public:
 	void DispatchHit(UPrimitiveComponent* OtherComp);
 
 protected:
+	virtual void OnUnregister() override;
 	TArray<FOverlapInfo> OverlapInfos;
 
 	virtual bool ShouldCreateRenderState() const override

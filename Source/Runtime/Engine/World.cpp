@@ -529,13 +529,63 @@ bool UWorld::DestroyActor(AActor* Actor)
 }
 
 // 다른 World의 객체를 제외하고 Component 교차 중 최근접 결과를 선택한다.
-bool UWorld::SweepSingle(const FRay& WorldRay, float MaxDistance, float Radius, FHitResult& OutHit, AActor* IgnoreActor)
+bool UWorld::SweepSingle(const FRay& WorldRay, float MaxDistance, float Radius, FHitResult& OutHit, AActor* IgnoreActor,
+	bool bBlockingOnly)
 {
 	OutHit = FHitResult(1.0f);
 	if (MaxDistance <= 0.0f || !std::isfinite(MaxDistance) || Radius < 0.0f || !std::isfinite(Radius)) return false;
 	Scene.UpdateAllTransforms();
 	float NearestT = MaxDistance;
 	const FVector Extent(Radius, Radius, Radius);
+	if (bBlockingOnly)
+	{
+		// 도형은 렌더 프록시가 없으므로 직접 검사한다. 표시 여부는 충돌 여부와 별개다.
+		// 기존 메시 Sweep과 같은 확장 AABB 방식이며, 바닥/트리거는 bBlockComponent=false로 둔다.
+		for (TObjectIterator<UPrimitiveComponent> It; It; ++It)
+		{
+			UPrimitiveComponent* Component = *It;
+			AActor* Owner = Component->GetOwner();
+			if (!Component->IsRegistered() || Component->GetWorld() != this || !Component->bBlockComponent ||
+				!Owner || Owner == IgnoreActor || !Owner->GetActorEnableCollision()) continue;
+			if (!Cast<UShapeComponent>(Component) && !Component->GetMeshData()) continue;
+
+			const FBox Bounds = Component->CalcBounds();
+			const FVector Min = Bounds.Min - Extent, Max = Bounds.Max + Extent;
+			float Enter = 0.0f, Exit = NearestT;
+			FVector Normal = -WorldRay.Direction;
+			bool bIntersects = true;
+			for (int32 Axis = 0; Axis < 3; ++Axis)
+			{
+				const float Origin = WorldRay.Origin[Axis], Direction = WorldRay.Direction[Axis];
+				if (std::abs(Direction) <= SMALL_NUMBER)
+				{
+					if (Origin < Min[Axis] || Origin > Max[Axis]) { bIntersects = false; break; }
+					continue;
+				}
+				float Near = (Min[Axis] - Origin) / Direction, Far = (Max[Axis] - Origin) / Direction;
+				if (Near > Far) std::swap(Near, Far);
+				if (Near > Enter)
+				{
+					Enter = Near;
+					Normal = FVector::ZeroVector;
+					Normal[Axis] = Direction > 0.0f ? -1.0f : 1.0f;
+				}
+				Exit = std::min(Exit, Far);
+				if (Enter > Exit) { bIntersects = false; break; }
+			}
+			if (!bIntersects) continue;
+			NearestT = Enter;
+			OutHit.bBlockingHit = true;
+			OutHit.bStartPentrating = Enter == 0.0f;
+			OutHit.HitComponent = Component;
+			OutHit.Distance = Enter;
+			OutHit.Time = Enter / MaxDistance;
+			OutHit.Location = WorldRay.PointAt(Enter);
+			OutHit.ImpactPoint = OutHit.Location - Normal * Radius;
+			OutHit.Normal = OutHit.ImpactNormal = Normal;
+		}
+		return OutHit.bBlockingHit;
+	}
 	const FPreparedRay PreparedRay(WorldRay);
 	Scene.BVH.TraceClosest(
 		[&](const FBox& Bounds, float& OutEnterT)
