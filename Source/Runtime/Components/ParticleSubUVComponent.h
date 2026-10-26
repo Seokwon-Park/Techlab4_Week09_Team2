@@ -35,7 +35,7 @@ class UParticleSubUVComponent : public UBillboardComponent
 
 public:
 	UParticleSubUVComponent();
-	virtual ~UParticleSubUVComponent() = default;
+	virtual ~UParticleSubUVComponent() override;
 	
 	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime) override;
@@ -53,6 +53,8 @@ public:
 
 	void SetSubUVSize(uint32 Cols, uint32 Rows);
 	void SetFrameRate(float InFrameRate);
+	bool SetParticleTexture(const FString& Path);
+	void PlayOnce();
 
 	void SetParticles(int32 InParticleCount = 10);
 
@@ -69,6 +71,9 @@ private:
 
 	// 방출 튜닝 값
 	int32 ParticleCount = 0;
+	bool bPlayOnce = false;
+	// 텍스처를 교체할 때만 생성하는 이 컴포넌트 전용 머티리얼.
+	UMaterial* TextureMaterialInstance = nullptr;
 
 	float MinLifeTime = 6.0f;           // 수명 최소값(초)
 	float MaxLifeTime = 8.0f;          // 수명 최대값(초)

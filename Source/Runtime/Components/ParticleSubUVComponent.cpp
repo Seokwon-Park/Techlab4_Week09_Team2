@@ -21,24 +21,59 @@ UParticleSubUVComponent::UParticleSubUVComponent()
 	RowSize = 8;
 	FrameRate = 12.0f;
 	Material = UAssetManager::GetAssetByPath<UMaterial>("SubUVMaterial");
+}
 
-	// Todo: Default setting, set value from arguments
-	//AtlasTexturePath = "ParticleAtlas.png";
-	
-	// AtlasTexture = nullptr;
-
-	//Shader = RenderCommand::CreateShader(L"Resources/Shader/ParticleSubUVShader.hlsl", FParticleVertex::GetLayout());
+UParticleSubUVComponent::~UParticleSubUVComponent()
+{
+	delete TextureMaterialInstance;
 }
 
 // 파티클 에셋과 배열을 준비하고 초기 상태를 채운다
 void UParticleSubUVComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	SetParticles(10);
+	Particles.Reset();
+	if (IsAutoActivate()) SetParticles(10);
+}
+
+bool UParticleSubUVComponent::SetParticleTexture(const FString& Path)
+{
+	if (Path.empty() || !Material) return false;
+	UTexture2D* Texture = UAssetManager::Get().LoadTexture(Path);
+	if (!Texture) return false;
+
+	if (Material != TextureMaterialInstance)
+	{
+		UMaterial* Instance = UMaterial::CreateInstance(Material);
+		delete TextureMaterialInstance;
+		TextureMaterialInstance = Instance;
+		SetMaterial(0, Instance);
+	}
+	if (Material->Textures.IsEmpty()) Material->Textures.Add(Texture);
+	else Material->Textures[0] = Texture;
+	return true;
+}
+
+// 사망 연출: 제자리에서 한 장을 0번 프레임부터 끝까지 재생한다.
+void UParticleSubUVComponent::PlayOnce()
+{
+	SetSubUVSize(ColSize, RowSize);
+	SetFrameRate(FrameRate);
+	bPlayOnce = true;
+	Particles.Reset();
+	FParticle Particle{};
+	Particle.Location = GetWorldLocation();
+	Particle.LifeTime = (ColSize * RowSize) / FrameRate;
+	Particle.Scale = StartScale;
+	Particle.Alpha = 1.0f;
+	Particle.bAlive = true;
+	Particles.Add(Particle);
+	Activate(true);
 }
 
 void UParticleSubUVComponent::SetParticles(int32 InParticleCount)
 {
+	InParticleCount = std::max(0, InParticleCount);
 	if (ParticleCount == InParticleCount && !Particles.IsEmpty())
 	{
 		return;
@@ -46,6 +81,8 @@ void UParticleSubUVComponent::SetParticles(int32 InParticleCount)
 
 	ParticleCount = InParticleCount;
 	Particles.Reset();
+	SetSubUVSize(ColSize, RowSize);
+	SetFrameRate(FrameRate);
 	Particles.Reserve(ParticleCount);
 	for (int32 i = 0; i < ParticleCount; ++i)
 	{
@@ -76,16 +113,15 @@ FBox UParticleSubUVComponent::CalcLocalBounds() const
 // 열·행 개수가 양수인지 검사해 SubUV 분할 수를 설정한다.
 void UParticleSubUVComponent::SetSubUVSize(uint32 NewColSize, uint32 NewRowSize)
 {
-	assert(NewColSize > 0 && NewRowSize > 0);
-
-	ColSize = NewColSize;
-	RowSize = NewRowSize;
+	// 프로퍼티 패널에서 0이나 음수를 입력해도 분할 수가 유효하도록 제한한다.
+	ColSize = std::clamp(NewColSize, 1u, 4096u);
+	RowSize = std::clamp(NewRowSize, 1u, 4096u);
 }
 
 // 유효한 프레임 속도를 저장하고 음수·0이면 기본값을 쓴다.
 void UParticleSubUVComponent::SetFrameRate(float InFrameRate)
 {
-	FrameRate = (InFrameRate > 0.0f) ? InFrameRate : 1.0f;
+	FrameRate = (std::isfinite(InFrameRate) && InFrameRate > 0.0f) ? InFrameRate : 1.0f;
 }
 
 // DeltaTime으로 이동·수명·Atlas 프레임을 갱신한다.
@@ -93,6 +129,19 @@ void UParticleSubUVComponent::TickComponent(float DeltaTime)
 {
 	Super::TickComponent(DeltaTime);
 	const uint32 TotalFrames = ColSize * RowSize;
+	if (bPlayOnce)
+	{
+		if (Particles.IsEmpty()) return;
+		FParticle& Particle = Particles[0];
+		Particle.Age += DeltaTime;
+		if (Particle.Age >= Particle.LifeTime)
+		{
+			Particle.bAlive = false;
+			Deactivate();
+		}
+		else Particle.SubUVFrame = std::min(static_cast<uint32>(Particle.Age * FrameRate), TotalFrames - 1);
+		return;
+	}
 
 	for (FParticle& Particle : Particles)
 	{

@@ -22,6 +22,12 @@ local function Respawn()
     obj.Location = player.spawnLocation -- 부활할 때만 시작 위치로 텔레포트한다.
     player.isDead = false
     player.respawnTime = 0
+
+    -- 부활 시 뒤집힌 상태를 원상복귀
+    if player.aliveRotation then
+    obj.Rotation = player.aliveRotation
+    end
+
     obj:SetMovementEnabled(true)
     InitMovementState()
 end
@@ -30,7 +36,23 @@ local function Die(wall)
     if player.isDead then return end
     player.isDead = true
     player.respawnTime = RESPAWN_DELAY
+
+    -- 사망 시 뒤집기
+    player.aliveRotation = obj.Rotation
+    local rotation = obj.Rotation
+    rotation.roll = rotation.roll + 180
+    obj.Rotation = rotation
     obj:SetMovementEnabled(false)
+
+    -- 기존 ParticleActor의 아틀라스를 바꿔 사망 위치에서 한 번만 재생한다.
+    local effect = GetActorByName("DeathParticle")
+    if effect and effect:HasComponent("UParticleSubUVComponent")
+        and effect:SetParticleTexture("Assets/SubUV/GreenBlood.png") then
+        effect:SetSubUVSize(4, 4)
+        effect:SetParticleFrameRate(60)
+        effect.Location = obj.Location
+        effect:PlayParticle()
+    end
 
     -- 목숨 감소, 사망 연출, 게임 오버 같은 규칙도 여기서 처리한다.
     local cause = wall and wall:IsValid() and wall.Name or "알 수 없는 충돌"
