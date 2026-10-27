@@ -1,13 +1,12 @@
 #pragma once
 
 #include "LightComponent.h"
+#include "LocalLightComponent.generated.h"
 
+UCLASS()
 class ULocalLightComponent :public ULightComponent
 {
-	DECLARE_CLASS(ULocalLightComponent, ULightComponent)
-	REFLECT_START(ULocalLightComponent)
-		PROPERTY(AttenuationRadius)
-	REFLECT_END()
+	GENERATED_BODY()
 public:
 	ULocalLightComponent();
 	virtual ~ULocalLightComponent() override;
@@ -16,5 +15,6 @@ public:
 	void SetAttenuationRadius(float InAttenuationRadius) { AttenuationRadius = std::max(InAttenuationRadius, 0.01f); }
 
 private:
+	UPROPERTY(EditAnywhere)
 	float AttenuationRadius = 5.0f;
 };

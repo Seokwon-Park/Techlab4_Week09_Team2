@@ -7,18 +7,16 @@
 #include "UObject/UObjectGlobals.h"
 #include "Containers/Set.h"
 #include "Engine/EngineBaseTypes.h"
+#include "Actor.generated.h"
 
 class UWorld;
 class ULevel;
 struct FLuaScriptInstance;
 
+UCLASS()
 class AActor : public UObject
 {
-	DECLARE_CLASS(AActor, UObject)
-	REFLECT_START(ClassName)
-		PROPERTY(bActorEnableCollision)
-		PROPERTY(ScriptPath)
-		REFLECT_END()
+	GENERATED_BODY()
 public:
 	AActor();
 	virtual ~AActor();
@@ -73,6 +71,7 @@ public:
 
 	// Lua 스크립트 (담당: A). ScriptPath가 비어 있으면 Script를 만들지 않는다.
 	// 이 헤더에서 sol.hpp를 include하지 않도록 포인터로 둔다.
+	UPROPERTY(EditAnywhere)
 	FString ScriptPath;
 	FLuaScriptInstance* Script = nullptr;
 
@@ -95,6 +94,7 @@ protected:
 	UWorld* World = nullptr;
 	ULevel* Level = nullptr;
 private:
+	UPROPERTY(EditAnywhere)
 	bool bActorEnableCollision = true;
 	bool bHasBegunPlay = false;
 

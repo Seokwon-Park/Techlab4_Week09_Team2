@@ -3,13 +3,13 @@
 #include "Components/RectLightComponent.h"
 #include "GameFramework/Actor/LightActorBase.h"
 #include "Components/StaticMeshComponent.h"
+#include "RectLightActor.generated.h"
 
+UCLASS()
 class ARectLightActor : public ALightActorBase
 {
-	DECLARE_CLASS(ARectLightActor, ALightActorBase)
+	GENERATED_BODY()
 
-	REFLECT_START(ClassName)
-	REFLECT_END()
 
 public:
 	ARectLightActor();

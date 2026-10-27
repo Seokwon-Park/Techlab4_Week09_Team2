@@ -2,17 +2,14 @@
 
 #include "SceneComponent.h"
 #include "Math/Color.h"
+#include "LightComponentBase.generated.h"
 
 enum class ELightType { Directional, Point, Spot, Rect, Fireball, Sky };
 
+UCLASS()
 class ULightComponentBase : public USceneComponent
 {
-	DECLARE_CLASS(ULightComponentBase, USceneComponent)
-	REFLECT_START(ULightComponentBase)
-		PROPERTY(Intensity)
-		PROPERTY(LightColor)
-		PROPERTY(bCastShadows)
-	REFLECT_END()
+	GENERATED_BODY()
 public:
 	ULightComponentBase();
 	virtual ~ULightComponentBase() override;
@@ -30,8 +27,11 @@ public:
 
 
 protected:
+	UPROPERTY(EditAnywhere)
 	float Intensity = 1.0f;
+	UPROPERTY(EditAnywhere)
 	FColor LightColor = FColor(255, 255, 255, 255);
+	UPROPERTY(EditAnywhere)
 	bool bCastShadows = true;
 
 private:

@@ -1,13 +1,12 @@
 #pragma once
 #include "PointLightComponent.h"
+#include "FireBallComponent.generated.h"
 
+UCLASS()
 class UFireBallComponent : public UPointLightComponent
 {
-	DECLARE_CLASS(UFireBallComponent, UPointLightComponent)
+	GENERATED_BODY()
 
-	REFLECT_START(ClassName)
-		PROPERTY(Intensity)
-		REFLECT_END()
 
 public:
 	UFireBallComponent();

@@ -3,9 +3,12 @@
 #include "UObject/Object.h"
 #include "UObject/Class.h"
 
+#include "RenderAsset.generated.h"
+
+UCLASS()
 class URenderAsset : public UObject
 {
-	DECLARE_CLASS(URenderAsset, UObject)
+	GENERATED_BODY()
 public:
 	URenderAsset() = default;
 	virtual ~URenderAsset() = default;

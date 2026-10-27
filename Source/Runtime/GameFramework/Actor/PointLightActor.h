@@ -2,13 +2,13 @@
 
 #include "GameFramework/Actor/LightActorBase.h"
 #include "Components/PointLightComponent.h"
+#include "PointLightActor.generated.h"
 
+UCLASS()
 class APointLightActor : public ALightActorBase
 {
-	DECLARE_CLASS(APointLightActor, ALightActorBase)
+	GENERATED_BODY()
 
-	REFLECT_START(ClassName)
-	REFLECT_END()
 
 public:
 	APointLightActor();

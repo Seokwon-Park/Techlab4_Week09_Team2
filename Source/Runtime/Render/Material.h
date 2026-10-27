@@ -4,6 +4,7 @@
 #include "RenderResourceManager.h"
 #include "Render/RenderStates.h"
 #include "Render/Texture2D.h"
+#include "Material.generated.h"
 
 class FShader;
 
@@ -22,9 +23,10 @@ struct FStaticMeshMaterialParams
 };
 static_assert(sizeof(FStaticMeshMaterialParams) == 32);
 
+UCLASS()
 class UMaterial : public UMaterialInterface
 {
-	DECLARE_CLASS(UMaterial, UMaterialInterface)
+	GENERATED_BODY()
 
 public:
 	UMaterial() :SortID(NextSortID++) {};

@@ -3,13 +3,13 @@
 #include "GameFramework/Actor.h"
 #include "Components/BillboardComponent.h"
 #include "Components/LightComponent.h"
+#include "LightActorBase.generated.h"
 
+UCLASS()
 class ALightActorBase : public AActor
 {
-    DECLARE_CLASS(ALightActorBase, AActor)
+    GENERATED_BODY()
 
-    REFLECT_START(ALightActorBase)
-    REFLECT_END()
 
 public:
 	ALightActorBase();

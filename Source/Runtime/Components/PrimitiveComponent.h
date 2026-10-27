@@ -7,6 +7,7 @@
 #include "Render/GeometryGenerator.h"
 #include "Collision/HitResult.h"
 #include "Core/Delegate/Delegate.h"
+#include "PrimitiveComponent.generated.h"
 
 class FPrimitiveSceneProxy;
 class AActor;
@@ -32,18 +33,13 @@ enum class EPrimitiveType
 	ParticleQuad
 };
 
+UCLASS()
 class UPrimitiveComponent :public USceneComponent
 {
-	DECLARE_CLASS(UPrimitiveComponent, USceneComponent)
+	GENERATED_BODY()
 
 	// Material은 여기서 등록하지 않는다. 컴포넌트마다 머티리얼을 다루는 방식이 달라서
 	// (빌보드는 단일 머티리얼, 스태틱 메시는 슬롯별 덮어쓰기) 각자 등록한다.
-	REFLECT_START(ClassName)
-		PROPERTY(bCastShadow)
-		PROPERTY(bReceiveShadow)
-		PROPERTY(bGenerateOverlapEvents)
-		PROPERTY(bBlockComponent)
-		REFLECT_END()
 public:
 	UPrimitiveComponent();
 	virtual ~UPrimitiveComponent();
@@ -90,7 +86,9 @@ public:
 	void SetCastShadow(bool NewValue);
 	void SetReceiveShadow(bool NewValue);
 
+	UPROPERTY(EditAnywhere)
 	bool bCastShadow = true;
+	UPROPERTY(EditAnywhere)
 	bool bReceiveShadow = true;
 
 	// ---- 충돌 이벤트 (담당: C) ----
@@ -98,7 +96,9 @@ public:
 	FComponentOverlapSignature OnComponentEndOverlap;
 	FComponentHitSignature OnComponentHit;
 
+	UPROPERTY(EditAnywhere)
 	bool bGenerateOverlapEvents = true;
+	UPROPERTY(EditAnywhere)
 	bool bBlockComponent = false;
 
 	bool IsOverlappingComponent(const UPrimitiveComponent* Other) const;

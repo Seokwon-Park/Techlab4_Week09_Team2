@@ -3,24 +3,16 @@
 #include "Core/Delegate/Delegate.h"
 
 #include "Audio/ActiveSound.h"
+#include "AudioComponent.generated.h"
 
 class USoundBase;
 
 DECLARE_DELEGATE(FOnAudioFinished);
 
+UCLASS()
 class UAudioComponent : public USceneComponent
 {
-	DECLARE_CLASS(UAudioComponent, USceneComponent)
-	REFLECT_START(ClassName)
-		PROPERTY(SoundPath)
-		PROPERTY(VolumeMultiplier)
-		PROPERTY(PitchMultiplier)
-		PROPERTY(bLooping)
-		PROPERTY(bIsUISound)
-		PROPERTY(bAllowSpatialization)
-		PROPERTY(AttenuationInnerRadius)
-		PROPERTY(AttenuationFalloffDistance)
-		REFLECT_END()
+	GENERATED_BODY()
 
 public:
 	UAudioComponent();
@@ -48,13 +40,21 @@ public:
 	void OnUnregister() override;
 	void PostEditChangeProperty(const FProperty& Property) override;
 
+	UPROPERTY(EditAnywhere)
 	FString SoundPath;
+	UPROPERTY(EditAnywhere)
 	float VolumeMultiplier = 1.0f;
+	UPROPERTY(EditAnywhere)
 	float PitchMultiplier = 1.0f;
+	UPROPERTY(EditAnywhere)
 	bool bLooping = false;              // UE에서는 USoundWave::bLooping. 메타데이터 파일이 없어 컴포넌트에 둔다.
+	UPROPERTY(EditAnywhere)
 	bool bIsUISound = false;
+	UPROPERTY(EditAnywhere)
 	bool bAllowSpatialization = true;   // false면 2D
+	UPROPERTY(EditAnywhere)
 	float AttenuationInnerRadius = 400.0f;
+	UPROPERTY(EditAnywhere)
 	float AttenuationFalloffDistance = 3600.0f;
 
 private:

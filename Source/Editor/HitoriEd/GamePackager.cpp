@@ -5,12 +5,23 @@
 
 FGamePackager::~FGamePackager()
 {
-	// 에디터를 닫아도 패키징은 끝까지 돌게 두고 핸들만 정리한다.
+	// 복사 중에 에디터를 닫으면 복사가 끝날 때까지 기다린다.
+	if (CopyThread.joinable()) CopyThread.join();
 	if (Process) CloseHandle(Process);
 	if (OutputRead) CloseHandle(OutputRead);
 }
 
 bool FGamePackager::Start(const FString& Config)
+{
+	if (IsRunning()) return false;
+	const std::filesystem::path Root = std::filesystem::current_path();
+	std::error_code Ec;
+	if (std::filesystem::exists(Root / "Package.bat", Ec) && std::filesystem::exists(Root / "premake5.lua", Ec))
+		return StartBuildAndPackage(Root, Config);
+	return StartCopyOnly(Root);
+}
+
+bool FGamePackager::StartBuildAndPackage(const std::filesystem::path& Root, const FString& Config)
 {
 	if (IsRunning()) return false;
 
@@ -25,7 +36,7 @@ bool FGamePackager::Start(const FString& Config)
 	SetHandleInformation(OutputRead, HANDLE_FLAG_INHERIT, 0);
 
 	STARTUPINFOA Startup{};
-	Startup.cb = sizeof(Startup);  
+	Startup.cb = sizeof(Startup);
 	Startup.dwFlags = STARTF_USESTDHANDLES;
 	Startup.hStdOutput = OutputWrite;
 	Startup.hStdError = OutputWrite;
@@ -50,8 +61,54 @@ bool FGamePackager::Start(const FString& Config)
 	return true;
 }
 
+bool FGamePackager::StartCopyOnly(const std::filesystem::path& Root)
+{
+	wchar_t ExePath[MAX_PATH] = {};
+	GetModuleFileNameW(nullptr, ExePath, MAX_PATH);
+	const std::filesystem::path GameExe = std::filesystem::path(ExePath).parent_path() / L"HitoriGame.exe";
+	if (!std::filesystem::exists(GameExe))
+	{
+		HTR_LOG(Error, "Packaging canceled: no source tree to build from and no prebuilt HitoriGame.exe next to the editor.");
+		return false;
+	}
+
+	const std::filesystem::path Out = Root / "Build" / "Package" / "Hitori";
+	bCopyDone = false;
+	bCopyFailed = false;
+	CopyResult = Out.string();
+	HTR_LOG(Info, "Packaging with prebuilt HitoriGame.exe (no build) -> {}", CopyResult);
+
+	// 콘텐츠가 100MB 넘게 복사되므로 에디터가 멈추지 않게 따로 돌린다. 로그는 메인 스레드의 Tick에서만 남긴다.
+	CopyThread = std::thread([this, Root, GameExe, Out]
+		{
+			namespace fs = std::filesystem;
+			std::error_code Ec;
+			fs::remove_all(Out, Ec);
+			fs::create_directories(Out, Ec);
+			if (Ec || !fs::copy_file(GameExe, Out / L"HitoriGame.exe", fs::copy_options::overwrite_existing, Ec))
+			{
+				CopyResult = "HitoriGame.exe";
+				bCopyFailed = true;
+			}
+			for (const char* Folder : { "Assets", "Resources", "Scenes", "Scripts", "Config" })
+			{
+				if (bCopyFailed) break;
+				fs::copy(Root / Folder, Out / Folder, fs::copy_options::recursive | fs::copy_options::overwrite_existing, Ec);
+				if (Ec) { CopyResult = Folder; bCopyFailed = true; }
+			}
+			bCopyDone = true;
+		});
+	return true;
+}
+
 void FGamePackager::Tick()
 {
+	if (CopyThread.joinable() && bCopyDone)
+	{
+		CopyThread.join();
+		if (bCopyFailed) HTR_LOG(Error, "Packaging failed: could not copy {}", CopyResult);
+		else HTR_LOG(Info, "Packaging finished: {}", CopyResult);
+	}
 	if (!Process) return;
 	// 종료 여부를 먼저 본다. 끝났다면 출력은 이미 전부 파이프에 들어와 있으므로 아래에서 다 읽힌다.
 	// DrainOutput이 먼저인 경우 생길 수 있는 문제
@@ -63,6 +120,7 @@ void FGamePackager::Tick()
 	DrainOutput();
 	if (bExited) Finish();
 }
+
 
 void FGamePackager::DrainOutput()
 {

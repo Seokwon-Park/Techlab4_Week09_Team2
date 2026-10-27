@@ -1,13 +1,12 @@
 #pragma once
 
 #include "LightComponent.h"
+#include "DirectionalLightComponent.generated.h"
 
+UCLASS()
 class UDirectionalLightComponent :public ULightComponent
 {
-	DECLARE_CLASS(UDirectionalLightComponent, ULightComponent)
-	REFLECT_START(UDirectionalLightComponent)
-		PROPERTY(AngularRadiusDegrees)
-	REFLECT_END()
+	GENERATED_BODY()
 public:
 	UDirectionalLightComponent();
 	virtual ~UDirectionalLightComponent() override;
@@ -21,5 +20,6 @@ public:
 
 
 private:
+	UPROPERTY(EditAnywhere)
 	float AngularRadiusDegrees = 3.0f;
 };

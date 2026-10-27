@@ -1,12 +1,12 @@
 #pragma once
 
 #include "LightComponent.h"
+#include "SkyLightComponent.generated.h"
 
+UCLASS()
 class USkyLightComponent : public ULightComponent
 {
-	DECLARE_CLASS(USkyLightComponent, ULightComponent)
-	REFLECT_START(USkyLightComponent)
-	REFLECT_END()
+	GENERATED_BODY()
 public:
 	USkyLightComponent();
 	virtual ~USkyLightComponent() override;

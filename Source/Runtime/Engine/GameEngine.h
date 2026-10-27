@@ -5,12 +5,14 @@
 
 #include "UI/UIRenderer.h"
 #include "UI/UIDrawList.h"
+#include "GameEngine.generated.h"
 
 class FGameViewportClient;
 
+UCLASS()
 class UGameEngine : public UEngine
 {
-	DECLARE_CLASS(UGameEngine, UEngine)
+	GENERATED_BODY()
 public:
 	FEngineConfig GetConfig() const override;
 

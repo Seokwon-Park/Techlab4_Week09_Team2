@@ -3,6 +3,7 @@
 #include "UObject/Object.h"
 #include "UObject/Class.h"
 #include "UI/UIDrawList.h"
+#include "Widget.generated.h"
 
 class UPanelWidget;
 class UUserWidget;
@@ -22,21 +23,11 @@ struct FUIGeometry
 	float Scale = 1.0f;   // 화면 높이 / 1080
 };
 
+UCLASS()
 class UWidget : public UObject
 {
-	DECLARE_CLASS(UWidget, UObject)
+	GENERATED_BODY()
 
-	REFLECT_START(ClassName)
-		PROPERTY(WidgetName)
-		PROPERTY(Anchors)
-		PROPERTY(Offsets)
-		PROPERTY(AlignmentX)
-		PROPERTY(AlignmentY)
-		PROPERTY(bAutoSize)
-		PROPERTY(ZOrder)
-		PROPERTY(Visibility)
-		PROPERTY(RenderOpacity)
-		REFLECT_END()
 
 public:
 	UWidget() = default;
@@ -81,14 +72,23 @@ public:
 	float GetCachedScale() const { return CachedScale; }
 	UPanelWidget* GetParent() const { return Parent; }
 
+	UPROPERTY(EditAnywhere)
 	FString WidgetName;
+	UPROPERTY(EditAnywhere)
 	FVector4 Anchors = FVector4(0.0f, 0.0f, 0.0f, 0.0f);     // MinX, MinY, MaxX, MaxY (0~1)
+	UPROPERTY(EditAnywhere)
 	FVector4 Offsets = FVector4(0.0f, 0.0f, 100.0f, 30.0f);  // 점: X, Y, 폭, 높이 / 늘어남: 왼, 위, 오른, 아래 여백
+	UPROPERTY(EditAnywhere)
 	float AlignmentX = 0.0f;
+	UPROPERTY(EditAnywhere)
 	float AlignmentY = 0.0f;
+	UPROPERTY(EditAnywhere)
 	bool bAutoSize = false;
+	UPROPERTY(EditAnywhere)
 	int32 ZOrder = 0;
+	UPROPERTY(EditAnywhere)
 	int32 Visibility = 0;                                   // EUIVisibility
+	UPROPERTY(EditAnywhere)
 	float RenderOpacity = 1.0f;
 
 protected:

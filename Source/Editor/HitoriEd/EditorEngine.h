@@ -45,13 +45,14 @@
 #include "UI/UIRenderer.h"
 #include "UI/UIDrawList.h"
 
+#include "EditorEngine.generated.h"
 
 inline constexpr int32 InvalidViewIndex = -1;
 
+UCLASS()
 class UEditorEngine : public UEngine
 {
-	DECLARE_CLASS(UEditorEngine, UEngine)
-
+	GENERATED_BODY()
 public:
 	FEngineConfig GetConfig() const override;
 	bool Init() override;

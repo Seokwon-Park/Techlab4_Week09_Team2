@@ -1,16 +1,12 @@
 #pragma once
 
 #include "LocalLightComponent.h"
+#include "RectLightComponent.generated.h"
 
+UCLASS()
 class URectLightComponent :public ULocalLightComponent
 {
-	DECLARE_CLASS(URectLightComponent, ULocalLightComponent)
-	REFLECT_START(URectLightComponent)
-		PROPERTY(HalfWidth)
-		PROPERTY(HalfHeight)
-		PROPERTY(BarnDoorAngle)
-		PROPERTY(BarnDoorLength)
-	REFLECT_END()
+	GENERATED_BODY()
 public:
 	URectLightComponent();
 	virtual ~URectLightComponent() override;
@@ -30,8 +26,12 @@ public:
 	float GetBarnDoorLength() const { return BarnDoorLength; }
 
 private:
+	UPROPERTY(EditAnywhere)
 	float HalfWidth = 3.0f;
+	UPROPERTY(EditAnywhere)
 	float HalfHeight = 3.0f;
+	UPROPERTY(EditAnywhere)
 	float BarnDoorAngle = 88.0f;	// 도 단위
+	UPROPERTY(EditAnywhere)
 	float BarnDoorLength = 2.0f;	
 };

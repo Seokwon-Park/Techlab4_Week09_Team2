@@ -5,6 +5,7 @@
 #include "Render/RenderDevice.h"
 #include "Texture.h"
 #include "ImageLoader.h"
+#include "Texture2D.generated.h"
 
 class FTexture2D : public FTexture
 {
@@ -24,9 +25,10 @@ private:
 	void CreateViews(ID3D11Device* Device, const D3D11_TEXTURE2D_DESC& InDesc);
 };
 
+UCLASS()
 class UTexture2D : public URenderAsset
 {
-	DECLARE_CLASS(UTexture2D, URenderAsset)
+	GENERATED_BODY()
 	
 	friend class UAssetManager;
 public:

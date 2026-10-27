@@ -2,6 +2,7 @@
 
 #include "PrimitiveComponent.h"
 #include "Render/LineBatcher.h"
+#include "ShapeComponent.generated.h"
 
 class FLineBatcher;
 
@@ -9,13 +10,10 @@ class FLineBatcher;
 void DrawCollisionShapes(UWorld* World, FLineBatcher* LineBatcher, const AActor* Selected);
 
 // 충돌 판정용 도형의 공통 부모. 메시가 없고 LineBatcher로 와이어프레임만 그린다. (담당: D)
+UCLASS()
 class UShapeComponent : public UPrimitiveComponent
 {
-	DECLARE_CLASS(UShapeComponent, UPrimitiveComponent)
-	REFLECT_START(ClassName)
-		PROPERTY(ShapeColor)
-		PROPERTY(bDrawOnlyIfSelected)
-		REFLECT_END()
+	GENERATED_BODY()
 public:
 	UShapeComponent();
 
@@ -28,7 +26,9 @@ public:
 	// 평소 ShapeColor, 겹쳐 있으면 빨강
 	FVector4 GetDebugColor() const;
 
+	UPROPERTY(EditAnywhere)
 	FColor ShapeColor = FColor(110, 200, 120, 255);
+	UPROPERTY(EditAnywhere)
 	bool bDrawOnlyIfSelected = false;
 
 protected:

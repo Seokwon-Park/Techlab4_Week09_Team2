@@ -1,14 +1,12 @@
 #pragma once
 
 #include "LocalLightComponent.h"
+#include "PointLightComponent.generated.h"
 
+UCLASS()
 class UPointLightComponent : public ULocalLightComponent
 {
-	DECLARE_CLASS(UPointLightComponent, ULocalLightComponent)
-	REFLECT_START(UPointLightComponent)
-		PROPERTY(LightFalloffExponent)
-		PROPERTY(SourceRadius)
-	REFLECT_END()
+	GENERATED_BODY()
 public:
 	UPointLightComponent();
 	virtual ~UPointLightComponent() override;
@@ -25,7 +23,9 @@ public:
 
 
 protected:
+	UPROPERTY(EditAnywhere)
 	float LightFalloffExponent = 1.0f;
+	UPROPERTY(EditAnywhere)
 	float SourceRadius = 0.02f;
 private:
 	

@@ -1,17 +1,15 @@
 #pragma once
 
 #include "PointLightComponent.h"
+#include "SpotLightComponent.generated.h"
 
 class FLineBatcher;
 
+UCLASS()
 class USpotLightComponent : public UPointLightComponent
 {
-	DECLARE_CLASS(USpotLightComponent, UPointLightComponent)
+	GENERATED_BODY()
 
-	REFLECT_START(ClassName)
-		PROPERTY(InnerConeAngle)
-		PROPERTY(OuterConeAngle)
-	REFLECT_END()
 
 public:
 	USpotLightComponent() = default;
@@ -32,6 +30,8 @@ public:
 
 private:
 	// 원뿔 중심축 기준 반각(도). 
+	UPROPERTY(EditAnywhere)
 	float InnerConeAngle = 15.0f;
+	UPROPERTY(EditAnywhere)
 	float OuterConeAngle = 30.0f;
 };

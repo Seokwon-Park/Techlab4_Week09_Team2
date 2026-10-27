@@ -15,6 +15,7 @@
 #include "Asset/LOD/StaticMeshLODSelector.h"
 #include "Engine/EngineTypes.h"
 #include "Render/SceneRenderData.h"
+#include "World.generated.h"
 
 class ULevel;
 class UBillboardComponent;
@@ -23,9 +24,10 @@ class APlayerController;
 
 struct FViewContext;
 
+UCLASS()
 class UWorld : public UObject
 {
-	DECLARE_CLASS(UWorld, UObject)
+	GENERATED_BODY()
 
 public:
 	UWorld() = default;

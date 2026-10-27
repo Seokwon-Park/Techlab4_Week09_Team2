@@ -4,11 +4,13 @@
 #include "../Components/SceneComponent.h"
 #include "../Math/EngineMath.h"
 #include "../Math/Rotator.h"
+#include "CameraComponent.generated.h"
 
 
+UCLASS()
 class UCameraComponent : public USceneComponent
 {
-	DECLARE_CLASS(UCameraComponent, USceneComponent)
+	GENERATED_BODY()
 
 public:
 	UCameraComponent() { PrimaryComponentTick.bCanEverTick = true; }   // 이동·회전 입력을 매 프레임 처리한다

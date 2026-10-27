@@ -1,14 +1,14 @@
 #pragma once
 
 #include "ShapeComponent.h"
+#include "SphereComponent.generated.h"
 
+UCLASS()
 class USphereComponent : public UShapeComponent
 {
-	DECLARE_CLASS(USphereComponent, UShapeComponent)
-	REFLECT_START(ClassName)
-		PROPERTY(SphereRadius)
-		REFLECT_END()
+	GENERATED_BODY()
 public:
+	UPROPERTY(EditAnywhere)
 	float SphereRadius = 0.5f;
 
 	// 비균일 스케일이면 가장 큰 축을 쓴다

@@ -2,14 +2,14 @@
 
 #include "GameFramework/Actor.h"
 #include "Input/InputSystem.h"
+#include "PlayerController.generated.h"
 
 class APawn;
 
+UCLASS()
 class APlayerController : public AActor
 {
-	DECLARE_CLASS(APlayerController, AActor)
-	REFLECT_START(ClassName)
-	REFLECT_END()
+	GENERATED_BODY()
 public:
 	APlayerController();
 	void Tick(float DeltaTime) override;

@@ -1,18 +1,12 @@
 #pragma once
 #include "SceneComponent.h"
 #include "Math/Vector4.h"
+#include "ExponentialHeightFogComponent.generated.h"
 
+UCLASS()
 class UExponentialHeightFogComponent final : public USceneComponent
 {
-	DECLARE_CLASS(UExponentialHeightFogComponent, USceneComponent)
-	REFLECT_START(UExponentialHeightFogComponent)
-		PROPERTY(FogDensity)
-		PROPERTY(FogHeightFalloff)
-		PROPERTY_TYPE(FogColor, Color)
-		PROPERTY(StartDistance)
-		PROPERTY(FogMaxOpacity)
-		PROPERTY(FogCutoffDistance)
-	REFLECT_END()
+	GENERATED_BODY()
 
 public:
 	UExponentialHeightFogComponent() = default;
@@ -39,10 +33,16 @@ public:
 	float GetFogHeight() const { return GetWorldLocation().Z; }
 
 private:
+	UPROPERTY(EditAnywhere)
 	float FogDensity = 0.02f;
+	UPROPERTY(EditAnywhere)
 	float FogHeightFalloff = 0.02f;
+	UPROPERTY(EditAnywhere, Type=Color)
 	FVector4 FogColor = FVector4(0.5f, 0.6f, 0.7f, 1.0f);
+	UPROPERTY(EditAnywhere)
 	float StartDistance = 0.0f;
+	UPROPERTY(EditAnywhere)
 	float FogMaxOpacity = 1.0f;
+	UPROPERTY(EditAnywhere)
 	float FogCutoffDistance = 0.0f;
 };

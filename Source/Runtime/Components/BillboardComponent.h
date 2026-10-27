@@ -2,6 +2,7 @@
 
 #include "PrimitiveComponent.h"
 #include "LightComponentBase.h"
+#include "BillboardComponent.generated.h"
 
 struct FSubUVConstants
 {
@@ -18,12 +19,11 @@ struct FSubUVConstants
 };
 static_assert(sizeof(FSubUVConstants) == 48, "ParticleSubUVShader.hlsl cbuffer subuv와 크기가 같아야 한다");
 
+UCLASS()
 class UBillboardComponent : public UPrimitiveComponent
 {
-	DECLARE_CLASS(UBillboardComponent, UPrimitiveComponent)
+	GENERATED_BODY()
 
-	REFLECT_START(ClassName)
-		REFLECT_END()
 
 public:
 	UBillboardComponent();

@@ -2,14 +2,16 @@
 
 #include "UObject/Object.h"
 #include "UObject/Class.h"
+#include "GameInstance.generated.h"
 
 class UWorld;
 class UEngine;
 struct FWorldContext;
 
+UCLASS()
 class UGameInstance : public UObject
 {
-	DECLARE_CLASS(UGameInstance, UObject)
+	GENERATED_BODY()
 public:
 	virtual void Init() {}
 	virtual void Shutdown();

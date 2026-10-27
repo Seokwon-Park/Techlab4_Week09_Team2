@@ -3,17 +3,14 @@
 #include "UI/PanelWidget.h"
 
 #include <functional>
+#include "Button.generated.h"
 
 // 자식(보통 UTextBlock 라벨)을 가지는 버튼. 버튼 전체가 하나의 클릭 대상이다.
+UCLASS()
 class UButton : public UPanelWidget
 {
-	DECLARE_CLASS(UButton, UPanelWidget)
+	GENERATED_BODY()
 
-	REFLECT_START(ClassName)
-		PROPERTY(NormalColor)
-		PROPERTY(HoveredColor)
-		PROPERTY(PressedColor)
-	REFLECT_END()
 
 public:
 	std::function<void()> OnClicked;
@@ -31,8 +28,11 @@ public:
 		if (bInside && OnClicked) OnClicked();
 	}
 
+	UPROPERTY(EditAnywhere)
 	FLinearColor NormalColor = FLinearColor(0.12f, 0.15f, 0.20f, 0.90f);
+	UPROPERTY(EditAnywhere)
 	FLinearColor HoveredColor = FLinearColor(0.20f, 0.25f, 0.32f, 0.95f);
+	UPROPERTY(EditAnywhere)
 	FLinearColor PressedColor = FLinearColor(0.85f, 0.55f, 0.10f, 1.00f);
 
 private:

@@ -3,13 +3,15 @@
 #include "UI/PanelWidget.h"
 
 #include <functional>
+#include "UserWidget.generated.h"
 
 class UWorld;
 class FGameViewportClient;
 
+UCLASS()
 class UUserWidget : public UWidget
 {
-	DECLARE_CLASS(UUserWidget, UWidget)
+	GENERATED_BODY()
 
 public:
 	UUserWidget();

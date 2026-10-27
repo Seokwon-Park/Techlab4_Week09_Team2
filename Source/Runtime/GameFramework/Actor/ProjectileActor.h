@@ -1,17 +1,17 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "ProjectileActor.generated.h"
 
 class UStaticMeshComponent;
 class UFireBallComponent;
 class UProjectileMovementComponent;
 
 // Reusable PIE projectile launched by the default pawn.
+UCLASS()
 class AProjectileActor : public AActor
 {
-    DECLARE_CLASS(AProjectileActor, AActor)
-    REFLECT_START(ClassName)
-    REFLECT_END()
+    GENERATED_BODY()
 public:
     AProjectileActor();
     void Tick(float DeltaTime) override;

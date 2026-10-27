@@ -9,6 +9,7 @@
 #include "EngineTypes.h"
 
 #include "Asset/AssetManager.h"
+#include "Engine.generated.h"
 
 class UGameInstance;
 class FGameViewportClient;
@@ -61,9 +62,10 @@ struct FEngineConfig
 
 // 모든 엔진 모드의 베이스. 플랫폼·루프·Present는 FEngineLoop가 맡고,
 // 서브클래스(Game, Editor)는 Tick에서 한 프레임의 갱신과 렌더를 채운다.
+UCLASS()
 class UEngine : public UObject
 {
-	DECLARE_CLASS(UEngine, UObject)
+	GENERATED_BODY()
 	friend class FEngineLoop;
 public:
 	// 창을 만들기 전에 호출된다.

@@ -1,13 +1,15 @@
 #pragma once
 
 #include "GameFramework/Pawn.h"
+#include "DefaultPawn.generated.h"
 
 class UCameraComponent;
 class UStaticMeshComponent;
 
+UCLASS()
 class ADefaultPawn : public APawn
 {
-	DECLARE_CLASS(ADefaultPawn, APawn)
+	GENERATED_BODY()
 public:
 	ADefaultPawn();
 	void AddMovementInput(const FVector& WorldDirection, float ScaleValue) override;

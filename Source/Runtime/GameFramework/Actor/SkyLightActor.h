@@ -2,13 +2,13 @@
 
 #include "GameFramework/Actor/LightActorBase.h"
 #include "Components/SkyLightComponent.h"
+#include "SkyLightActor.generated.h"
 
+UCLASS()
 class ASkyLightActor : public ALightActorBase
 {
-	DECLARE_CLASS(ASkyLightActor, ALightActorBase)
+	GENERATED_BODY()
 
-	REFLECT_START(ClassName)
-	REFLECT_END()
 
 public:
 	ASkyLightActor();

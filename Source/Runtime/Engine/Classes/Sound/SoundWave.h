@@ -1,9 +1,11 @@
 #pragma once
 #include "Engine/Classes/Sound/SoundBase.h"
+#include "SoundWave.generated.h"
 
+UCLASS()
 class USoundWave : public USoundBase
 {
-	DECLARE_CLASS(USoundWave, USoundBase)
+	GENERATED_BODY()
 public:
 	bool LoadFromFile(const FString& Path);
 

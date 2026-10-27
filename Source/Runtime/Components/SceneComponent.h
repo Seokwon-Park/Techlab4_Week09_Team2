@@ -4,6 +4,7 @@
 #include "ActorComponent.h"
 #include "Math/Box.h"
 #include "Collision/HitResult.h"
+#include "SceneComponent.generated.h"
 
 enum class EAttachmentRule
 {
@@ -12,13 +13,11 @@ enum class EAttachmentRule
 	SnapToTarget
 };
 
+UCLASS()
 class USceneComponent : public UActorComponent
 {
-	DECLARE_CLASS(USceneComponent, UActorComponent)
+	GENERATED_BODY()
 
-	REFLECT_START(ClassName)
-		PROPERTY(Transform)
-		REFLECT_END()
 
 public:
 	enum class EVisibilityPropagation : uint8 { NoPropagation, DirtyOnly, Propagate };
@@ -109,6 +108,7 @@ public:
 protected:
 
 	bool bTransformDirty;
+	UPROPERTY(EditAnywhere)
 	FTransform Transform;
 
 	USceneComponent* AttachParent = nullptr; // Attach 부모 정보

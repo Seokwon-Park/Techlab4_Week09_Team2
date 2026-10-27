@@ -4,10 +4,12 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/RotatingMovementComponent.h"
 #include "Components/ProjectileMovementComponent.h"
+#include "FireBallActor.generated.h"
 
+UCLASS()
 class AFireBallActor : public AActor
 {
-	DECLARE_CLASS(AFireBallActor, AActor)
+	GENERATED_BODY()
 
 public:
 	AFireBallActor();

@@ -1,10 +1,12 @@
 #pragma once
 
 #include "UI/Widget.h"
+#include "PanelWidget.generated.h"
 
+UCLASS()
 class UPanelWidget : public UWidget
 {
-	DECLARE_CLASS(UPanelWidget, UWidget)
+	GENERATED_BODY()
 
 public:
 	UPanelWidget() = default;
@@ -33,9 +35,10 @@ protected:
 };
 
 // 자식을 앵커로 자유 배치한다. 루트로 가장 많이 쓴다.
+UCLASS()
 class UCanvasPanel : public UPanelWidget
 {
-	DECLARE_CLASS(UCanvasPanel, UPanelWidget)
+	GENERATED_BODY()
 
 public:
 	UCanvasPanel()
@@ -47,17 +50,16 @@ public:
 
 // 자식을 위에서 아래로 쌓는다. 순위표처럼 줄이 늘어나는 점수판에 쓴다.
 // 자식의 앵커는 무시하고, 높이는 자식의 GetDesiredSize().Y를 쓴다.
+UCLASS()
 class UVerticalBox : public UPanelWidget
 {
-	DECLARE_CLASS(UVerticalBox, UPanelWidget)
+	GENERATED_BODY()
 
-	REFLECT_START(ClassName)
-		PROPERTY(Spacing)
-	REFLECT_END()
 
 public:
 	virtual void SetGeometry(const FUIRect& InRect, float InScale) override;
 	virtual FVector2 GetDesiredSize() const override;
 
+	UPROPERTY(EditAnywhere)
 	float Spacing = 4.0f;
 };

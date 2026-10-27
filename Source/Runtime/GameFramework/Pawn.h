@@ -1,14 +1,14 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "Pawn.generated.h"
 
 class APlayerController;
 
+UCLASS()
 class APawn : public AActor
 {
-	DECLARE_CLASS(APawn, AActor)
-	REFLECT_START(ClassName)
-	REFLECT_END()
+	GENERATED_BODY()
 public:
 	APawn();
 	virtual void AddMovementInput(const FVector& WorldDirection, float ScaleValue) {}

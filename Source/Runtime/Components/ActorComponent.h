@@ -3,19 +3,16 @@
 #include "UObject/Object.h"
 #include "UObject/Class.h"
 #include "Engine/EngineBaseTypes.h"
+#include "ActorComponent.generated.h"
 
 class AActor;
 class UWorld;
 
+UCLASS()
 class UActorComponent : public UObject
 {
-	DECLARE_CLASS(UActorComponent, UObject)
+	GENERATED_BODY()
 
-	REFLECT_START(ClassName)
-		PROPERTY(bAutoActivate)
-		PROPERTY(bVisible)
-		PROPERTY(bHiddenInGame)
-		REFLECT_END()
 
 public:
 	UActorComponent() { PrimaryComponentTick.Target = this; }
@@ -80,8 +77,11 @@ protected:
 	//원래는 _Concurrent 병렬처리 -> 현재 엔진에서는 멀티 스레드 사용 X 
 	virtual void CreateRenderState();
 	virtual void DestroyRenderState();
+	UPROPERTY(EditAnywhere)
 	bool bAutoActivate = true;
+	UPROPERTY(EditAnywhere)
 	bool bVisible = true;
+	UPROPERTY(EditAnywhere)
 	bool bHiddenInGame = false;
 
 	void ExecuteRegisterEvents();

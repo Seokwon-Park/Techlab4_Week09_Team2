@@ -1,15 +1,15 @@
 #pragma once
 
 #include "ShapeComponent.h"
+#include "BoxComponent.generated.h"
 
+UCLASS()
 class UBoxComponent : public UShapeComponent
 {
-	DECLARE_CLASS(UBoxComponent, UShapeComponent)
-	REFLECT_START(ClassName)
-		PROPERTY(BoxExtent)
-		REFLECT_END()
+	GENERATED_BODY()
 public:
 	// 로컬 공간 반 크기. 월드 크기는 GetScaledBoxExtent
+	UPROPERTY(EditAnywhere)
 	FVector BoxExtent = FVector(0.5f, 0.5f, 0.5f);
 
 	FVector GetScaledBoxExtent() const;

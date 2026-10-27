@@ -1,12 +1,14 @@
 #pragma once
 
 #include "UI/UserWidget.h"
+#include "ScoreboardWidget.generated.h"
 
 class UTextBlock;
 
+UCLASS()
 class UScoreboardWidget : public UUserWidget
 {
-	DECLARE_CLASS(UScoreboardWidget, UUserWidget)
+	GENERATED_BODY()
 
 public:
 	void SetScore(int32 InScore);
