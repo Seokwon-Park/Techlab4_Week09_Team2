@@ -639,6 +639,15 @@ namespace
 				}
 			});
 	}
+
+	void RegisterCameraAction(sol::state& Lua)
+	{
+		Lua.set_function("StartHitStop",
+			[](sol::this_environment Env, float Duration, float Dilation)
+			{
+				WorldFromEnv(Env, "StartHitStop")->StartHitStop(Duration, Dilation);
+			});
+	}
 }
 
 namespace FLuaBindings
@@ -653,6 +662,7 @@ namespace FLuaBindings
 		RegisterWidget(Lua);
 		RegisterGameplay(Lua);
 		RegisterAudio(Lua);
+		RegisterCameraAction(Lua);
 	}
 
 	void FlushPendingDestroy(UWorld* World)
