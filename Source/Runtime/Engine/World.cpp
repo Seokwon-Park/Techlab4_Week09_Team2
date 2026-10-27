@@ -124,8 +124,22 @@ AActor* UWorld::SpawnActor(UClass* Class, FName InName, const FTransform* Transf
 	return NewActor;
 }
 
-void UWorld::Tick(float DeltaTime)
+void UWorld::Tick(float RealDeltaTime)
 {
+	RealTimeSeconds += RealDeltaTime;
+
+	if (HitStopTimeRemaining > 0.0f)
+	{
+		HitStopTimeRemaining = std::max(HitStopTimeRemaining - RealDeltaTime, 0.0f);
+	}
+
+	const float DeltaTime = RealDeltaTime * GetEffectiveTimeDilation();
+
+	if (!bIsPaused)
+	{
+		TimeSeconds += DeltaTime;
+	}
+
 	{
 		SCOPE_CYCLE_COUNTER(STAT_UpdateAllTransforms);
 		Scene.UpdateAllTransforms();
@@ -997,3 +1011,14 @@ void UWorld::UpdateOverlaps()
 	}
 }
 
+float UWorld::GetEffectiveTimeDilation() const
+{
+	const float HitStop = (HitStopTimeRemaining > 0.0f) ? HitStopDilation : 1.0f;
+	return FMath::Clamp(GlobalTimeDilation * HitStop, MinTimeDilation, MaxTimeDilation);
+}
+
+void UWorld::StartHitStop(float Duration, float Dilation)
+{
+	HitStopTimeRemaining = std::max(HitStopTimeRemaining, Duration);
+	HitStopDilation = Dilation;
+}
