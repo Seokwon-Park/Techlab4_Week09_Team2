@@ -3,6 +3,12 @@
 -- 시퀀스는 검은 화면(Fade 1)으로 끝나고, IceEscape의 IceIntro.sequence가 검은 화면에서 페이드 인한다.
 local NEXT_LEVEL <const> = "IceEscape"
 
+-- 에그 부화 순간 셰이크: { 시퀀스 시간(초), 세기 }. BanelingSwarm.sequence의 부화 키와 맞춘다
+local HATCH_SHAKES <const> = {
+    { 3.0, 0.7 },   -- Egg_Hero (클로즈업)
+    { 3.9, 0.2 }, { 4.15, 0.2 }, { 4.4, 0.2 }, { 4.65, 0.2 }, { 4.9, 0.2 }, { 5.1, 0.2 },
+}
+
 local bLeaving = false
 
 local function GoNext()
@@ -18,9 +24,19 @@ local function WaitForEnd()
     GoNext()
 end
 
+local function HatchShake()
+    local now = 0.0
+    for _, shake in ipairs(HATCH_SHAKES) do
+        wait(shake[1] - now)
+        StartCameraShake(shake[2])
+        now = shake[1]
+    end
+end
+
 function BeginPlay()
     bLeaving = false
     StartCoroutine(WaitForEnd)
+    StartCoroutine(HatchShake)
 end
 
 function Tick(dt)
