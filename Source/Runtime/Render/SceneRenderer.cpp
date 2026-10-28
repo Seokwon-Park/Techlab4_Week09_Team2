@@ -15,6 +15,7 @@
 #include "Engine/SceneManagement.h"
 #include "Components/ExponentialHeightFogComponent.h"
 #include "Render/PostProcess/HeightFogRenderer.h"
+#include "Render/PostProcess/CameraOverlayRenderer.h"
 #include "Render/PostProcess/FXAARenderer.h"
 #include "Render/PostProcess/ToneMapData.h"
 #include "Text/TextRenderer.h"
@@ -690,6 +691,20 @@ bool FSceneRenderer::AddViewportPasses(FRenderGraphBuilder& Graph, FRenderer* Re
 		FRenderGraphRasterPassDesc Pass = MakeViewportPass("SceneDepthVisualization", SceneColor);
 		Pass.ReadTextures = { Depth };
 		if (!Graph.AddRasterPass(std::move(Pass), Callbacks.DepthVisualization)) return false;
+	}
+
+	if (!Options.bShowWorldNormal && !Options.bShowSceneDepth &&
+		View.NeedsCameraOverlay(Options.bShowVignette, Options.bShowCameraOverlay))
+	{
+		const uint32 Width = Targets.SceneColor->GetWidth();
+		const uint32 Height = Targets.SceneColor->GetHeight();
+		if (!Graph.AddRasterPass(MakeViewportPass("CameraOverlay", SceneColor),
+			[this, Renderer, Width, Height,
+			bVignette = Options.bShowVignette, bOverlay = Options.bShowCameraOverlay]
+			{
+				if (FCameraOverlayRenderer* Overlay = Renderer->GetCameraOverlay())
+					Overlay->OnRender(View, Width, Height, bVignette, bOverlay);
+			})) return false;
 	}
 
 	FRenderGraphTextureRef FinalColor = SceneColor;

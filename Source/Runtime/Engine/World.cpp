@@ -1024,7 +1024,8 @@ void UWorld::UpdateOverlaps()
 float UWorld::GetEffectiveTimeDilation() const
 {
 	const float HitStop = (HitStopTimeRemaining > 0.0f) ? HitStopDilation : 1.0f;
-	return FMath::Clamp(GlobalTimeDilation * HitStop, MinTimeDilation, MaxTimeDilation);
+	// UE AWorldSettings::GetEffectiveTimeDilation: TimeDilation * CinematicTimeDilation (* DemoPlay)
+	return FMath::Clamp(GlobalTimeDilation * CinematicTimeDilation * HitStop, MinTimeDilation, MaxTimeDilation);
 }
 
 void UWorld::StartHitStop(float Duration, float Dilation)
