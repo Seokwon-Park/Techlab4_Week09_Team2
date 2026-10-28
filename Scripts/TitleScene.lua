@@ -5,7 +5,7 @@ local titleWidget
 local function GameStart()
     print("Game Start")
     PlaySound2D("Assets/Sounds/Click.wav")
-    OpenLevel("IceEscape")
+    OpenLevel("BanelingSwarm") -- 시네마틱이 끝나면 IceEscape로 넘어간다 (baneling_swarm_cinematic.lua)
 end
 
 function BeginPlay()

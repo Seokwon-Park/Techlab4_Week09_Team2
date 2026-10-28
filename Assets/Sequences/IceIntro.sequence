@@ -1,0 +1,677 @@
+{
+    "BindingReferences": [
+        {
+            "Actor": "Intro_Camera",
+            "Guid": "EDC653E08E4F49B49AD7E8915A8B8F7D"
+        },
+        {
+            "Actor": "Intro_Ultralisk",
+            "Guid": "0280ADC360BF487797C8F11833C82070"
+        },
+        {
+            "Actor": "Intro_Shiba",
+            "Guid": "FE64B575027F4243997589BF2E272AD4"
+        }
+    ],
+    "MovieScene": {
+        "Bindings": [
+            {
+                "Class": "ACameraActor",
+                "Guid": "EDC653E08E4F49B49AD7E8915A8B8F7D",
+                "Name": "Intro_Camera",
+                "Tracks": [
+                    {
+                        "Class": "UMovieScene3DTransformTrack",
+                        "EvalDisabled": false,
+                        "Sections": [
+                            {
+                                "Active": true,
+                                "Channels": [
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": 2.2
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 72000,
+                                                "Value": 2.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 156000,
+                                                "Value": 0.7
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": 3.6
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 72000,
+                                                "Value": 3.2
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 156000,
+                                                "Value": 2.0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": 0.55
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 72000,
+                                                "Value": 0.5
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 156000,
+                                                "Value": 0.25
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": -6.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 72000,
+                                                "Value": -9.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 156000,
+                                                "Value": -26.0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": -102.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 72000,
+                                                "Value": -101.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 156000,
+                                                "Value": -96.0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": 0.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 72000,
+                                                "Value": 0.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 156000,
+                                                "Value": 0.0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": []
+                                    },
+                                    {
+                                        "Keys": []
+                                    },
+                                    {
+                                        "Keys": []
+                                    }
+                                ],
+                                "Class": "UMovieScene3DTransformSection",
+                                "Completion": 2
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "Class": "AStaticMeshActor",
+                "Guid": "0280ADC360BF487797C8F11833C82070",
+                "Name": "Intro_Ultralisk",
+                "Tracks": [
+                    {
+                        "Class": "UMovieScene3DTransformTrack",
+                        "EvalDisabled": false,
+                        "Sections": [
+                            {
+                                "Active": true,
+                                "Channels": [
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 0,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": -1.8
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 0,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 134400,
+                                                "Value": -1.8
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 156000,
+                                                "Value": -1.8
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 0,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": -36.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 0,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 134400,
+                                                "Value": -8.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 156000,
+                                                "Value": -7.4
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 0,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": 0.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 0,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 134400,
+                                                "Value": 0.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 156000,
+                                                "Value": 0.0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 1,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": 0.0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 1,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": 90.0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 1,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": 0.0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": []
+                                    },
+                                    {
+                                        "Keys": []
+                                    },
+                                    {
+                                        "Keys": []
+                                    }
+                                ],
+                                "Class": "UMovieScene3DTransformSection",
+                                "Completion": 2
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "Class": "AStaticMeshActor",
+                "Guid": "FE64B575027F4243997589BF2E272AD4",
+                "Name": "Intro_Shiba",
+                "Tracks": [
+                    {
+                        "Class": "UMovieScene3DTransformTrack",
+                        "EvalDisabled": false,
+                        "Sections": [
+                            {
+                                "Active": true,
+                                "Channels": [
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 0,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": 1.4
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 14400,
+                                                "Value": 1.4
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 124800,
+                                                "Value": 1.2
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 0,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": -30.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 14400,
+                                                "Value": -30.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 124800,
+                                                "Value": -2.6
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 0,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": 0.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 14400,
+                                                "Value": 0.0
+                                            },
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 2,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 124800,
+                                                "Value": 0.0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 1,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": 0.0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 1,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": 90.0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": [
+                                            {
+                                                "Arrive": 0.0,
+                                                "Interp": 1,
+                                                "Leave": 0.0,
+                                                "TangentMode": 0,
+                                                "Time": 0,
+                                                "Value": 0.0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Keys": []
+                                    },
+                                    {
+                                        "Keys": []
+                                    },
+                                    {
+                                        "Keys": []
+                                    }
+                                ],
+                                "Class": "UMovieScene3DTransformSection",
+                                "Completion": 2
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "CameraCutTrack": {
+            "Class": "UMovieSceneCameraCutTrack",
+            "EvalDisabled": false,
+            "Sections": [
+                {
+                    "Active": true,
+                    "Camera": "EDC653E08E4F49B49AD7E8915A8B8F7D",
+                    "Channels": [],
+                    "Class": "UMovieSceneCameraCutSection",
+                    "Completion": 2,
+                    "End": 156000,
+                    "Start": 0
+                }
+            ]
+        },
+        "DisplayRate": [
+            30,
+            1
+        ],
+        "PlaybackEnd": 156000,
+        "PlaybackStart": 0,
+        "TickResolution": [
+            24000,
+            1
+        ],
+        "Tracks": [
+            {
+                "Class": "UMovieSceneFadeTrack",
+                "EvalDisabled": false,
+                "Sections": [
+                    {
+                        "Active": true,
+                        "Channels": [
+                            {
+                                "Keys": [
+                                    {
+                                        "Arrive": 0.0,
+                                        "Interp": 2,
+                                        "Leave": 0.0,
+                                        "TangentMode": 0,
+                                        "Time": 0,
+                                        "Value": 1.0
+                                    },
+                                    {
+                                        "Arrive": 0.0,
+                                        "Interp": 2,
+                                        "Leave": 0.0,
+                                        "TangentMode": 0,
+                                        "Time": 6000,
+                                        "Value": 1.0
+                                    },
+                                    {
+                                        "Arrive": 0.0,
+                                        "Interp": 2,
+                                        "Leave": 0.0,
+                                        "TangentMode": 0,
+                                        "Time": 26400,
+                                        "Value": 0.0
+                                    }
+                                ]
+                            }
+                        ],
+                        "Class": "UMovieSceneFadeSection",
+                        "Completion": 2,
+                        "FadeAudio": false,
+                        "FadeColor": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
+                ]
+            },
+            {
+                "Class": "UMovieSceneCameraOverlayTrack",
+                "EvalDisabled": false,
+                "Sections": [
+                    {
+                        "Active": true,
+                        "Channels": [
+                            {
+                                "Keys": [
+                                    {
+                                        "Arrive": 0.0,
+                                        "Interp": 2,
+                                        "Leave": 0.0,
+                                        "TangentMode": 0,
+                                        "Time": 0,
+                                        "Value": 0.0
+                                    },
+                                    {
+                                        "Arrive": 0.0,
+                                        "Interp": 2,
+                                        "Leave": 0.0,
+                                        "TangentMode": 0,
+                                        "Time": 14400,
+                                        "Value": 1.0
+                                    },
+                                    {
+                                        "Arrive": 0.0,
+                                        "Interp": 2,
+                                        "Leave": 0.0,
+                                        "TangentMode": 0,
+                                        "Time": 141600,
+                                        "Value": 1.0
+                                    },
+                                    {
+                                        "Arrive": 0.0,
+                                        "Interp": 2,
+                                        "Leave": 0.0,
+                                        "TangentMode": 0,
+                                        "Time": 156000,
+                                        "Value": 0.0
+                                    }
+                                ]
+                            },
+                            {
+                                "Keys": [
+                                    {
+                                        "Arrive": 0.0,
+                                        "Interp": 2,
+                                        "Leave": 0.0,
+                                        "TangentMode": 0,
+                                        "Time": 0,
+                                        "Value": 0.0
+                                    },
+                                    {
+                                        "Arrive": 0.0,
+                                        "Interp": 2,
+                                        "Leave": 0.0,
+                                        "TangentMode": 0,
+                                        "Time": 72000,
+                                        "Value": 0.4
+                                    },
+                                    {
+                                        "Arrive": 0.0,
+                                        "Interp": 2,
+                                        "Leave": 0.0,
+                                        "TangentMode": 0,
+                                        "Time": 134400,
+                                        "Value": 0.9
+                                    },
+                                    {
+                                        "Arrive": 0.0,
+                                        "Interp": 2,
+                                        "Leave": 0.0,
+                                        "TangentMode": 0,
+                                        "Time": 156000,
+                                        "Value": 0.0
+                                    }
+                                ]
+                            }
+                        ],
+                        "Class": "UMovieSceneCameraOverlaySection",
+                        "Completion": 2,
+                        "LetterboxAspect": 2.39
+                    }
+                ]
+            }
+        ]
+    },
+    "Type": "LevelSequence"
+}
