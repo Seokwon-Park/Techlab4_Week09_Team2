@@ -96,8 +96,20 @@ void FSettingsPanel::OnRender()
 	ImGui::Checkbox("Vignette", &Settings.bShowVignette);
 	ImGui::Checkbox("Camera Fade / Letterbox", &Settings.bShowCameraOverlay);
 
-	//////////////////////////////////////////////////////////
+	if (ImGui::TreeNode("Camera Overlay Debug"))
+	{
+		FCameraOverlayDebug& D = GCameraOverlayDebug;
+		ImGui::Checkbox("Override (PIE)", &D.bOverride);
+		ImGui::ColorEdit3("Fade Color", D.FadeColor);
+		ImGui::SliderFloat("Fade Amount", &D.FadeAmount, 0.0f, 1.0f);
+		ImGui::SliderFloat("Letterbox", &D.LetterboxAmount, 0.0f, 1.0f);
+		ImGui::SliderFloat("Letterbox Aspect", &D.LetterboxAspect, 1.0f, 3.0f, "%.2f");
+		ImGui::SliderFloat("Vignette", &D.VignetteIntensity, 0.0f, 2.0f);
+		ImGui::TreePop();
+	}
 
+	//////////////////////////////////////////////////////////
+	
 	ImGui::Dummy(ImVec2(0.0f, SectionGap));
 	ImGui::SeparatorText("Grid");
 

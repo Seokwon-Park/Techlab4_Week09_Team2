@@ -11,6 +11,7 @@
 #include "GameFramework/Actor/RectLightActor.h"
 #include "GameFramework/Actor/SkyLightActor.h"
 #include "GameFramework/Actor/TextRenderActor.h"
+#include "LevelSequence/LevelSequenceActor.h"
 #include "GameFramework/Actor/ExponentialHeightFogActor.h"
 #include "GameFramework/Actor/FireBallActor.h"
 #include "GameFramework/Actor/ProjectileActor.h"
@@ -56,6 +57,7 @@ public:
 		AFireBallActor::StaticClass(),
 		AProjectileActor::StaticClass(),
 		AScoreboardManager::StaticClass(),
+		ALevelSequenceActor::StaticClass(),
 	};
 
 private:

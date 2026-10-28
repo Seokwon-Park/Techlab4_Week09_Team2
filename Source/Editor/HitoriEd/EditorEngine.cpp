@@ -169,6 +169,7 @@ bool UEditorEngine::Init()
 	CascadeFloorRenderer->Init();
 
 	SettingsPanel = EditorUI->AddEditorPanel<FSettingsPanel>();
+	SequencerPanel = EditorUI->AddEditorPanel<FSequencerPanel>();
 	OutputLogPanel->SetEditorSettings(&SettingsPanel->GetMutableSettings());
 
 	UIEditorPanel = EditorUI->AddEditorPanel<FUIEditorPanel>();
@@ -264,6 +265,18 @@ bool UEditorEngine::Init()
 
 	SettingsPanel->SetWorld(EditorWorld);
 	SettingsPanel->SetViewportsPanel(ViewportsPanel);
+	SequencerPanel->SetWorld(EditorWorld, true);
+	// 에디터 월드 미리보기: Camera Cut 카메라에 0번 뷰포트를 태운다 (PIE는 ULevelSequencePlayer가 게임 뷰포트를 바꾼다)
+	SequencerPanel->SetPilotCameraHandler([this](UCameraComponent* Camera)
+	{
+		if (!Camera || !ViewportsPanel) return;
+		if (FEditorViewportClient* Client = ViewportsPanel->GetViewportClient(0))
+		{
+			Client->SetViewLocation(Camera->GetWorldLocation());
+			Client->SetViewRotation(Camera->GetWorldRotation());
+			Client->SetViewFOV(Camera->GetFieldOfView());
+		}
+	});
 	ViewportsPanel->SetLayoutMode(ViewportLayoutMode, SingleViewportIndex);
 
 	for (int32 i = 0; i < 4; ++i)
@@ -1235,6 +1248,8 @@ void UEditorEngine::DrawPIEWindows()
 void UEditorEngine::PreExit()
 {
 	EndPlayMap();
+	// 시퀀서는 에디터 월드 액터를 가리키므로 월드보다 먼저 정리한다
+	if (SequencerPanel) SequencerPanel->Shutdown();
 	EditorWorld->ClearWorld();
 	// PIE 창이 열린 채 종료하면 Device가 살아 있을 때 Swapchain과 타깃을 먼저 정리한다.
 	DestroyPIEWindow();
@@ -1345,6 +1360,7 @@ void UEditorEngine::OnActiveWorldChanged()
 	if (DetailsPanel) DetailsPanel->SetWorld(ActiveWorld);
 	if (EditorControlsPanel) EditorControlsPanel->SetWorld(ActiveWorld);
 	if (SettingsPanel) SettingsPanel->SetWorld(ActiveWorld);
+	if (SequencerPanel) SequencerPanel->SetWorld(ActiveWorld, ActiveWorld == EditorWorld);
 }
 
 void UEditorEngine::EndPlayMap()

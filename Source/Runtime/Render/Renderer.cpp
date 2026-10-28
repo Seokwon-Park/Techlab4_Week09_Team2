@@ -9,6 +9,7 @@
 #include "Render/PostProcess/HeightFogRenderer.h"
 #include "Render/PostProcess/FXAARenderer.h"
 #include "Render/PostProcess/ToneMapData.h"
+#include "Render/PostProcess/CameraOverlayRenderer.h"
 #include "Text/TextRenderer.h"
 
 namespace
@@ -141,6 +142,8 @@ void FRenderer::InitScenePasses(const FString& SkyPanoramaPath)
 	HeightFog->Init(this);
 	FXAA = MakeUnique<FFXAARenderer>();
 	FXAA->Init(this);
+	CameraOverlay = MakeUnique<FCameraOverlayRenderer>();   // FXAA->Init(this); 아래
+	CameraOverlay->Init(this);
 	ToneMapConstants = RenderCommand::CreateConstantBuffer(sizeof(FToneMapData));
 	SceneText = MakeUnique<FTextRenderer>();
 	SceneText->Init();

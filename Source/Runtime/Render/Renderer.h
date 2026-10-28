@@ -14,6 +14,8 @@
 class FSkyboxRenderer;
 class FHeightFogRenderer;
 class FFXAARenderer;
+class FCameraOverlayRenderer;
+
 class FTextRenderer;
 
 class FRenderer
@@ -44,10 +46,11 @@ public:
 	FSkyboxRenderer* GetSkybox() const { return Skybox.get(); }
 	FHeightFogRenderer* GetHeightFog() const { return HeightFog.get(); }
 	FFXAARenderer* GetFXAA() const { return FXAA.get(); }
+	FCameraOverlayRenderer* GetCameraOverlay() const { return CameraOverlay.get(); }
 	FTextRenderer* GetSceneText() const { return SceneText.get(); }
 
 	FConstantBuffer* GetToneMapConstants() const { return ToneMapConstants.get(); }
-
+	
 private:
 	void EnsurePerObjectSlotCapacity(uint32 SlotCount);
 	void BindBatch(const FMeshDrawBatch& Batch);
@@ -66,5 +69,6 @@ private:
 	TUniquePtr<FSkyboxRenderer> Skybox;
 	TUniquePtr<FHeightFogRenderer> HeightFog;
 	TUniquePtr<FFXAARenderer> FXAA;
+	TUniquePtr<FCameraOverlayRenderer> CameraOverlay;
 	TUniquePtr<FTextRenderer> SceneText;
 };

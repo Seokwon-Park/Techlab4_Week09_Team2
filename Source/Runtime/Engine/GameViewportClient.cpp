@@ -262,6 +262,16 @@ FSceneView FGameViewportClient::CalcSceneView(const FRect& InViewRect)
 	OutView.Frustum = ExtractFrustumPlanes(OutView.ViewProjectionMatrix);
 	OutView.FrustumCorners = GenerateFrustumCorners(OutView.ViewProjectionMatrix.Inverse());
 
+	if (GCameraOverlayDebug.bOverride)
+	{
+		const FCameraOverlayDebug& D = GCameraOverlayDebug;
+		OutView.OverlayColor = FLinearColor{ D.FadeColor[0], D.FadeColor[1], D.FadeColor[2], D.FadeAmount };
+		OutView.LetterboxAmount = D.LetterboxAmount;
+		OutView.LetterboxAspect = D.LetterboxAspect;
+		OutView.VignetteIntensity = D.VignetteIntensity;
+	}
+
+
 	return OutView;
 }
 
