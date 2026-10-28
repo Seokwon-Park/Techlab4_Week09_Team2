@@ -26,7 +26,7 @@
 #include "UI/TextBlock.h"
 #include "Camera/PlayerCameraManager.h"
 #include "GameFramework/PlayerController.h"
-
+#include "Camera/CameraComponent.h"
 #include "Asset/AssetManager.h"
 #include "Components/AudioComponent.h"
 #include "Engine/Classes/Sound/SoundWave.h"
@@ -475,7 +475,32 @@ namespace
 					throw sol::error("IsCameraBlending: camera manager is unavailable.");
 
 				return PCM->IsBlending();
-			});	}
+			});	
+		Lua.set_function("SetCameraRelativeTransform",
+			[](const FLuaActorRef& Ref,
+				const FVector& RelativeLocation,
+				const FRotator& RelativeRotation)
+			{
+				AActor& Actor = Deref(Ref);
+
+				for (UActorComponent* Component : Actor.GetComponents())
+				{
+					if (UCameraComponent* Camera = Cast<UCameraComponent>(Component))
+					{
+						Camera->SetRelativeLocationAndRotation(
+							RelativeLocation,
+							RelativeRotation
+						);
+						return;
+					}
+				}
+
+				throw sol::error(
+					"SetCameraRelativeTransform: Actor has no camera component."
+				);
+			});
+
+}
 
 	EKeyCode ToKeyCode(const std::string& Name)
 	{
