@@ -19,6 +19,9 @@ local playedTime = 0
 
 local bCleared = false
 
+-- 카메라 전환
+local playerCamera = nil
+
 local function InitMovementState()
     targetLocation = FVector(0, 0, 0)
     targetDirection = FVector(0, 0, 0)
@@ -49,6 +52,15 @@ local function Respawn()
     -- 부활 시 뒤집힌 상태를 원상복귀
     if player.aliveRotation then
     obj.Rotation = player.aliveRotation
+    end
+
+    -- 화면도 원상태로 복귀
+    if playerCamera then
+        SetViewTargetWithBlend(
+            playerCamera, 0.1, "EaseInOut", 2.0)
+        print("camera transition success")
+    else
+        print("camera transition failed")
     end
 
     obj:SetMovementEnabled(true)
@@ -141,6 +153,11 @@ local function DieCoroutine()
     player.isDead = true
 
     StartHitStop(1.0, 0.1) -- 사망 직전 잠깐 느려지게함
+    -- 카메라 회전
+
+    SetViewTargetWithBlend(
+        obj, 0.1, "EaseInOut", 2.0)
+
     wait(0.1) -- 1초 후에 실제로 사망 판정
 
     Die(wall) -- 벽 충돌을 사망으로 해석하는 규칙은 Lua에 둔다.
@@ -202,6 +219,8 @@ local function GoToTitle()
 end
 
 function BeginPlay()
+    playerCamera = GetActorByName("PlayerCamera")
+
     _G.RespawnLocation = nil
     player.spawnLocation = obj.Location
     player.isDead = false
@@ -288,8 +307,6 @@ end
 
 -- 2: 기존 플레이어 카메라 시점으로 복귀
 if IsKeyPressed("2") then
-    local playerCamera = GetActorByName("PlayerCamera")
-
     if playerCamera then
         local ok = SetViewTargetWithBlend(
             playerCamera, 1.5, "EaseInOut", 2.0)
