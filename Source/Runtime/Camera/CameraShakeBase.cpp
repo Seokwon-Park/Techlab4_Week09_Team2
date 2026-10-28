@@ -55,7 +55,7 @@ void UCameraShakeBase::StartShake(float Scale)
 	bIsStopping = false;
 	bIsFinished = !std::isfinite(Duration) || Duration <= 0.0f || ShakeScale == 0.0f;
 	InitializeOscillatorPhases();
-	BlendWeight = IsFinished ? 0.0f : CalculateBlendWeight();
+	BlendWeight = IsFinished() ? 0.0f : CalculateBlendWeight();
 
 }
 

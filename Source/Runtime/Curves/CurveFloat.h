@@ -71,6 +71,10 @@ public:
 
     // 완전한 JSON 스키마를 CurveData 필드에 기록/로드하고 검증 실패를 Archive 오류로 전달합니다.
     virtual void Serialize(FStructuredArchive::FRecord Record) override;
+
+    FString ExportToJson() const;
+
+    bool ImportFromJson(const FString& Data);
     
     // 파일 크기와 읽기를 확인하고 ImportFromJson으로 위임합니다.
     bool LoadFromFile(const FString& InPath);
