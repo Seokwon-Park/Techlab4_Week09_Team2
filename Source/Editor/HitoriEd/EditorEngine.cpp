@@ -25,6 +25,7 @@
 #include "GameFramework/Actor/PointLightActor.h"
 #include "GameFramework/Actor/SpotLightActor.h"
 #include "GameFramework/Actor/RectLightActor.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Components/PointLightComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "Components/RectLightComponent.h"
@@ -616,7 +617,7 @@ void UEditorEngine::RenderViewports()
 					FSceneRenderer SceneRenderer(CurrentWorld, SceneView, GameClient->GetRenderData());
 					SceneRenderer.InitViews(Renderer, Options);
 
-					RenderGameFrame(GameClient, SceneView, Options, SceneRenderer, bIsSIEMode);
+					RenderGameFrame(GameClient, SceneView, Options, SceneRenderer, GameClient->IsSIEMode());
 
 					break;
 				}
@@ -656,7 +657,7 @@ void UEditorEngine::RenderViewports()
 				FSceneRenderer SceneRenderer(Context->World(), SceneView, GameClient->GetRenderData());
 				SceneRenderer.InitViews(Renderer, Options);
 
-				RenderGameFrame(GameClient, SceneView, Options, SceneRenderer, bIsSIEMode);
+				RenderGameFrame(GameClient, SceneView, Options, SceneRenderer, GameClient->IsSIEMode());
 
 				CopyPIEWindowToBackbuffer();
 			}
@@ -937,6 +938,7 @@ void UEditorEngine::RenderGameFrame(FGameViewportClient* GameClient, const FScen
 				{
 					LineBatcher->BeginFrame();
 					DrawCollisionShapes(GameClient->GetWorld(), LineBatcher.get(), nullptr);
+					DrawSpringArms(GameClient->GetWorld(), LineBatcher.get(), nullptr);
 					LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
 				};
 			if (!bIsSIEMode) return;
@@ -1086,6 +1088,7 @@ void UEditorEngine::RenderFrame(FEditorViewportClient* ViewClient,
 					{
 						LineBatcher->BeginFrame();
 						DrawCollisionShapes(TargetWorld, LineBatcher.get(), nullptr);
+						DrawSpringArms(TargetWorld, LineBatcher.get(), nullptr);
 						LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
 					};
 				return;
@@ -1147,6 +1150,7 @@ void UEditorEngine::RenderFrame(FEditorViewportClient* ViewClient,
 							Gizmo->GetTarget() ? Gizmo->GetTarget()->GetOwner() : nullptr;
 
 						DrawCollisionShapes(EditorWorld, LineBatcher.get(), SelectedActor);
+						DrawSpringArms(EditorWorld, LineBatcher.get(), SelectedActor);
 
 						LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
 					};
@@ -1308,11 +1312,27 @@ UWorld* UEditorEngine::CreatePIEWorldByDuplication(FWorldContext& PIEContext, UW
 void UEditorEngine::OnActiveWorldChanged()
 {
 	ResetSceneSelection();
-	UWorld* UIWorld = PlayWorld ? PlayWorld : EditorWorld;
-	if (OutlinerPanel) OutlinerPanel->SetWorld(UIWorld);
-	if (DetailsPanel) DetailsPanel->SetWorld(UIWorld);
-	if (EditorControlsPanel) EditorControlsPanel->SetWorld(UIWorld);
-	if (SettingsPanel) SettingsPanel->SetWorld(UIWorld);
+	UWorld* ActiveWorld = GetActiveWorld();
+
+	// 피킹 대상 월드도 렌더링 대상 월드에 맞춘다.
+	if (ViewportsPanel)
+	{
+		for (int32 ViewIndex = 0; ViewIndex < 4; ++ViewIndex)
+		{
+			FEditorViewportClient* Client =
+				ViewportsPanel->GetViewportClient(ViewIndex);
+
+			if (Client)
+			{
+				Client->SetWorld(ActiveWorld);
+			}
+		}
+	}
+
+	if (OutlinerPanel) OutlinerPanel->SetWorld(ActiveWorld);
+	if (DetailsPanel) DetailsPanel->SetWorld(ActiveWorld);
+	if (EditorControlsPanel) EditorControlsPanel->SetWorld(ActiveWorld);
+	if (SettingsPanel) SettingsPanel->SetWorld(ActiveWorld);
 }
 
 void UEditorEngine::EndPlayMap()

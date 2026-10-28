@@ -3,6 +3,12 @@
 #include "Components/SceneComponent.h"
 #include "SpringArmComponent.generated.h"
 
+class FLineBatcher;
+class UWorld;
+class AActor;
+
+void DrawSpringArms(UWorld* World, FLineBatcher* LineBatcher, const AActor* Selected);
+
 UCLASS()
 class USpringArmComponent : public USceneComponent
 {
@@ -12,6 +18,10 @@ public:
 	USpringArmComponent();
 
 	void TickComponent(float DeltaTime) override;
+
+	void DrawDebug(FLineBatcher* LineBatcher) const;
+
+	void UpdateInEditor();
 
 	UPROPERTY(EditAnywhere)
 	float TargetArmLength = 4.0f;			// 팔 길이 (월드 단위)
@@ -56,6 +66,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	float CameraLagMaxDistance = 0.0f;		// 0 = 제한 없음
 
+	UPROPERTY(EditAnywhere)
+	bool bDrawDebug = true;
+
+	UPROPERTY(EditAnywhere)
+	bool bDrawOnlyIfSelected = false;
+
 protected:
 	void UpdateDesiredArmLocation(bool bDoTrace, bool bDoLocationLag, bool bDoRotationLag, float DeltaTime);
 	FRotator GetTargetRotation() const;
@@ -63,5 +79,10 @@ protected:
 	FRotator PreviousDesiredRot;
 	void OnRegister() override; // Lag 없이 한 번 계산해서 Previous* 초기화
 private:
+	FVector DebugArmOrigin = FVector();
+	FVector DebugDesiredLoc = FVector();
+	FVector DebugResultLoc = FVector();
 
+	bool bDebugHasData = false;
+	bool bDebugCollisionHit = false;
 };
