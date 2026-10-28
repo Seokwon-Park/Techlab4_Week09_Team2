@@ -130,8 +130,7 @@ FRotator USpringArmComponent::GetTargetRotation() const
 		{
 			if (APlayerController* PC = Pawn->GetController())
 			{
-				// TODO: PlayerController.ControlRotation 구현 필요, 구현 후 아래 주석 해제
-				//R = PC->ControlRotation;
+				R = PC->ControlRotation;
 			}
 		}
 	}

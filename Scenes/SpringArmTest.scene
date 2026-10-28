@@ -144,7 +144,7 @@
                                 "bInheritPitch": true,
                                 "bInheritRoll": true,
                                 "bInheritYaw": true,
-                                "bUsePawnControlRotation": false,
+                                "bUsePawnControlRotation": true,
                                 "bVisible": true
                             }
                         },
