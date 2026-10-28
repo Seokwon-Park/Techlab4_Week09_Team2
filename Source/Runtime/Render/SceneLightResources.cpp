@@ -5,6 +5,7 @@
 #include "Render/Renderer.h"
 #include "Components/LightComponentBase.h"
 #include "SceneRenderData.h"
+#include "Render/ShadowRendering.h"
 #include <algorithm>
 #include <cmath>
 #include <cstring>
@@ -16,13 +17,9 @@ namespace
 	static_assert(offsetof(FDeferredLightConstants, LightCounts) == 128);
 	static_assert(offsetof(FDeferredLightConstants, LightOffsets) == 144);
 	static_assert(offsetof(FDeferredLightConstants, SkyColorIntensity) == 160);
-	static_assert(offsetof(FDeferredLightConstants, ShadowAtlasWidth) == 176);
-	static_assert(offsetof(FDeferredLightConstants, ShadowAtlasHeight) == 180);
-	static_assert(offsetof(FDeferredLightConstants, CascadeShadowCount) == 184);
-	static_assert(offsetof(FDeferredLightConstants, PcfMode) == 188);
-	static_assert(offsetof(FDeferredLightConstants, CascadeShadowDistances) == 192);
-	static_assert(offsetof(FDeferredLightConstants, ShadowDepthBias) == 208);
-	static_assert(sizeof(FDeferredLightConstants) == 224);
+	static_assert(offsetof(FDeferredLightConstants, bSingleLightPass) == 176);
+	static_assert(offsetof(FDeferredLightConstants, SingleLightIndex) == 180);
+	static_assert(sizeof(FDeferredLightConstants) == 192);
 
 	// 용량이 모자랄 때만 두 배로 키우고 Map 한 번으로 채운다.
 	bool UploadStructured(TUniquePtr<FStructuredBuffer>& Buffer, const void* Data, uint32 Count, uint32 Stride)
@@ -52,6 +49,8 @@ bool FSceneLightResources::Init()
 
 	ForwardLightCB = RenderCommand::CreateConstantBuffer(sizeof(FForwardLightingConstants));
 	DeferredLightCB = RenderCommand::CreateConstantBuffer(sizeof(FDeferredLightConstants));
+	ShadowDepthPassCB = RenderCommand::CreateConstantBuffer(sizeof(FShadowDepthPassConstants));
+	ShadowProjectionCB = RenderCommand::CreateConstantBuffer(sizeof(FShadowProjectionConstants));
 
 	if (!ForwardTileGrid.Init())
 		HTR_LOG(Warning, "Forward tile culling compute shader unavailable");
@@ -59,31 +58,22 @@ bool FSceneLightResources::Init()
 	return bInitialized;
 }
 
-void FSceneLightResources::CreateShadowAtlasIfNeed(uint32 ShadowAtlasMapWidth, uint32 ShadowAtlasMapHeight, uint32 NeedAtlasCount)
-{
-	// 그림자 뷰가 없어도 렌더 그래프가 아틀라스를 import하므로 최소 1장은 만든다. ArraySize 0이면 생성이 실패해 씬 패스 전체가 빠진다.
-	NeedAtlasCount = std::max(NeedAtlasCount, 1u);
-	if (!SceneLightShadowMapAtlas || ShadowAtlasMapWidth > SceneLightShadowMapAtlas->GetWidth() || ShadowAtlasMapHeight > SceneLightShadowMapAtlas->GetHeight() || NeedAtlasCount > SceneLightShadowMapAtlas->GetArraySize())
-	{
-		FTextureDesc Desc{};
-		Desc.Width = ShadowAtlasMapWidth;
-		Desc.Height = ShadowAtlasMapHeight;
-		Desc.ArraySize = NeedAtlasCount;
-		Desc.BindFlags = ETextureBindFlags::DepthStencil | ETextureBindFlags::ShaderResource;
-		Desc.Format = ETextureFormat::R24G8_Typeless;
-
-		SceneLightShadowMapAtlas = RenderCommand::CreateTexture2DArray(Desc);
-	}
-}
-
 bool FSceneLightResources::UploadViewLights(const TArray<FLightRenderParameters>& Lights)
 {
 	return UploadStructured(SceneLightBuffer, Lights.GetData(), Lights.Num(), sizeof(FLightRenderParameters));
 }
 
-bool FSceneLightResources::UploadLightShadows(const TArray<FLightShadowRenderData>& Shadows)
+void FSceneLightResources::CreateShadowDepthAtlasIfNeed(uint32 SliceCount)
 {
-	return UploadStructured(SceneLightShadowBuffer, Shadows.GetData(), Shadows.Num(), sizeof(FLightShadowRenderData));
-}
+	SliceCount = std::max(SliceCount, 1u);
+	if (ShadowDepthAtlas && ShadowDepthAtlas->GetArraySize() >= SliceCount) return;
 
+	FTextureDesc Desc{};
+	Desc.Width = ShadowAtlasSize;
+	Desc.Height = ShadowAtlasSize;
+	Desc.ArraySize = SliceCount;
+	Desc.BindFlags = ETextureBindFlags::DepthStencil | ETextureBindFlags::ShaderResource;
+	Desc.Format = ETextureFormat::R32_Typeless;   // DSV D32_FLOAT, SRV R32_FLOAT (Texture2D.cpp 변환표에 있음)
+	ShadowDepthAtlas = RenderCommand::CreateTexture2DArray(Desc);
+}
 

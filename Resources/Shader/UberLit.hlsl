@@ -34,16 +34,8 @@ cbuffer Lighting : register(b1)
     float4 CameraPosition;
     uint4 LightCounts; // x: 포인트 개수, y: 스포트 개수, z: 방향광 개수
     uint4 LightOffsets; // SceneLights에서 각 종류가 시작되는 위치, 순서는 위와 같음
-    // 그림자는 광원마다 Light.ShadowIndex로 찾는다 (LightShadows).
+    // 그림자는 광원마다 Light.ShadowMapChannel로 ScreenShadowMask(t13)에서 읽는다.
     float4 SkyColorIntensity; // rgb: Sky Light 색상, a: 세기 (0이면 비활성)
-    float4 CascadeShadowDistances;
-    uint CascadeShadowCount;
-    uint ShadowAtlasWidth;
-    uint ShadowAtlasHeight;
-    uint PcfMode;
-    float ShadowDepthBias;
-    float CascadeBlendRatio;
-    float2 ShadowBiasPadding;
 };
 
 StructuredBuffer<FLightRenderParameters> SceneLights : register(t8);
@@ -51,8 +43,8 @@ StructuredBuffer<uint4> TileLightRanges : register(t9);
 StructuredBuffer<uint> TilePointIndices : register(t10);
 TextureCube<float4> SkyIrradiance : register(t11);
 StructuredBuffer<uint> TileSpotIndices : register(t12);
-StructuredBuffer<FLightShadowRenderData> LightShadows : register(t13);
-Texture2DArray LightShadowAtlas : register(t14);
+// 언리얼 ScreenShadowMask: 그림자 광원마다 배정된 채널(R~A)에 Projection 결과가 들어 있다. 1 = 빛 받음.
+Texture2D<float4> ScreenShadowMask : register(t13);
 
 cbuffer MaterialParams : register(b2)
 {
@@ -68,8 +60,6 @@ Texture2D NormalTexture : register(t1);
 
 SamplerState ColorSampler : register(s0);
 SamplerState SkySampler : register(s1);
-SamplerState PointSampler : register(s2);
-SamplerComparisonState ShadowSampler : register(s3);
 
 struct VS_IN
 {
@@ -104,11 +94,12 @@ struct FUberOutput
 #endif
 };
 
-float SampleDirectionalCascade(float3 PixelPosition, float3 P, float3 N, FLightRenderParameters Light, uint ShadowArrayIndex)
+// 광원의 그림자 (1 = 빛 받음). 채널이 없거나 이 물체의 bReceiveShadow가 꺼져 있으면 1.
+// Gouraud는 채널을 받지 않으므로 정점 셰이더에서 불려도 마스크를 읽지 않는다.
+float GetLightShadow(FLightRenderParameters Light, float3 PixelPosition)
 {
-    FLightShadowRenderData LightShadow = LightShadows[ShadowArrayIndex];
-    return CalculateShadow(PixelPosition, P, N, -Light.Direction, Light, LightShadow,
-        LightShadowAtlas, ShadowAtlasWidth, ShadowAtlasHeight, PointSampler, ShadowSampler, ShadowFlags.x, PcfMode, LIGHT_TYPE_DIRECTIONAL);
+    if (Light.ShadowMapChannel == INVALID_SHADOW_CHANNEL || ShadowFlags.x < 0.5f) return 1.0f;
+    return ScreenShadowMask.Load(int3(int2(PixelPosition.xy), 0))[Light.ShadowMapChannel];
 }
 
 
@@ -279,27 +270,7 @@ FLightResult CalculateBaseLighting(float3 PixelPosition, float3 P, float ViewDep
     {
         FLightRenderParameters Light = SceneLights[LightOffsets.z + DirectionalIndex];
         
-        int CascadeIndex;
-        float BlendT;
-        SelectCascade(ViewDepth, CascadeShadowDistances, CascadeShadowCount, CascadeBlendRatio, CascadeIndex, BlendT);
-
-        float Shadow = 1.0;
-        if (CascadeIndex != -1 && Light.ShadowIndex != INVALID_SHADOW_INDEX)
-        {
-            // 이 광원의 첫 cascade 위치. 그림자를 끈 광원이 섞여 있어도 순서와 무관하게 맞다.
-            uint Base = Light.ShadowIndex;
-            Shadow = SampleDirectionalCascade(PixelPosition, P, N, Light, Base + CascadeIndex);
-
-            [branch]
-            if (BlendT > 0.0f)
-            {
-                // 마지막 캐스케이드는 "그림자 없음"으로 페이드아웃
-                float NextShadow = (uint(CascadeIndex) + 1 < CascadeShadowCount)
-                    ? SampleDirectionalCascade(PixelPosition, P, N, Light, Base + CascadeIndex + 1)
-                    : 1.0f;
-                Shadow = lerp(Shadow, NextShadow, BlendT);
-            }
-        }
+        float Shadow = GetLightShadow(Light, PixelPosition);
             
         FLightResult DirectionalResult = (FLightResult) 0;
         CalculateDirectionalLight(DirectionalResult, Light, N, V, bIncludeSpecular);
@@ -321,31 +292,7 @@ void AddAllLocalLights(inout FLightResult Result, float3 PixelPosition, float3 P
     {
         FLightRenderParameters Light = SceneLights[LightOffsets.x + PointIndex];
 
-        float3 L = P - Light.Position;
-            
-            // 카메라는 0 : +x,1 : -x, 2: +z, 3 : -z, 4: +y, 5: -y
-        uint FaceIndex = 0;
-            
-        float3 AbsL = abs(L);
-        if (AbsL.x >= AbsL.y && AbsL.x >= AbsL.z)
-        {
-            FaceIndex = L.x > 0.0 ? 0 : 1;
-        }
-        else if (AbsL.y >= AbsL.z)
-        {
-            FaceIndex = L.y > 0.0 ? 4 : 5;
-        }
-        else
-        {
-            FaceIndex = L.z > 0.0 ? 2 : 3;
-        }
-            
-        float Shadow = 1.0;
-        if (Light.ShadowIndex != INVALID_SHADOW_INDEX)
-        {
-            FLightShadowRenderData LightShadow = LightShadows[Light.ShadowIndex + FaceIndex];
-            Shadow = CalculateShadow(PixelPosition, P, N, normalize(-L), Light, LightShadow, LightShadowAtlas, ShadowAtlasWidth, ShadowAtlasHeight, PointSampler, ShadowSampler, ShadowFlags.x, PcfMode, LIGHT_TYPE_POINT);
-        }
+        float Shadow = GetLightShadow(Light, PixelPosition);
 
         FLightResult PointResult = (FLightResult) 0;
         CalculatePointLight(PointResult, SceneLights[LightOffsets.x + PointIndex], P, N, V, bIncludeSpecular);
@@ -358,12 +305,7 @@ void AddAllLocalLights(inout FLightResult Result, float3 PixelPosition, float3 P
     {
         FLightRenderParameters Light = SceneLights[LightOffsets.y + SpotIndex];
         
-        float Shadow = 1.0;
-        if (Light.ShadowIndex != INVALID_SHADOW_INDEX)
-        {
-            FLightShadowRenderData LightShadow = LightShadows[Light.ShadowIndex];
-            Shadow = CalculateShadow(PixelPosition, P, N, normalize(Light.Position - P), Light, LightShadow, LightShadowAtlas, ShadowAtlasWidth, ShadowAtlasHeight, PointSampler, ShadowSampler, ShadowFlags.x, PcfMode, LIGHT_TYPE_SPOT);
-        }
+        float Shadow = GetLightShadow(Light, PixelPosition);
             
         FLightResult SpotResult = (FLightResult) 0;
         CalculateSpotLight(SpotResult, Light, P, N, V, bIncludeSpecular);
@@ -419,31 +361,7 @@ FLightResult CalculateTiledLighting(float3 PixelPosition, float3 P, float ViewDe
             
             FLightRenderParameters Light = SceneLights[LightOffsets.x + LightIndex];
 
-            float3 L = P - Light.Position;
-            
-            // 카메라는 0 : +x,1 : -x, 2: +z, 3 : -z, 4: +y, 5: -y
-            uint FaceIndex = 0;
-            
-            float3 AbsL = abs(L);
-            if (AbsL.x >= AbsL.y && AbsL.x >= AbsL.z)
-            {
-                FaceIndex = L.x > 0.0 ? 0 : 1;
-            }
-            else if (AbsL.y >= AbsL.z)
-            {
-                FaceIndex = L.y > 0.0 ? 4 : 5;
-            }
-            else
-            {
-                FaceIndex = L.z > 0.0 ? 2 : 3;
-            }
-            
-            float Shadow = 1.0;
-            if (Light.ShadowIndex != INVALID_SHADOW_INDEX)
-            {
-                FLightShadowRenderData LightShadow = LightShadows[Light.ShadowIndex + FaceIndex];
-                Shadow = CalculateShadow(PixelPosition, P, Normal, normalize(-L), Light, LightShadow, LightShadowAtlas, ShadowAtlasWidth, ShadowAtlasHeight, PointSampler, ShadowSampler, ShadowFlags.x, PcfMode, LIGHT_TYPE_POINT);
-            }
+            float Shadow = GetLightShadow(Light, PixelPosition);
             
             FLightResult PointResult = (FLightResult) 0;
             CalculatePointLight(PointResult, Light, P, N, V, bIncludeSpecular);
@@ -459,12 +377,7 @@ FLightResult CalculateTiledLighting(float3 PixelPosition, float3 P, float ViewDe
             
             FLightRenderParameters Light = SceneLights[LightOffsets.y + LightIndex];
             
-            float Shadow = 1.0;
-            if (Light.ShadowIndex != INVALID_SHADOW_INDEX)
-            {
-                FLightShadowRenderData LightShadow = LightShadows[Light.ShadowIndex];
-                Shadow = CalculateShadow(PixelPosition, P, Normal, normalize(Light.Position - P), Light, LightShadow, LightShadowAtlas, ShadowAtlasWidth, ShadowAtlasHeight, PointSampler, ShadowSampler, ShadowFlags.x, PcfMode, LIGHT_TYPE_SPOT);
-            }
+            float Shadow = GetLightShadow(Light, PixelPosition);
             
             FLightResult SpotResult = (FLightResult) 0;
             CalculateSpotLight(SpotResult, Light, P, N, V, bIncludeSpecular);

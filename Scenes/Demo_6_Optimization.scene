@@ -108,10 +108,10 @@
                                 "AngularRadiusDegrees": 0.5,
                                 "Intensity": 0.4,
                                 "LightColor": 4294967295,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1,
                                 "ShadowSharpen": 0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": 0,
@@ -273,10 +273,10 @@
                                 "Intensity": 3,
                                 "LightColor": 4294967295,
                                 "LightFalloffExponent": 1,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1,
                                 "ShadowSharpen": 0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": 0,
@@ -805,10 +805,10 @@
                                 "Intensity": 3,
                                 "LightColor": 4288071935,
                                 "LightFalloffExponent": 1,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1,
                                 "ShadowSharpen": 0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": 60,
@@ -1002,10 +1002,10 @@
                                 "Intensity": 3,
                                 "LightColor": 4288071935,
                                 "LightFalloffExponent": 1,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1,
                                 "ShadowSharpen": 0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": -60,
@@ -1199,10 +1199,10 @@
                                 "Intensity": 3,
                                 "LightColor": 4288071935,
                                 "LightFalloffExponent": 1,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1,
                                 "ShadowSharpen": 0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": 60,
@@ -1396,10 +1396,10 @@
                                 "Intensity": 3,
                                 "LightColor": 4288071935,
                                 "LightFalloffExponent": 1,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1,
                                 "ShadowSharpen": 0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": -60,
@@ -1593,10 +1593,10 @@
                                 "Intensity": 3,
                                 "LightColor": 4288071935,
                                 "LightFalloffExponent": 1,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1,
                                 "ShadowSharpen": 0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": 0,
@@ -1790,10 +1790,10 @@
                                 "Intensity": 3,
                                 "LightColor": 4288071935,
                                 "LightFalloffExponent": 1,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1,
                                 "ShadowSharpen": 0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": 80,
@@ -1987,10 +1987,10 @@
                                 "Intensity": 3,
                                 "LightColor": 4288071935,
                                 "LightFalloffExponent": 1,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1,
                                 "ShadowSharpen": 0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": -80,
@@ -2184,10 +2184,10 @@
                                 "Intensity": 3,
                                 "LightColor": 4288071935,
                                 "LightFalloffExponent": 1,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1,
                                 "ShadowSharpen": 0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": 0,
@@ -2381,10 +2381,10 @@
                                 "Intensity": 3,
                                 "LightColor": 4288085910,
                                 "LightFalloffExponent": 1,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1,
                                 "ShadowSharpen": 0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": 30,
@@ -2645,10 +2645,10 @@
                                 "Intensity": 3,
                                 "LightColor": 4294940310,
                                 "LightFalloffExponent": 1,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1,
                                 "ShadowSharpen": 0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": -30,

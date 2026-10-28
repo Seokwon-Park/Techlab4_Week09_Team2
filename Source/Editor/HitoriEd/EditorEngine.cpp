@@ -906,6 +906,7 @@ void UEditorEngine::BuildSceneRenderOptions(FEditorViewportClient* ViewClient, b
 	Options.bEnableFog = ViewClient->GetViewportMode() == EViewportMode::Solid;
 	Options.bShowSceneDepth = !IsPIE && ViewClient->IsSceneDepth();
 	Options.bShowCascade = !IsPIE && ViewClient->IsCascade();
+	Options.bShowShadowMask = !IsPIE && ViewClient->IsShadowMask();
 	Options.bShowWorldNormal = !IsPIE && ViewClient->IsWorldNormal();
 	Options.bShowLightCulling = !IsPIE && ViewClient->IsLightCulling();
 	Options.SceneDepthRange = ViewClient->GetMaxRange();
@@ -1112,12 +1113,14 @@ void UEditorEngine::RenderFrame(FEditorViewportClient* ViewClient,
 								FVector4(0.2f, 0.6f, 1.f, 1.f)
 							};
 							const FBox ClipBox{ FVector(-1.f, -1.f, 0.f), FVector(1.f, 1.f, 1.f) };
-							// 셰이더와 같이 광원의 ShadowIndex로 찾는다. 그림자를 끈 방향광은 cascade가 없으므로 건너뛴다.
+							// 광원의 첫 그림자 뷰(VisibleLightShadowViews)부터 cascade 순서로 들어 있다. 그림자가 없는 방향광은 건너뛴다.
 							const uint32 DirectionalOffset = Data.GetDirectionalLightOffset();
 							for (uint32 LightIndex = 0; LightIndex < Data.GetDirectionalLightCount(); ++LightIndex)
 							{
-								const uint32 FirstCascade = Data.VisibleLights[DirectionalOffset + LightIndex].ShadowIndex;
-								if (FirstCascade == FLightRenderParameters::InvalidShadowIndex) continue;
+								const uint32 VisibleIndex = DirectionalOffset + LightIndex;
+								if (VisibleIndex >= static_cast<uint32>(Data.VisibleLightShadowViews.Num())) continue;
+								const uint32 FirstCascade = Data.VisibleLightShadowViews[VisibleIndex];
+								if (FirstCascade == FSceneRenderData::InvalidShadowView) continue;
 								for (uint32 CascadeIndex = 0; CascadeIndex < Data.CascadeShadowCount; ++CascadeIndex)
 								{
 									const uint32 ShadowIndex = FirstCascade + CascadeIndex;

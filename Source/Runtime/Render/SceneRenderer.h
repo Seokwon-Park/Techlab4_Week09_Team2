@@ -15,6 +15,7 @@ class FConstantBuffer;
 class FTexture2D;
 class FSkyboxRenderer;
 struct FSceneViewTargets;
+struct FLightSceneInfo;
 
 // 에디터는 실행할 작업만 제공한다. 패스 생성과 순서는 FSceneRenderer가 결정한다.
 struct FSceneOverlayCallbacks
@@ -90,13 +91,49 @@ private:
 		const FSceneRenderOptions& Options, FSkyboxRenderer* Skybox);
 	bool AddWorldNormalPass(FRenderGraphBuilder& Graph, FRenderer* Renderer, FSceneViewTargets& Targets,
 		const FSceneRenderOptions& Options);
-	bool BindDeferredLighting(FRenderer* Renderer, uint32 Width, uint32 Height, EPcfMode PcfMode, float ShadowDepthBias);
-	bool BindForwardLighting(FRenderer* Renderer, const FSceneRenderOptions& Options);
+	// SingleLightIndex < 0: 그림자 없는 광원 전부 + Ambient/Sky. 0 이상: VisibleLights[SingleLightIndex] 하나만 ScreenShadowMask를 곱해 더한다.
+	bool BindDeferredLighting(FRenderer* Renderer, uint32 Width, uint32 Height, int32 SingleLightIndex);
+	bool BindForwardLighting(FRenderer* Renderer, const FSceneRenderOptions& Options, FTexture2D* ShadowMask);
 	void UnbindForwardLighting(FRenderer* Renderer);
 	bool IntersectSphereFrustum(const FVector4& PositionRadius, const FPlane (&Planes)[6]) const;
 
+	// ---------- 언리얼 구조 그림자 (ShadowSetup.cpp) ----------
+	// 라이트마다 이번 뷰에 필요한 그림자 맵(FProjectedShadowInfo)을 만든다.
+	void InitDynamicShadows(const FSceneRenderOptions& Options);
+	// Spot 1장, Point 6장
+	void CreateWholeSceneProjectedShadow(FLightSceneInfo* LightSceneInfo);
+	// Directional CSM
+	void AddViewDependentWholeSceneShadowsForView(FLightSceneInfo* LightSceneInfo);
+	bool HasVisibleReceiverInBounds(const FLightSceneInfo* LightSceneInfo) const;
+	// 그림자마다 Caster를 모으고, Caster가 없는 그림자는 버린다.
+	void GatherShadowPrimitives();
+	void AddInteractingPrimitives(FScene& Scene, FProjectedShadowInfo& Shadow);
+	// 남은 그림자를 깊이 아틀라스(Texture2DArray)에 배치한다.
+	void AllocateShadowDepthTargets();
+
+	void RenderShadowDepthMaps(FRenderer* Renderer, FTexture2DArray* Atlas);
+	// 그림자 한 장을 현재 렌더 타깃(ScreenShadowMask)의 Channel(0~3)에 그린다. t0 장면 깊이, t1 깊이 아틀라스가 묶여 있어야 한다.
+	void RenderShadowProjection(const FProjectedShadowInfo& Shadow, uint32 Channel, uint32 Width, uint32 Height);
+	// 광원 하나의 ShadowsToProject를 그린다. Directional은 먼 캐스케이드부터 그려 가까운 캐스케이드가 Fade로 덮는다.
+	void RenderShadowProjectionsForLight(const FVisibleLightInfo& VisibleLightInfo, uint32 Channel, uint32 Width, uint32 Height);
+	// Shadow Mask 뷰 모드: 그림자 광원을 최대 4개까지 채널 하나씩 그린다 (Directional이 R).
+	void RenderShadowMaskVisualizationProjections(uint32 Width, uint32 Height);
+	// 그림자 맵이 생긴 광원에 ShadowMapChannel을 주고(Deferred 0, Forward 겹침 기반 0~3) 광원 데이터를 다시 올린다.
+	// Details 미리보기·캐스케이드 경계 선·stat이 읽는 LightShadows, CascadeShadowDistances도 여기서 채운다.
+	void FinalizeShadowLights(const FSceneRenderOptions& Options);
+
+	// 이번 프레임에 그림자를 Projection할 광원. Deferred는 이 순서대로 광원마다 마스크를 만들어 더한다.
+	struct FShadowedLight
+	{
+		int32 VisibleLightIndex = INDEX_NONE;   // RenderData.VisibleLights 인덱스
+		int32 LightId = INDEX_NONE;             // FLightSceneInfo::Id (VisibleLightInfos 인덱스)
+		uint32 Channel = 0;                     // ScreenShadowMask 채널
+	};
+	TArray<FShadowedLight> ShadowedLights;
+
 	bool RenderHeightFog(FRenderer* Renderer, FTexture2D* DepthTarget, FTexture2D* ColorTarget);
 	void RenderSceneText(FRenderer* Renderer);
+
 
 	UWorld* World = nullptr;
 	FSceneView View;

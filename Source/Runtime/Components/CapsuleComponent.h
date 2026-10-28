@@ -3,7 +3,7 @@
 #include "ShapeComponent.h"
 #include "CapsuleComponent.generated.h"
 
-// 로컬 Z축이 캡슐 축이다. HalfHeight는 반구 끝까지 포함한 길이 (UE와 같음). 담당: D
+// 로컬 Z축이 캡슐 축이다. HalfHeight는 반구 끝까지 포함한 길이 (UE와 같음).
 UCLASS()
 class UCapsuleComponent : public UShapeComponent
 {

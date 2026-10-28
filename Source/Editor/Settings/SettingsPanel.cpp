@@ -258,7 +258,7 @@ bool FSettingsPanel::LoadSettings()
                     else if (Key == Prefix + "Wireframe" && (Value == 0 || Value == 1))
                         Settings.ViewWireframe[Index] = static_cast<int32>(Value);
 					else if (Key == Prefix + "Mode" && Value >= 0 &&
-						Value <= static_cast<int32>(EViewportMode::Cascade) && Value == static_cast<int32>(Value))
+						Value <= static_cast<int32>(EViewportMode::ShadowMask) && Value == static_cast<int32>(Value))
 						Settings.ViewMode[Index] = static_cast<int32>(Value);
                     else if (Key == Prefix + "LocationX")
                     {

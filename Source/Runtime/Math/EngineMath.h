@@ -13,6 +13,7 @@
 
 #define PI 3.141592f
 #define INDEX_NONE -1
+#define WORLD_MAX 8796093022208.0f
 
 namespace FMath
 {
@@ -88,4 +89,4 @@ namespace FMath
 	{
 		return Degree * (PI / 180.0f);
 	}
-}
+}

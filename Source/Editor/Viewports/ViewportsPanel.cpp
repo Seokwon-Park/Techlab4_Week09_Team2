@@ -285,7 +285,7 @@ void FViewportsPanel::OnRender() {
 		ImGui::SameLine();
 		// 장면 채우기 모드 설정
 		int Mode = static_cast<int>(Client->GetViewportMode());
-		const char *Labels[] = {"Solid", "Wireframe", "Scene Depth", "World Normal", "Light Culling", "Cascade"};
+		const char *Labels[] = {"Solid", "Wireframe", "Scene Depth", "World Normal", "Light Culling", "Cascade", "Shadow Mask"};
 		ImGui::SetNextItemWidth(120.0f);
 		if (ImGui::Combo("##FillMode", &Mode, Labels, IM_ARRAYSIZE(Labels))) {
 			Client->SetViewportMode(static_cast<EViewportMode>(Mode));
@@ -448,7 +448,8 @@ const FRenderStats& Stats = RenderData.RenderStats;
 			// 첫 번째 Directional의 그림자 뷰들 = 캐스케이드들
 			const uint32 DirOffset = RenderData.GetDirectionalLightOffset();
 			const bool bHasDirShadow = RenderData.GetDirectionalLightCount() > 0 &&
-				RenderData.VisibleLights[DirOffset].ShadowIndex != FLightRenderParameters::InvalidShadowIndex;
+				DirOffset < static_cast<uint32>(RenderData.VisibleLightShadowViews.Num()) &&
+				RenderData.VisibleLightShadowViews[DirOffset] != FSceneRenderData::InvalidShadowView;
 
 			float PrevDistance = 0.0f;
 			for (uint32 c = 0; c < RenderData.CascadeShadowCount; ++c)
@@ -457,7 +458,7 @@ const FRenderStats& Stats = RenderData.RenderStats;
 				FString Texel = "-";
 				if (bHasDirShadow)
 				{
-					const uint32 ShadowIdx = RenderData.VisibleLights[DirOffset].ShadowIndex + c;
+					const uint32 ShadowIdx = RenderData.VisibleLightShadowViews[DirOffset] + c;
 					if (ShadowIdx < uint32(RenderData.LightShadows.Num()))
 						Texel = std::format("{:.3f}", RenderData.LightShadows[ShadowIdx].WorldUnitsPerTexel);
 				}
