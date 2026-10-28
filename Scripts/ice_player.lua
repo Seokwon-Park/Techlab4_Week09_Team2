@@ -22,6 +22,8 @@ local bCleared = false
 -- 카메라 전환
 local playerCamera = nil
 
+local bodyComponent = nil
+
 local function InitMovementState()
     targetLocation = FVector(0, 0, 0)
     targetDirection = FVector(0, 0, 0)
@@ -51,7 +53,10 @@ local function Respawn()
 
     -- 부활 시 뒤집힌 상태를 원상복귀
     if player.aliveRotation then
-    obj.Rotation = player.aliveRotation
+        bodyComponent.Rotation = player.aliveRotation
+    end
+    if player.aliveLocation then
+        bodyComponent.Location = player.aliveLocation
     end
 
     -- 화면도 원상태로 복귀
@@ -119,10 +124,15 @@ local function Die(wall)
     player.respawnTime = RESPAWN_DELAY
 
     -- 사망 시 뒤집기
-    player.aliveRotation = obj.Rotation
-    local rotation = obj.Rotation
+    player.aliveRotation = bodyComponent.Rotation
+    player.aliveLocation = bodyComponent.Location
+    local rotation = bodyComponent.Rotation
     rotation.roll = rotation.roll + 180
-    obj.Rotation = rotation
+    bodyComponent.Rotation = rotation
+    -- 뒤집어도 보이도록 높이를 0.5 올린다
+    local location = bodyComponent.Location
+    location.z = location.z + 0.5
+    bodyComponent.Location = location
     obj:SetMovementEnabled(false)
 
     -- 기존 ParticleActor의 아틀라스를 바꿔 사망 위치에서 한 번만 재생한다.
@@ -220,6 +230,7 @@ end
 
 function BeginPlay()
     playerCamera = GetActorByName("PlayerCamera")
+    bodyComponent = GetComponentByName("PlayerMesh")
 
     _G.RespawnLocation = nil
     player.spawnLocation = obj.Location
