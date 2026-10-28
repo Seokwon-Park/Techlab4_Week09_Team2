@@ -262,4 +262,26 @@ namespace FMath
 	{
 		return Degree * (PI / 180.0f);
 	}
+	static inline float UnwindDegrees(float Degrees)
+	{
+		Degrees = std::fmod(Degrees, 360.0f);
+
+		if (Degrees > 180.0f)
+		{
+			Degrees -= 360.0f;
+		}
+		else if (Degrees < -180.0f)
+		{
+			Degrees += 360.0f;
+		}
+
+		return Degrees;
+	}
+	static inline FRotator LerpRotator(const FRotator& A, const FRotator& B, float Alpha)
+	{
+		return FRotator(
+			A.Pitch + FMath::UnwindDegrees(B.Pitch - A.Pitch) * Alpha,
+			A.Yaw + FMath::UnwindDegrees(B.Yaw - A.Yaw) * Alpha,
+			A.Roll + FMath::UnwindDegrees(B.Roll - A.Roll) * Alpha);
+	}
 }

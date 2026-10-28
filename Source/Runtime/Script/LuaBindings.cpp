@@ -23,7 +23,8 @@
 #include "UI/UserWidget.h"
 #include "UI/Button.h"
 #include "UI/TextBlock.h"
-
+#include "Camera/PlayerCameraManager.h"
+#include "GameFramework/PlayerController.h"
 
 #include "Asset/AssetManager.h"
 #include "Components/AudioComponent.h"
@@ -402,7 +403,56 @@ namespace
 				}
 				return sol::nullopt;
 			});
-	}
+		Lua.set_function("SetViewTargetWithBlend",
+			[](sol::this_environment Env,
+				const FLuaActorRef& Target,
+				sol::optional<float> Time,
+				sol::optional<std::string> Function,
+				sol::optional<float> Exp) -> bool
+			{
+				AActor* Owner = OwnerFromEnv(Env);
+				UWorld* World = Owner ? Owner->GetWorld() : nullptr;
+				APlayerController* PC = World ? World->GetPlayerController() : nullptr;
+				APlayerCameraManager* PCM = PC ? PC->GetCameraManager() : nullptr;
+
+				AActor* TargetActor = Target.Get();
+				if (!PCM || !TargetActor || TargetActor->GetWorld() != World)
+					return false;
+
+				FViewTargetTransitionParams Params;
+				Params.BlendTime = Time.value_or(0.0f);
+				Params.BlendExp = Exp.value_or(2.0f);
+
+				const std::string Mode = Function.value_or("Cubic");
+
+				if (Mode == "Linear")
+					Params.BlendFunction = EViewTargetBlendFunction::Linear;
+				else if (Mode == "EaseIn")
+					Params.BlendFunction = EViewTargetBlendFunction::EaseIn;
+				else if (Mode == "EaseOut")
+					Params.BlendFunction = EViewTargetBlendFunction::EaseOut;
+				else if (Mode == "EaseInOut")
+					Params.BlendFunction = EViewTargetBlendFunction::EaseInOut;
+				else if (Mode != "Cubic")
+					return false;
+
+				PCM->SetViewTarget(TargetActor, Params);
+				return true;
+			});
+
+		Lua.set_function("IsCameraBlending",
+			[](sol::this_environment Env) -> bool
+			{
+				AActor* Owner = OwnerFromEnv(Env);
+				UWorld* World = Owner ? Owner->GetWorld() : nullptr;
+				APlayerController* PC = World ? World->GetPlayerController() : nullptr;
+				APlayerCameraManager* PCM = PC ? PC->GetCameraManager() : nullptr;
+
+				if (!PCM)
+					throw sol::error("IsCameraBlending: camera manager is unavailable.");
+
+				return PCM->IsBlending();
+			});	}
 
 	EKeyCode ToKeyCode(const std::string& Name)
 	{
