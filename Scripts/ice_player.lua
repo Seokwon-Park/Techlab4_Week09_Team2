@@ -232,8 +232,8 @@ function BeginPlay()
     UpdateIceState()
 
 SetCameraRelativeTransform(obj,
-    FVector(-2.0, 0.0, 3.0),
-    FRotator(0.0, 0.0, 0.0)
+    FVector(-4.0, 0.0, 2.0),
+    FRotator(15.0, 0.0, 0.0)
 )
     -- delegate 등록
     _G.GameEvents = _G.GameEvents or {}
