@@ -147,6 +147,43 @@
                                 "bHiddenInGame": false,
                                 "bVisible": true
                             }
+                        },
+                        {
+                            "Class": "UPointLightComponent",
+                            "Name": "UPointLightComponent_0",
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "AttenuationRadius": 3.200000047683716,
+                                "Intensity": 2.0,
+                                "LightColor": 4278255189,
+                                "LightFalloffExponent": 1.0,
+                                "ShadowBias": 0.5,
+                                "ShadowResolutionScale": 1.0,
+                                "ShadowSharpen": 0.0,
+                                "ShadowSlopeBias": 0.5,
+                                "SourceRadius": 0.019999999552965164,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bCastShadows": false,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
                         }
                     ],
                     "Name": "IcePlayer",
