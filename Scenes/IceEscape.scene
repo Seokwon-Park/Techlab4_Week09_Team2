@@ -399,7 +399,7 @@
                                 "DynamicShadowCascades": 4,
                                 "DynamicShadowDistanceMovableLight": 1000.0,
                                 "Intensity": 1.5,
-                                "LightColor": 4294967295,
+                                "LightColor": 4289783295,
                                 "ShadowBias": 0.5,
                                 "ShadowDistanceFadeoutFraction": 0.10000000149011612,
                                 "ShadowResolutionScale": 1.0,
@@ -139062,7 +139062,7 @@
                                 "Transform": {
                                     "Location": {
                                         "X": -376.5,
-                                        "Y": 25.4,
+                                        "Y": 26.740903854370117,
                                         "Z": 0.0
                                     },
                                     "Rotation": {
@@ -139121,9 +139121,9 @@
                                 "StaticMesh": "Models/Ultralisk/Ultralisk.obj",
                                 "Transform": {
                                     "Location": {
-                                        "X": -0.5431253749999999,
-                                        "Y": 0.23078802500000029,
-                                        "Z": 0.1394648
+                                        "X": -0.5431253910064697,
+                                        "Y": 0.23078802227973938,
+                                        "Z": 0.13946479558944702
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -139131,9 +139131,9 @@
                                         "Yaw": 180.0
                                     },
                                     "Scale": {
-                                        "X": 0.65,
-                                        "Y": 0.65,
-                                        "Z": 0.65
+                                        "X": 2.0,
+                                        "Y": 2.0,
+                                        "Z": 2.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -139187,12 +139187,12 @@
                             "Parent": "DefaultSceneRoot",
                             "Properties": {
                                 "ShapeColor": 4286105710,
-                                "SphereRadius": 0.8,
+                                "SphereRadius": 0.800000011920929,
                                 "Transform": {
                                     "Location": {
                                         "X": 0.0,
                                         "Y": 0.0,
-                                        "Z": 0.8
+                                        "Z": 0.800000011920929
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -139233,7 +139233,7 @@
                                 "Transform": {
                                     "Location": {
                                         "X": -771.0,
-                                        "Y": 13.4,
+                                        "Y": 13.399999618530273,
                                         "Z": 0.0
                                     },
                                     "Rotation": {
@@ -139292,9 +139292,9 @@
                                 "StaticMesh": "Models/Ultralisk/Ultralisk.obj",
                                 "Transform": {
                                     "Location": {
-                                        "X": -0.5431253749999999,
-                                        "Y": 0.23078802500000029,
-                                        "Z": 0.1394648
+                                        "X": -0.5431253910064697,
+                                        "Y": 0.23078802227973938,
+                                        "Z": 0.13946479558944702
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -139302,9 +139302,9 @@
                                         "Yaw": 180.0
                                     },
                                     "Scale": {
-                                        "X": 0.65,
-                                        "Y": 0.65,
-                                        "Z": 0.65
+                                        "X": 2.0,
+                                        "Y": 2.0,
+                                        "Z": 2.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -139358,12 +139358,12 @@
                             "Parent": "DefaultSceneRoot",
                             "Properties": {
                                 "ShapeColor": 4286105710,
-                                "SphereRadius": 0.8,
+                                "SphereRadius": 0.800000011920929,
                                 "Transform": {
                                     "Location": {
                                         "X": 0.0,
                                         "Y": 0.0,
-                                        "Z": 0.8
+                                        "Z": 0.800000011920929
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -139404,7 +139404,7 @@
                                 "Transform": {
                                     "Location": {
                                         "X": 742.0,
-                                        "Y": -313.6,
+                                        "Y": -313.6000061035156,
                                         "Z": 0.0
                                     },
                                     "Rotation": {
@@ -139463,9 +139463,9 @@
                                 "StaticMesh": "Models/Ultralisk/Ultralisk.obj",
                                 "Transform": {
                                     "Location": {
-                                        "X": -0.5431253749999999,
-                                        "Y": 0.23078802500000029,
-                                        "Z": 0.1394648
+                                        "X": -0.5431253910064697,
+                                        "Y": 0.23078802227973938,
+                                        "Z": 0.13946479558944702
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -139473,9 +139473,9 @@
                                         "Yaw": 180.0
                                     },
                                     "Scale": {
-                                        "X": 0.65,
-                                        "Y": 0.65,
-                                        "Z": 0.65
+                                        "X": 2.0,
+                                        "Y": 2.0,
+                                        "Z": 2.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -139509,7 +139509,7 @@
                                     "Z": 0.0
                                 },
                                 "PatrolPointCount": 1,
-                                "Speed": 1.2,
+                                "Speed": 1.2000000476837158,
                                 "Velocity": {
                                     "X": 0.0,
                                     "Y": 0.0,
@@ -139529,12 +139529,12 @@
                             "Parent": "DefaultSceneRoot",
                             "Properties": {
                                 "ShapeColor": 4286105710,
-                                "SphereRadius": 0.8,
+                                "SphereRadius": 0.800000011920929,
                                 "Transform": {
                                     "Location": {
                                         "X": 0.0,
                                         "Y": 0.0,
-                                        "Z": 0.8
+                                        "Z": 0.800000011920929
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -139575,7 +139575,7 @@
                                 "Transform": {
                                     "Location": {
                                         "X": 371.5,
-                                        "Y": 697.4,
+                                        "Y": 697.9400634765625,
                                         "Z": 0.0
                                     },
                                     "Rotation": {
@@ -139634,9 +139634,9 @@
                                 "StaticMesh": "Models/Ultralisk/Ultralisk.obj",
                                 "Transform": {
                                     "Location": {
-                                        "X": -0.5431253749999999,
-                                        "Y": 0.23078802500000029,
-                                        "Z": 0.1394648
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -139644,9 +139644,9 @@
                                         "Yaw": 180.0
                                     },
                                     "Scale": {
-                                        "X": 0.65,
-                                        "Y": 0.65,
-                                        "Z": 0.65
+                                        "X": 2.0,
+                                        "Y": 2.0,
+                                        "Z": 2.0
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -139700,12 +139700,12 @@
                             "Parent": "DefaultSceneRoot",
                             "Properties": {
                                 "ShapeColor": 4286105710,
-                                "SphereRadius": 0.8,
+                                "SphereRadius": 0.800000011920929,
                                 "Transform": {
                                     "Location": {
                                         "X": 0.0,
                                         "Y": 0.0,
-                                        "Z": 0.8
+                                        "Z": 0.800000011920929
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,

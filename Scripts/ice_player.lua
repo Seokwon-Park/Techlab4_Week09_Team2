@@ -189,11 +189,13 @@ local function DieCoroutine()
     if bCleared or player.isDead then return end
     player.isDead = true
 
+    StartCameraShake(0.5)
+
     StartHitStop(1.0, 0.1) -- 사망 직전 잠깐 느려지게함
     -- 카메라 회전
 
     SetViewTargetWithBlend(
-        obj, 0.1, "EaseInOut", 2.0)
+        obj, 1.0, "EaseInOut", 2.0)
 
     wait(0.1) -- 1초 후에 실제로 사망 판정
 
