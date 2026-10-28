@@ -106,10 +106,17 @@
                             "Parent": "",
                             "Properties": {
                                 "CollisionRadius": 0.20000000298023224,
+                                "Gravity": 9.8100004196167,
                                 "IceGrip": 5.0,
                                 "MoveSpeed": 6.0,
                                 "TurnRate": 360.0,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bHiddenInGame": false,
                                 "bVisible": true
                             }
@@ -221,7 +228,7 @@
                             "Parent": "DefaultSceneRoot",
                             "Properties": {
                                 "AngularRadiusDegrees": 3.0,
-                                "Intensity": 1.2000000476837158,
+                                "Intensity": 1.5,
                                 "LightColor": 4294967295,
                                 "ShadowBias": 0.009999999776482582,
                                 "ShadowResolutionScale": 1.0,
@@ -234,9 +241,9 @@
                                         "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 55.0,
-                                        "Roll": 0.0,
-                                        "Yaw": 325.0
+                                        "Pitch": 44.86299514770508,
+                                        "Roll": 180.00003051757813,
+                                        "Yaw": 144.9999542236328
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -5545,6 +5552,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 15.0,
@@ -5562,7 +5570,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 4.0,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -5713,6 +5727,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 15.0,
@@ -5730,7 +5745,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 4.0,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -5881,6 +5902,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -15.0,
@@ -5898,7 +5920,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 4.0,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -6049,6 +6077,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -15.0,
@@ -6066,7 +6095,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 4.0,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -6217,6 +6252,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 4.875,
@@ -6234,7 +6270,13 @@
                                 },
                                 "PatrolPointCount": 3,
                                 "Speed": 3.5999999046325684,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": true,
@@ -6385,6 +6427,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -4.875,
                                     "Y": 0.0,
@@ -6402,7 +6445,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 2.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -6553,6 +6602,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -4.875,
                                     "Y": 0.0,
@@ -6570,7 +6620,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 2.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -6721,6 +6777,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -4.875,
                                     "Y": 0.0,
@@ -6738,7 +6795,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 2.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -6889,6 +6952,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -4.875,
                                     "Y": 0.0,
@@ -6906,7 +6970,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 2.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -9125,6 +9195,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 4.5,
@@ -9142,7 +9213,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 3.5999999046325684,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -21789,6 +21866,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -15.0,
@@ -21806,7 +21884,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -21957,6 +22041,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 15.0,
@@ -21974,7 +22059,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -22125,6 +22216,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -15.0,
@@ -22142,7 +22234,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -22293,6 +22391,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 15.0,
@@ -22310,7 +22409,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -22461,6 +22566,7 @@
                             "Name": "UPatrolMovementComponent_0",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -6.0,
                                     "Y": 0.0,
@@ -22478,7 +22584,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 3.0,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -31827,6 +31939,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -9.0,
                                     "Y": 0.0,
@@ -31844,7 +31957,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -40655,6 +40774,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -4.5,
                                     "Y": 0.0,
@@ -40672,7 +40792,13 @@
                                 },
                                 "PatrolPointCount": 3,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": true,
@@ -40823,6 +40949,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -4.5,
@@ -40840,7 +40967,13 @@
                                 },
                                 "PatrolPointCount": 3,
                                 "Speed": 3.5999999046325684,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": true,
@@ -40991,6 +41124,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -4.5,
@@ -41008,7 +41142,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -41159,6 +41299,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -4.5,
@@ -41176,7 +41317,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -41327,6 +41474,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -4.5,
@@ -41344,7 +41492,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -41495,6 +41649,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -4.5,
@@ -41512,7 +41667,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -41663,6 +41824,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -1.875,
                                     "Y": 0.0,
@@ -41680,7 +41842,13 @@
                                 },
                                 "PatrolPointCount": 3,
                                 "Speed": 4.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": true,
@@ -57149,6 +57317,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -7.5,
                                     "Y": 0.0,
@@ -57166,7 +57335,13 @@
                                 },
                                 "PatrolPointCount": 3,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": true,
@@ -57317,6 +57492,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 4.5,
                                     "Y": 4.5,
@@ -57334,7 +57510,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -57485,6 +57667,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -18.0,
                                     "Y": 0.0,
@@ -57502,7 +57685,13 @@
                                 },
                                 "PatrolPointCount": 2,
                                 "Speed": 5.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -57653,6 +57842,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 19.5,
@@ -57670,7 +57860,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 7.199999809265137,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -63322,6 +63518,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -6.0,
                                     "Y": 0.0,
@@ -63339,7 +63536,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 1.0,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -66514,6 +66717,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -4.875,
                                     "Y": 0.0,
@@ -66531,7 +66735,13 @@
                                 },
                                 "PatrolPointCount": 3,
                                 "Speed": 3.5999999046325684,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": true,
@@ -74075,6 +74285,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 31.5,
@@ -74092,7 +74303,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -74243,6 +74460,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -39.0,
@@ -74260,7 +74478,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -74411,6 +74635,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -39.0,
@@ -74428,7 +74653,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -74579,6 +74810,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -39.0,
@@ -74596,7 +74828,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -81996,6 +82234,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -6.0,
                                     "Y": 0.0,
@@ -82013,7 +82252,13 @@
                                 },
                                 "PatrolPointCount": 3,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": true,
@@ -82164,6 +82409,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 7.5,
@@ -82181,7 +82427,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": true,
@@ -82332,6 +82584,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 7.5,
@@ -82349,7 +82602,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": true,
@@ -82500,6 +82759,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -7.5,
@@ -82517,7 +82777,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": true,
@@ -82668,6 +82934,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 7.5,
@@ -82685,7 +82952,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": true,
@@ -82836,6 +83109,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 4.5,
                                     "Y": -4.5,
@@ -82853,7 +83127,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 4.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -96236,6 +96516,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -10.5,
@@ -96253,7 +96534,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -96404,6 +96691,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -10.5,
@@ -96421,7 +96709,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -96572,6 +96866,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 10.5,
@@ -96589,7 +96884,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -96740,6 +97041,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -10.5,
@@ -96757,7 +97059,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -100775,6 +101083,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -37.5,
@@ -100792,7 +101101,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -100943,6 +101258,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 4.875,
                                     "Y": 0.0,
@@ -100960,7 +101276,13 @@
                                 },
                                 "PatrolPointCount": 3,
                                 "Speed": 5.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": true,
@@ -101111,6 +101433,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -4.875,
@@ -101128,7 +101451,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -101279,6 +101608,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -10.5,
@@ -101296,7 +101626,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 7.199999809265137,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -101447,6 +101783,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 10.5,
@@ -101464,7 +101801,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 7.199999809265137,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -101615,6 +101958,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -10.5,
@@ -101632,7 +101976,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 7.199999809265137,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -101783,6 +102133,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 10.5,
@@ -101800,7 +102151,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 7.199999809265137,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -105651,6 +106008,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 4.875,
@@ -105668,7 +106026,13 @@
                                 },
                                 "PatrolPointCount": 3,
                                 "Speed": 4.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": true,
@@ -105819,6 +106183,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": -4.875,
                                     "Y": 4.875,
@@ -105836,7 +106201,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 4.5,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -108970,6 +109341,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -39.0,
@@ -108987,7 +109359,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 5.599999904632568,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -109138,6 +109516,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": -39.0,
@@ -109155,7 +109534,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 7.199999809265137,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -109306,6 +109691,7 @@
                             "Name": "PatrolMovement",
                             "Parent": "",
                             "Properties": {
+                                "Gravity": 9.8100004196167,
                                 "PatrolPoint1": {
                                     "X": 0.0,
                                     "Y": 38.25,
@@ -109323,7 +109709,13 @@
                                 },
                                 "PatrolPointCount": 1,
                                 "Speed": 7.199999809265137,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "bAutoActivate": true,
+                                "bConstrainToPlane": false,
                                 "bFaceMoveDirection": true,
                                 "bHiddenInGame": false,
                                 "bLoop": false,
@@ -111287,6 +111679,137 @@
                     "Properties": {
                         "ScriptPath": "",
                         "bActorEnableCollision": false
+                    }
+                },
+                {
+                    "Class": "AStaticMeshActor",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 92.3535385131836,
+                                        "Z": -20.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UStaticMeshComponent",
+                            "Name": "UStaticMeshComponent",
+                            "OverrideMaterials": [
+                                {
+                                    "Base": "DefaultMaterial",
+                                    "Instance": {
+                                        "BaseColor": {
+                                            "W": 1.0,
+                                            "X": 1.0,
+                                            "Y": 1.0,
+                                            "Z": 1.0
+                                        },
+                                        "BlendState": "Opaque",
+                                        "FlipNormalY": false,
+                                        "PSOType": 0,
+                                        "Properties": {},
+                                        "SamplerState": "LinearClamp",
+                                        "Shininess": 100.0,
+                                        "SpecularColor": {
+                                            "X": 1.0,
+                                            "Y": 1.0,
+                                            "Z": 1.0
+                                        },
+                                        "Textures": [
+                                            "WhiteTexture",
+                                            "FlatNormalTexture"
+                                        ],
+                                        "UVScrollSpeed": [
+                                            0.0,
+                                            0.0
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Base": "DefaultMaterial",
+                                    "Instance": {
+                                        "BaseColor": {
+                                            "W": 1.0,
+                                            "X": 1.0,
+                                            "Y": 1.0,
+                                            "Z": 1.0
+                                        },
+                                        "BlendState": "Opaque",
+                                        "FlipNormalY": false,
+                                        "PSOType": 0,
+                                        "Properties": {},
+                                        "SamplerState": "LinearClamp",
+                                        "Shininess": 100.0,
+                                        "SpecularColor": {
+                                            "X": 1.0,
+                                            "Y": 1.0,
+                                            "Z": 1.0
+                                        },
+                                        "Textures": [
+                                            "Assets/Models/IceAgeMountain/Mountain_Albedo.png",
+                                            "Assets/Models/IceAgeMountain/Mountain_Normal.png"
+                                        ],
+                                        "UVScrollSpeed": [
+                                            0.0,
+                                            0.0
+                                        ]
+                                    }
+                                }
+                            ],
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "StaticMesh": "Models/IceAgeMountain/IceAgeMountain_Far.obj",
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": false,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
+                                "bHiddenInGame": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "AStaticMeshActor_1",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
                     }
                 }
             ],

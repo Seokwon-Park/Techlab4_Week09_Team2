@@ -10,7 +10,7 @@
 struct FGameSettings
 {
 	FString StartupMap = "Scenes/Demo_1_LightTypes.scene";   // [Game] GameDefaultMap
-	FString SkyPanorama = "Assets/SkySphere/Sky.hdr";
+	FString SkyPanorama = "Assets/SkySphere/IceEscapeSnowPanorama-v2.png";
 
 	std::wstring WindowTitle = L"Hitori";
 	uint32 Width = 1600;
