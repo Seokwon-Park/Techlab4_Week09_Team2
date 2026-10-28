@@ -227,8 +227,6 @@ private:
 	void DispatchGameInput(float DeltaTime);
 	FGameViewportClient* FindPIEGameClient(int32 PIEInstance) const;
 
-	bool bIsSIEMode = false;
-
 	int32 InputOwnerPIEInstance = -1;
 	bool bGameMouseCaptured = false;
 	int32 PendingFocusedPIEInstance = -1;

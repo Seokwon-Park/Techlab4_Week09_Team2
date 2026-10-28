@@ -10,6 +10,7 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/DefaultPawn.h"
 #include "GameFramework/PlayerController.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Input/InputSystem.h"
 
 #include "UObject/UObjectIterator.h"
@@ -124,8 +125,22 @@ AActor* UWorld::SpawnActor(UClass* Class, FName InName, const FTransform* Transf
 	return NewActor;
 }
 
-void UWorld::Tick(float DeltaTime)
+void UWorld::Tick(float RealDeltaTime)
 {
+	RealTimeSeconds += RealDeltaTime;
+
+	if (HitStopTimeRemaining > 0.0f)
+	{
+		HitStopTimeRemaining = std::max(HitStopTimeRemaining - RealDeltaTime, 0.0f);
+	}
+
+	const float DeltaTime = RealDeltaTime * GetEffectiveTimeDilation();
+
+	if (!bIsPaused)
+	{
+		TimeSeconds += DeltaTime;
+	}
+
 	{
 		SCOPE_CYCLE_COUNTER(STAT_UpdateAllTransforms);
 		Scene.UpdateAllTransforms();
@@ -166,6 +181,15 @@ void UWorld::Tick(float DeltaTime)
 				Comp->SetParticles(10);
 			}
 			Comp->TickComponent(DeltaTime);
+		}
+		// 스프링 암 컴포넌트도 에디터에서 틱이 돌아야 한다
+		for (TObjectIterator<USpringArmComponent> Comp; Comp; ++Comp)
+		{
+			if (!Comp || !Comp->IsRegistered() || Comp->GetWorld() != this)
+			{
+				continue;
+			}
+			Comp->UpdateInEditor();
 		}
 	}
 
@@ -997,3 +1021,14 @@ void UWorld::UpdateOverlaps()
 	}
 }
 
+float UWorld::GetEffectiveTimeDilation() const
+{
+	const float HitStop = (HitStopTimeRemaining > 0.0f) ? HitStopDilation : 1.0f;
+	return FMath::Clamp(GlobalTimeDilation * HitStop, MinTimeDilation, MaxTimeDilation);
+}
+
+void UWorld::StartHitStop(float Duration, float Dilation)
+{
+	HitStopTimeRemaining = std::max(HitStopTimeRemaining, Duration);
+	HitStopDilation = Dilation;
+}

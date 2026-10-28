@@ -56,11 +56,21 @@ local function Respawn()
 end
 
 local function ShowClearWidget()
-    restartWidget:Find("TextLabel"):SetText("클리어!")
-    restartWidget.Visible = true
+    if restartWidget and restartWidget:IsValid() then
+        restartWidget:Find("TextLabel"):SetText("클리어!")
+        restartWidget.Visible = true
+    end
+
     PlaySound2D("Assets/Sounds/Clear.mp3")
 
     bCleared = true
+end
+
+local function ShowRestartWidget()
+    if restartWidget and restartWidget:IsValid() then
+        restartWidget:Find("TextLabel"):SetText("실패!")
+        restartWidget.Visible = true
+    end
 end
 
 -- 개발자 테스트용: 가장 가까운 StageN_Start를 현재 Stage로 보고 앞/뒤 Stage 시작 위치로 옮긴다.
@@ -86,8 +96,6 @@ local function MoveStage(offset)
 end
 
 local function Die(wall)
-    if player.isDead then return end
-    player.isDead = true
     player.respawnTime = RESPAWN_DELAY
 
     -- 사망 시 뒤집기
@@ -113,16 +121,23 @@ local function Die(wall)
     local cause = wall and wall:IsValid() and wall.Name or "알 수 없는 충돌"
     print("[Ice] 벽 충돌로 사망: " .. cause)
 
-    -- 리스타트 위젯 띄우기
-    if restartWidget and restartWidget:IsValid() then
-        restartWidget:Find("TextLabel"):SetText("실패!")
-        restartWidget.Visible = true
-    end
     -- 스탯 업데이트
     deathCount = deathCount + 1
     if deathCountText and deathCountText:IsValid() then
         deathCountText:SetText(tostring(deathCount))
     end
+end
+
+local function DieCoroutine()
+    if player.isDead then return end
+    player.isDead = true
+
+    StartHitStop(1.0, 0.1) -- 사망 직전 잠깐 느려지게함
+    wait(0.1) -- 1초 후에 실제로 사망 판정
+
+    Die(wall) -- 벽 충돌을 사망으로 해석하는 규칙은 Lua에 둔다.
+    wait(0.3) -- 사망하고 잠시 후에 리스타트 위젯을 띄운다
+    ShowRestartWidget()
 end
 
 local function UpdateIceState()
@@ -316,7 +331,7 @@ function Tick(dt)
 end
 
 function OnHit(wall)
-    Die(wall) -- 벽 충돌을 사망으로 해석하는 규칙은 Lua에 둔다.
+    StartCoroutine(DieCoroutine)
 end
 
 OnRightMousePressed = function()
