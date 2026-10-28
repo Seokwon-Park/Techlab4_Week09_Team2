@@ -83,6 +83,7 @@ local function PlayIntro()
     -- 시퀀스가 끝나면 카메라는 플레이어 카메라로, 추격자는 숨긴 위치로 돌아간다 (Restore State)
     wait(0.1)
     wait_until(function() return not obj:IsSequencePlaying() end)
+    _G.bIsGameStarted = true
     Cleanup()
     print("[Intro] done (" .. SEQUENCE_LENGTH .. "s)")
 end

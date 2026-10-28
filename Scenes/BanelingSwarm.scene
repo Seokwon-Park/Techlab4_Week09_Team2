@@ -5,10 +5,6 @@
             "Actors": [
                 {
                     "Class": "ASkyLightActor",
-                    "Name": "SkyLight",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -23,8 +19,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -44,10 +40,10 @@
                             "Properties": {
                                 "Intensity": 0.25,
                                 "LightColor": 4294967295,
-                                "ShadowBias": 0.01,
+                                "ShadowBias": 0.009999999776482582,
                                 "ShadowResolutionScale": 1.0,
                                 "ShadowSharpen": 0.0,
-                                "ShadowSlopeBias": 0.01,
+                                "ShadowSlopeBias": 0.009999999776482582,
                                 "Transform": {
                                     "Location": {
                                         "X": 0.0,
@@ -56,8 +52,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -73,37 +69,37 @@
                         },
                         {
                             "Class": "UBillboardComponent",
-                            "Name": "UBillboardComponent",
-                            "Parent": "USkyLightComponent",
                             "Material": {
                                 "Base": "BillboardMaterial",
                                 "Instance": {
                                     "BaseColor": {
-                                        "W": 1,
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "W": 1.0,
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     },
                                     "BlendState": "AlphaBlend",
                                     "FlipNormalY": false,
                                     "PSOType": 14,
                                     "Properties": {},
                                     "SamplerState": "LinearClamp",
-                                    "Shininess": 32,
+                                    "Shininess": 32.0,
                                     "SpecularColor": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     },
                                     "Textures": [
                                         "Assets/Icons/Sky.png"
                                     ],
                                     "UVScrollSpeed": [
-                                        0,
-                                        0
+                                        0.0,
+                                        0.0
                                     ]
                                 }
                             },
+                            "Name": "UBillboardComponent",
+                            "Parent": "USkyLightComponent",
                             "Properties": {
                                 "Transform": {
                                     "Location": {
@@ -113,8 +109,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -123,20 +119,23 @@
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": false,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "SkyLight",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "ADirectionalLightActor",
-                    "Name": "Sun",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -151,8 +150,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -172,16 +171,16 @@
                             "Properties": {
                                 "AngularRadiusDegrees": 3.0,
                                 "CascadeDistributionExponent": 3.0,
-                                "CascadeTransitionFraction": 0.1,
+                                "CascadeTransitionFraction": 0.10000000149011612,
                                 "DynamicShadowCascades": 4,
                                 "DynamicShadowDistanceMovableLight": 200.0,
-                                "Intensity": 1.2,
+                                "Intensity": 1.2000000476837158,
                                 "LightColor": 4294967295,
-                                "ShadowBias": 0.01,
-                                "ShadowDistanceFadeoutFraction": 0.1,
+                                "ShadowBias": 0.009999999776482582,
+                                "ShadowDistanceFadeoutFraction": 0.10000000149011612,
                                 "ShadowResolutionScale": 1.0,
                                 "ShadowSharpen": 0.0,
-                                "ShadowSlopeBias": 0.01,
+                                "ShadowSlopeBias": 0.009999999776482582,
                                 "Transform": {
                                     "Location": {
                                         "X": 0.0,
@@ -190,8 +189,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 55.0,
-                                        "Yaw": 35.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 35.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -207,37 +206,37 @@
                         },
                         {
                             "Class": "UBillboardComponent",
-                            "Name": "UBillboardComponent",
-                            "Parent": "UDirectionalLightComponent",
                             "Material": {
                                 "Base": "BillboardMaterial",
                                 "Instance": {
                                     "BaseColor": {
-                                        "W": 1,
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "W": 1.0,
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     },
                                     "BlendState": "AlphaBlend",
                                     "FlipNormalY": false,
                                     "PSOType": 14,
                                     "Properties": {},
                                     "SamplerState": "LinearClamp",
-                                    "Shininess": 32,
+                                    "Shininess": 32.0,
                                     "SpecularColor": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     },
                                     "Textures": [
                                         "Assets/Icons/Directional.png"
                                     ],
                                     "UVScrollSpeed": [
-                                        0,
-                                        0
+                                        0.0,
+                                        0.0
                                     ]
                                 }
                             },
+                            "Name": "UBillboardComponent",
+                            "Parent": "UDirectionalLightComponent",
                             "Properties": {
                                 "Transform": {
                                     "Location": {
@@ -247,8 +246,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -257,20 +256,60 @@
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": false,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": true
                             }
+                        },
+                        {
+                            "Class": "UStaticMeshComponent",
+                            "Name": "UArrowComponent",
+                            "OverrideMaterials": [
+                                {
+                                    "Asset": "EditorArrowMaterial"
+                                }
+                            ],
+                            "Parent": "UDirectionalLightComponent",
+                            "Properties": {
+                                "StaticMesh": "Arrow",
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 90.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 0.30000001192092896,
+                                        "Y": 0.30000001192092896,
+                                        "Z": 0.5
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": false,
+                                "bCastShadow": false,
+                                "bGenerateOverlapEvents": true,
+                                "bHiddenInGame": false,
+                                "bReceiveShadow": false,
+                                "bVisible": true
+                            }
                         }
-                    ]
+                    ],
+                    "Name": "Sun",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "APointLightActor",
-                    "Name": "AcidGlow",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -281,12 +320,12 @@
                                     "Location": {
                                         "X": 0.0,
                                         "Y": 0.0,
-                                        "Z": 2.6
+                                        "Z": 2.5999999046325684
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -312,6 +351,7 @@
                                 "ShadowResolutionScale": 1.0,
                                 "ShadowSharpen": 0.0,
                                 "ShadowSlopeBias": 0.5,
+                                "SourceRadius": 0.019999999552965164,
                                 "Transform": {
                                     "Location": {
                                         "X": 0.0,
@@ -320,8 +360,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -337,37 +377,37 @@
                         },
                         {
                             "Class": "UBillboardComponent",
-                            "Name": "UBillboardComponent",
-                            "Parent": "UPointLightComponent",
                             "Material": {
                                 "Base": "BillboardMaterial",
                                 "Instance": {
                                     "BaseColor": {
-                                        "W": 1,
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "W": 1.0,
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     },
                                     "BlendState": "AlphaBlend",
                                     "FlipNormalY": false,
                                     "PSOType": 14,
                                     "Properties": {},
                                     "SamplerState": "LinearClamp",
-                                    "Shininess": 32,
+                                    "Shininess": 32.0,
                                     "SpecularColor": {
-                                        "X": 1,
-                                        "Y": 1,
-                                        "Z": 1
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
                                     },
                                     "Textures": [
                                         "Assets/Icons/Point.png"
                                     ],
                                     "UVScrollSpeed": [
-                                        0,
-                                        0
+                                        0.0,
+                                        0.0
                                     ]
                                 }
                             },
+                            "Name": "UBillboardComponent",
+                            "Parent": "UPointLightComponent",
                             "Properties": {
                                 "Transform": {
                                     "Location": {
@@ -377,8 +417,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -387,20 +427,23 @@
                                     }
                                 },
                                 "bAutoActivate": true,
+                                "bBlockComponent": false,
                                 "bCastShadow": false,
+                                "bGenerateOverlapEvents": true,
                                 "bHiddenInGame": true,
                                 "bReceiveShadow": false,
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "AcidGlow",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "Ground",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -415,8 +458,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 80.0,
@@ -444,8 +487,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -462,14 +505,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "Ground",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "Baneling_Hero",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -480,12 +524,12 @@
                                     "Location": {
                                         "X": 0.0,
                                         "Y": 0.0,
-                                        "Z": 0.85
+                                        "Z": 0.8500000238418579
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 3.0,
@@ -507,14 +551,14 @@
                                 "StaticMesh": "Models/baneling/baneling.obj",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.1,
+                                        "X": 0.10000000149011612,
                                         "Y": 0.0,
-                                        "Z": -0.285
+                                        "Z": -0.2849999964237213
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 180.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 180.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -531,14 +575,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "Baneling_Hero",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "Baneling_0",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -548,18 +593,18 @@
                                 "Transform": {
                                     "Location": {
                                         "X": -3.0,
-                                        "Y": 2.2,
-                                        "Z": 0.7
+                                        "Y": 2.200000047683716,
+                                        "Z": 0.699999988079071
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 2.4,
-                                        "Y": 2.4,
-                                        "Z": 2.4
+                                        "X": 2.4000000953674316,
+                                        "Y": 2.4000000953674316,
+                                        "Z": 2.4000000953674316
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -576,14 +621,14 @@
                                 "StaticMesh": "Models/baneling/baneling.obj",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.1,
+                                        "X": 0.10000000149011612,
                                         "Y": 0.0,
-                                        "Z": -0.285
+                                        "Z": -0.2849999964237213
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 180.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 180.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -600,14 +645,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "Baneling_0",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "Baneling_1",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -618,17 +664,17 @@
                                     "Location": {
                                         "X": -3.5,
                                         "Y": -2.0,
-                                        "Z": 0.7
+                                        "Z": 0.699999988079071
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 2.4,
-                                        "Y": 2.4,
-                                        "Z": 2.4
+                                        "X": 2.4000000953674316,
+                                        "Y": 2.4000000953674316,
+                                        "Z": 2.4000000953674316
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -645,14 +691,14 @@
                                 "StaticMesh": "Models/baneling/baneling.obj",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.1,
+                                        "X": 0.10000000149011612,
                                         "Y": 0.0,
-                                        "Z": -0.285
+                                        "Z": -0.2849999964237213
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 180.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 180.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -669,14 +715,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "Baneling_1",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "Baneling_2",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -686,18 +733,18 @@
                                 "Transform": {
                                     "Location": {
                                         "X": -6.0,
-                                        "Y": 0.6,
-                                        "Z": 0.7
+                                        "Y": 0.6000000238418579,
+                                        "Z": 0.699999988079071
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 2.4,
-                                        "Y": 2.4,
-                                        "Z": 2.4
+                                        "X": 2.4000000953674316,
+                                        "Y": 2.4000000953674316,
+                                        "Z": 2.4000000953674316
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -714,14 +761,14 @@
                                 "StaticMesh": "Models/baneling/baneling.obj",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.1,
+                                        "X": 0.10000000149011612,
                                         "Y": 0.0,
-                                        "Z": -0.285
+                                        "Z": -0.2849999964237213
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 180.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 180.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -738,14 +785,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "Baneling_2",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "Baneling_3",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -755,18 +803,18 @@
                                 "Transform": {
                                     "Location": {
                                         "X": -6.5,
-                                        "Y": 3.6,
-                                        "Z": 0.7
+                                        "Y": 3.5999999046325684,
+                                        "Z": 0.699999988079071
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 2.4,
-                                        "Y": 2.4,
-                                        "Z": 2.4
+                                        "X": 2.4000000953674316,
+                                        "Y": 2.4000000953674316,
+                                        "Z": 2.4000000953674316
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -783,14 +831,14 @@
                                 "StaticMesh": "Models/baneling/baneling.obj",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.1,
+                                        "X": 0.10000000149011612,
                                         "Y": 0.0,
-                                        "Z": -0.285
+                                        "Z": -0.2849999964237213
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 180.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 180.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -807,14 +855,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "Baneling_3",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "Baneling_4",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -824,18 +873,18 @@
                                 "Transform": {
                                     "Location": {
                                         "X": -7.0,
-                                        "Y": -3.4,
-                                        "Z": 0.7
+                                        "Y": -3.4000000953674316,
+                                        "Z": 0.699999988079071
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 2.4,
-                                        "Y": 2.4,
-                                        "Z": 2.4
+                                        "X": 2.4000000953674316,
+                                        "Y": 2.4000000953674316,
+                                        "Z": 2.4000000953674316
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -852,14 +901,14 @@
                                 "StaticMesh": "Models/baneling/baneling.obj",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.1,
+                                        "X": 0.10000000149011612,
                                         "Y": 0.0,
-                                        "Z": -0.285
+                                        "Z": -0.2849999964237213
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 180.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 180.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -876,14 +925,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "Baneling_4",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "Baneling_5",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -893,18 +943,18 @@
                                 "Transform": {
                                     "Location": {
                                         "X": -9.5,
-                                        "Y": -0.8,
-                                        "Z": 0.7
+                                        "Y": -0.800000011920929,
+                                        "Z": 0.699999988079071
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 2.4,
-                                        "Y": 2.4,
-                                        "Z": 2.4
+                                        "X": 2.4000000953674316,
+                                        "Y": 2.4000000953674316,
+                                        "Z": 2.4000000953674316
                                     }
                                 },
                                 "bAutoActivate": true,
@@ -921,14 +971,14 @@
                                 "StaticMesh": "Models/baneling/baneling.obj",
                                 "Transform": {
                                     "Location": {
-                                        "X": 0.1,
+                                        "X": 0.10000000149011612,
                                         "Y": 0.0,
-                                        "Z": -0.285
+                                        "Z": -0.2849999964237213
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 180.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 180.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -945,14 +995,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "Baneling_5",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "BunkerWall_0",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -967,11 +1018,11 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1.2,
+                                        "X": 1.2000000476837158,
                                         "Y": 2.0,
                                         "Z": 2.5
                                     }
@@ -996,8 +1047,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -1014,14 +1065,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "BunkerWall_0",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "BunkerWall_1",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -1036,11 +1088,11 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1.2,
+                                        "X": 1.2000000476837158,
                                         "Y": 2.0,
                                         "Z": 2.5
                                     }
@@ -1065,8 +1117,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -1083,14 +1135,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "BunkerWall_1",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "BunkerWall_2",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -1105,11 +1158,11 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1.2,
+                                        "X": 1.2000000476837158,
                                         "Y": 2.0,
                                         "Z": 2.5
                                     }
@@ -1134,8 +1187,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -1152,14 +1205,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "BunkerWall_2",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "BunkerWall_3",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -1174,11 +1228,11 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1.2,
+                                        "X": 1.2000000476837158,
                                         "Y": 2.0,
                                         "Z": 2.5
                                     }
@@ -1203,8 +1257,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -1221,14 +1275,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "BunkerWall_3",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "Pillar_0",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -1243,12 +1298,12 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1.2,
-                                        "Y": 1.2,
+                                        "X": 1.2000000476837158,
+                                        "Y": 1.2000000476837158,
                                         "Z": 3.0
                                     }
                                 },
@@ -1272,8 +1327,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -1290,14 +1345,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "Pillar_0",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "Pillar_1",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -1312,12 +1368,12 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1.2,
-                                        "Y": 1.2,
+                                        "X": 1.2000000476837158,
+                                        "Y": 1.2000000476837158,
                                         "Z": 4.0
                                     }
                                 },
@@ -1341,8 +1397,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -1359,14 +1415,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "Pillar_1",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "Pillar_2",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -1381,12 +1438,12 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1.2,
-                                        "Y": 1.2,
+                                        "X": 1.2000000476837158,
+                                        "Y": 1.2000000476837158,
                                         "Z": 2.5
                                     }
                                 },
@@ -1410,8 +1467,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -1428,14 +1485,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "Pillar_2",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "Pillar_3",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -1450,12 +1508,12 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1.2,
-                                        "Y": 1.2,
+                                        "X": 1.2000000476837158,
+                                        "Y": 1.2000000476837158,
                                         "Z": 3.5
                                     }
                                 },
@@ -1479,8 +1537,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -1497,14 +1555,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "Pillar_3",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "AStaticMeshActor",
-                    "Name": "Pillar_4",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -1519,12 +1578,12 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
-                                        "X": 1.2,
-                                        "Y": 1.2,
+                                        "X": 1.2000000476837158,
+                                        "Y": 1.2000000476837158,
                                         "Z": 5.0
                                     }
                                 },
@@ -1548,8 +1607,8 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -1566,119 +1625,15 @@
                                 "bVisible": true
                             }
                         }
-                    ]
+                    ],
+                    "Name": "Pillar_4",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
                 },
                 {
                     "Class": "ACameraActor",
-                    "Name": "CamWide",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
-                    "Components": [
-                        {
-                            "Class": "UCameraComponent",
-                            "Name": "CameraComponent",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -16.0,
-                                        "Y": -12.0,
-                                        "Z": 7.0
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 16.69924423399362,
-                                        "Yaw": 36.86989764584402,
-                                        "Roll": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        }
-                    ]
-                },
-                {
-                    "Class": "ACameraActor",
-                    "Name": "CamChase",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
-                    "Components": [
-                        {
-                            "Class": "UCameraComponent",
-                            "Name": "CameraComponent",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": -5.0,
-                                        "Y": 3.5,
-                                        "Z": 2.2
-                                    },
-                                    "Rotation": {
-                                        "Pitch": 7.281529854829641,
-                                        "Yaw": -26.56505117707799,
-                                        "Roll": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        }
-                    ]
-                },
-                {
-                    "Class": "ACameraActor",
-                    "Name": "CamLow",
-                    "Properties": {
-                        "bActorEnableCollision": true
-                    },
-                    "Components": [
-                        {
-                            "Class": "UCameraComponent",
-                            "Name": "CameraComponent",
-                            "Parent": "",
-                            "Properties": {
-                                "Transform": {
-                                    "Location": {
-                                        "X": 13.5,
-                                        "Y": -3.5,
-                                        "Z": 0.4
-                                    },
-                                    "Rotation": {
-                                        "Pitch": -7.570633750853619,
-                                        "Yaw": 154.9831065219,
-                                        "Roll": 0.0
-                                    },
-                                    "Scale": {
-                                        "X": 1.0,
-                                        "Y": 1.0,
-                                        "Z": 1.0
-                                    }
-                                },
-                                "bAutoActivate": true,
-                                "bHiddenInGame": false,
-                                "bVisible": true
-                            }
-                        }
-                    ]
-                },
-                {
-                    "Class": "ALevelSequenceActor",
-                    "Name": "Cinematic",
                     "Components": [
                         {
                             "Class": "USceneComponent",
@@ -1693,8 +1648,35 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Yaw": 0.0,
-                                        "Roll": 0.0
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UCameraComponent",
+                            "Name": "CameraComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": -16.0,
+                                        "Y": -12.0,
+                                        "Z": 7.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 16.699243545532227,
+                                        "Roll": 0.0,
+                                        "Yaw": 36.869895935058594
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -1708,17 +1690,298 @@
                             }
                         }
                     ],
+                    "Name": "CamWide",
                     "Properties": {
-                        "bActorEnableCollision": true,
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
+                },
+                {
+                    "Class": "ACameraActor",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UCameraComponent",
+                            "Name": "CameraComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": -5.0,
+                                        "Y": 3.5,
+                                        "Z": 2.200000047683716
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 7.281529903411865,
+                                        "Roll": 0.0,
+                                        "Yaw": -26.565052032470703
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "CamChase",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
+                },
+                {
+                    "Class": "ACameraActor",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UCameraComponent",
+                            "Name": "CameraComponent",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 13.5,
+                                        "Y": -3.5,
+                                        "Z": 0.4000000059604645
+                                    },
+                                    "Rotation": {
+                                        "Pitch": -7.570633888244629,
+                                        "Roll": 0.0,
+                                        "Yaw": 154.9831085205078
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "CamLow",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
+                    }
+                },
+                {
+                    "Class": "ALevelSequenceActor",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "Cinematic",
+                    "Properties": {
                         "LevelSequenceAsset": "Assets/Sequences/BanelingSwarm.sequence",
-                        "ScriptPath": "Scripts/baneling_swarm_cinematic.lua",
-                        "bAutoPlay": true,
                         "LoopCount": 0,
                         "PlayRate": 1.0,
+                        "ScriptPath": "Scripts/baneling_swarm_cinematic.lua",
                         "StartTime": 0.0,
+                        "bActorEnableCollision": true,
+                        "bAutoPlay": true,
                         "bDisableCameraCuts": false,
                         "bPauseAtEnd": false,
                         "bRestoreState": false
+                    }
+                },
+                {
+                    "Class": "APawn",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UCameraComponent",
+                            "Name": "UCameraComponent_0",
+                            "Parent": "USpringArmComponent_0",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": -15.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 0.9999999403953552,
+                                        "Y": 1.0,
+                                        "Z": 0.9999999403953552
+                                    }
+                                },
+                                "bAutoActivate": false,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "USpringArmComponent",
+                            "Name": "USpringArmComponent_0",
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "CameraLagMaxDistance": 0.0,
+                                "CameraLagSpeed": 10.0,
+                                "CameraRotationLagSpeed": 10.0,
+                                "ProbeSize": 0.11999999731779099,
+                                "SocketOffset": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
+                                "TargetArmLength": 15.0,
+                                "TargetOffset": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 61.275840759277344,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bDoCollisionTest": false,
+                                "bDrawDebug": true,
+                                "bDrawOnlyIfSelected": false,
+                                "bEnableCameraLag": true,
+                                "bEnableCameraRotationLag": true,
+                                "bHiddenInGame": false,
+                                "bInheritPitch": true,
+                                "bInheritRoll": true,
+                                "bInheritYaw": true,
+                                "bUsePawnControlRotation": false,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "PlayerCamera",
+                    "Properties": {
+                        "ScriptPath": "",
+                        "bActorEnableCollision": true
                     }
                 }
             ],

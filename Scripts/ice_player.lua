@@ -239,7 +239,7 @@ end
 
 function BeginPlay()
     _G.bIsGameStarted = false
-    StartCoroutine(CinematicCoroutine)
+    -- StartCoroutine(CinematicCoroutine)
 
     playerCamera = GetActorByName("PlayerCamera")
     bodyComponent = GetComponentByName("PlayerMesh")
@@ -269,6 +269,7 @@ function BeginPlay()
 
     statsWidget = CreateWidget("Assets/UI/StatsWidget.widget")
     statsWidget:AddToViewport()
+    statsWidget.Visible = false
     deathCountText = statsWidget:Find("DeathCount")
     deathCountText:SetText("0")
     timerText = statsWidget:Find("Timer")
@@ -318,6 +319,7 @@ function Tick(dt)
     if not _G.bIsGameStarted then
         return
     end
+    statsWidget.Visible = true
 
     -- 스탯 업데이트
     -- 플레이어가 살아있을 때만 시간이 흐르게 한다
