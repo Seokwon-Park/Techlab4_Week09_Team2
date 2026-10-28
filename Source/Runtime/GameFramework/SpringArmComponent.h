@@ -22,6 +22,7 @@ public:
 	void DrawDebug(FLineBatcher* LineBatcher) const;
 
 	void UpdateInEditor();
+	void ResetCameraLag();
 
 	UPROPERTY(EditAnywhere)
 	float TargetArmLength = 4.0f;			// 팔 길이 (월드 단위)

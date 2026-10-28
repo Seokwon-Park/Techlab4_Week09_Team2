@@ -119,6 +119,9 @@ public:
 	// Slomo-hitstop
 	float GetEffectiveTimeDilation() const;
 	void StartHitStop(float Duration, float Dilation);
+	// UE AWorldSettings::CinematicTimeDilation. 시퀀스 Play Rate(Slomo) 트랙이 쓴다
+	float GetCinematicTimeDilation() const { return CinematicTimeDilation; }
+	void SetCinematicTimeDilation(float InDilation) { CinematicTimeDilation = InDilation; }
 
 private:
 	EWorldType WorldType = EWorldType::None;
@@ -163,6 +166,7 @@ private:
 
 	// Slomo-hitstop
 	float GlobalTimeDilation = 1.0f;
+	float CinematicTimeDilation = 1.0f;
 	float HitStopTimeRemaining = 0.0f;	// 실제 시간 (초)
 	float HitStopDilation = 1.0f;
 	float TimeSeconds = 0.0f;			// 게임 시간 (dilated 누적)

@@ -66,10 +66,6 @@ public:
 	void RemoveCameraModifier(UCameraModifier* Modifier);
 	UCameraModifier* FindCameraModifierByClass(UClass* ModifierClass) const;
 
-	void StartCameraFade();
-	void StopCameraFade();
-	void SetManualCameraFade(float InFadeAmount, const FLinearColor& InFadeColor, bool bInFadeAudio = false, bool bInFadeVideo = false);
-
 	const FViewTarget& GetViewTarget() const { return ViewTarget; }
 	const FMinimalViewInfo& GetCameraCachePOV() const { return CameraCachePOV; }
 	
@@ -88,12 +84,22 @@ public:
 
 	APlayerController* GetOwningPlayerController() const { return PlayerControllerOwner; }
 
+	void StartCameraFade(float FromAlpha, float ToAlpha, float Duration, FLinearColor Color, bool bHoldWhenFinished);
+	void UpdateFade(float DeltaTime);
+	void StopCameraFade();
+
+	void SetLetterbox(float TargetAspect, float BlendTime);
+	void UpdateLetterbox(float DeltaTime);
+
+
+
 public:
-	FLinearColor FadeColor;
-	float FadeAmount;
-	FVector2 FadeAlpha;
-	float FadeTime;
-	float FadeTimeRemaining;
+	FLinearColor FadeColor{ 0, 0, 0, 1 };   // 지금은 초기값이 없음
+	float FadeAmount = 0.0f;
+	bool  bEnableFading = false;            // UE APlayerCameraManager::bEnableFading
+	float LetterboxAmount = 0.0f;           // 0~1
+	float LetterboxAspect = 2.39f;
+	float VignetteIntensity = 0.0f;
 
 	FName CameraStyle;
 	FViewTarget ViewTarget;

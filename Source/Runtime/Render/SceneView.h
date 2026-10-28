@@ -31,6 +31,17 @@ struct FSceneView
 	bool bIsWireframe = false;
 	bool bGameView = false;
 
+	FLinearColor OverlayColor{ 0.0f, 0.0f, 0.0f, 0.0f };   // rgb = 페이드 색, a = FadeAmount
+	float LetterboxAmount = 0.0f;                        // 0~1 진행도
+	float LetterboxAspect = 2.39f;                       // 목표 화면비
+	float VignetteIntensity = 0.0f;
+
+	bool NeedsCameraOverlay(bool bVignette, bool bOverlay) const
+	{
+		return (bOverlay && (OverlayColor.A > 0.0f || LetterboxAmount > 0.0f))
+			|| (bVignette && VignetteIntensity > 0.0f);
+	}
+
 	FViewContext ToViewContext() const
 	{
 		FViewContext Context{};
@@ -55,3 +66,14 @@ struct FSceneView
 		return ToViewContext();
 	}
 };
+
+struct FCameraOverlayDebug
+{
+	bool  bOverride = false;
+	float FadeColor[3] = { 0.0f, 0.0f, 0.0f };
+	float FadeAmount = 0.0f;
+	float LetterboxAmount = 0.0f;
+	float LetterboxAspect = 2.39f;
+	float VignetteIntensity = 0.0f;
+};
+inline FCameraOverlayDebug GCameraOverlayDebug;
