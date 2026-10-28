@@ -75,6 +75,9 @@ function OnBeginOverlap(other)
         if events and events.ResetCamera then
             events.ResetCamera()
         end
+        if events and events.ResetPlayerCameraLag then
+            events.ResetPlayerCameraLag()
+        end
         print("[Stage] " .. stageNumber .. " -> " .. (stageNumber + 1))
     end)
 end

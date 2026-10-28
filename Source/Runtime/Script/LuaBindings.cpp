@@ -10,6 +10,7 @@
 #include "Components/ParticleSubUVComponent.h"
 #include "Core/EngineTimer.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Input/InputSystem.h"
 #include "Script/LuaActorRef.h"
 #include "Script/LuaWidgetRef.h"
@@ -207,6 +208,13 @@ namespace
 		throw sol::error("Actor does not have a ParticleSubUVComponent.");
 	}
 
+	USpringArmComponent& CameraArm(const FLuaActorRef& Ref)
+	{
+		for (UActorComponent* Comp : Deref(Ref).GetComponents())
+			if (auto* Arm = Cast<USpringArmComponent>(Comp)) return *Arm;
+		throw sol::error("Actor does not have a SpringArmComponent.");
+	}
+
 	void RegisterActor(sol::state& Lua)
 	{
 		Lua.new_usertype<FLuaActorRef>("Actor",
@@ -385,6 +393,21 @@ namespace
 			sol::meta_function::to_string, [](const FLuaActorRef& Ref)
 			{
 				return std::format("Actor#{}", Ref.UUID);
+			},
+
+			"CameraLagEnabled", sol::property(
+				[](const FLuaActorRef& Ref)
+				{
+					return CameraArm(Ref).bEnableCameraLag;
+				},
+				[](const FLuaActorRef& Ref, bool b)
+				{
+					CameraArm(Ref).bEnableCameraLag = b;
+				}
+			),
+			"ResetCameraLag", [](const FLuaActorRef& Ref)
+			{
+				CameraArm(Ref).ResetCameraLag();
 			}
 		);
 
