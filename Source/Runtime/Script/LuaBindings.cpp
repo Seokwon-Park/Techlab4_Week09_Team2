@@ -7,6 +7,7 @@
 #include "Components/SlidingMovementComponent.h"
 #include "Components/IceVolumeComponent.h"
 #include "Components/PrimitiveComponent.h"
+#include "Components/SceneComponent.h"
 #include "Components/ParticleSubUVComponent.h"
 #include "Core/EngineTimer.h"
 #include "GameFramework/Actor.h"
@@ -259,6 +260,25 @@ namespace
 					for (UClass* Class = Component->GetClass(); Class; Class = Class->Super)
 						if (Class->Name == ClassName) return true;
 				}
+				return false;
+			},
+			"GetComponentRelativeScale", [](const FLuaActorRef& Ref, const FString& Name) -> sol::optional<FVector>
+			{
+				for (UActorComponent* Component : Deref(Ref).GetComponents())
+					if (Component && Component->GetName() == Name)
+						if (USceneComponent* SceneComponent = Cast<USceneComponent>(Component))
+							return SceneComponent->GetRelativeScale3D();
+				return sol::nullopt;
+			},
+			"SetComponentRelativeScale", [](const FLuaActorRef& Ref, const FString& Name, const FVector& Scale)
+			{
+				for (UActorComponent* Component : Deref(Ref).GetComponents())
+					if (Component && Component->GetName() == Name)
+						if (USceneComponent* SceneComponent = Cast<USceneComponent>(Component))
+						{
+							SceneComponent->SetRelativeScale3D(Scale);
+							return true;
+						}
 				return false;
 			},
 			"GetOverlappingActors", [](const FLuaActorRef& Ref, sol::this_state State)

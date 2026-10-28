@@ -7844,7 +7844,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -7984,7 +7984,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -18322,7 +18322,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -18563,7 +18563,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -18703,7 +18703,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -18843,7 +18843,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -18983,7 +18983,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -20530,7 +20530,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -20771,7 +20771,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -20911,7 +20911,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -21051,7 +21051,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -23357,7 +23357,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -23637,7 +23637,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -30231,7 +30231,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -30612,7 +30612,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -34791,7 +34791,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -35351,7 +35351,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -35491,7 +35491,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -36214,7 +36214,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -36595,7 +36595,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -43173,7 +43173,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -43935,7 +43935,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -44176,7 +44176,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -44316,7 +44316,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -44736,7 +44736,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -44876,7 +44876,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -45156,7 +45156,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -45296,7 +45296,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -45436,7 +45436,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -45817,7 +45817,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -45957,7 +45957,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -46377,7 +46377,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -46618,7 +46618,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -47139,7 +47139,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -47279,7 +47279,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -48041,7 +48041,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -48422,7 +48422,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -48842,7 +48842,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -48982,7 +48982,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -49402,7 +49402,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -49542,7 +49542,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -49822,7 +49822,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -49962,7 +49962,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -50102,7 +50102,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -59395,7 +59395,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -59535,7 +59535,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -60515,7 +60515,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -64309,7 +64309,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -64589,7 +64589,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -64729,7 +64729,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -65149,7 +65149,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -65289,7 +65289,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -71435,7 +71435,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -72259,7 +72259,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -75461,7 +75461,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -75601,7 +75601,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -75741,7 +75741,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -76262,7 +76262,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -76542,7 +76542,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -76822,7 +76822,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -84000,7 +84000,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -84140,7 +84140,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -84420,7 +84420,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -84560,7 +84560,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -84700,7 +84700,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -84840,7 +84840,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -84980,7 +84980,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -85120,7 +85120,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -85260,7 +85260,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -85540,7 +85540,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -85680,7 +85680,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -85960,7 +85960,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -86302,7 +86302,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -102784,7 +102784,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -102924,7 +102924,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -103064,7 +103064,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -103204,7 +103204,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -103344,7 +103344,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -103484,7 +103484,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -103624,7 +103624,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -103865,7 +103865,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -104005,7 +104005,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -104145,7 +104145,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_glacier_s42.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_glacier_s42_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -104285,7 +104285,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -104425,7 +104425,7 @@
                                         },
                                         "Textures": [
                                             "Assets/textures/ice_styl_s304_seamless.png",
-                                            "FlatNormalTexture"
+                                            "Assets/textures/ice_styl_s304_normal.png"
                                         ],
                                         "UVScrollSpeed": [
                                             0.0,
@@ -122036,6 +122036,114 @@
                     "Properties": {
                         "ScriptPath": "",
                         "bActorEnableCollision": false
+                    }
+                },
+                {
+                    "Class": "AActor",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 4,
+                                        "Y": -1.5,
+                                        "Z": 0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0,
+                                        "Roll": 0,
+                                        "Yaw": 0
+                                    },
+                                    "Scale": {
+                                        "X": 1,
+                                        "Y": 1,
+                                        "Z": 1
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UStaticMeshComponent",
+                            "Name": "EggMesh",
+                            "OverrideMaterials": [],
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "StaticMesh": "Models/ZergEgg/ZergEgg_00.obj",
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0,
+                                        "Y": 0,
+                                        "Z": 0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0,
+                                        "Roll": 0,
+                                        "Yaw": 0
+                                    },
+                                    "Scale": {
+                                        "X": 1,
+                                        "Y": 1,
+                                        "Z": 1
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true,
+                                "bBlockComponent": false,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": false,
+                                "bReceiveShadow": true
+                            }
+                        },
+                        {
+                            "Class": "UBoxComponent",
+                            "Name": "EggCollider",
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "BoxExtent": {
+                                    "X": 0.5,
+                                    "Y": 0.5,
+                                    "Z": 0.65
+                                },
+                                "ShapeColor": 4286105710,
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0,
+                                        "Y": 0,
+                                        "Z": 0.65
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0,
+                                        "Roll": 0,
+                                        "Yaw": 0
+                                    },
+                                    "Scale": {
+                                        "X": 1,
+                                        "Y": 1,
+                                        "Z": 1
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": true,
+                                "bVisible": true,
+                                "bBlockComponent": false,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": false,
+                                "bReceiveShadow": false
+                            }
+                        }
+                    ],
+                    "Name": "ZergEgg_Prototype",
+                    "Properties": {
+                        "ScriptPath": "Scripts/zerg_egg_breathe.lua",
+                        "bActorEnableCollision": true
                     }
                 }
             ],
