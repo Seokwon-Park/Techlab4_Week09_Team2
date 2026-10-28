@@ -11,6 +11,8 @@
 #include "Script/LuaScriptInstance.h"
 #include "Script/LuaBindings.h"
 
+#include "Camera/CameraComponent.h"
+#include "Camera/PlayerCameraManager.h"
 enum class EAttachmentRule;
 
 
@@ -485,4 +487,21 @@ void AActor::GetOverlappingActors(TArray<AActor*>& OutActors) const
 				OutActors.Add(Other);
 		}
 	}
+}
+
+void AActor::CalcCamera(float DeltaTime, FMinimalViewInfo& OutPOV)
+{
+
+	// 카메라있음 -> 정보 전달
+	for (UActorComponent* Component : GetComponents())
+	{
+		if (UCameraComponent* Camera = Cast<UCameraComponent>(Component))
+		{
+			Camera->GetCameraView(DeltaTime, OutPOV);
+			return;
+		}
+	}
+	// 카메라없음 -> 액터자신
+	OutPOV.Location = GetActorLocation();
+	OutPOV.Rotation = GetActorRotation();
 }

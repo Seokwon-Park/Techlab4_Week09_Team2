@@ -165,6 +165,7 @@ void UWorld::Tick(float RealDeltaTime)
 
 			UpdateOverlaps();
 			FLuaBindings::FlushPendingDestroy(this);
+			if (PlayerController) PlayerController->UpdateCameraManager(DeltaTime);
 		}
 	}
 	else
@@ -795,7 +796,12 @@ void UWorld::BeginPlay()
 		FTransform Transform = MainCamera ? MainCamera->GetActorTransform() : FTransform::Identity;
 		PlayerPawn = SpawnActor<ADefaultPawn>(NAME_None, &Transform);
 	}
-	if (!PlayerController) PlayerController = SpawnActor<APlayerController>();
+	if (!PlayerController) 
+		PlayerController = SpawnActor<APlayerController>();
+	
+	if (PlayerController)
+		PlayerController->SpawnPlayerCameraManager();
+	
 	if (PlayerController && PlayerPawn) PlayerController->Possess(PlayerPawn);
 
 	// 기존 액터 목록을 고정한 후 시작한다. BeginPlay 중 생성된 액터는 대기열로 간다.

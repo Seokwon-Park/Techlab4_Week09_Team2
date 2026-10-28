@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Camera/CameraActor.h"
 #include "Camera/CameraComponent.h"
+#include "Camera/PlayerCameraManager.h"
 #include "Camera/ViewportCameraMovement.h"
 #include <cmath>
 #include "Math/Frustum.h"
@@ -190,8 +191,41 @@ FSceneView FGameViewportClient::CalcSceneView(const FRect& InViewRect)
 	if (!CameraComponent && World)
 	{
 		CameraComponent = FindPlayerCamera();
+
 		if (!CameraComponent && World->GetMainCamera())
 			CameraComponent = World->GetMainCamera()->GetCameraComponent();
+	}
+
+	if (!bSIEMode && World)
+	{
+		APlayerController* PC = World->GetPlayerController();
+		APlayerCameraManager* PCM = PC ? PC->GetCameraManager() : nullptr;
+		if (PCM && PCM->HasCameraCache())
+		{
+			FMinimalViewInfo POV = PCM->GetCameraCachePOV();
+			POV.AspectRatio = Aspect;
+
+			// 위치·회전·행렬
+			OutView.ViewLocation = POV.Location;
+			OutView.ViewRotation = POV.Rotation;
+			OutView.ViewForward = POV.Rotation.Quaternion().GetForwardVector();
+			OutView.ViewMatrix = POV.CalculateViewMatrix();
+			OutView.ProjectionMatrix = POV.CalculateProjectionMatrix();
+			OutView.ViewProjectionMatrix = OutView.ViewMatrix * OutView.ProjectionMatrix;
+			// 렌즈 값
+			OutView.FieldOfView = POV.FOV;
+			OutView.AspectRatio = Aspect;
+			OutView.NearClip = POV.NearClip;
+			OutView.FarClip = POV.FarClip;
+			OutView.OrthoWidth = POV.OrthoWidth;
+			OutView.bIsPerspective = !POV.bIsOrthogonal;
+			OutView.bIsWireframe = false;
+
+			// 프러스텀 후 반환
+			OutView.Frustum = ExtractFrustumPlanes(OutView.ViewProjectionMatrix);
+			OutView.FrustumCorners = GenerateFrustumCorners(OutView.ViewProjectionMatrix.Inverse());
+			return OutView;
+		}
 	}
 
 	if (CameraComponent)

@@ -1,6 +1,9 @@
 #include "EnginePCH.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/Pawn.h"
+#include "Camera/PlayerCameraManager.h" 
+#include "Engine/World.h"               
+
 #include <cstring>
 
 APlayerController::APlayerController()
@@ -49,6 +52,7 @@ void APlayerController::Possess(APawn* InPawn)
 		PossessedPawn->PossessedBy(this);
 		ControlRotation = PossessedPawn->GetActorRotation();
 	}
+	if (PlayerCameraManager) PlayerCameraManager->SetViewTarget(PossessedPawn);
 }
 
 void APlayerController::UnPossess()
@@ -73,4 +77,19 @@ void APlayerController::ClearInputState()
 {
 	std::memset(bKeyDown, 0, sizeof(bKeyDown));
 	MouseAxisX = MouseAxisY = 0.0f;
+}
+void APlayerController::SpawnPlayerCameraManager()
+{
+	// 중복생성방지
+	if (PlayerCameraManager || !GetWorld()) return;
+
+	PlayerCameraManager = GetWorld()->SpawnActor<APlayerCameraManager>();
+	PlayerCameraManager->InitializeFor(this);
+}
+void APlayerController::UpdateCameraManager(float DeltaTime)
+{
+	if (PlayerCameraManager)
+	{
+		PlayerCameraManager->UpdateCamera(DeltaTime);
+	}
 }

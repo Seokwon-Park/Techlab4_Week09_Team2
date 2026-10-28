@@ -12,6 +12,7 @@
 class UWorld;
 class ULevel;
 struct FLuaScriptInstance;
+struct FMinimalViewInfo;
 
 UCLASS()
 class AActor : public UObject
@@ -28,6 +29,9 @@ public:
 	virtual void EndPlay();
 	// FActorTickFunction이 호출하는 진입점
 	void TickActor(float DeltaTime);
+
+	//Actor 위치의 시점 계산
+	virtual void CalcCamera(float DeltaTime, FMinimalViewInfo& OutPOV);
 
 	UWorld* GetWorld() const { return World; }
 	ULevel* GetLevel() const { return Level; }

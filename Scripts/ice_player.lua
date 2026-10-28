@@ -269,7 +269,23 @@ function Tick(dt)
             timerText:SetText(string.format("%.2f", playedTime))
         end
     end
+if IsKeyPressed("1") then
+    local ok = SetViewTargetWithBlend(obj, 1.5, "EaseInOut", 2.0)
+    print("[CameraTest] 맹독충 시점 요청:", ok)
+end
 
+-- 2: 기존 플레이어 카메라 시점으로 복귀
+if IsKeyPressed("2") then
+    local playerCamera = GetActorByName("PlayerCamera")
+
+    if playerCamera then
+        local ok = SetViewTargetWithBlend(
+            playerCamera, 1.5, "EaseInOut", 2.0)
+        print("[CameraTest] 기존 시점 복귀 요청:", ok)
+    else
+        print("[CameraTest] PlayerCamera를 찾지 못했습니다.")
+    end
+end
     if IsKeyPressed("r") then
         Respawn()
         return

@@ -5,6 +5,7 @@
 #include "PlayerController.generated.h"
 
 class APawn;
+class APlayerCameraManager;
 
 UCLASS()
 class APlayerController : public AActor
@@ -22,8 +23,14 @@ public:
 	void ClearInputState();
 
 	FRotator ControlRotation;
+	//PCM을 만들고 주인을 알려준다.
+	void SpawnPlayerCameraManager();
+	//Wolrd Tick으로부터 전달
+	void UpdateCameraManager(float DeltaTime);
+	APlayerCameraManager* GetCameraManager() const { return PlayerCameraManager; }
 private:
 
+	APlayerCameraManager* PlayerCameraManager = nullptr;
 	APawn* PossessedPawn = nullptr;
 	bool bKeyDown[256]{};
 	float MouseAxisX = 0.0f;
