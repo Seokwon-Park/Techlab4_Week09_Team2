@@ -75,8 +75,6 @@ public:
 	bool HasCameraCache() const { return bCameraCacheValid; }
 	bool IsActorAlive(AActor* Actor, uint32 UUID) const;
 	bool IsBlending() const { return PendingViewTarget.Target != nullptr; }
-
-
 	// 이 액터의 눈으로 카메라를 보겠다.
 	void SetViewTarget(AActor* NewTarget, const FViewTargetTransitionParams& Params = {});
 	void UpdateViewTarget(FViewTarget& OutVT, float DeltaTime);
@@ -103,15 +101,22 @@ public:
 	void SetLetterbox(float TargetAspect, float BlendTime);
 	void UpdateLetterbox(float DeltaTime);
 
-
-
 public:
 	FLinearColor FadeColor{ 0, 0, 0, 1 };   // 지금은 초기값이 없음
 	float FadeAmount = 0.0f;
 	bool  bEnableFading = false;            // UE APlayerCameraManager::bEnableFading
-	float LetterboxAmount = 0.0f;           // 0~1
+	float LetterboxAmount = 0.0f;
 	float LetterboxAspect = 2.39f;
+	float LetterboxTarget = 0.0f;       // 추가
+	float LetterboxBlendSpeed = 0.0f;   // 추가
 	float VignetteIntensity = 0.0f;
+
+	FVector2 FadeAlpha;
+	float FadeTime;
+	float FadeTimeRemaining;
+	bool bHoldFadeWhenFinished;
+	bool bAutoAnimateFade;       // false = SetManualCameraFade로 FadeAmount 직접 지정
+
 
 	FName CameraStyle;
 	FViewTarget ViewTarget;

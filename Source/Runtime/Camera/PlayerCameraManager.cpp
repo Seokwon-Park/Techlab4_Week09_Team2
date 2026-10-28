@@ -167,6 +167,8 @@ void APlayerCameraManager::UpdateCamera(float DeltaTime)
 	ApplyCameraModifiers(DeltaTime, NewPOV);
 	
 	//Fade
+	if (bEnableFading && bAutoAnimateFade) UpdateFade(DeltaTime);
+	UpdateLetterbox(DeltaTime);
 	
 	//결과저장
 	CameraCachePOV = NewPOV;
@@ -318,3 +320,47 @@ void APlayerCameraManager::ApplyCameraModifiers(float DeltaTime, FMinimalViewInf
 	InOutPOV.FOV = std::isfinite(InOutPOV.FOV) ? std::clamp(InOutPOV.FOV, 1.0f, 179.0f) : 60.0f;
 }
 
+void APlayerCameraManager::StartCameraFade(float FromAlpha, float ToAlpha, float Duration,
+	FLinearColor Color, bool bHoldWhenFinished)
+{
+	bEnableFading = true;
+	FadeColor = Color;
+	FadeAlpha = FVector2(FromAlpha, ToAlpha);
+	FadeTime = Duration;
+	FadeTimeRemaining = Duration;
+	bAutoAnimateFade = true;
+	bHoldFadeWhenFinished = bHoldWhenFinished;
+}
+
+// UpdateCamera에서 if (bEnableFading && bAutoAnimateFade) 일 때 호출
+void APlayerCameraManager::UpdateFade(float DeltaTime)
+{
+	FadeTimeRemaining = std::max(FadeTimeRemaining - DeltaTime, 0.0f);   // 시간 먼저
+	if (FadeTime > 0.0f)
+		FadeAmount = FadeAlpha.X + (1.0f - FadeTimeRemaining / FadeTime) * (FadeAlpha.Y - FadeAlpha.X);
+	if (!bHoldFadeWhenFinished && FadeTimeRemaining <= 0.0f)
+		StopCameraFade();
+}
+
+void APlayerCameraManager::StopCameraFade()
+{
+	if (bEnableFading)
+	{
+		FadeAmount = FadeAlpha.Y;    // 목표값으로 끝내고
+		bEnableFading = false;       // 렌더러로는 더 이상 안 보냄
+	}
+}
+
+void APlayerCameraManager::SetLetterbox(float TargetAspect, float BlendTime)
+{
+	if (TargetAspect > 0.0f) LetterboxAspect = TargetAspect;
+	LetterboxTarget = (TargetAspect > 0.0f) ? 1.0f : 0.0f;               // 0을 넘기면 해제
+	LetterboxBlendSpeed = (BlendTime > 0.0f) ? 1.0f / BlendTime : 0.0f;
+}
+
+void APlayerCameraManager::UpdateLetterbox(float DeltaTime)
+{
+	if (LetterboxBlendSpeed <= 0.0f) { LetterboxAmount = LetterboxTarget; return; }
+	const float Step = LetterboxBlendSpeed * DeltaTime;                  // 일정 속도 (FInterpConstantTo와 같은 식)
+	LetterboxAmount += FMath::Clamp(LetterboxTarget - LetterboxAmount, -Step, Step);
+}
