@@ -1,16 +1,16 @@
 {
   "BindingReferences": [
     {
-      "Actor": "AStaticMeshActor_0",
-      "Guid": "15A0652D2960A88D9C0170A381275CA0"
+      "Actor": "ADirectionalLightActor_0",
+      "Guid": "6506EDE1BE4573B288AAE97F235C305F"
     }
   ],
   "MovieScene": {
     "Bindings": [
       {
-        "Class": "AStaticMeshActor",
-        "Guid": "15A0652D2960A88D9C0170A381275CA0",
-        "Name": "AStaticMeshActor_0",
+        "Class": "ADirectionalLightActor",
+        "Guid": "6506EDE1BE4573B288AAE97F235C305F",
+        "Name": "ADirectionalLightActor_0",
         "Tracks": [
           {
             "Class": "UMovieScene3DTransformTrack",
@@ -20,24 +20,7 @@
                 "Active": true,
                 "Channels": [
                   {
-                    "Keys": [
-                      {
-                        "Arrive": 0.0,
-                        "Interp": 2,
-                        "Leave": 0.0,
-                        "TangentMode": 0,
-                        "Time": 24000,
-                        "Value": 0.0
-                      },
-                      {
-                        "Arrive": 0.0,
-                        "Interp": 1,
-                        "Leave": 0.0,
-                        "TangentMode": 0,
-                        "Time": 72800,
-                        "Value": 3.0
-                      }
-                    ]
+                    "Keys": []
                   },
                   {
                     "Keys": []
@@ -65,6 +48,40 @@
                   }
                 ],
                 "Class": "UMovieScene3DTransformSection",
+                "Completion": 2
+              }
+            ]
+          },
+          {
+            "Class": "UMovieSceneFloatTrack",
+            "EvalDisabled": false,
+            "PropertyName": "Intensity",
+            "Sections": [
+              {
+                "Active": true,
+                "Channels": [
+                  {
+                    "Keys": [
+                      {
+                        "Arrive": 0.0,
+                        "Interp": 2,
+                        "Leave": 0.0,
+                        "TangentMode": 0,
+                        "Time": 10400,
+                        "Value": 1.0
+                      },
+                      {
+                        "Arrive": 0.0,
+                        "Interp": 2,
+                        "Leave": 0.0,
+                        "TangentMode": 0,
+                        "Time": 110400,
+                        "Value": 0.0
+                      }
+                    ]
+                  }
+                ],
+                "Class": "UMovieSceneFloatSection",
                 "Completion": 2
               }
             ]
