@@ -63,6 +63,10 @@ local function MoveBack(dt)
 end
 
 function Tick(dt)
+    if not _G.bIsGameStarted then
+        return
+    end
+
     if IsKeyDown('w') then
         MoveForward(dt)
     end

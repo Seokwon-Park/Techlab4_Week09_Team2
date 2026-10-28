@@ -48,7 +48,7 @@ function OnBeginOverlap(other)
     PlaySound2D("Assets/Sounds/Levelup.mp3")
     StartCoroutine(function()
         -- 페이드 인/아웃
-        local seqA = GetActorByName("PadeInOutSequenceActor")
+        local seqA = GetActorByName("FadeInOutSequenceActor")
         seqA:PlaySequence()
 
         wait(GOAL_FREEZE_SECONDS)

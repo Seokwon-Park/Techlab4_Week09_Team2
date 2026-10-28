@@ -3,6 +3,7 @@
 
 #include "LevelSequence/LevelSequence.h"
 #include "LevelSequence/LevelSequencePlayer.h"
+#include "Render/SceneView.h"
 #include "UObject/UObjectGlobals.h"
 
 ALevelSequenceActor::ALevelSequenceActor()
@@ -76,6 +77,12 @@ void ALevelSequenceActor::Tick(float DeltaTime)
 void ALevelSequenceActor::EndPlay()
 {
 	// 월드가 정리되는 중이라 다른 액터가 먼저 지워졌을 수 있다. 되돌리지 않고 버린다
-	if (SequencePlayer) SequencePlayer->DiscardStateAndStop();
+	// 단 Fade/Letterbox 트랙이 쓰는 GCameraOverlayDebug는 월드 밖 전역이라 남기면 PIE 종료·레벨 이동 후에도 남는다.
+	// Keep State로 끝난 값(예: 검은 화면)도 이 월드 안에서만 의미가 있으므로 초기화한다
+	if (SequencePlayer)
+	{
+		GCameraOverlayDebug = FCameraOverlayDebug{};
+		SequencePlayer->DiscardStateAndStop();
+	}
 	Super::EndPlay();
 }
