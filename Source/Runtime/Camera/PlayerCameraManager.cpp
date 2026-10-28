@@ -5,6 +5,7 @@
 #include "Camera/CameraModifier.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/Pawn.h"
+#include "Curves/CurveFloat.h"
 
 // =======================FMinimalViewInfo===============
 FMatrix FMinimalViewInfo::CalculateViewMatrix() const
@@ -81,6 +82,21 @@ float FViewTargetTransitionParams::GetBlendAlpha(float TimePct) const
 }
 
 //// =======================APlayerCameraManager===============
+APlayerCameraManager::~APlayerCameraManager()
+{
+	// 효과를 먼저 정리하고, 효과가 참조하던 커브를 마지막에 해제한다.
+	for (UCameraModifier* Modifier : ModifierList)
+	{
+		uint32 UUID = 0;
+		if (TryGetLiveObjectUUID(Modifier, nullptr, UUID))
+			delete Modifier;
+	}
+
+	uint32 UUID = 0;
+	if (TryGetLiveObjectUUID(FOVPunchCurve, nullptr, UUID))
+		delete FOVPunchCurve;
+}
+
 void APlayerCameraManager::InitializeFor(APlayerController* PC)
 {
 	PlayerControllerOwner = PC;
@@ -113,6 +129,7 @@ void APlayerCameraManager::SetViewTarget(AActor* NewTarget, const FViewTargetTra
 	}		
 
 }
+
 
 void APlayerCameraManager::UpdateCamera(float DeltaTime) 
 {
@@ -158,6 +175,114 @@ void APlayerCameraManager::UpdateCamera(float DeltaTime)
 	bCameraCacheValid = true;
 }
 
+void APlayerCameraManager::AddCameraModifier(UCameraModifier* Modifier)
+{
+	if (!Modifier || ModifierList.Find(Modifier) >= 0 ||
+		(Modifier->GetCameraOwner() && Modifier->GetCameraOwner() != this)) return;
+	Modifier->AddedToCamera(this);
+	ModifierList.Add(Modifier);
+}
+
+void APlayerCameraManager::RemoveCameraModifier(UCameraModifier* Modifier)
+{
+	const int32 Index = ModifierList.Find(Modifier);
+	if (Index < 0) return;
+	ModifierList.RemoveAt(Index);
+	delete Modifier;
+}
+
+UCameraModifier* APlayerCameraManager::FindCameraModifierByClass(UClass* ModifierClass) const
+{
+	if (!ModifierClass) return nullptr;
+	for (UCameraModifier* Modifier : ModifierList)
+		if (Modifier && Modifier->IsA(ModifierClass)) return Modifier;
+	return nullptr;
+}
+
+UCameraShakeBase* APlayerCameraManager::StartCameraShake(UClass* ShakeClass, float Scale)
+{
+	auto* Modifier = static_cast<UCameraModifier_CameraShake*>(
+		FindCameraModifierByClass(UCameraModifier_CameraShake::StaticClass()));
+	if (!Modifier)
+	{
+		Modifier = NewObject<UCameraModifier_CameraShake>(this);
+		AddCameraModifier(Modifier);
+	}
+	return Modifier ? Modifier->AddCameraShake(ShakeClass, Scale) : nullptr;
+}
+
+void APlayerCameraManager::StopCameraShake(UCameraShakeBase* ShakeInstance, bool bImmediately)
+{
+	auto* Modifier = static_cast<UCameraModifier_CameraShake*>(
+		FindCameraModifierByClass(UCameraModifier_CameraShake::StaticClass()));
+	if (Modifier) Modifier->RemoveCameraShake(ShakeInstance, bImmediately);
+}
+
+void APlayerCameraManager::StopAllCameraShakes(bool bImmediately)
+{
+	auto* Modifier = static_cast<UCameraModifier_CameraShake*>(
+		FindCameraModifierByClass(UCameraModifier_CameraShake::StaticClass()));
+	if (Modifier) Modifier->RemoveAllCameraShakes(bImmediately);
+}
+
+// Curve를 이용한 FOV Punch 효과를 재생합니다. 
+UCameraModifier_FOVPunch* APlayerCameraManager::PlayFOVPunch(UCurveFloat* Curve, float Duration, float Strength)
+{
+	auto* Modifier = static_cast<UCameraModifier_FOVPunch*>(
+		FindCameraModifierByClass(UCameraModifier_FOVPunch::StaticClass()));
+	if (!Modifier)
+	{
+		Modifier = NewObject<UCameraModifier_FOVPunch>(this);
+		AddCameraModifier(Modifier);
+	}
+	if (!Modifier) return nullptr;
+	Modifier->Play(Curve, Duration, Strength);
+	return Modifier->IsPlaying() ? Modifier : nullptr;
+}
+
+// 시간으로 Curve를 구성해 효과를 재생
+// 추가: 시간으로 커브를 구성해서 재생
+UCameraModifier_FOVPunch* APlayerCameraManager::PlayFOVPunch(float Strength, float InTime, float HoldTime, float OutTime)
+{
+	// 우선 진입·복귀 시간은 양수, 유지 시간은 0 이상으로 제한한다.
+	if (!std::isfinite(Strength) ||
+		!std::isfinite(InTime) ||
+		!std::isfinite(HoldTime) ||
+		!std::isfinite(OutTime) ||
+		InTime <= 0.0f || HoldTime < 0.0f || OutTime <= 0.0f)
+	{
+		return nullptr;
+	}
+
+	const float TotalTime = InTime + HoldTime + OutTime;
+	if (!std::isfinite(TotalTime)) return nullptr;
+
+	if (!FOVPunchCurve)
+	{
+		FOVPunchCurve = NewObject<UCurveFloat>(this);
+		if (!FOVPunchCurve) return nullptr;
+	}
+
+	// 이전 재생을 끝내고 같은 커브를 다시 구성한다.
+	StopFOVPunch(true);
+
+	FOVPunchCurve->Reset();
+	FOVPunchCurve->AddKey(0.0f, 0.0f);
+	FOVPunchCurve->AddKey(InTime / TotalTime, 1.0f);
+	FOVPunchCurve->AddKey(
+		(InTime + HoldTime) / TotalTime, 1.0f);
+	FOVPunchCurve->AddKey(1.0f, 0.0f);
+
+	// 기존 함수를 호출해 Modifier 등록·재생 처리를 재사용한다.
+	return PlayFOVPunch(FOVPunchCurve, TotalTime, Strength);
+}
+void APlayerCameraManager::StopFOVPunch(bool bImmediately)
+{
+	auto* Modifier = static_cast<UCameraModifier_FOVPunch*>(
+		FindCameraModifierByClass(UCameraModifier_FOVPunch::StaticClass()));
+	if (Modifier) Modifier->Stop(bImmediately);
+}
+
 bool APlayerCameraManager::IsActorAlive(AActor* Actor, uint32 UUID) const
 {
 	// 1. 레벨에 같은 주소가 있고 UUID가 같으면 살아 있음
@@ -187,7 +312,12 @@ void APlayerCameraManager::UpdateViewTarget(FViewTarget& OutVT, float DeltaTime)
 
 void APlayerCameraManager::ApplyCameraModifiers(float DeltaTime, FMinimalViewInfo& InOutPOV)
 {
-	// B 담당: Modifier 적용 예정
+	std::stable_sort(ModifierList.begin(), ModifierList.end(),
+		[](const auto* A, const auto* B) { return A->Priority < B->Priority; });
+	for (UCameraModifier* Modifier : ModifierList)
+		if (!Modifier->IsDisabled() && Modifier->ModifyCamera(DeltaTime, InOutPOV))
+			break;
+	InOutPOV.FOV = std::isfinite(InOutPOV.FOV) ? std::clamp(InOutPOV.FOV, 1.0f, 179.0f) : 60.0f;
 }
 
 void APlayerCameraManager::StartCameraFade(float FromAlpha, float ToAlpha, float Duration,

@@ -31,6 +31,7 @@
 #include "Asset/AssetManager.h"
 #include "Components/AudioComponent.h"
 #include "Engine/Classes/Sound/SoundWave.h"
+#include "Camera/CameraShakeBase.h"
 
 #include "LevelSequence/LevelSequenceActor.h" 
 #include "LevelSequence/LevelSequencePlayer.h"
@@ -464,6 +465,20 @@ namespace
 				}
 				return sol::nullopt;
 			});
+		Lua.set_function("GetComponentByName", [](sol::this_environment Env, const std::string& Name) -> sol::optional<FLuaComponentRef>
+			{
+				AActor* Owner = OwnerFromEnv(Env);
+				if (!Owner) throw sol::error("GetComponentByName needs an Actor script context.");
+				for (UActorComponent* Component : Owner->GetComponents())
+				{
+					if (Component && Component->GetName() == Name)
+					{
+						return FLuaComponentRef::Make(Component);
+					}
+				}
+				return sol::nullopt;
+			});
+
 		Lua.set_function("SetViewTargetWithBlend",
 			[](sol::this_environment Env,
 				const FLuaActorRef& Target,
@@ -537,7 +552,65 @@ namespace
 					"SetCameraRelativeTransform: Actor has no camera component."
 				);
 			});
+	}
 
+	void RegisterComponent(sol::state& Lua)
+	{
+		Lua.new_usertype<FLuaComponentRef>("Component",
+			sol::no_constructor,
+			"IsValid", [](const FLuaComponentRef& R) { return R.Get() != nullptr; },
+			"Name", sol::property([](const FLuaComponentRef& R) { return Deref(R).GetName(); }),
+			"Owner", sol::property([](const FLuaComponentRef& R) { return FLuaActorRef::Make(Deref(R).GetOwner()); }),
+			"Location", sol::property(
+				// Getter
+				[](const FLuaComponentRef& Ref)
+				{
+					if (auto* SceneComp = Cast<USceneComponent>(&Deref(Ref)))
+					{
+						return SceneComp->GetRelativeLocation();
+					}
+					else
+					{
+						throw sol::error("Component is not a scene component.");
+					}
+				},
+				// Setter
+				[](const FLuaComponentRef& Ref, const FVector& V)
+				{
+					if (auto* SceneComp = Cast<USceneComponent>(&Deref(Ref)))
+					{
+						SceneComp->SetRelativeLocation(V);
+					}
+					else
+					{
+						throw sol::error("Component is not a scene component.");
+					}
+				}),
+			"Rotation", sol::property(
+				// Getter
+				[](const FLuaComponentRef& Ref) {
+					if (auto* SceneComp = Cast<USceneComponent>(&Deref(Ref)))
+					{
+						return SceneComp->GetRelativeRotation();
+					}
+					else
+					{
+						throw sol::error("Component is not a scene component.");
+					}
+				},
+				// Setter
+				[](const FLuaComponentRef& Ref, const FRotator& R)
+				{
+					if (auto* SceneComp = Cast<USceneComponent>(&Deref(Ref)))
+					{
+						SceneComp->SetRelativeRotation(R);
+					}
+					else
+					{
+						throw sol::error("Component is not a scene component.");
+					}
+				})
+		);
 	}
 
 	EKeyCode ToKeyCode(const std::string& Name)
@@ -783,6 +856,76 @@ namespace
 			{
 				WorldFromEnv(Env, "StartHitStop")->StartHitStop(Duration, Dilation);
 			});
+
+		Lua.set_function("StartCameraShake",
+			[](sol::this_environment Env, float Scale) -> bool
+			{
+				UWorld* World = WorldFromEnv(Env, "StartCameraShake");
+				APlayerController* PC = World->GetPlayerController();
+				APlayerCameraManager* PCM = PC ? PC->GetCameraManager() : nullptr;
+
+				if (!PCM) return false;
+
+				UClass* ShakeClass = UCameraShakeBase::StaticClass();
+				auto* Settings = static_cast<UCameraShakeBase*>(
+					ShakeClass->GetDefaultObject());
+
+				if (!Settings) return false;
+
+				// Lua에서는 Scale로 세기를 조절한다.
+				Settings->Duration = 1.0f;
+				Settings->BlendInTime = 0.05f;
+				Settings->BlendOutTime = 0.3f;
+				Settings->RotationPitch.Amplitude = 2.0f;
+				Settings->RotationPitch.Frequency = 10.0f;
+				Settings->RotationYaw.Amplitude = 1.0f;
+				Settings->RotationYaw.Frequency = 13.0f;
+
+				return PCM->StartCameraShake(ShakeClass, Scale) != nullptr;
+			});
+
+		Lua.set_function("StopAllCameraShakes",
+			[](sol::this_environment Env, bool bImmediately)
+			{
+				UWorld* World = WorldFromEnv(Env, "StopAllCameraShakes");
+				APlayerController* PC = World->GetPlayerController();
+				APlayerCameraManager* PCM = PC ? PC->GetCameraManager() : nullptr;
+
+				if (PCM)
+				{
+					PCM->StopAllCameraShakes(bImmediately);
+				}
+			});
+
+		Lua.set_function("PlayFOVPunch",
+			[](sol::this_environment Env,
+				float Strength,
+				float InTime,
+				float HoldTime,
+				float OutTime) -> bool
+			{
+				UWorld* World = WorldFromEnv(Env, "PlayFOVPunch");
+				APlayerController* PC = World->GetPlayerController();
+				APlayerCameraManager* PCM =
+					PC ? PC->GetCameraManager() : nullptr;
+
+				if (!PCM) return false;
+
+				return PCM->PlayFOVPunch(
+					Strength, InTime, HoldTime, OutTime) != nullptr;
+			});
+
+		Lua.set_function("StopFOVPunch",
+			[](sol::this_environment Env)
+			{
+				UWorld* World = WorldFromEnv(Env, "StopFOVPunch");
+				APlayerController* PC = World->GetPlayerController();
+				APlayerCameraManager* PCM =
+					PC ? PC->GetCameraManager() : nullptr;
+
+				if (PCM)
+					PCM->StopFOVPunch(true);
+			});
 	}
 }
 
@@ -793,6 +936,7 @@ namespace FLuaBindings
 		// TODO(B): wait, wait_until, wait_until_move_done, StartCoroutine
 		RegisterMath(Lua);
 		RegisterActor(Lua);
+		RegisterComponent(Lua);
 		RegisterInput(Lua);
 		RegisterCoroutine(Lua);
 		RegisterWidget(Lua);
