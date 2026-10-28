@@ -138,8 +138,8 @@
                                 "bDoCollisionTest": true,
                                 "bDrawDebug": true,
                                 "bDrawOnlyIfSelected": false,
-                                "bEnableCameraLag": false,
-                                "bEnableCameraRotationLag": false,
+                                "bEnableCameraLag": true,
+                                "bEnableCameraRotationLag": true,
                                 "bHiddenInGame": false,
                                 "bInheritPitch": true,
                                 "bInheritRoll": true,
@@ -215,7 +215,38 @@
                         {
                             "Class": "UStaticMeshComponent",
                             "Name": "UStaticMeshComponent",
-                            "OverrideMaterials": [],
+                            "OverrideMaterials": [
+                                {
+                                    "Base": "DefaultMaterial",
+                                    "Instance": {
+                                        "BaseColor": {
+                                            "W": 1.0,
+                                            "X": 0.0,
+                                            "Y": 0.0,
+                                            "Z": 0.0
+                                        },
+                                        "BlendState": "Opaque",
+                                        "FlipNormalY": false,
+                                        "PSOType": 0,
+                                        "Properties": {},
+                                        "SamplerState": "LinearClamp",
+                                        "Shininess": 32.0,
+                                        "SpecularColor": {
+                                            "X": 1.0,
+                                            "Y": 1.0,
+                                            "Z": 1.0
+                                        },
+                                        "Textures": [
+                                            "WhiteTexture",
+                                            "FlatNormalTexture"
+                                        ],
+                                        "UVScrollSpeed": [
+                                            0.0,
+                                            0.0
+                                        ]
+                                    }
+                                }
+                            ],
                             "Parent": "DefaultSceneRoot",
                             "Properties": {
                                 "StaticMesh": "Cube",
@@ -489,9 +520,14 @@
                             "Parent": "",
                             "Properties": {
                                 "AngularRadiusDegrees": 3.0,
+                                "CascadeDistributionExponent": 3.0,
+                                "CascadeTransitionFraction": 0.10000000149011612,
+                                "DynamicShadowCascades": 4,
+                                "DynamicShadowDistanceMovableLight": 1000.0,
                                 "Intensity": 1.0,
                                 "LightColor": 4294967295,
                                 "ShadowBias": 0.009999999776482582,
+                                "ShadowDistanceFadeoutFraction": 0.10000000149011612,
                                 "ShadowResolutionScale": 1.0,
                                 "ShadowSharpen": 0.0,
                                 "ShadowSlopeBias": 0.009999999776482582,

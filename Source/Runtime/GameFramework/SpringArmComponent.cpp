@@ -47,13 +47,11 @@ void USpringArmComponent::UpdateDesiredArmLocation(
 	FRotator DesiredRot = GetTargetRotation();
 	if (bDoRotationLag)
 	{
-		// TODO: QInterpTo 구현 필요, 구현 후 아래 주석 해제
-		//DesiredRot = FRotator(
-		//	FMath::QInterpTo(
-		//		PreviousDesiredRot.Quaternion(),
-		//		DesiredRot.Quaternion(),
-		// 		DeltaTime,
-		//		CameraRotationLagSpeed));
+		DesiredRot = FMath::QInterpTo(
+				PreviousDesiredRot.Quaternion(),
+				DesiredRot.Quaternion(),
+		 		DeltaTime,
+				CameraRotationLagSpeed).ToFRotator();
 	}
 	PreviousDesiredRot = DesiredRot;
 
@@ -62,12 +60,11 @@ void USpringArmComponent::UpdateDesiredArmLocation(
 	FVector DesiredLoc = ArmOrigin;
 	if (bDoLocationLag)
 	{
-		// TODO: VInterpTo 구현 필요, 구현 후 아래 주석 해제
-		//DesiredLoc = FMath::VInterpTo(
-		//	PreviousDesiredLoc,
-		//	ArmOrigin,
-		//	DeltaTime,
-		//	CameraLagSpeed);
+		DesiredLoc = FMath::VInterpTo(
+			PreviousDesiredLoc,
+			ArmOrigin,
+			DeltaTime,
+			CameraLagSpeed);
 		const FVector FromOrigin = DesiredLoc - ArmOrigin;
 		if (CameraLagMaxDistance > 0.0f &&
 			FromOrigin.Size() > CameraLagMaxDistance)
