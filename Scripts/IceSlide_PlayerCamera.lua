@@ -8,6 +8,11 @@ local function MoveToPlayer()
     obj.Location = playerActor.Location
 end
 
+local function ResetCameraLag()
+    obj:ResetCameraLag()
+    print("[Camera] Camera lag reset")
+end
+
 function BeginPlay()
     print("[BeginPlay] " .. obj.UUID)
 
@@ -21,12 +26,16 @@ function BeginPlay()
     _G.GameEvents.ResetCamera = function()
         MoveToPlayer()
     end
+    _G.GameEvents.ResetPlayerCameraLag = function()
+        ResetCameraLag()
+    end
 end
 
 function EndPlay()
     print("[EndPlay] " .. obj.UUID)
     if _G.GameEvents then
         _G.GameEvents.ResetCamera = nil
+        _G.GameEvents.ResetPlayerCameraLag = nil
     end
 end
 

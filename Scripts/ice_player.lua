@@ -33,6 +33,13 @@ local function InitMovementState()
     end
 end
 
+local function ResetCameraLag()
+    local events = _G.GameEvents
+    if events and events.ResetPlayerCameraLag then
+        events.ResetPlayerCameraLag()
+    end
+end
+
 local function Respawn()
     obj:ResetMovement()
     obj.Location = _G.RespawnLocation or player.spawnLocation
@@ -92,6 +99,7 @@ local function MoveStage(offset)
 
     _G.RespawnLocation = target.Location + FVector(0, 0, 0)
     Respawn()
+    ResetCameraLag()
     print("[Dev] Stage " .. current .. " -> " .. (current + offset))
 end
 

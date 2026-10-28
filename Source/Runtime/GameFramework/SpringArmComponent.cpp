@@ -37,6 +37,15 @@ void USpringArmComponent::UpdateInEditor()
 		0.0f);
 }
 
+void USpringArmComponent::ResetCameraLag()
+{
+	UpdateDesiredArmLocation(
+		bDoCollisionTest,
+		false,
+		false,
+		0.0f);
+}
+
 void USpringArmComponent::UpdateDesiredArmLocation(
 	bool bDoTrace,
 	bool bDoLocationLag,

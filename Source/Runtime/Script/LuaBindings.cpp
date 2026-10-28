@@ -10,6 +10,7 @@
 #include "Components/ParticleSubUVComponent.h"
 #include "Core/EngineTimer.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Input/InputSystem.h"
 #include "Script/LuaActorRef.h"
 #include "Script/LuaWidgetRef.h"
@@ -29,6 +30,9 @@
 #include "Asset/AssetManager.h"
 #include "Components/AudioComponent.h"
 #include "Engine/Classes/Sound/SoundWave.h"
+
+#include "LevelSequence/LevelSequenceActor.h" 
+#include "LevelSequence/LevelSequencePlayer.h"
 
 namespace
 {
@@ -59,6 +63,13 @@ namespace
 		return World;
 	}
 
+	static ULevelSequencePlayer* SequencePlayerOf(const FLuaActorRef& Ref)
+	{
+		ALevelSequenceActor* SeqActor = Cast<ALevelSequenceActor>(&Deref(Ref));
+		if (!SeqActor) throw sol::error("Actor is not a LevelSequenceActor.");
+		if (!SeqActor->GetSequencePlayer()) SeqActor->InitializePlayer();
+		return SeqActor->GetSequencePlayer();
+	}
 
 	void RegisterAudio(sol::state& Lua)
 	{
@@ -207,11 +218,26 @@ namespace
 		throw sol::error("Actor does not have a ParticleSubUVComponent.");
 	}
 
+	USpringArmComponent& CameraArm(const FLuaActorRef& Ref)
+	{
+		for (UActorComponent* Comp : Deref(Ref).GetComponents())
+			if (auto* Arm = Cast<USpringArmComponent>(Comp)) return *Arm;
+		throw sol::error("Actor does not have a SpringArmComponent.");
+	}
+
 	void RegisterActor(sol::state& Lua)
 	{
 		Lua.new_usertype<FLuaActorRef>("Actor",
 			sol::no_constructor, // 액터는 Lua에서 생성할 수 없음
 
+			"PlaySequence", [](const FLuaActorRef& Ref) { if (ULevelSequencePlayer* P = SequencePlayerOf(Ref)) P->Play(); },
+			"PauseSequence", [](const FLuaActorRef& Ref) { if (ULevelSequencePlayer* P = SequencePlayerOf(Ref)) P->Pause(); },
+			"StopSequence", [](const FLuaActorRef& Ref) { if (ULevelSequencePlayer* P = SequencePlayerOf(Ref)) P->Stop(); },
+			"IsSequencePlaying", [](const FLuaActorRef& Ref)
+			{
+				ULevelSequencePlayer* P = SequencePlayerOf(Ref);
+				return P && P->IsPlaying();
+			},
 			"PlayAudio", [](const FLuaActorRef& Ref)
 			{
 				for (UActorComponent* Component : Deref(Ref).GetComponents())
@@ -385,6 +411,21 @@ namespace
 			sol::meta_function::to_string, [](const FLuaActorRef& Ref)
 			{
 				return std::format("Actor#{}", Ref.UUID);
+			},
+
+			"CameraLagEnabled", sol::property(
+				[](const FLuaActorRef& Ref)
+				{
+					return CameraArm(Ref).bEnableCameraLag;
+				},
+				[](const FLuaActorRef& Ref, bool b)
+				{
+					CameraArm(Ref).bEnableCameraLag = b;
+				}
+			),
+			"ResetCameraLag", [](const FLuaActorRef& Ref)
+			{
+				CameraArm(Ref).ResetCameraLag();
 			}
 		);
 
@@ -452,7 +493,7 @@ namespace
 					throw sol::error("IsCameraBlending: camera manager is unavailable.");
 
 				return PCM->IsBlending();
-			});	
+			});
 		Lua.set_function("SetCameraRelativeTransform",
 			[](const FLuaActorRef& Ref,
 				const FVector& RelativeLocation,
@@ -477,7 +518,7 @@ namespace
 				);
 			});
 
-}
+	}
 
 	EKeyCode ToKeyCode(const std::string& Name)
 	{
