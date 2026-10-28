@@ -23,7 +23,7 @@ struct FSceneRenderOptions
 	uint32 SpotShadowMapSize = 0;
 
 	bool bGammaCorrection = true;
-	float DisplayGame = 2.2f;
+	float DisplayGamma = 2.2f;
 	bool bShowVignette = true;
 	bool bShowCameraOverlay = true;
 

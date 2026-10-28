@@ -16,6 +16,7 @@
 #include "Components/ExponentialHeightFogComponent.h"
 #include "Render/PostProcess/HeightFogRenderer.h"
 #include "Render/PostProcess/FXAARenderer.h"
+#include "Render/PostProcess/ToneMapData.h"
 #include "Text/TextRenderer.h"
 #include "UObject/UObjectIterator.h"
 
@@ -614,14 +615,21 @@ bool FSceneRenderer::AddCorePasses(FRenderGraphBuilder& Graph, FRenderer* Render
 	ToneMap.Name = "ToneMap";
 	ToneMap.ReadTextures = { LightingHDR };
 	ToneMap.ColorAttachments = { { SceneColor, ERenderGraphLoadAction::Clear, { 0.0f, 0.0f, 0.0f, 1.0f } } };
-	if (!Graph.AddRasterPass(std::move(ToneMap), [this, Renderer, &Graph, LightingHDR]
+	if (!Graph.AddRasterPass(std::move(ToneMap), [this, Renderer, &Graph, LightingHDR, bGamma = Options.bGammaCorrection, DisplayGamma = Options.DisplayGamma]
 		{
 			if (bCorePassSucceeded)
 			{
 				if (FPipelineState* Pipeline = FRenderResourceManager::GetPSO(EPSOType::ToneMap);
 					Pipeline && Pipeline->Shader && Pipeline->Shader->VertexShader && Pipeline->Shader->PixelShader)
 				{
+					FToneMapData Data{};
+					Data.InvGamma = 1.0f / std::max(DisplayGamma, 0.01f);
+					Data.bGammaCorretion = bGamma ? 1.0f : 0.0f;
+					FConstantBuffer* Constants = Renderer->GetToneMapConstants();
+					RenderCommand::UpdateBufferData(Constants, &Data, sizeof(Data));
+
 					RenderCommand::BindPipelineState(*Pipeline);
+					RenderCommand::BindConstantBuffer(0, Constants, EShaderBindFlagBits::Pixel);
 					RenderCommand::BindVertexBuffer(nullptr);
 					RenderCommand::Draw(3);
 				}

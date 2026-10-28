@@ -58,6 +58,11 @@ struct FEditorSettings
 	int32 PointShadowMapSizeLevel = 2;
 	int32 SpotShadowMapSizeLevel = 2;
 
+	bool bGammaCorrection = true;
+	float DisplayGamma = 2.2f;
+	bool bShowVignette = true;
+	bool bShowCameraOverlay = true;
+
 	inline uint32 GetDirectionalShadowMapSize() const { return DirectionalShadowMapSizePerLevels[DirectionalShadowMapSizeLevel]; }
 	inline uint32 GetPointShadowMapSize() const { return PointShadowMapSizePerLevels[PointShadowMapSizeLevel]; }
 	inline uint32 GetSpotShadowMapSize() const { return SpotShadowMapSizePerLevels[SpotShadowMapSizeLevel]; }

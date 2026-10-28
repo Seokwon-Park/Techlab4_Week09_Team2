@@ -72,6 +72,14 @@ FGameSettings FGameSettings::Load(const FString& Path)
 	Options.LightingModel = ParseLightingModel(Config.GetString("Rendering", "LightingModel", ""), Options.LightingModel);
 	Options.LightCullingMode = ParseLightCullingMode(Config.GetString("Rendering", "LightCullingMode", ""), Options.LightCullingMode);
 	Options.bEnableFXAA = Config.GetBool("Rendering", "EnableFXAA", Options.bEnableFXAA);
+	Options.bGammaCorrection = Config.GetBool("Rendering", "GammaCorrection", Options.bGammaCorrection);
+	Options.bShowVignette = Config.GetBool("Rendering", "ShowVignette", Options.bShowVignette);
+	Options.bShowCameraOverlay = Config.GetBool("Rendering", "ShowCameraOverlay", Options.bShowCameraOverlay);
+	if (const FString Gamma = Config.GetString("Rendering", "DisplayGamma", ""); !Gamma.empty())
+	{
+		try { Options.DisplayGamma = FMath::Clamp(std::stof(Gamma), 1.0f, 3.0f); } catch (...) {}
+	}
+
 	Options.bCacheShadows = Config.GetBool("Rendering", "CacheShadows", Options.bCacheShadows);
 
 	const int32 PcfMode = Config.GetInt("Rendering", "PcfMode", static_cast<int32>(Options.PcfMode));

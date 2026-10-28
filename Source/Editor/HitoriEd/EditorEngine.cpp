@@ -884,6 +884,12 @@ void UEditorEngine::BuildSceneRenderOptions(FGameViewportClient* ViewClient, FSc
 	Options.DirectionalShadowMapSize = SettingsPanel->GetSettings().GetDirectionalShadowMapSize();
 	Options.PointShadowMapSize = SettingsPanel->GetSettings().GetPointShadowMapSize();
 	Options.SpotShadowMapSize = SettingsPanel->GetSettings().GetSpotShadowMapSize();
+
+	const FEditorSettings& S = SettingsPanel->GetSettings();
+	Options.bGammaCorrection = S.bGammaCorrection;
+	Options.DisplayGamma = S.DisplayGamma;
+	Options.bShowVignette = S.bShowVignette;
+	Options.bShowCameraOverlay = S.bShowCameraOverlay;
 }
 
 void UEditorEngine::BuildSceneRenderOptions(FEditorViewportClient* ViewClient, bool IsPIE, FSceneRenderOptions& Options)
@@ -902,6 +908,12 @@ void UEditorEngine::BuildSceneRenderOptions(FEditorViewportClient* ViewClient, b
 	Options.DirectionalShadowMapSize = SettingsPanel->GetSettings().GetDirectionalShadowMapSize();
 	Options.PointShadowMapSize = SettingsPanel->GetSettings().GetPointShadowMapSize();
 	Options.SpotShadowMapSize = SettingsPanel->GetSettings().GetSpotShadowMapSize();
+
+	const FEditorSettings& S = SettingsPanel->GetSettings();
+	Options.bGammaCorrection = S.bGammaCorrection;
+	Options.DisplayGamma = S.DisplayGamma;
+	Options.bShowVignette = S.bShowVignette;
+	Options.bShowCameraOverlay = S.bShowCameraOverlay;
 
 	Options.bDrawPrimitives = IsPIE || SettingsPanel->GetSettings().bDrawPrimitives;
 	Options.bEnableFog = ViewClient->GetViewportMode() == EViewportMode::Solid;
