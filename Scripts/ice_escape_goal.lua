@@ -5,31 +5,8 @@ local SPAWN_HEIGHT = 0.0
 local GOAL_FREEZE_SECONDS = 0.5 -- 골에 닿은 뒤 다음 Stage로 넘어가기 전까지 조작을 멈추는 시간
 local state = script_state
 
-local restartWidget = nil
-
 function BeginPlay()
     state.used = false
-
-    -- restartWidget = CreateWidget("Assets/UI/RestartWidget.widget")
-    -- restartWidget.Visible = false
-    -- restartWidget:AddToViewport()
-    -- restartWidget:Find("TextLabel"):SetText("클리어!")
-    -- restartWidget:Find("RestartButton"):BindClick(function()
-    --     local events = _G.GameEvents
-    --     if events and events.RespawnPlayer then
-    --         restartWidget.Visible = false
-    --         events.RespawnPlayer()
-    --     end
-    -- end)
-    -- restartWidget:Find("TitleButton"):BindClick(function()
-    --     OpenLevel("TitleScene")
-    -- end)
-end
-
-function EndPlay()
-    -- if restartWidget and restartWidget:IsValid() then
-    --     restartWidget:Destroy()
-    -- end
 end
 
 function OnBeginOverlap(other)
@@ -40,6 +17,18 @@ function OnBeginOverlap(other)
     local stageNumber = tonumber(string.match(obj.Name, "^Stage(%d+)_Goal$"))
     if not stageNumber then
         print("[Stage] 골 액터 이름에서 Stage 번호를 읽지 못함: " .. obj.Name)
+        return
+    end
+
+    local nextStart = GetActorByName("Stage" .. (stageNumber + 1) .. "_Start")
+    if not nextStart then
+        local events = _G.GameEvents
+        if events and events.CompleteGame then
+            state.used = true
+            -- 완료 기록과 조작 잠금은 골에 닿은 프레임에 확정한다.
+            events.CompleteGame()
+            print("[Stage] 모든 Stage 완료")
+        end
         return
     end
 
@@ -54,17 +43,6 @@ function OnBeginOverlap(other)
         wait(GOAL_FREEZE_SECONDS)
         state.used = false -- Q로 되돌아와 다시 도착해도 동작하도록 푼다
         if not other:IsValid() then return end
-
-        local nextStart = GetActorByName("Stage" .. (stageNumber + 1) .. "_Start")
-        if not nextStart then
-            other:SetMovementEnabled(true)
-            print("[Stage] 모든 Stage 완료")
-            local events = _G.GameEvents
-            if events and events.ShowClearWidget then
-                events.ShowClearWidget()
-            end
-            return
-        end
 
         local nextSpawn = nextStart.Location + FVector(0, 0, SPAWN_HEIGHT)
         _G.RespawnLocation = nextSpawn

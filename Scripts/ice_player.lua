@@ -1,5 +1,6 @@
 -- SlidingMovementComponent가 있는 플레이어에 연결한다. W/S: X축, A/D: Y축.
 local RESPAWN_DELAY = 1.0
+local CLEAR_FADE_SECONDS <const> = 0.5
 local GROUND_MOVE_SPEED <const> = 3.0
 local ICE_MOVE_SPEED <const> = 6.0
 local player = script_state -- 이 플레이어의 사망 상태와 시작 위치. 핫 리로드에도 유지한다.
@@ -46,6 +47,7 @@ local function ResetCameraLag()
 end
 
 local function Respawn()
+    if bCleared then return end
     obj:ResetMovement()
     obj.Location = _G.RespawnLocation or player.spawnLocation
     player.isDead = false
@@ -79,18 +81,42 @@ local function Respawn()
     bCleared = false
 end
 
-local function ShowClearWidget()
+local function CompleteGame()
+    if bCleared then return end
+    bCleared = true
+    _G.bIsGameStarted = false
+    _G.bIsMoving = false
+    _G.ClearResult = { elapsedSeconds = playedTime, deathCount = deathCount }
+
+    obj:SetMovementEnabled(false)
+    obj:ResetMovement()
+    obj.Velocity = FVector(0, 0, 0)
+    targetDirection = FVector(0, 0, 0)
+    targetLocation = obj.Location
+
     if restartWidget and restartWidget:IsValid() then
-        restartWidget:Find("TextLabel"):SetText("클리어!")
-        restartWidget.Visible = true
+        restartWidget.Visible = false
+    end
+    if statsWidget and statsWidget:IsValid() then
+        statsWidget.Visible = false
     end
 
-    PlaySound2D("Assets/Sounds/Clear.mp3")
-
-    bCleared = true
+    StartCoroutine(function()
+        local fade = GetActorByName("FadeInOutSequenceActor")
+        if fade and fade:IsValid() then fade:PlaySequence() end
+        wait(CLEAR_FADE_SECONDS)
+        if not obj:IsValid() then return end
+        -- 다음 프레임에 레벨을 바꾸는 동안 기존 페이드가 다시 밝아지지 않게 한다.
+        if fade and fade:IsValid() then
+            fade:SeekSequence(CLEAR_FADE_SECONDS)
+            fade:PauseSequence()
+        end
+        OpenLevel("IceClear")
+    end)
 end
 
 local function ShowRestartWidget()
+    if bCleared then return end
     if restartWidget and restartWidget:IsValid() then
         restartWidget:Find("TextLabel"):SetText("실패!")
         restartWidget.Visible = true
@@ -99,6 +125,7 @@ end
 
 -- 개발자 테스트용: 가장 가까운 StageN_Start를 현재 Stage로 보고 앞/뒤 Stage 시작 위치로 옮긴다.
 local function MoveStage(offset)
+    if bCleared then return end
     local current, nearest = nil, math.huge
     local index = 1
     local start = GetActorByName("Stage1_Start")
@@ -109,9 +136,9 @@ local function MoveStage(offset)
         start = GetActorByName("Stage" .. index .. "_Start")
     end
     local target = current and GetActorByName("Stage" .. (current + offset) .. "_Start")
-    if not target then 
-        ShowClearWidget()
-        return 
+    if not target then
+        if current and offset > 0 then CompleteGame() end
+        return
     end
 
     _G.RespawnLocation = target.Location + FVector(0, 0, 0)
@@ -159,7 +186,7 @@ local function Die(wall)
 end
 
 local function DieCoroutine()
-    if player.isDead then return end
+    if bCleared or player.isDead then return end
     player.isDead = true
 
     StartHitStop(1.0, 0.1) -- 사망 직전 잠깐 느려지게함
@@ -170,6 +197,7 @@ local function DieCoroutine()
 
     wait(0.1) -- 1초 후에 실제로 사망 판정
 
+    if bCleared then return end
     Die(wall) -- 벽 충돌을 사망으로 해석하는 규칙은 Lua에 둔다.
     wait(0.3) -- 사망하고 잠시 후에 리스타트 위젯을 띄운다
     ShowRestartWidget()
@@ -224,6 +252,7 @@ local function UpdateIceState()
 end
 
 local function GoToTitle()
+    if bCleared then return end
     PlaySound2D("Assets/Sounds/Click.wav")
     OpenLevel("TitleScene")
 end
@@ -239,6 +268,10 @@ end
 
 function BeginPlay()
     _G.bIsGameStarted = false
+    _G.ClearResult = nil
+    bCleared = false
+    deathCount = 0
+    playedTime = 0
     -- StartCoroutine(CinematicCoroutine)
 
     playerCamera = GetActorByName("PlayerCamera")
@@ -253,17 +286,9 @@ function BeginPlay()
     restartWidget.Visible = false
     restartWidget:AddToViewport()
     restartWidget:Find("RestartButton"):BindClick(function()
+        if bCleared then return end
         PlaySound2D("Assets/Sounds/Click.wav")
-        if bCleared then
-            deathCount = 0
-            playedTime = 0
-            if deathCountText and deathCountText:IsValid() then
-                deathCountText:SetText(tostring(deathCount))
-            end
-            MoveStage(-18)
-        else
-            Respawn()
-        end
+        Respawn()
     end)
     restartWidget:Find("TitleButton"):BindClick(GoToTitle)
 
@@ -278,7 +303,6 @@ function BeginPlay()
     obj:SetMovementEnabled(true)
     print("[Ice] WASD: 카메라이동 / R: 시작 위치로 복귀")
 
-    StartCoroutine(MouseInputCoroutine)
     InitMovementState()
     UpdateIceState()
 
@@ -289,7 +313,7 @@ SetCameraRelativeTransform(obj,
     -- delegate 등록
     _G.GameEvents = _G.GameEvents or {}
     _G.GameEvents.RespawnPlayer = Respawn
-    _G.GameEvents.ShowClearWidget = ShowClearWidget
+    _G.GameEvents.CompleteGame = CompleteGame
 end
 
 function EndPlay()
@@ -303,8 +327,8 @@ function EndPlay()
         if _G.GameEvents.RespawnPlayer then
             _G.GameEvents.RespawnPlayer = nil
         end
-        if _G.GameEvents.ShowClearWidget then
-            _G.GameEvents.ShowClearWidget = nil
+        if _G.GameEvents.CompleteGame == CompleteGame then
+            _G.GameEvents.CompleteGame = nil
         end
     end
 end
@@ -316,7 +340,7 @@ function OnReload()
 end
 
 function Tick(dt)
-    if not _G.bIsGameStarted then
+    if bCleared or not _G.bIsGameStarted then
         return
     end
     statsWidget.Visible = true
@@ -405,11 +429,12 @@ end
 end
 
 function OnHit(wall)
+    if bCleared then return end
     StartCoroutine(DieCoroutine)
 end
 
 OnRightMousePressed = function()
-    if player.isDead then return end
+    if bCleared or player.isDead then return end
     if currentIceType == "slippery" then
         print("Mouse input is disabled on the slippery ice")
         return
