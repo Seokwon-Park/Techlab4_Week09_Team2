@@ -30,6 +30,7 @@
 #include "Asset/AssetManager.h"
 #include "Components/AudioComponent.h"
 #include "Engine/Classes/Sound/SoundWave.h"
+#include "Camera/CameraShakeBase.h"
 
 namespace
 {
@@ -744,6 +745,76 @@ namespace
 			[](sol::this_environment Env, float Duration, float Dilation)
 			{
 				WorldFromEnv(Env, "StartHitStop")->StartHitStop(Duration, Dilation);
+			});
+
+		Lua.set_function("StartCameraShake",
+			[](sol::this_environment Env, float Scale) -> bool
+			{
+				UWorld* World = WorldFromEnv(Env, "StartCameraShake");
+				APlayerController* PC = World->GetPlayerController();
+				APlayerCameraManager* PCM = PC ? PC->GetCameraManager() : nullptr;
+
+				if (!PCM) return false;
+
+				UClass* ShakeClass = UCameraShakeBase::StaticClass();
+				auto* Settings = static_cast<UCameraShakeBase*>(
+					ShakeClass->GetDefaultObject());
+
+				if (!Settings) return false;
+
+				// Lua에서는 Scale로 세기를 조절한다.
+				Settings->Duration = 1.0f;
+				Settings->BlendInTime = 0.05f;
+				Settings->BlendOutTime = 0.3f;
+				Settings->RotationPitch.Amplitude = 2.0f;
+				Settings->RotationPitch.Frequency = 10.0f;
+				Settings->RotationYaw.Amplitude = 1.0f;
+				Settings->RotationYaw.Frequency = 13.0f;
+
+				return PCM->StartCameraShake(ShakeClass, Scale) != nullptr;
+			});
+
+		Lua.set_function("StopAllCameraShakes",
+			[](sol::this_environment Env, bool bImmediately)
+			{
+				UWorld* World = WorldFromEnv(Env, "StopAllCameraShakes");
+				APlayerController* PC = World->GetPlayerController();
+				APlayerCameraManager* PCM = PC ? PC->GetCameraManager() : nullptr;
+
+				if (PCM)
+				{
+					PCM->StopAllCameraShakes(bImmediately);
+				}
+			});
+
+		Lua.set_function("PlayFOVPunch",
+			[](sol::this_environment Env,
+				float Strength,
+				float InTime,
+				float HoldTime,
+				float OutTime) -> bool
+			{
+				UWorld* World = WorldFromEnv(Env, "PlayFOVPunch");
+				APlayerController* PC = World->GetPlayerController();
+				APlayerCameraManager* PCM =
+					PC ? PC->GetCameraManager() : nullptr;
+
+				if (!PCM) return false;
+
+				return PCM->PlayFOVPunch(
+					Strength, InTime, HoldTime, OutTime) != nullptr;
+			});
+
+		Lua.set_function("StopFOVPunch",
+			[](sol::this_environment Env)
+			{
+				UWorld* World = WorldFromEnv(Env, "StopFOVPunch");
+				APlayerController* PC = World->GetPlayerController();
+				APlayerCameraManager* PCM =
+					PC ? PC->GetCameraManager() : nullptr;
+
+				if (PCM)
+					PCM->StopFOVPunch(true);
 			});
 	}
 }

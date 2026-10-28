@@ -96,6 +96,7 @@ public:
 	void StopAllCameraShakes(bool bImmediately = false);
 
 	UCameraModifier_FOVPunch* PlayFOVPunch(UCurveFloat* Curve, float Duration, float Strength);
+	UCameraModifier_FOVPunch* PlayFOVPunch(float Strength, float InTime, float HoldTime, float OutTime);
 	void StopFOVPunch(bool bImmediately);
 
 
@@ -125,4 +126,7 @@ protected:
 	FViewTargetTransitionParams BlendParams;
 	float BlendTimeToGo = 0.0f;
 	bool  bFreezeOutgoing = false;
+
+	// PCM이 직접 소유하는 시간 설정용 커브.
+	UCurveFloat* FOVPunchCurve = nullptr;
 };
