@@ -90,7 +90,7 @@ local function MoveStage(offset)
         return 
     end
 
-    _G.RespawnLocation = target.Location + FVector(0, 0, 0.5)
+    _G.RespawnLocation = target.Location + FVector(0, 0, 0)
     Respawn()
     print("[Dev] Stage " .. current .. " -> " .. (current + offset))
 end

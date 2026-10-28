@@ -5,7 +5,7 @@ local EDGE_THRESHOLD = 0.1
 _G.GameEvents = _G.GameEvents or {}
 
 local function MoveToPlayer()
-    obj.Location = playerActor.Location + initialPosition
+    obj.Location = playerActor.Location
 end
 
 function BeginPlay()
@@ -17,8 +17,6 @@ function BeginPlay()
     else
         print("[BeginPlay] Actor found. Name: " .. playerActor.Name .. "UUID: " .. playerActor.UUID)
     end
-    initialPosition = obj.Location - playerActor.Location
-    print("[BeginPlay] Initial Position: ", initialPosition)
 
     _G.GameEvents.ResetCamera = function()
         MoveToPlayer()

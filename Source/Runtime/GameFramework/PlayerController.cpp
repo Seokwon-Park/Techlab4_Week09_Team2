@@ -4,6 +4,7 @@
 #include <cstring>
 
 APlayerController::APlayerController()
+	: ControlRotation(FRotator::Identitiy)
 {
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -25,6 +26,12 @@ void APlayerController::ProcessPlayerInput(float DeltaTime)
 	{
 		PossessedPawn->AddControllerYawInput(MouseAxisX * LookSensitivity);
 		PossessedPawn->AddControllerPitchInput(MouseAxisY * LookSensitivity);
+
+		// ControlRotation 업데이트
+		ControlRotation.Yaw += MouseAxisX * LookSensitivity;
+		ControlRotation.Pitch = FMath::Clamp(
+			ControlRotation.Pitch + MouseAxisY * LookSensitivity,
+			-89.9f, 89.9f);
 	}
 	MouseAxisX = MouseAxisY = 0.0f;
 	const FQuat Rotation = PossessedPawn->GetActorRotation().Quaternion();
@@ -37,7 +44,11 @@ void APlayerController::Possess(APawn* InPawn)
 	if (PossessedPawn == InPawn) return;
 	UnPossess();
 	PossessedPawn = InPawn;
-	if (PossessedPawn) PossessedPawn->PossessedBy(this);
+	if (PossessedPawn)
+	{
+		PossessedPawn->PossessedBy(this);
+		ControlRotation = PossessedPawn->GetActorRotation();
+	}
 }
 
 void APlayerController::UnPossess()
