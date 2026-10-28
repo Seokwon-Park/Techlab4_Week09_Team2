@@ -63,7 +63,7 @@ class APlayerCameraManager : public AActor
 	GENERATED_BODY()
 public:
 	APlayerCameraManager() {};
-	~APlayerCameraManager() {};
+	~APlayerCameraManager() override;
 
 	void AddCameraModifier(UCameraModifier* Modifier);
 	void RemoveCameraModifier(UCameraModifier* Modifier);

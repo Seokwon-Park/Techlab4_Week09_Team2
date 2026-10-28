@@ -112828,7 +112828,7 @@
                                 "Transform": {
                                     "Location": {
                                         "X": 760.0,
-                                        "Y": 107.02037048339844,
+                                        "Y": 101.66587829589844,
                                         "Z": -0.7607765197753906
                                     },
                                     "Rotation": {
@@ -113060,8 +113060,8 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": 836.1111450195313,
-                                        "Y": 12.53971004486084,
+                                        "X": 848.3277587890625,
+                                        "Y": 9.483296394348145,
                                         "Z": 0.0
                                     },
                                     "Rotation": {
@@ -122132,6 +122132,146 @@
                         "bDisableCameraCuts": false,
                         "bPauseAtEnd": false,
                         "bRestoreState": true
+                    }
+                },
+                {
+                    "Class": "AStaticMeshActor",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 760.8982543945313,
+                                        "Y": 13.615230560302734,
+                                        "Z": -0.09638524055480957
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UStaticMeshComponent",
+                            "Name": "UStaticMeshComponent",
+                            "OverrideMaterials": [],
+                            "Parent": "DefaultSceneRoot",
+                            "Properties": {
+                                "StaticMesh": "Models/Ultralisk/Ultralisk.obj",
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 135.519287109375
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": false,
+                                "bCastShadow": true,
+                                "bGenerateOverlapEvents": true,
+                                "bHiddenInGame": false,
+                                "bReceiveShadow": true,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "UPatrolMovementComponent",
+                            "Name": "UPatrolMovementComponent_0",
+                            "Parent": "",
+                            "Properties": {
+                                "Gravity": 9.8100004196167,
+                                "PatrolPoint1": {
+                                    "X": 20.0,
+                                    "Y": -8.0,
+                                    "Z": 0.0
+                                },
+                                "PatrolPoint2": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
+                                "PatrolPoint3": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
+                                "PatrolPointCount": 1,
+                                "Speed": 3.0,
+                                "Velocity": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
+                                "bAutoActivate": true,
+                                "bConstrainToPlane": false,
+                                "bFaceMoveDirection": true,
+                                "bHiddenInGame": false,
+                                "bLoop": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "USphereComponent",
+                            "Name": "USphereComponent_2",
+                            "Parent": "UStaticMeshComponent",
+                            "Properties": {
+                                "ShapeColor": 4286105710,
+                                "SphereRadius": 1.2000000476837158,
+                                "Transform": {
+                                    "Location": {
+                                        "X": -0.48412424325942993,
+                                        "Y": -0.027091845870018005,
+                                        "Z": 1.4141929149627686
+                                    },
+                                    "Rotation": {
+                                        "Pitch": -0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": -135.519287109375
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bBlockComponent": true,
+                                "bCastShadow": false,
+                                "bDrawOnlyIfSelected": false,
+                                "bGenerateOverlapEvents": true,
+                                "bHiddenInGame": false,
+                                "bReceiveShadow": false,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "AStaticMeshActor_4",
+                    "Properties": {
+                        "ScriptPath": "Scripts/IcePlayerProximityShake.lua",
+                        "bActorEnableCollision": true
                     }
                 }
             ],
