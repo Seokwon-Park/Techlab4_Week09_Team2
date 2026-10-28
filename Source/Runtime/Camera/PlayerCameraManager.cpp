@@ -114,6 +114,7 @@ void APlayerCameraManager::SetViewTarget(AActor* NewTarget, const FViewTargetTra
 
 }
 
+
 void APlayerCameraManager::UpdateCamera(float DeltaTime) 
 {
 	//현재 대상 시점
@@ -156,6 +157,77 @@ void APlayerCameraManager::UpdateCamera(float DeltaTime)
 	bCameraCacheValid = true;
 }
 
+void APlayerCameraManager::AddCameraModifier(UCameraModifier* Modifier)
+{
+	if (!Modifier || ModifierList.Find(Modifier) >= 0 ||
+		(Modifier->GetCameraOwner() && Modifier->GetCameraOwner() != this)) return;
+	Modifier->AddedToCamera(this);
+	ModifierList.Add(Modifier);
+}
+
+void APlayerCameraManager::RemoveCameraModifier(UCameraModifier* Modifier)
+{
+	const int32 Index = ModifierList.Find(Modifier);
+	if (Index < 0) return;
+	ModifierList.RemoveAt(Index);
+	delete Modifier;
+}
+
+UCameraModifier* APlayerCameraManager::FindCameraModifierByClass(UClass* ModifierClass) const
+{
+	if (!ModifierClass) return nullptr;
+	for (UCameraModifier* Modifier : ModifierList)
+		if (Modifier && Modifier->IsA(ModifierClass)) return Modifier;
+	return nullptr;
+}
+
+UCameraShakeBase* APlayerCameraManager::StartCameraShake(UClass* ShakeClass, float Scale)
+{
+	auto* Modifier = static_cast<UCameraModifier_CameraShake*>(
+		FindCameraModifierByClass(UCameraModifier_CameraShake::StaticClass()));
+	if (!Modifier)
+	{
+		Modifier = NewObject<UCameraModifier_CameraShake>(this);
+		AddCameraModifier(Modifier);
+	}
+	return Modifier ? Modifier->AddCameraShake(ShakeClass, Scale) : nullptr;
+}
+
+void APlayerCameraManager::StopCameraShake(UCameraShakeBase* ShakeInstance, bool bImmediately)
+{
+	auto* Modifier = static_cast<UCameraModifier_CameraShake*>(
+		FindCameraModifierByClass(UCameraModifier_CameraShake::StaticClass()));
+	if (Modifier) Modifier->RemoveCameraShake(ShakeInstance, bImmediately);
+}
+
+void APlayerCameraManager::StopAllCameraShakes(bool bImmediately)
+{
+	auto* Modifier = static_cast<UCameraModifier_CameraShake*>(
+		FindCameraModifierByClass(UCameraModifier_CameraShake::StaticClass()));
+	if (Modifier) Modifier->RemoveAllCameraShakes(bImmediately);
+}
+
+UCameraModifier_FOVPunch* APlayerCameraManager::PlayFOVPunch(UCurveFloat* Curve, float Duration, float Strength)
+{
+	auto* Modifier = static_cast<UCameraModifier_FOVPunch*>(
+		FindCameraModifierByClass(UCameraModifier_FOVPunch::StaticClass()));
+	if (!Modifier)
+	{
+		Modifier = NewObject<UCameraModifier_FOVPunch>(this);
+		AddCameraModifier(Modifier);
+	}
+	if (!Modifier) return nullptr;
+	Modifier->Play(Curve, Duration, Strength);
+	return Modifier->IsPlaying() ? Modifier : nullptr;
+}
+
+void APlayerCameraManager::StopFOVPunch(bool bImmediately)
+{
+	auto* Modifier = static_cast<UCameraModifier_FOVPunch*>(
+		FindCameraModifierByClass(UCameraModifier_FOVPunch::StaticClass()));
+	if (Modifier) Modifier->Stop(bImmediately);
+}
+
 bool APlayerCameraManager::IsActorAlive(AActor* Actor, uint32 UUID) const
 {
 	// 1. 레벨에 같은 주소가 있고 UUID가 같으면 살아 있음
@@ -185,6 +257,11 @@ void APlayerCameraManager::UpdateViewTarget(FViewTarget& OutVT, float DeltaTime)
 
 void APlayerCameraManager::ApplyCameraModifiers(float DeltaTime, FMinimalViewInfo& InOutPOV)
 {
-	// B 담당: Modifier 적용 예정
+	std::stable_sort(ModifierList.begin(), ModifierList.end(),
+		[](const auto* A, const auto* B) { return A->Priority < B->Priority; });
+	for (UCameraModifier* Modifier : ModifierList)
+		if (!Modifier->IsDisabled() && Modifier->ModifyCamera(DeltaTime, InOutPOV))
+			break;
+	InOutPOV.FOV = std::isfinite(InOutPOV.FOV) ? std::clamp(InOutPOV.FOV, 1.0f, 179.0f) : 60.0f;
 }
 

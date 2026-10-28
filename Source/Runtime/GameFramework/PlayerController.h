@@ -6,6 +6,7 @@
 
 class APawn;
 class APlayerCameraManager;
+class UCurveFloat;
 
 UCLASS()
 class APlayerController : public AActor

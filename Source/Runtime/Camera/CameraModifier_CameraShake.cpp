@@ -39,13 +39,16 @@ bool UCameraModifier_CameraShake::ModifyCamera(float DeltaTime, FMinimalViewInfo
 // 클래스,상속,생성 가능 여부를 검사하고 NewObject, CDO 설정 복사, StartShake를 거쳐 목록에 넣습니다.
 UCameraShakeBase* UCameraModifier_CameraShake::AddCameraShake(UClass* ShakeClass, float Scale)
 {
-	if (!ShakeClass || !ShakeClass->IsChildOf(UCameraShakeBase::StaticClass()) || ShakeClass->Constructor)
+	if (!ShakeClass || !ShakeClass->IsChildOf(UCameraShakeBase::StaticClass()) || !ShakeClass->Constructor)
 		return nullptr;
 	UCameraShakeBase* Shake = NewObject<UCameraShakeBase>(this, ShakeClass);
 	if (!Shake) return nullptr;
 
 	// NewObject는 이 엔진에서 CDO 설정을 자동 복사하지 않는다.
 	const auto* Defaults = static_cast<const UCameraShakeBase*>(ShakeClass->GetDefaultObject());
+
+	if (Defaults){ Shake->CopySettingsFrom(*Defaults); }
+
 	Shake->StartShake(Scale);
 	if (Shake->IsFinished()) { delete Shake; return nullptr; }
 	ActiveShakes.Add(Shake);	

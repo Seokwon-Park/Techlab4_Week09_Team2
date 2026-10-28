@@ -1,7 +1,10 @@
 #pragma once
 #include "GameFramework/Actor.h"
 
-#include "PlayerCameraManager.generated.h" // 왜이렇게 해야하는지 고민필요
+#include "CameraModifier_CameraShake.h"
+#include "CameraModifier_FOVPunch.h"
+
+#include "PlayerCameraManager.generated.h"
 
 struct FMinimalViewInfo
 {
@@ -87,6 +90,14 @@ public:
 	void StartCameraFade(float FromAlpha, float ToAlpha, float Duration, FLinearColor Color, bool bHoldWhenFinished);
 	void UpdateFade(float DeltaTime);
 	void StopCameraFade();
+
+	UCameraShakeBase* StartCameraShake(UClass* ShakeClass, float Scale = 1.0f);
+	void StopCameraShake(UCameraShakeBase* ShakeInstance, bool bImmediately = false);
+	void StopAllCameraShakes(bool bImmediately = false);
+
+	UCameraModifier_FOVPunch* PlayFOVPunch(UCurveFloat* Curve, float Duration, float Strength);
+	void StopFOVPunch(bool bImmediately);
+
 
 	void SetLetterbox(float TargetAspect, float BlendTime);
 	void UpdateLetterbox(float DeltaTime);
