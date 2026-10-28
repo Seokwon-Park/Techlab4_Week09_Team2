@@ -25,6 +25,7 @@
 #include "GameFramework/Actor/PointLightActor.h"
 #include "GameFramework/Actor/SpotLightActor.h"
 #include "GameFramework/Actor/RectLightActor.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Components/PointLightComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "Components/RectLightComponent.h"
@@ -616,7 +617,7 @@ void UEditorEngine::RenderViewports()
 					FSceneRenderer SceneRenderer(CurrentWorld, SceneView, GameClient->GetRenderData());
 					SceneRenderer.InitViews(Renderer, Options);
 
-					RenderGameFrame(GameClient, SceneView, Options, SceneRenderer, bIsSIEMode);
+					RenderGameFrame(GameClient, SceneView, Options, SceneRenderer, GameClient->IsSIEMode());
 
 					break;
 				}
@@ -656,7 +657,7 @@ void UEditorEngine::RenderViewports()
 				FSceneRenderer SceneRenderer(Context->World(), SceneView, GameClient->GetRenderData());
 				SceneRenderer.InitViews(Renderer, Options);
 
-				RenderGameFrame(GameClient, SceneView, Options, SceneRenderer, bIsSIEMode);
+				RenderGameFrame(GameClient, SceneView, Options, SceneRenderer, GameClient->IsSIEMode());
 
 				CopyPIEWindowToBackbuffer();
 			}
@@ -883,6 +884,12 @@ void UEditorEngine::BuildSceneRenderOptions(FGameViewportClient* ViewClient, FSc
 	Options.DirectionalShadowMapSize = SettingsPanel->GetSettings().GetDirectionalShadowMapSize();
 	Options.PointShadowMapSize = SettingsPanel->GetSettings().GetPointShadowMapSize();
 	Options.SpotShadowMapSize = SettingsPanel->GetSettings().GetSpotShadowMapSize();
+
+	const FEditorSettings& S = SettingsPanel->GetSettings();
+	Options.bGammaCorrection = S.bGammaCorrection;
+	Options.DisplayGamma = S.DisplayGamma;
+	Options.bShowVignette = S.bShowVignette;
+	Options.bShowCameraOverlay = S.bShowCameraOverlay;
 }
 
 void UEditorEngine::BuildSceneRenderOptions(FEditorViewportClient* ViewClient, bool IsPIE, FSceneRenderOptions& Options)
@@ -902,10 +909,17 @@ void UEditorEngine::BuildSceneRenderOptions(FEditorViewportClient* ViewClient, b
 	Options.PointShadowMapSize = SettingsPanel->GetSettings().GetPointShadowMapSize();
 	Options.SpotShadowMapSize = SettingsPanel->GetSettings().GetSpotShadowMapSize();
 
+	const FEditorSettings& S = SettingsPanel->GetSettings();
+	Options.bGammaCorrection = S.bGammaCorrection;
+	Options.DisplayGamma = S.DisplayGamma;
+	Options.bShowVignette = S.bShowVignette;
+	Options.bShowCameraOverlay = S.bShowCameraOverlay;
+
 	Options.bDrawPrimitives = IsPIE || SettingsPanel->GetSettings().bDrawPrimitives;
 	Options.bEnableFog = ViewClient->GetViewportMode() == EViewportMode::Solid;
 	Options.bShowSceneDepth = !IsPIE && ViewClient->IsSceneDepth();
 	Options.bShowCascade = !IsPIE && ViewClient->IsCascade();
+	Options.bShowShadowMask = !IsPIE && ViewClient->IsShadowMask();
 	Options.bShowWorldNormal = !IsPIE && ViewClient->IsWorldNormal();
 	Options.bShowLightCulling = !IsPIE && ViewClient->IsLightCulling();
 	Options.SceneDepthRange = ViewClient->GetMaxRange();
@@ -936,6 +950,7 @@ void UEditorEngine::RenderGameFrame(FGameViewportClient* GameClient, const FScen
 				{
 					LineBatcher->BeginFrame();
 					DrawCollisionShapes(GameClient->GetWorld(), LineBatcher.get(), nullptr);
+					DrawSpringArms(GameClient->GetWorld(), LineBatcher.get(), nullptr);
 					LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
 				};
 			if (!bIsSIEMode) return;
@@ -1085,6 +1100,7 @@ void UEditorEngine::RenderFrame(FEditorViewportClient* ViewClient,
 					{
 						LineBatcher->BeginFrame();
 						DrawCollisionShapes(TargetWorld, LineBatcher.get(), nullptr);
+						DrawSpringArms(TargetWorld, LineBatcher.get(), nullptr);
 						LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
 					};
 				return;
@@ -1112,12 +1128,14 @@ void UEditorEngine::RenderFrame(FEditorViewportClient* ViewClient,
 								FVector4(0.2f, 0.6f, 1.f, 1.f)
 							};
 							const FBox ClipBox{ FVector(-1.f, -1.f, 0.f), FVector(1.f, 1.f, 1.f) };
-							// 셰이더와 같이 광원의 ShadowIndex로 찾는다. 그림자를 끈 방향광은 cascade가 없으므로 건너뛴다.
+							// 광원의 첫 그림자 뷰(VisibleLightShadowViews)부터 cascade 순서로 들어 있다. 그림자가 없는 방향광은 건너뛴다.
 							const uint32 DirectionalOffset = Data.GetDirectionalLightOffset();
 							for (uint32 LightIndex = 0; LightIndex < Data.GetDirectionalLightCount(); ++LightIndex)
 							{
-								const uint32 FirstCascade = Data.VisibleLights[DirectionalOffset + LightIndex].ShadowIndex;
-								if (FirstCascade == FLightRenderParameters::InvalidShadowIndex) continue;
+								const uint32 VisibleIndex = DirectionalOffset + LightIndex;
+								if (VisibleIndex >= static_cast<uint32>(Data.VisibleLightShadowViews.Num())) continue;
+								const uint32 FirstCascade = Data.VisibleLightShadowViews[VisibleIndex];
+								if (FirstCascade == FSceneRenderData::InvalidShadowView) continue;
 								for (uint32 CascadeIndex = 0; CascadeIndex < Data.CascadeShadowCount; ++CascadeIndex)
 								{
 									const uint32 ShadowIndex = FirstCascade + CascadeIndex;
@@ -1144,6 +1162,7 @@ void UEditorEngine::RenderFrame(FEditorViewportClient* ViewClient,
 							Gizmo->GetTarget() ? Gizmo->GetTarget()->GetOwner() : nullptr;
 
 						DrawCollisionShapes(EditorWorld, LineBatcher.get(), SelectedActor);
+						DrawSpringArms(EditorWorld, LineBatcher.get(), SelectedActor);
 
 						LineBatcher->OnRender(SceneView.ViewProjectionMatrix);
 					};
@@ -1305,11 +1324,27 @@ UWorld* UEditorEngine::CreatePIEWorldByDuplication(FWorldContext& PIEContext, UW
 void UEditorEngine::OnActiveWorldChanged()
 {
 	ResetSceneSelection();
-	UWorld* UIWorld = PlayWorld ? PlayWorld : EditorWorld;
-	if (OutlinerPanel) OutlinerPanel->SetWorld(UIWorld);
-	if (DetailsPanel) DetailsPanel->SetWorld(UIWorld);
-	if (EditorControlsPanel) EditorControlsPanel->SetWorld(UIWorld);
-	if (SettingsPanel) SettingsPanel->SetWorld(UIWorld);
+	UWorld* ActiveWorld = GetActiveWorld();
+
+	// 피킹 대상 월드도 렌더링 대상 월드에 맞춘다.
+	if (ViewportsPanel)
+	{
+		for (int32 ViewIndex = 0; ViewIndex < 4; ++ViewIndex)
+		{
+			FEditorViewportClient* Client =
+				ViewportsPanel->GetViewportClient(ViewIndex);
+
+			if (Client)
+			{
+				Client->SetWorld(ActiveWorld);
+			}
+		}
+	}
+
+	if (OutlinerPanel) OutlinerPanel->SetWorld(ActiveWorld);
+	if (DetailsPanel) DetailsPanel->SetWorld(ActiveWorld);
+	if (EditorControlsPanel) EditorControlsPanel->SetWorld(ActiveWorld);
+	if (SettingsPanel) SettingsPanel->SetWorld(ActiveWorld);
 }
 
 void UEditorEngine::EndPlayMap()

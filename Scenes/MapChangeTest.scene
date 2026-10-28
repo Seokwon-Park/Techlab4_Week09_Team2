@@ -10603,10 +10603,10 @@
                 "AngularRadiusDegrees": 3.0,
                 "Intensity": 1.2000000476837158,
                 "LightColor": 4294967295,
-                "ShadowBias": 0.009999999776482582,
+                "ShadowBias": 0.5,
                 "ShadowResolutionScale": 1.0,
                 "ShadowSharpen": 0.0,
-                "ShadowSlopeBias": 0.009999999776482582,
+                "ShadowSlopeBias": 0.5,
                 "Transform": {
                   "Location": {
                     "X": 0.0,
@@ -10674,10 +10674,10 @@
               "Properties": {
                 "Intensity": 0.4000000059604645,
                 "LightColor": 4294967295,
-                "ShadowBias": 0.009999999776482582,
+                "ShadowBias": 0.5,
                 "ShadowResolutionScale": 1.0,
                 "ShadowSharpen": 0.0,
-                "ShadowSlopeBias": 0.009999999776482582,
+                "ShadowSlopeBias": 0.5,
                 "Transform": {
                   "Location": {
                     "X": 0.0,

@@ -16,6 +16,7 @@
 #include "Components/ExponentialHeightFogComponent.h"
 #include "Render/PostProcess/HeightFogRenderer.h"
 #include "Render/PostProcess/FXAARenderer.h"
+#include "Render/PostProcess/ToneMapData.h"
 #include "Text/TextRenderer.h"
 #include "UObject/UObjectIterator.h"
 
@@ -163,16 +164,12 @@ void FSceneRenderer::InitViews(FRenderer* Renderer, const FSceneRenderOptions& O
 	RenderData.AmbientLight = World->GetScene().GetSkyAmbientLight(View.bGameView);
 
 	// 모든 프록시가 같은 FLightRenderParameters를 채우고, 종류는 Type으로만 구분한다.
-	// Unlit은 조명을 계산하지 않으므로 모든 광원의 그림자 뷰를 만들지 않는다.
-	const bool bAllowShadows = Options.LightingModel != ELightingModel::Unlit;
-	auto AddVisibleLight = [this, bAllowShadows](const FLightSceneProxy* Light)
+	auto AddVisibleLight = [this](const FLightSceneProxy* Light)
 	{
 		FLightRenderParameters Parameters{};
 		Light->GetLightShaderParameters(Parameters);
-		FLightShadowSettings ShadowSettings = Light->GetShadowSettings();
-		ShadowSettings.bCastShadows &= bAllowShadows;
 		const int32 Index = RenderData.VisibleLights.Add(Parameters);
-		RenderData.VisibleLightShadowSettings.Add(ShadowSettings);
+		RenderData.VisibleLightProxies.Add(Light);
 		if (Light->GetLightComponent() == RenderData.PreviewLight) RenderData.PreviewLightIndex = Index;
 	};
 
@@ -189,15 +186,15 @@ void FSceneRenderer::InitViews(FRenderer* Renderer, const FSceneRenderOptions& O
 		AddVisibleLight(Light);
 	}
 
-	RenderData.DirectionalLightShadowMapSize = Options.DirectionalShadowMapSize;
-	RenderData.PointLightShadowMapSize = Options.PointShadowMapSize;
-	RenderData.SpotLightShadowMapSize = Options.SpotShadowMapSize;
+	RenderData.Commit(bLightUploadSucceeded);
 
-	RenderData.Commit(View.FrustumCorners, View.Frustum, View.NearClip, View.FarClip, GetCascadeCount(), GetCascadeLogRatio(),
-		Options.bCacheShadows, Scene.GetShadowInvalidations(), bLightUploadSucceeded);
+	InitDynamicShadows(Options);
+	RenderData.ViewLightResources.CreateShadowDepthAtlasIfNeed(RenderData.ShadowAtlasSliceCount);
+	// 그림자 맵이 생긴 광원에 마스크 채널을 주고 광원 데이터를 다시 올린다.
+	FinalizeShadowLights(Options);
 }
 
-bool FSceneRenderer::BindDeferredLighting(FRenderer* Renderer, uint32 Width, uint32 Height, EPcfMode PcfMode, float ShadowDepthBias)
+bool FSceneRenderer::BindDeferredLighting(FRenderer* Renderer, uint32 Width, uint32 Height, int32 SingleLightIndex)
 {
 	FSceneLightResources& LightResources = RenderData.ViewLightResources;
 
@@ -208,10 +205,9 @@ bool FSceneRenderer::BindDeferredLighting(FRenderer* Renderer, uint32 Width, uin
 		return false;
 	}
 
-	FTexture2D* LightShadowAtlas = LightResources.GetShadowMapAtlas();
-	FStructuredBuffer* LightShadows = LightResources.GetLightShadows();
-	
 	FDeferredLightConstants Constants{};
+	Constants.bSingleLightPass = SingleLightIndex >= 0 ? 1u : 0u;
+	Constants.SingleLightIndex = SingleLightIndex >= 0 ? static_cast<uint32>(SingleLightIndex) : 0u;
 	Constants.InverseViewProjection = View.ViewProjectionMatrix.Inverse();
 	Constants.CameraPosition = FVector4(View.ViewLocation.X, View.ViewLocation.Y, View.ViewLocation.Z, View.bIsPerspective ? 1.0f : 0.0f);
 	Constants.CameraForward = FVector4(View.ViewForward.X, View.ViewForward.Y, View.ViewForward.Z, 0.0f);
@@ -219,12 +215,6 @@ bool FSceneRenderer::BindDeferredLighting(FRenderer* Renderer, uint32 Width, uin
 	const FSkyLightEnvironment* Sky = RenderData.bHasSkyLight ? World->GetScene().FindSkyLightEnvironment(RenderData.SkyLight.SourcePath) : nullptr;
 	Constants.Ambient = Sky ? FAmbientLightRenderData{ FVector4(0.0f) } : RenderData.AmbientLight; // 지금 환경광 계산이 ambient + skylight로 되어있어서 sky 잇으면 ambient 0으로 해줘야됨
 	Constants.SkyColorIntensity = Sky ? RenderData.SkyLight.ColorIntensity : FVector4(0.f);
-	Constants.ShadowAtlasWidth = LightShadowAtlas ? LightShadowAtlas->GetWidth() : 0;
-	Constants.ShadowAtlasHeight = LightShadowAtlas ? LightShadowAtlas->GetHeight() : 0;
-	Constants.CascadeShadowCount = RenderData.CascadeShadowCount;
-	Constants.PcfMode = static_cast<uint32>(PcfMode);
-	Constants.ShadowDepthBias = ShadowDepthBias;
-	std::memcpy(Constants.CascadeShadowDistances, RenderData.CascadeShadowDistances, sizeof(RenderData.CascadeShadowDistances));
 
 	std::memcpy(Constants.LightCounts, RenderData.LightParameterCounts, sizeof(RenderData.LightParameterCounts));
 	std::memcpy(Constants.LightOffsets, RenderData.LightParameterOffsets, sizeof(RenderData.LightParameterOffsets)); // LightOffset은 각 조명별로 시작하는 위치
@@ -232,17 +222,13 @@ bool FSceneRenderer::BindDeferredLighting(FRenderer* Renderer, uint32 Width, uin
 	Constants.ViewportSize = FVector4(static_cast<float>(Width), static_cast<float>(Height), 0.0f, 0.0f);
 	RenderCommand::UpdateBufferData(DefferedConstants, &Constants, sizeof(Constants));
 	RenderCommand::BindConstantBuffer(0, DefferedConstants, EShaderBindFlagBits::Pixel);
-	RenderCommand::BindShaderResource(3, RenderData.HasLights() ? LightResources.GetSceneLights() : nullptr, EShaderBindFlagBits::Pixel);
-	RenderCommand::BindShaderResource(4, LightShadows, EShaderBindFlagBits::Pixel);
-	RenderCommand::BindShaderResource(5, LightShadowAtlas, EShaderBindFlagBits::Pixel);
-
-	RenderCommand::BindSamplerState(2, ESamplerState::PointClamp, EShaderBindFlagBits::Pixel);
-	RenderCommand::BindSamplerState(3, ESamplerState::ShadowComparison, EShaderBindFlagBits::Pixel);
+	// t0~t3은 패스의 ReadTextures(BaseColor, Normal, Depth, ScreenShadowMask)가 묶는다.
+	RenderCommand::BindShaderResource(4, RenderData.HasLights() ? LightResources.GetSceneLights() : nullptr, EShaderBindFlagBits::Pixel);
 
 	return true;
 }
 
-bool FSceneRenderer::BindForwardLighting(FRenderer* Renderer, const FSceneRenderOptions& Options)
+bool FSceneRenderer::BindForwardLighting(FRenderer* Renderer, const FSceneRenderOptions& Options, FTexture2D* ShadowMask)
 {
 	FSceneLightResources& LightResources = RenderData.ViewLightResources;
 
@@ -260,31 +246,21 @@ bool FSceneRenderer::BindForwardLighting(FRenderer* Renderer, const FSceneRender
 		return false;
 	}
 
-	FTexture2D* LightShadowAtlas = LightResources.GetShadowMapAtlas();
-	FStructuredBuffer* LightShadows = LightResources.GetLightShadows();
-
 	FForwardLightingConstants Constants{};
-	
+
 	const FSkyLightEnvironment* Sky = RenderData.bHasSkyLight ? World->GetScene().FindSkyLightEnvironment(RenderData.SkyLight.SourcePath) : nullptr;
 	Constants.Ambient = Sky ? FAmbientLightRenderData{ FVector4(0.0f) } : RenderData.AmbientLight;
 	Constants.SkyColorIntensity = Sky ? RenderData.SkyLight.ColorIntensity : FVector4(0.f);
 	Constants.CameraPosition = FVector4(View.ViewLocation.X, View.ViewLocation.Y, View.ViewLocation.Z, 1.0f);
-	Constants.ShadowAtlasWidth = LightShadowAtlas ? LightShadowAtlas->GetWidth() : 0;
-	Constants.ShadowAtlasHeight = LightShadowAtlas ? LightShadowAtlas->GetHeight() : 0;
-	Constants.CascadeShadowCount = RenderData.CascadeShadowCount;
-	Constants.PcfMode = static_cast<uint32>(Options.PcfMode);
-	Constants.ShadowDepthBias = Options.ShadowDepthBias;
-	Constants.CascadeBlendRatio = FSceneRenderData::CascadeBlendRatio;
-	
+
 	std::memcpy(Constants.LightCounts, RenderData.LightParameterCounts, sizeof(RenderData.LightParameterCounts));
 	std::memcpy(Constants.LightOffsets, RenderData.LightParameterOffsets, sizeof(RenderData.LightParameterOffsets)); // LightOffset은 각 조명별로 시작하는 위치
-	std::memcpy(Constants.CascadeShadowDistances, RenderData.CascadeShadowDistances, sizeof(RenderData.CascadeShadowDistances));
 
 	RenderCommand::UpdateBufferData(ForwardConstants, &Constants, sizeof(Constants));
 	RenderCommand::BindConstantBuffer(1, ForwardConstants, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
 	RenderCommand::BindShaderResource(11, Sky ? Sky->GetIrradianceCube() : nullptr, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
-	RenderCommand::BindShaderResource(13, LightShadows, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
-	RenderCommand::BindShaderResource(14, LightShadowAtlas, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
+	// 광원 채널(ShadowMapChannel)로 읽는 그림자 마스크. 없으면 셰이더가 그림자 없음(1)으로 본다.
+	RenderCommand::BindShaderResource(13, ShadowMask, EShaderBindFlagBits::Pixel);
 
 	FForwardLightTileGrid& Tiles = LightResources.GetTiles();
 	Tiles.PreparePixelShader(Renderer, bTilesBuilt);
@@ -296,8 +272,6 @@ bool FSceneRenderer::BindForwardLighting(FRenderer* Renderer, const FSceneRender
 	RenderCommand::BindShaderResource(8, RenderData.HasLights() && LightResources.GetSceneLights() && LightResources.GetSceneLights()->GetSRV() ? LightResources.GetSceneLights() : nullptr, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
 
 	RenderCommand::BindSamplerState(1, ESamplerState::LinearClamp, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
-	RenderCommand::BindSamplerState(2, ESamplerState::PointClamp, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
-	RenderCommand::BindSamplerState(3, ESamplerState::ShadowComparison, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
 
 	return true;
 }
@@ -306,7 +280,7 @@ void FSceneRenderer::UnbindForwardLighting(FRenderer* Renderer)
 {
 	RenderCommand::UnbindShaderResources(9, 2, EShaderBindFlagBits::Pixel);
 	RenderCommand::BindConstantBuffer(3, nullptr, EShaderBindFlagBits::Pixel);
-	RenderCommand::UnbindShaderResources(12, 3, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
+	RenderCommand::UnbindShaderResources(12, 2, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
 	RenderData.ViewLightResources.GetTiles().ResetPixelState();
 	RenderCommand::UnbindShaderResources(8, 1, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
 	RenderCommand::UnbindShaderResources(11, 1, EShaderBindFlagBits::Vertex | EShaderBindFlagBits::Pixel);
@@ -374,82 +348,24 @@ bool FSceneRenderer::AddCorePasses(FRenderGraphBuilder& Graph, FRenderer* Render
 				Skybox->OnRender(View.ViewProjectionMatrix, View.ViewLocation);
 		})) return false;
 
-	// NOTE: 셰도우 맵 패스를 등록한다.
-	FTexture2D* ShadowMapAtlas = RenderData.ViewLightResources.GetShadowMapAtlas();
-
-	const FRenderGraphTextureRef ShadowMapRef = Graph.ImportTexture(ShadowMapAtlas, "ShadowMapAtals");
-	if (!ShadowMapRef)
+	// 언리얼 RenderShadowDepthMaps: 할당된 그림자 맵마다 Caster 깊이를 아틀라스에 그린다.
+	FTexture2D* ShadowDepthAtlas = RenderData.ViewLightResources.GetShadowDepthAtlas();
+	const bool bAnyShadowAllocated = std::any_of(RenderData.ProjectedShadows.begin(), RenderData.ProjectedShadows.end(),
+		[](const TUniquePtr<FProjectedShadowInfo>& Shadow) { return Shadow->bAllocated; });
+	FRenderGraphTextureRef ShadowAtlasRef{};   // Projection 패스가 읽는다
+	if (ShadowDepthAtlas && bAnyShadowAllocated)
 	{
-		return false;
-	}
+		const FRenderGraphTextureRef AtlasRef = Graph.ImportTexture(ShadowDepthAtlas, "ShadowDepthAtlas");
+		if (!AtlasRef) return false;
+		ShadowAtlasRef = AtlasRef;
 
-	// 그림자 뷰가 하나도 없으면(Unlit, 모든 광원 CastShadows 끔) 셰이더도 아틀라스를 읽지 않으므로 패스를 건너뛴다.
-	// 캐시가 모든 타일을 재사용하면 패스 자체를 등록하지 않는다.
-	const bool bAnyShadowRedraw = std::find(RenderData.ShadowNeedsRedraw.begin(), RenderData.ShadowNeedsRedraw.end(), uint8(1)) != RenderData.ShadowNeedsRedraw.end();
-	if (ShadowMapAtlas && RenderData.HasLights() && !RenderData.LightShadows.IsEmpty() && bAnyShadowRedraw)
-	{
-		// 배치를 새로 했으면 전체를 지우고, 이전 배치를 재사용하면 남은 타일을 보존하도록 Load한다.
-		const bool bClearWholeAtlas = RenderData.bClearWholeShadowAtlas;
-		FRenderGraphRasterPassDesc Shadows{};
-		Shadows.Name = "Shadows";
-		Shadows.DepthAttachment = { ShadowMapRef, bClearWholeAtlas ? ERenderGraphLoadAction::Clear : ERenderGraphLoadAction::Load, 1.0f, 0 };
-
-		auto ShadowMapPassHandler = [this, Renderer, &Graph, ShadowMapRef, bClearWholeAtlas]() {
-			if (!bCorePassSucceeded)
+		FRenderGraphRasterPassDesc ShadowDepths{};
+		ShadowDepths.Name = "ShadowDepths";
+		ShadowDepths.DepthAttachment = { AtlasRef, ERenderGraphLoadAction::Clear, 1.0f, 0 };   // 단계 8에서 Load로
+		if (!Graph.AddRasterPass(std::move(ShadowDepths), [this, Renderer, &Graph, AtlasRef]
 			{
-				return;
-			}
-
-			FTexture2DArray* DepthArray = static_cast<FTexture2DArray*>(Graph.Resolve(ShadowMapRef));
-
-			FMeshPassProcessor Processor;
-
-			TArray<FMeshDrawBatch> Batched;
-			Processor.Build(RenderData.ShadowCasterProxies, EPSOType::StaticMesh_LightShadow, Batched);
-
-			// 방향광 cascade는 bias가 다른 래스터라이저 상태로 그린다. 영향 구 반지름이 음수면 방향광이다.
-			const bool bHasDirectionalShadow = std::any_of(RenderData.ShadowInfluences.begin(), RenderData.ShadowInfluences.end(),
-				[](const FVector4& Influence) { return Influence.W < 0.0f; });
-			TArray<FMeshDrawBatch> DirectionalBatched;
-			if (bHasDirectionalShadow)
-			{
-				DirectionalBatched = Batched;
-				for (FMeshDrawBatch& Batch : DirectionalBatched)
-					Batch.Pipeline.RasterizerState = ERasterizerState::DirectionalLightShadow;
-			}
-
-			FPipelineState* TileClear = FRenderResourceManager::GetPSO(EPSOType::ShadowTileClear);
-			const bool bCanClearTile = TileClear && TileClear->Shader && TileClear->Shader->VertexShader;
-
-			// 실제 메시 패스와 같은 VS를 사용해 깊이 계산을 일치시킨다.
-			for (int32 i = 0; i < RenderData.LightShadows.Num(); i++)
-			{
-				if (!RenderData.ShadowNeedsRedraw[i]) continue; // 캐시된 깊이를 그대로 쓴다
-
-				const FLightShadowRenderData& LightShadow = RenderData.LightShadows[i];
-
-				RenderCommand::SetViewport(LightShadow.AtlasRect.X, LightShadow.AtlasRect.Y, LightShadow.AtlasRect.Width, LightShadow.AtlasRect.Height);
-				RenderCommand::SetRenderTargets(0, nullptr, DepthArray, LightShadow.AtlasIndex);
-				if (!bClearWholeAtlas)
-				{
-					// 이 타일에 남은 지난 프레임 깊이를 1로 지운다. 뷰포트가 타일 크기라 다른 타일은 건드리지 않는다.
-					if (!bCanClearTile) { bCorePassSucceeded = false; return; }
-					RenderCommand::BindPipelineState(*TileClear);
-					RenderCommand::BindVertexBuffer(nullptr);
-					RenderCommand::Draw(3);
-				}
-				Renderer->UploadViewMatrix(LightShadow.ViewProjection);
-				const bool bDirectional = i < RenderData.ShadowInfluences.Num() && RenderData.ShadowInfluences[i].W < 0.0f;
-				Renderer->DrawMeshes(bDirectional ? DirectionalBatched : Batched);
-			}
-			// Commit이 정한 타일을 모두 그렸으므로 이제 캐시를 믿어도 된다. 여기까지 못 오면 다음 프레임에 전부 다시 그린다.
-			RenderData.bShadowCacheConfirmed = true;
-		};
-
-		if (!Graph.AddRasterPass(std::move(Shadows), ShadowMapPassHandler))
-		{
-			return false;
-		}
+				RenderShadowDepthMaps(Renderer, static_cast<FTexture2DArray*>(Graph.Resolve(AtlasRef)));
+			})) return false;
 	}
 
 	if (Options.RenderingPath == ERenderingPath::Deferred) // Deferred rendering
@@ -484,36 +400,91 @@ bool FSceneRenderer::AddCorePasses(FRenderGraphBuilder& Graph, FRenderer* Render
 					}
 				})) return false;
 
-			FRenderGraphRasterPassDesc LightingPass{};
-			LightingPass.Name = "DeferredLighting";
-			LightingPass.ReadTextures = { BaseColor, Normal, Depth };
-			LightingPass.ColorAttachments = {
-				{ LightingHDR, ERenderGraphLoadAction::Load }
-			};
-			if (!Graph.AddRasterPass(std::move(LightingPass), [this, Renderer, &Graph, BaseColor, Normal, Depth, Width, Height, PcfMode = Options.PcfMode,
-				ShadowDepthBias = Options.ShadowDepthBias]
+			// 언리얼 RenderLights: 그림자 없는 광원은 한 번에 그리고, 그림자 광원은 광원마다
+			// 마스크를 지우고 → 그 광원의 그림자를 Projection하고 → 그 광원만 가산 블렌드로 더한다. 마스크 한 장을 계속 재사용한다.
+			const FRenderGraphTextureRef ShadowMask = ShadowAtlasRef && !ShadowedLights.IsEmpty()
+				? Graph.CreateTexture({ Width, Height, ETextureFormat::R8G8B8A8_UNorm }, "ScreenShadowMask") : FRenderGraphTextureRef{};
+			auto AddDeferredLightPass = [&](const char* Name, int32 SingleLightIndex) -> bool
 				{
-					if (!bCorePassSucceeded) return;
-					if (!BindDeferredLighting(Renderer, Width, Height, PcfMode, ShadowDepthBias))
-					{
-						bCorePassSucceeded = false;
-						return;
-					}
+					FRenderGraphRasterPassDesc LightingPass{};
+					LightingPass.Name = Name;
+					LightingPass.ReadTextures = { BaseColor, Normal, Depth };
+					if (SingleLightIndex >= 0) LightingPass.ReadTextures.push_back(ShadowMask);   // t3
+					LightingPass.ColorAttachments = { { LightingHDR, ERenderGraphLoadAction::Load } };
+					return Graph.AddRasterPass(std::move(LightingPass), [this, Renderer, Width, Height, SingleLightIndex]
+						{
+							if (!bCorePassSucceeded) return;
+							if (!BindDeferredLighting(Renderer, Width, Height, SingleLightIndex))
+							{
+								bCorePassSucceeded = false;
+								return;
+							}
 
-					FPipelineState* Pipeline = FRenderResourceManager::GetPSO(EPSOType::DeferredLighting);
-					if (Pipeline && Pipeline->Shader && Pipeline->Shader->VertexShader && Pipeline->Shader->PixelShader)
+							// 단일 광원 패스는 같은 셰이더에 가산 블렌드 상태를 쓴다.
+							FPipelineState* Pipeline = FRenderResourceManager::GetPSO(SingleLightIndex >= 0 ? EPSOType::DeferredPointLighting : EPSOType::DeferredLighting);
+							if (Pipeline && Pipeline->Shader && Pipeline->Shader->VertexShader && Pipeline->Shader->PixelShader)
+							{
+								RenderCommand::BindPipelineState(*Pipeline);
+								RenderCommand::BindVertexBuffer(nullptr);
+								RenderCommand::Draw(3);
+							}
+							else
+							{
+								bCorePassSucceeded = false;
+							}
+							RenderCommand::UnbindShaderResources(3, 2, EShaderBindFlagBits::Pixel);
+						});
+				};
+			if (!AddDeferredLightPass("DeferredLighting", -1)) return false;
+
+			if (ShadowMask)
+			{
+				for (const FShadowedLight& Light : ShadowedLights)
+				{
+					FRenderGraphRasterPassDesc Projection{};
+					Projection.Name = "ShadowProjection";
+					Projection.ReadTextures = { Depth, ShadowAtlasRef };   // t0 장면 깊이, t1 깊이 아틀라스
+					Projection.ColorAttachments = { { ShadowMask, ERenderGraphLoadAction::Clear, { 1.0f, 1.0f, 1.0f, 1.0f } } };
+					if (!Graph.AddRasterPass(std::move(Projection), [this, Width, Height, LightId = Light.LightId]
+						{
+							if (!bCorePassSucceeded) return;
+							RenderShadowProjectionsForLight(RenderData.VisibleLightInfos[LightId], 0, Width, Height);
+							RenderCommand::BindConstantBuffer(0, nullptr, EShaderBindFlagBits::Pixel);
+						})) return false;
+
+					if (!AddDeferredLightPass("DeferredShadowedLight", Light.VisibleLightIndex)) return false;
+				}
+			}
+
+			// Shadow Mask 뷰 모드: 그림자 광원을 최대 4개까지 채널 하나씩 그려 조명 대신 보여 준다.
+			if (Options.bShowShadowMask && ShadowAtlasRef)
+			{
+				const FRenderGraphTextureRef ShadowMask = Graph.CreateTexture({ Width, Height, ETextureFormat::R8G8B8A8_UNorm }, "ShadowMaskVisualization");
+				if (!ShadowMask) return false;
+
+				FRenderGraphRasterPassDesc Projection{};
+				Projection.Name = "ShadowProjection";
+				Projection.ReadTextures = { Depth, ShadowAtlasRef };   // t0 장면 깊이, t1 깊이 아틀라스
+				Projection.ColorAttachments = { { ShadowMask, ERenderGraphLoadAction::Clear, { 1.0f, 1.0f, 1.0f, 1.0f } } };
+				if (!Graph.AddRasterPass(std::move(Projection), [this, Width, Height]
 					{
+						RenderShadowMaskVisualizationProjections(Width, Height);
+					})) return false;
+
+				FRenderGraphRasterPassDesc Visualize{};
+				Visualize.Name = "ShadowMaskVisualization";
+				Visualize.ReadTextures = { ShadowMask };
+				Visualize.ColorAttachments = { { LightingHDR, ERenderGraphLoadAction::Load } };
+				if (!Graph.AddRasterPass(std::move(Visualize), [this]
+					{
+						if (!bCorePassSucceeded) return;
+						FPipelineState* Pipeline = FRenderResourceManager::GetPSO(EPSOType::ShadowMaskVisualize);
+						if (!Pipeline || !Pipeline->Shader || !Pipeline->Shader->VertexShader || !Pipeline->Shader->PixelShader) return;
 						RenderCommand::BindPipelineState(*Pipeline);
 						RenderCommand::BindVertexBuffer(nullptr);
 						RenderCommand::Draw(3);
-					}
-					else
-					{
-						bCorePassSucceeded = false;
-					}
-					RenderCommand::UnbindShaderResources(3, 2, EShaderBindFlagBits::Pixel);
-					RenderCommand::BindConstantBuffer(1, nullptr, EShaderBindFlagBits::Pixel);
-				})) return false;
+					})) return false;
+			}
 		}
 		else
 		{
@@ -548,7 +519,10 @@ bool FSceneRenderer::AddCorePasses(FRenderGraphBuilder& Graph, FRenderer* Render
 		const bool bGridPrepared = Options.bDrawPrimitives && bLightUploadSucceeded &&
 			Tiles.PrepareBuild(View, GridLighting, SceneLights, Targets.Depth.get(), CullingMode);
 
-		if (bGridPrepared && CullingMode != ELightCullingMode::Off && (RenderData.HasSpotLights() || RenderData.HasPointLights()))
+		const bool bNeedsLightCulling = bGridPrepared && CullingMode != ELightCullingMode::Off && (RenderData.HasSpotLights() || RenderData.HasPointLights());
+		// 그림자 마스크는 장면 깊이로 Projection하므로 프리패스가 필요하다. Gouraud는 FinalizeShadowLights가 채널을 주지 않는다.
+		const bool bForwardShadows = Options.bDrawPrimitives && ShadowAtlasRef && !ShadowedLights.IsEmpty();
+		if (bNeedsLightCulling || bForwardShadows)
 		{
 			FPipelineState* DepthPipeline = FRenderResourceManager::GetPSO(EPSOType::StaticMesh_DepthOnly);
 			if (!DepthPipeline || !DepthPipeline->Shader || !DepthPipeline->Shader->PixelShader) return false;
@@ -572,7 +546,30 @@ bool FSceneRenderer::AddCorePasses(FRenderGraphBuilder& Graph, FRenderer* Render
 					}
 					Renderer->DrawMeshes(DepthBatches);
 				})) return false;
+		}
 
+		// 그림자 광원마다 배정된 채널(R~A)에 Projection한다. 한 픽셀에서 겹치는 그림자 광원은 서로 다른 채널을 받는다.
+		FRenderGraphTextureRef ForwardShadowMask{};
+		if (bForwardShadows)
+		{
+			ForwardShadowMask = Graph.CreateTexture({ Width, Height, ETextureFormat::R8G8B8A8_UNorm }, "ScreenShadowMask");
+			if (!ForwardShadowMask) return false;
+
+			FRenderGraphRasterPassDesc Projection{};
+			Projection.Name = "ShadowProjection";
+			Projection.ReadTextures = { Depth, ShadowAtlasRef };   // t0 장면 깊이, t1 깊이 아틀라스
+			Projection.ColorAttachments = { { ForwardShadowMask, ERenderGraphLoadAction::Clear, { 1.0f, 1.0f, 1.0f, 1.0f } } };
+			if (!Graph.AddRasterPass(std::move(Projection), [this, Width, Height]
+				{
+					if (!bCorePassSucceeded) return;
+					for (const FShadowedLight& Light : ShadowedLights)
+						RenderShadowProjectionsForLight(RenderData.VisibleLightInfos[Light.LightId], Light.Channel, Width, Height);
+					RenderCommand::BindConstantBuffer(0, nullptr, EShaderBindFlagBits::Pixel);
+				})) return false;
+		}
+
+		if (bNeedsLightCulling)
+		{
 			// 선택한 알고리즘에 맞는 컴퓨트 패스를 등록한다.
 			FRenderGraphComputePassDesc Culling{};
 			Culling.Name = CullingMode == ELightCullingMode::Clustered
@@ -597,10 +594,10 @@ bool FSceneRenderer::AddCorePasses(FRenderGraphBuilder& Graph, FRenderer* Render
 			{ LightingHDR, ERenderGraphLoadAction::Load }
 		};
 		Forward.DepthAttachment = { Depth, bUseDepthPrepass ? ERenderGraphLoadAction::Load : ERenderGraphLoadAction::Clear, 1.0f, 0 };
-		if (!Graph.AddRasterPass(std::move(Forward), [this, Renderer, LightingOptions = Options, bUseDepthPrepass]
+		if (!Graph.AddRasterPass(std::move(Forward), [this, Renderer, &Graph, LightingOptions = Options, bUseDepthPrepass, ForwardShadowMask]
 		{
 			if (!LightingOptions.bDrawPrimitives) return;
-			bCorePassSucceeded = BindForwardLighting(Renderer, LightingOptions);
+			bCorePassSucceeded = BindForwardLighting(Renderer, LightingOptions, ForwardShadowMask ? Graph.Resolve(ForwardShadowMask) : nullptr);
 			if (!bCorePassSucceeded) return;
 			if (bUseDepthPrepass)
 			{
@@ -618,14 +615,21 @@ bool FSceneRenderer::AddCorePasses(FRenderGraphBuilder& Graph, FRenderer* Render
 	ToneMap.Name = "ToneMap";
 	ToneMap.ReadTextures = { LightingHDR };
 	ToneMap.ColorAttachments = { { SceneColor, ERenderGraphLoadAction::Clear, { 0.0f, 0.0f, 0.0f, 1.0f } } };
-	if (!Graph.AddRasterPass(std::move(ToneMap), [this, Renderer, &Graph, LightingHDR]
+	if (!Graph.AddRasterPass(std::move(ToneMap), [this, Renderer, &Graph, LightingHDR, bGamma = Options.bGammaCorrection, DisplayGamma = Options.DisplayGamma]
 		{
 			if (bCorePassSucceeded)
 			{
 				if (FPipelineState* Pipeline = FRenderResourceManager::GetPSO(EPSOType::ToneMap);
 					Pipeline && Pipeline->Shader && Pipeline->Shader->VertexShader && Pipeline->Shader->PixelShader)
 				{
+					FToneMapData Data{};
+					Data.InvGamma = 1.0f / std::max(DisplayGamma, 0.01f);
+					Data.bGammaCorretion = bGamma ? 1.0f : 0.0f;
+					FConstantBuffer* Constants = Renderer->GetToneMapConstants();
+					RenderCommand::UpdateBufferData(Constants, &Data, sizeof(Data));
+
 					RenderCommand::BindPipelineState(*Pipeline);
+					RenderCommand::BindConstantBuffer(0, Constants, EShaderBindFlagBits::Pixel);
 					RenderCommand::BindVertexBuffer(nullptr);
 					RenderCommand::Draw(3);
 				}
@@ -824,21 +828,6 @@ void FSceneRenderer::GatherRenderPackets(FScene& Scene, FSceneRenderData& Data,
 	const FViewContext& View, const FFrustumPlanes* Frustum, FRenderer* Renderer) //여기서 꼭 renderer를 매개변수로 받아야 할까?
 {
 	Data.ResetFrame();
-	for (FPrimitiveSceneProxy* Proxy : Scene.PrimitiveSceneProxies)
-	{
-		constexpr float MinShadowCasterScreenSize = 0.01f;   // 반지름 / 거리. 대략 화면 높이의 1% 미만이면 제외
-
-		if (Proxy->IsShown(View.bGameView) && Proxy->bCastsShadow && Proxy->GetRenderState() && Proxy->GetMesh())
-		{
-			const FAABB& Bounds = Proxy->GetBounds();
-			const float Distance = (Bounds.Center - View.CameraPosition).Length();
-			const float ScreenSize = Bounds.Extent.Length() / std::max(Distance, 1.0e-3f);
-			if (ScreenSize >= MinShadowCasterScreenSize)
-				Data.ShadowCasterProxies.Add(Proxy);
-			else
-				++Data.RenderStats.ShadowCastersSkippedSmall;
-		}
-	}
 	FRenderQueue& RenderQueue = Data.RenderQueue;
 	FRenderStats& RenderStats = Data.RenderStats;
 	auto& VisibleProxies = Data.VisibleProxies;
@@ -976,7 +965,7 @@ void FSceneRenderer::GatherRenderPackets(FScene& Scene, FSceneRenderData& Data,
 					{
 						// 칸 VisibleIndex는 이 반복만 쓴다 → 스레드끼리 겹치지 않음
 						const FPerObjectConstants Constants =
-							MakePerObjectConstants(Proxy->GetLocalToWorld());
+							MakePerObjectConstants(Proxy->GetLocalToWorld(), Proxy->bReceiveShadow);
 
 						Data.ObjectConstants[VisibleIndex] = Constants;
 

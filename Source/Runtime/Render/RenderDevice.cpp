@@ -329,9 +329,7 @@ void FRenderDevice::CreateStates()
 		LightShadowDesc.CullMode = D3D11_CULL_BACK;
 		LightShadowDesc.FrontCounterClockwise = FALSE;
 		LightShadowDesc.DepthClipEnable = TRUE;
-		// 깊이 비교 bias는 셰이더(CalculateShadowDepthBias)가 수신점 쪽에서 월드 거리·텍셀 크기·수신면 기울기로 준다.
-		// 깊이 패스에서 caster를 또 밀면 이중 보정이 되어, 해상도를 낮추거나(텍셀↑) 빛과 평행한 옆면에서
-		// 그림자가 물체에서 떨어진다(peter panning). 그래서 하드웨어 bias는 쓰지 않는다.
+		// 깊이 bias는 ShadowDepth.hlsl이 Caster 깊이에 더한다 (언리얼 UpdateShaderDepthBias). 하드웨어 bias는 쓰지 않는다.
 		LightShadowDesc.DepthBias = 0;
 		LightShadowDesc.SlopeScaledDepthBias = 0.0f;
 		LightShadowDesc.DepthBiasClamp = 0.0f;
@@ -423,6 +421,26 @@ void FRenderDevice::CreateStates()
 		Desc.RenderTarget[0].BlendEnable = FALSE;
 		Desc.RenderTarget[0].RenderTargetWriteMask = 0;
 		Device->CreateBlendState(&Desc, BlendStates[(uint8)EBlendState::NoColorWrite].GetAddressOf());
+
+		// 그림자 마스크: 채널 하나만 쓴다. 덮어쓰기(Spot, Point 면)와 알파 블렌드(CSM 캐스케이드 Fade) 두 종류.
+		const UINT8 ChannelMasks[4] = { D3D11_COLOR_WRITE_ENABLE_RED, D3D11_COLOR_WRITE_ENABLE_GREEN, D3D11_COLOR_WRITE_ENABLE_BLUE, D3D11_COLOR_WRITE_ENABLE_ALPHA };
+		for (uint8 Channel = 0; Channel < 4; ++Channel)
+		{
+			Desc.RenderTarget[0].RenderTargetWriteMask = ChannelMasks[Channel];
+			Desc.RenderTarget[0].BlendEnable = FALSE;
+			Desc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+			Desc.RenderTarget[0].DestBlend = D3D11_BLEND_ZERO;
+			Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+			Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+			Device->CreateBlendState(&Desc, BlendStates[(uint8)EBlendState::ShadowMaskR + Channel].GetAddressOf());
+
+			Desc.RenderTarget[0].BlendEnable = TRUE;
+			Desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+			Desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+			Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
+			Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
+			Device->CreateBlendState(&Desc, BlendStates[(uint8)EBlendState::ShadowMaskFadeR + Channel].GetAddressOf());
+		}
 	}
 
 	// ---------- Sampler ----------

@@ -10,6 +10,7 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/DefaultPawn.h"
 #include "GameFramework/PlayerController.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Input/InputSystem.h"
 
 #include "UObject/UObjectIterator.h"
@@ -43,11 +44,12 @@
 
 namespace
 {
-	inline void WritePerObjectConstants(uint8* Dest, const FMatrix& LocalToWorld, const FMatrix& WorldToLocal)
+	inline void WritePerObjectConstants(uint8* Dest, const FMatrix& LocalToWorld, const FMatrix& WorldToLocal, bool bReceiveShadow)
 	{
 		FPerObjectConstants Constants{};
 		Constants.World = LocalToWorld;
 		Constants.NormalMatrix = WorldToLocal.GetTransposed();
+		Constants.ShadowFlags.X = bReceiveShadow ? 1.0f : 0.0f;   // GBuffer가 NormalRoughness.w 부호로 넘긴다
 		std::memcpy(Dest, &Constants, sizeof(Constants));
 	}
 }
@@ -123,8 +125,22 @@ AActor* UWorld::SpawnActor(UClass* Class, FName InName, const FTransform* Transf
 	return NewActor;
 }
 
-void UWorld::Tick(float DeltaTime)
+void UWorld::Tick(float RealDeltaTime)
 {
+	RealTimeSeconds += RealDeltaTime;
+
+	if (HitStopTimeRemaining > 0.0f)
+	{
+		HitStopTimeRemaining = std::max(HitStopTimeRemaining - RealDeltaTime, 0.0f);
+	}
+
+	const float DeltaTime = RealDeltaTime * GetEffectiveTimeDilation();
+
+	if (!bIsPaused)
+	{
+		TimeSeconds += DeltaTime;
+	}
+
 	{
 		SCOPE_CYCLE_COUNTER(STAT_UpdateAllTransforms);
 		Scene.UpdateAllTransforms();
@@ -149,6 +165,7 @@ void UWorld::Tick(float DeltaTime)
 
 			UpdateOverlaps();
 			FLuaBindings::FlushPendingDestroy(this);
+			if (PlayerController) PlayerController->UpdateCameraManager(DeltaTime);
 		}
 	}
 	else
@@ -165,6 +182,15 @@ void UWorld::Tick(float DeltaTime)
 				Comp->SetParticles(10);
 			}
 			Comp->TickComponent(DeltaTime);
+		}
+		// 스프링 암 컴포넌트도 에디터에서 틱이 돌아야 한다
+		for (TObjectIterator<USpringArmComponent> Comp; Comp; ++Comp)
+		{
+			if (!Comp || !Comp->IsRegistered() || Comp->GetWorld() != this)
+			{
+				continue;
+			}
+			Comp->UpdateInEditor();
 		}
 	}
 
@@ -344,7 +370,7 @@ void UWorld::GatherRenderPackets(FRenderQueue& RenderQueue, const FViewContext* 
 					{
 						// 칸 VisibleIndex는 이 반복만 쓴다 → 스레드끼리 겹치지 않음
 						WritePerObjectConstants(SlotDest + size_t(VisibleIndex) * ObjectSlotBytes,
-							Proxy->GetLocalToWorld(), Proxy->GetWorldToLocal());
+							Proxy->GetLocalToWorld(), Proxy->GetWorldToLocal(), Proxy->bReceiveShadow);
 						Slot = VisibleIndex;
 					}
 
@@ -416,7 +442,7 @@ void UWorld::GatherRenderPackets(FRenderQueue& RenderQueue, const FViewContext* 
 					FRenderPacket& Packet = RenderQueue[p];
 					const FMatrix& Model = Packet.Proxy ? Packet.Proxy->GetLocalToWorld() : Packet.Model ? *Packet.Model : FMatrix::Identity;
 					const FMatrix WorldToLocal = Packet.Proxy ? Packet.Proxy->GetWorldToLocal() : Model.Inverse();
-					WritePerObjectConstants(SlotDest + size_t(NextExtraSlot) * ObjectSlotBytes, Model, WorldToLocal);
+					WritePerObjectConstants(SlotDest + size_t(NextExtraSlot) * ObjectSlotBytes, Model, WorldToLocal, !Packet.Proxy || Packet.Proxy->bReceiveShadow);
 					Packet.Slot = NextExtraSlot++;
 				}
 			}
@@ -770,7 +796,12 @@ void UWorld::BeginPlay()
 		FTransform Transform = MainCamera ? MainCamera->GetActorTransform() : FTransform::Identity;
 		PlayerPawn = SpawnActor<ADefaultPawn>(NAME_None, &Transform);
 	}
-	if (!PlayerController) PlayerController = SpawnActor<APlayerController>();
+	if (!PlayerController) 
+		PlayerController = SpawnActor<APlayerController>();
+	
+	if (PlayerController)
+		PlayerController->SpawnPlayerCameraManager();
+	
 	if (PlayerController && PlayerPawn) PlayerController->Possess(PlayerPawn);
 
 	// 기존 액터 목록을 고정한 후 시작한다. BeginPlay 중 생성된 액터는 대기열로 간다.
@@ -996,3 +1027,14 @@ void UWorld::UpdateOverlaps()
 	}
 }
 
+float UWorld::GetEffectiveTimeDilation() const
+{
+	const float HitStop = (HitStopTimeRemaining > 0.0f) ? HitStopDilation : 1.0f;
+	return FMath::Clamp(GlobalTimeDilation * HitStop, MinTimeDilation, MaxTimeDilation);
+}
+
+void UWorld::StartHitStop(float Duration, float Dilation)
+{
+	HitStopTimeRemaining = std::max(HitStopTimeRemaining, Duration);
+	HitStopDilation = Dilation;
+}

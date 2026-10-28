@@ -1,7 +1,7 @@
 -- IceEscape 전용 Stage Goal. stage_goal.lua와 같은 일을 하지만 다음 Stage 위치를 계산하지 않는다.
 -- 골 액터 이름(StageN_Goal)에서 번호를 읽고 StageN+1_Start 액터 위치로 보낸다.
 -- 다음 Start가 없으면 마지막 Stage다. 그래서 Stage 개수나 간격이 바뀌어도 이 스크립트는 그대로 쓴다.
-local SPAWN_HEIGHT = 0.5
+local SPAWN_HEIGHT = 0.0
 local GOAL_FREEZE_SECONDS = 1.0 -- 골에 닿은 뒤 다음 Stage로 넘어가기 전까지 조작을 멈추는 시간
 local state = script_state
 

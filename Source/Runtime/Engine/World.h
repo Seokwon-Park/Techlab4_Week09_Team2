@@ -51,7 +51,7 @@ public:
 		return CastChecked<T>(SpawnActor(T::StaticClass(), InName, Transform));
 	}
 
-	void Tick(float DeltaTime);
+	void Tick(float RealDeltaTime);
 
 	// 모든 액터 Tick이 끝난 뒤 1회. 지난 프레임 겹침 쌍과 비교해 End → Begin 순으로 보낸다. 담당: C
 	void UpdateOverlaps();
@@ -115,6 +115,11 @@ public:
 
 	using Super::Serialize;
 	virtual void Serialize(FStructuredArchive::FRecord Record) override;
+
+	// Slomo-hitstop
+	float GetEffectiveTimeDilation() const;
+	void StartHitStop(float Duration, float Dilation);
+
 private:
 	EWorldType WorldType = EWorldType::None;
 
@@ -156,4 +161,13 @@ private:
 
 	FRenderStats RenderStats;
 
+	// Slomo-hitstop
+	float GlobalTimeDilation = 1.0f;
+	float HitStopTimeRemaining = 0.0f;	// 실제 시간 (초)
+	float HitStopDilation = 1.0f;
+	float TimeSeconds = 0.0f;			// 게임 시간 (dilated 누적)
+	float RealTimeSeconds = 0.0f;		// 실제 시간 누적
+
+	static constexpr float MinTimeDilation = 0.0001f;
+	static constexpr float MaxTimeDilation = 20.0f;
 };

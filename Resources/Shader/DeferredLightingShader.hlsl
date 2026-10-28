@@ -1,11 +1,11 @@
 #pragma pack_matrix(row_major)
 
 #include "LightData.hlsli"
-#include "LightEvaluation.hlsli"
 
 Texture2D<float4> BaseColorMetallic : register(t0);
-Texture2D<float4> NormalRoughness : register(t1);
+Texture2D<float4> NormalRoughness : register(t1); // w < 0이면 bReceiveShadow가 꺼진 물체 (Roughness = -w - 1)
 Texture2D<float> SceneDepth : register(t2);
+Texture2D<float4> ScreenShadowMask : register(t3); // 단일 광원 패스에서만 묶인다. R = 이 광원의 그림자 (1 = 빛 받음)
 
 cbuffer DeferredLightConstants : register(b0)
 {
@@ -16,24 +16,15 @@ cbuffer DeferredLightConstants : register(b0)
     float4 AmbientColorIntensity;
     uint4 LightCounts; // x: 포인트 개수, y: 스포트 개수, z: 방향광 개수, w: 렉트 개수
     uint4 LightOffsets; // SceneLights에서 각 종류가 시작되는 위치, 순서는 위와 같음
-    // 그림자는 광원마다 Light.ShadowIndex로 찾는다 (LightShadows).
     float4 SkyColorIntensity;
-    uint ShadowAtlasWidth;
-    uint ShadowAtlasHeight;
-    uint CascadeShadowCount;
-    uint PcfMode;
-    float4 CascadeShadowDistances;
-    float ShadowDepthBias;
-    float3 ShadowBiasPadding;
+    // 0: 그림자 없는 광원 전부 + Ambient/Sky (ShadowMapChannel이 있는 광원은 건너뜀)
+    // 1: SingleLightIndex 광원 하나만 ScreenShadowMask를 곱해 가산 블렌드로 더한다 (언리얼 RenderLights)
+    uint bSingleLightPass;
+    uint SingleLightIndex;
+    uint2 LightPassPadding;
 };
 
-StructuredBuffer<FLightRenderParameters> SceneLights : register(t3);
-
-StructuredBuffer<FLightShadowRenderData> LightShadows : register(t4);
-Texture2DArray LightShadowAtlas : register(t5);
-
-SamplerState PointSampler : register(s2);
-SamplerComparisonState ShadowSampler : register(s3);
+StructuredBuffer<FLightRenderParameters> SceneLights : register(t4);
 
 struct FPSInput
 {
@@ -68,6 +59,111 @@ void AccumulateLocalLight(inout float3 Diffuse, inout float3 Specular,
     Specular += F0 * Radiance * pow(saturate(dot(N, H)), Shininess) * NdotL;
 }
 
+// 광원 하나의 기여 (그림자 제외). Directional은 확산광만 쓴다.
+float3 EvaluateLight(FLightRenderParameters Light, float3 WorldPosition, float3 N, float3 V,
+    float3 Albedo, float Metallic, float Roughness)
+{
+    if (Light.Intensity <= 0.0f) return 0.0f;
+
+    if (Light.Type == LIGHT_TYPE_DIRECTIONAL)
+    {
+        const float3 LightDir = normalize(Light.Direction);
+        return Albedo * Light.Color * Light.Intensity * saturate(dot(N, -LightDir));
+    }
+
+    float3 Diffuse = 0.0f;
+    float3 Specular = 0.0f;
+
+    if (Light.Type == LIGHT_TYPE_POINT)
+    {
+        float3 ToLight = Light.Position - WorldPosition;
+        float DistanceSquared = dot(ToLight, ToLight);
+        float RadiusSquared = Light.Radius * Light.Radius;
+        if (RadiusSquared <= 0.0f || DistanceSquared >= RadiusSquared || DistanceSquared < 1.0e-8f)
+            return 0.0f;
+
+        float Distance = sqrt(max(DistanceSquared, 1.0e-6f));
+        float3 L = ToLight / Distance;
+        float x = Distance / Light.Radius;
+        float Attenuation = pow(saturate(1.0 - x), max(Light.FalloffExponent, 0.0f));
+        float3 Radiance = Light.Color * Light.Intensity * Attenuation;
+        AccumulateLocalLight(Diffuse, Specular, Albedo, Metallic, Roughness, N, V, L, Radiance);
+    }
+    else if (Light.Type == LIGHT_TYPE_SPOT)
+    {
+        float3 ToLight = Light.Position - WorldPosition;
+        float DistanceSquared = dot(ToLight, ToLight);
+        float RadiusSquared = Light.Radius * Light.Radius;
+        if (RadiusSquared <= 0.0f || DistanceSquared >= RadiusSquared || DistanceSquared < 1.0e-8f)
+            return 0.0f;
+
+        float Distance = sqrt(max(DistanceSquared, 1.0e-6f));
+        float3 L = ToLight / Distance;
+        float ConeCos = dot(-L, normalize(Light.Direction));
+        float ConeFade = pow(smoothstep(Light.OuterConeCos, Light.InnerConeCos, ConeCos),
+            max(Light.FalloffExponent, 0.0001f));
+        float DistanceFactor = saturate(1.0f - Distance / Light.Radius);
+        float RadiusFade = DistanceFactor * DistanceFactor;
+        float3 Radiance = Light.Color * Light.Intensity * ConeFade * RadiusFade;
+        AccumulateLocalLight(Diffuse, Specular, Albedo, Metallic, Roughness, N, V, L, Radiance);
+    }
+    else if (Light.Type == LIGHT_TYPE_RECT)
+    {
+        float3 Up = cross(Light.Direction, Light.Right);
+        float3 CenterToSurface = WorldPosition - Light.Position;
+
+        float RectX = clamp(dot(CenterToSurface, Light.Right), -Light.HalfWidth, Light.HalfWidth);
+        float RectY = clamp(dot(CenterToSurface, Up), -Light.HalfHeight, Light.HalfHeight);
+        float3 ClosestPoint = Light.Position + Light.Right * RectX + Up * RectY;
+
+        float3 ToLight = ClosestPoint - WorldPosition;
+        float DistanceSquared = dot(ToLight, ToLight);
+        float RadiusSquared = Light.Radius * Light.Radius;
+        if (RadiusSquared <= 0.0f || DistanceSquared >= RadiusSquared || DistanceSquared < 1.0e-8f)
+            return 0.0f;
+
+        float Distance = sqrt(max(DistanceSquared, 1.0e-6f));
+        float3 L = ToLight / Distance;
+
+        float Attenuation = pow(saturate(1.0f - Distance / max(Light.Radius, 0.001f)), max(Light.FalloffExponent, 0.001f));
+        float FrontFace = saturate(dot(-L, Light.Direction));
+        if (FrontFace <= 0.0f || Attenuation <= 0.0f)
+            return 0.0f;
+
+        float BarnDoorMask = 1.0f;
+        if (Light.BarnDoorLength > 0.0f)
+        {
+            float3 EmitterToSurface = WorldPosition - ClosestPoint;
+            float EmitterDist = max(length(EmitterToSurface), 0.0001f);
+            float ForwardDist = dot(EmitterToSurface, Light.Direction);
+            float LateralX = abs(dot(EmitterToSurface, Light.Right));
+            float LateralY = abs(dot(EmitterToSurface, Up));
+            float SlackX = (ForwardDist * Light.BarnDoorSin - LateralX * Light.BarnDoorCos) / EmitterDist;
+            float SlackY = (ForwardDist * Light.BarnDoorSin - LateralY * Light.BarnDoorCos) / EmitterDist;
+            BarnDoorMask = smoothstep(-0.05f, 0.0f, SlackX) * smoothstep(-0.05f, 0.0f, SlackY);
+        }
+
+        float3 Radiance = Light.Color * Light.Intensity * Attenuation * FrontFace * BarnDoorMask;
+        AccumulateLocalLight(Diffuse, Specular, Albedo, Metallic, Roughness, N, V, L, Radiance);
+    }
+    return Diffuse + Specular;
+}
+
+// 그림자 없는 광원만 더한다. 그림자 광원은 단일 광원 패스가 마스크를 곱해 따로 더한다.
+float3 AccumulateUnshadowedLights(uint Offset, uint Count, float3 WorldPosition, float3 N, float3 V,
+    float3 Albedo, float Metallic, float Roughness)
+{
+    float3 Result = 0.0f;
+    [loop]
+    for (uint i = 0; i < Count; ++i)
+    {
+        FLightRenderParameters Light = SceneLights[Offset + i];
+        if (Light.ShadowMapChannel != INVALID_SHADOW_CHANNEL) continue;
+        Result += EvaluateLight(Light, WorldPosition, N, V, Albedo, Metallic, Roughness);
+    }
+    return Result;
+}
+
 float4 mainPS(FPSInput Input) : SV_Target
 {
     int2 Pixel = int2(Input.Position.xy);
@@ -79,9 +175,11 @@ float4 mainPS(FPSInput Input) : SV_Target
     float4 NormalData = NormalRoughness.Load(int3(Pixel, 0));
     float3 Albedo = MaterialData.rgb;
     float Metallic = MaterialData.a;
-    float Roughness = NormalData.a;
+    // GBuffer가 bReceiveShadow를 w 부호에 넣는다 (StaticMeshGBufferShader.hlsl)
+    const bool bReceiveShadow = NormalData.a >= 0.0f;
+    float Roughness = bReceiveShadow ? NormalData.a : -NormalData.a - 1.0f;
     float3 N = NormalData.xyz * rsqrt(max(dot(NormalData.xyz, NormalData.xyz), 1.0e-8f));
-    
+
     float2 UV = (float2(Pixel) + 0.5f) / ViewportSize.xy;
     float2 NDC = float2(UV.x * 2.0f - 1.0f, 1.0f - UV.y * 2.0f);
     float4 WorldH = mul(float4(NDC, Depth, 1.0f), InverseViewProjection);
@@ -89,201 +187,29 @@ float4 mainPS(FPSInput Input) : SV_Target
         return 0.0f;
     float3 WorldPosition = WorldH.xyz / WorldH.w;
 
-    float3 AmbientColor = AmbientColorIntensity.rgb * max(AmbientColorIntensity.a, 0.0f);
-    float3 BaseLighting = AmbientColor;
-    if (SkyColorIntensity.a > 0.0f)
-        BaseLighting += SkyColorIntensity.rgb * SkyColorIntensity.a;
-    float ViewDepth = dot(WorldPosition - CameraPosition.xyz, CameraForward.xyz);
-    [loop]
-    for (uint DirectionalIndex = 0; DirectionalIndex < LightCounts.z; ++DirectionalIndex)
-    {
-        uint LightIndex = LightOffsets.z + DirectionalIndex;
-        FLightRenderParameters Light = SceneLights[LightIndex];
-        
-        if (Light.Intensity <= 0.0f) continue;
-        
-        float3 LightDir = normalize(Light.Direction);
-        float3 LightColor = Light.Color * Light.Intensity;
-                
-        int CascadeIndex = -1;
-        [loop]
-        for (uint i = 0; i < CascadeShadowCount; ++i)
-        {
-            if (ViewDepth < CascadeShadowDistances[i])
-            {
-                CascadeIndex = i;
-                break;
-            }
-        }
-        float Shadow = 1.0f;
-        if (CascadeIndex != -1 && Light.ShadowIndex != INVALID_SHADOW_INDEX)
-        {
-            FLightShadowRenderData LightShadow = LightShadows[Light.ShadowIndex + CascadeIndex];
-            Shadow = CalculateShadow(Input.Position.xyz, WorldPosition, N, -Light.Direction, Light, LightShadow, LightShadowAtlas, ShadowAtlasWidth, ShadowAtlasHeight, PointSampler, ShadowSampler, 1.0f, PcfMode, LIGHT_TYPE_DIRECTIONAL);
-        }
-
-        BaseLighting += LightColor * saturate(dot(N, -LightDir)) * Shadow;
-    }
-
-    float3 Lighting = Albedo * BaseLighting;
-    if (LightCounts.x == 0 && LightCounts.y == 0 && LightCounts.w == 0)
-        return float4(Lighting, 1.0f);
-
     // 직교 투영의 시선 광선은 평행하므로 시선 방향이 위치에 따라 달라지지 않는다.
     float3 ToCamera = CameraPosition.w > 0.5f
         ? CameraPosition.xyz - WorldPosition : -CameraForward.xyz;
     float3 V = ToCamera * rsqrt(max(dot(ToCamera, ToCamera), 1.0e-8f));
 
-    float3 LocalDiffuse = 0.0f;
-    float3 LocalSpecular = 0.0f;
-
-    [loop]
-    for (uint PointIndex = 0; PointIndex < LightCounts.x; ++PointIndex)
+    if (bSingleLightPass)
     {
-        uint LightIndex = LightOffsets.x + PointIndex;
-        FLightRenderParameters Light = SceneLights[LightIndex];
-        float3 ToLight = Light.Position - WorldPosition;
-        float DistanceSquared = dot(ToLight, ToLight);
-        float RadiusSquared = Light.Radius * Light.Radius;
-
-        if (RadiusSquared <= 0.0f || DistanceSquared >= RadiusSquared || DistanceSquared < 1.0e-8f)
-            continue;
-
-        float Distance = sqrt(max(DistanceSquared, 1.0e-6f));
-        float3 L = ToLight / Distance;
-
-        float x = Distance / Light.Radius;
-        float Attenuation = pow(saturate(1.0 - x), max(Light.FalloffExponent, 0.0f));
-
-        float3 ToPixel = WorldPosition - Light.Position;
-            
-        // 카메라는 0 : +x,1 : -x, 2: +z, 3 : -z, 4: +y, 5: -y
-        uint FaceIndex = 0;
-            
-        float3 AbsToPixel = abs(ToPixel);
-        if (AbsToPixel.x > AbsToPixel.y && AbsToPixel.x > AbsToPixel.z)
-        {
-            FaceIndex = ToPixel.x > 0.0 ? 0 : 1;
-        }
-        else if (AbsToPixel.y > AbsToPixel.x && AbsToPixel.y > AbsToPixel.z)
-        {
-            FaceIndex = ToPixel.y > 0.0 ? 4 : 5;
-        }
-        else
-        {
-            FaceIndex = ToPixel.z > 0.0 ? 2 : 3;
-        }
-        
-        float Shadow = 1.0f;
-        if (Light.ShadowIndex != INVALID_SHADOW_INDEX)
-        {
-            FLightShadowRenderData LightShadow = LightShadows[Light.ShadowIndex + FaceIndex];
-            Shadow = CalculateShadow(Input.Position.xyz, WorldPosition, N, normalize(-ToPixel), Light, LightShadow, LightShadowAtlas, ShadowAtlasWidth, ShadowAtlasHeight, PointSampler, ShadowSampler, 1.0f, PcfMode, LIGHT_TYPE_POINT);
-        }
-        
-        float3 Radiance = Light.Color * max(Light.Intensity, 0.0f) * Attenuation * Shadow;
-        
-        float3 Diffuse = 0.0;
-        float3 Specular = 0.0;
-        AccumulateLocalLight(Diffuse, Specular, Albedo, Metallic, Roughness, N, V, L, Radiance);
-        
-        LocalDiffuse += Diffuse;
-        LocalSpecular += Specular;
+        // 가산 블렌드로 이 광원만 더한다. 알파는 블렌드 상태가 기존 값을 유지한다.
+        const float Shadow = bReceiveShadow ? ScreenShadowMask.Load(int3(Pixel, 0)).r : 1.0f;
+        return float4(EvaluateLight(SceneLights[SingleLightIndex], WorldPosition, N, V, Albedo, Metallic, Roughness) * Shadow, 0.0f);
     }
 
-    [loop]
-    for (uint SpotIndex = 0; SpotIndex < LightCounts.y; ++SpotIndex)
-    {
-        uint LightIndex = LightOffsets.y + SpotIndex;
-        FLightRenderParameters Light = SceneLights[LightIndex];
-        float3 ToLight = Light.Position - WorldPosition;
-        float DistanceSquared = dot(ToLight, ToLight);
-        float RadiusSquared = Light.Radius * Light.Radius;
-        if (RadiusSquared <= 0.0f || DistanceSquared >= RadiusSquared || DistanceSquared < 1.0e-8f)
-            continue;
+    float3 AmbientColor = AmbientColorIntensity.rgb * max(AmbientColorIntensity.a, 0.0f);
+    float3 BaseLighting = AmbientColor;
+    if (SkyColorIntensity.a > 0.0f)
+        BaseLighting += SkyColorIntensity.rgb * SkyColorIntensity.a;
+    float3 Lighting = Albedo * BaseLighting;
 
-        float Distance = sqrt(max(DistanceSquared, 1.0e-6f));
-        float3 L = ToLight / Distance;
-		float ConeCos = dot(-L, normalize(Light.Direction));
-		float ConeFade = pow(smoothstep(Light.OuterConeCos, Light.InnerConeCos, ConeCos),
-			max(Light.FalloffExponent, 0.0001f));
-		float DistanceFactor = saturate(1.0f - Distance / Light.Radius);
-		float RadiusFade = DistanceFactor * DistanceFactor;
-        
-        float Shadow = 1.0f;
-        if (Light.ShadowIndex != INVALID_SHADOW_INDEX)
-        {
-            FLightShadowRenderData LightShadow = LightShadows[Light.ShadowIndex];
-            Shadow = CalculateShadow(Input.Position.xyz, WorldPosition, N, L, Light, LightShadow, LightShadowAtlas, ShadowAtlasWidth, ShadowAtlasHeight, PointSampler, ShadowSampler, 1.0f, PcfMode, LIGHT_TYPE_SPOT);
-        }
-        
-        float3 Radiance = Light.Color * max(Light.Intensity, 0.0f) * ConeFade * RadiusFade * Shadow;
-        
-        float3 Diffuse = 0.0;
-        float3 Specular = 0.0;
-        AccumulateLocalLight(Diffuse, Specular, Albedo, Metallic, Roughness, N, V, L, Radiance);
-        
-        LocalDiffuse += Diffuse;
-        LocalSpecular += Specular;
-    }
-    
-    [loop]
-    for (uint RectIndex = 0; RectIndex < LightCounts.w; ++RectIndex)
-    {
-        uint LightIndex = LightOffsets.w + RectIndex;
-        FLightRenderParameters Light = SceneLights[LightIndex];
-        float3 Position = Light.Position;
-        float Radius = Light.Radius;
-        float3 Direction = Light.Direction;
-        float BarnDoorLength = Light.BarnDoorLength;
-        float3 Color = Light.Color;
-        float Intensity = Light.Intensity;
-        float BarnDoorCos = Light.BarnDoorCos;
-        float BarnDoorSin = Light.BarnDoorSin;
-        float FalloffExponent = Light.FalloffExponent;
-        float3 Right = Light.Right;
-        float HalfWidth = Light.HalfWidth;
-        float HalfHeight = Light.HalfHeight;
-
-        float3 Up = cross(Direction, Right);
-        float3 CenterToSurface = WorldPosition - Position;
-
-        float RectX = clamp(dot(CenterToSurface, Right), -HalfWidth, HalfWidth);
-        float RectY = clamp(dot(CenterToSurface, Up), -HalfHeight, HalfHeight);
-        float3 ClosestPoint = Position + Right * RectX + Up * RectY;
-
-        float3 ToLight = ClosestPoint - WorldPosition;
-        float DistanceSquared = dot(ToLight, ToLight);
-        float RadiusSquared = Radius * Radius;
-        if (RadiusSquared <= 0.0f || DistanceSquared >= RadiusSquared || DistanceSquared < 1.0e-8f)
-            continue;
-
-        float Distance = sqrt(max(DistanceSquared, 1.0e-6f));
-        float3 L = ToLight / Distance;
-
-        float Attenuation = pow(saturate(1.0f - Distance / max(Radius, 0.001f)), max(FalloffExponent, 0.001f));
-        float FrontFace = saturate(dot(-L, Direction));
-        if (FrontFace <= 0.0f || Attenuation <= 0.0f)
-            continue;
-
-        float BarnDoorMask = 1.0f;
-        if (BarnDoorLength > 0.0f)
-        {
-            float3 EmitterToSurface = WorldPosition - ClosestPoint;
-            float EmitterDist = max(length(EmitterToSurface), 0.0001f);
-            float ForwardDist = dot(EmitterToSurface, Direction);
-            float LateralX = abs(dot(EmitterToSurface, Right));
-            float LateralY = abs(dot(EmitterToSurface, Up));
-            float SlackX = (ForwardDist * BarnDoorSin - LateralX * BarnDoorCos) / EmitterDist;
-            float SlackY = (ForwardDist * BarnDoorSin - LateralY * BarnDoorCos) / EmitterDist;
-            BarnDoorMask = smoothstep(-0.05f, 0.0f, SlackX) * smoothstep(-0.05f, 0.0f, SlackY);
-        }
-
-        float3 Radiance = Color * max(Intensity, 0.0f) * Attenuation * FrontFace * BarnDoorMask;
-        AccumulateLocalLight(LocalDiffuse, LocalSpecular, Albedo, Metallic, Roughness, N, V, L, Radiance);
-    }
-    
-    return float4(Lighting + LocalDiffuse + LocalSpecular, 1.0f);
+    Lighting += AccumulateUnshadowedLights(LightOffsets.z, LightCounts.z, WorldPosition, N, V, Albedo, Metallic, Roughness);
+    Lighting += AccumulateUnshadowedLights(LightOffsets.x, LightCounts.x, WorldPosition, N, V, Albedo, Metallic, Roughness);
+    Lighting += AccumulateUnshadowedLights(LightOffsets.y, LightCounts.y, WorldPosition, N, V, Albedo, Metallic, Roughness);
+    Lighting += AccumulateUnshadowedLights(LightOffsets.w, LightCounts.w, WorldPosition, N, V, Albedo, Metallic, Roughness);
+    return float4(Lighting, 1.0f);
 }
 
 

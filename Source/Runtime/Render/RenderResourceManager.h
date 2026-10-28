@@ -27,6 +27,9 @@ enum class EPSOType : uint8
 	StaticMesh_LightShadow,
 	LightCullingDebug,
 	ShadowTileClear,         // 그림자 캐시: 다시 그릴 아틀라스 타일만 깊이 1로 지운다
+	ShadowDepth,
+	ShadowProjection,        // 그림자 한 장을 화면 마스크(ScreenShadowMask)에 그린다
+	ShadowMaskVisualize,     // Shadow Mask 뷰 모드: 마스크를 화면에 띄운다
 	Count
 };
 

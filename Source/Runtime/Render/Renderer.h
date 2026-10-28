@@ -46,6 +46,8 @@ public:
 	FFXAARenderer* GetFXAA() const { return FXAA.get(); }
 	FTextRenderer* GetSceneText() const { return SceneText.get(); }
 
+	FConstantBuffer* GetToneMapConstants() const { return ToneMapConstants.get(); }
+
 private:
 	void EnsurePerObjectSlotCapacity(uint32 SlotCount);
 	void BindBatch(const FMeshDrawBatch& Batch);
@@ -54,6 +56,7 @@ private:
 	TUniquePtr<FConstantBuffer> ViewCB;
 	TUniquePtr<FConstantBuffer> MaterialCB;
 	TUniquePtr<FConstantBuffer> PerObjectSlotCB;
+	TUniquePtr<FConstantBuffer> ToneMapConstants;
 	uint32 PerObjectSlotCapacity = 0;
 	bool bUsePerObjectSlots = false;
 	TArray<ComPtr<ID3D11Query>> OcclusionQueries;

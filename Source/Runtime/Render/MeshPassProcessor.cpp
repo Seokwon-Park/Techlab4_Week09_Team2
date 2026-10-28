@@ -149,7 +149,7 @@ namespace
 		}
 		else
 		{
-			const FPerObjectConstants Constants = MakePerObjectConstants(World);
+			const FPerObjectConstants Constants = MakePerObjectConstants(World, bReceiveShadow);
 			std::memcpy(Item.ObjectData.data(), &Constants, sizeof(Constants));
 			Item.ObjectDataSize = sizeof(Constants);
 		}
@@ -231,7 +231,8 @@ bool FMeshPassProcessor::Build(const FSceneView& View, const FRenderQueue& Queue
 	return true;
 }
 
-bool FMeshPassProcessor::Build(const TArray<FPrimitiveSceneProxy*>& ShadowMeshes, EPSOType PSOType, TArray<FMeshDrawBatch>& OutBatches)
+bool FMeshPassProcessor::Build(const TArray<FPrimitiveSceneProxy*>& ShadowMeshes, EPSOType PSOType, TArray<FMeshDrawBatch>& OutBatches,
+	const FVector& PreTranslation)
 {
 	OutBatches.Reset();
 
@@ -289,9 +290,13 @@ bool FMeshPassProcessor::Build(const TArray<FPrimitiveSceneProxy*>& ShadowMeshes
 			Item.IndexCount = Section.IndexCount;
 			Item.ObjectKey = Proxy;
 
-			const FMatrix& World = Proxy->GetLocalToWorld();
-			std::memcpy(Item.ObjectData.data(), &World, sizeof(World));
-			Item.ObjectDataSize = sizeof(World);
+			// ShadowDepth.hlsl은 법선(NormalMatrix)으로 기울기 bias를 구하므로 World만이 아니라 오브젝트 상수 전체를 올린다.
+			FPerObjectConstants Constants = MakePerObjectConstants(Proxy->GetLocalToWorld());
+			Constants.World.M[3][0] += PreTranslation.X;
+			Constants.World.M[3][1] += PreTranslation.Y;
+			Constants.World.M[3][2] += PreTranslation.Z;
+			std::memcpy(Item.ObjectData.data(), &Constants, sizeof(Constants));
+			Item.ObjectDataSize = sizeof(Constants);
 
 			Batch.Items.Add(std::move(Item));
 		}

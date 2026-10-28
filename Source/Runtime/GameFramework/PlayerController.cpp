@@ -1,9 +1,13 @@
 #include "EnginePCH.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/Pawn.h"
+#include "Camera/PlayerCameraManager.h" 
+#include "Engine/World.h"               
+
 #include <cstring>
 
 APlayerController::APlayerController()
+	: ControlRotation(FRotator::Identitiy)
 {
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -25,6 +29,12 @@ void APlayerController::ProcessPlayerInput(float DeltaTime)
 	{
 		PossessedPawn->AddControllerYawInput(MouseAxisX * LookSensitivity);
 		PossessedPawn->AddControllerPitchInput(MouseAxisY * LookSensitivity);
+
+		// ControlRotation 업데이트
+		ControlRotation.Yaw += MouseAxisX * LookSensitivity;
+		ControlRotation.Pitch = FMath::Clamp(
+			ControlRotation.Pitch + MouseAxisY * LookSensitivity,
+			-89.9f, 89.9f);
 	}
 	MouseAxisX = MouseAxisY = 0.0f;
 	const FQuat Rotation = PossessedPawn->GetActorRotation().Quaternion();
@@ -37,7 +47,12 @@ void APlayerController::Possess(APawn* InPawn)
 	if (PossessedPawn == InPawn) return;
 	UnPossess();
 	PossessedPawn = InPawn;
-	if (PossessedPawn) PossessedPawn->PossessedBy(this);
+	if (PossessedPawn)
+	{
+		PossessedPawn->PossessedBy(this);
+		ControlRotation = PossessedPawn->GetActorRotation();
+	}
+	if (PlayerCameraManager) PlayerCameraManager->SetViewTarget(PossessedPawn);
 }
 
 void APlayerController::UnPossess()
@@ -62,4 +77,19 @@ void APlayerController::ClearInputState()
 {
 	std::memset(bKeyDown, 0, sizeof(bKeyDown));
 	MouseAxisX = MouseAxisY = 0.0f;
+}
+void APlayerController::SpawnPlayerCameraManager()
+{
+	// 중복생성방지
+	if (PlayerCameraManager || !GetWorld()) return;
+
+	PlayerCameraManager = GetWorld()->SpawnActor<APlayerCameraManager>();
+	PlayerCameraManager->InitializeFor(this);
+}
+void APlayerController::UpdateCameraManager(float DeltaTime)
+{
+	if (PlayerCameraManager)
+	{
+		PlayerCameraManager->UpdateCamera(DeltaTime);
+	}
 }

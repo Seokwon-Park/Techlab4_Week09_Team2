@@ -138,9 +138,9 @@
                             "Properties": {
                                 "Transform": {
                                     "Location": {
-                                        "X": -4.870816230773926,
+                                        "X": 0.0,
                                         "Y": 0.0,
-                                        "Z": 11.018167495727539
+                                        "Z": 0.0
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -161,8 +161,50 @@
                         {
                             "Class": "UCameraComponent",
                             "Name": "UCameraComponent_0",
+                            "Parent": "USpringArmComponent_0",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": -15.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 0.9999999403953552,
+                                        "Y": 1.0,
+                                        "Z": 0.9999999403953552
+                                    }
+                                },
+                                "bAutoActivate": false,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "USpringArmComponent",
+                            "Name": "USpringArmComponent_0",
                             "Parent": "DefaultSceneRoot",
                             "Properties": {
+                                "CameraLagMaxDistance": 0.0,
+                                "CameraLagSpeed": 10.0,
+                                "CameraRotationLagSpeed": 10.0,
+                                "ProbeSize": 0.11999999731779099,
+                                "SocketOffset": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
+                                "TargetArmLength": 15.0,
+                                "TargetOffset": {
+                                    "X": 0.0,
+                                    "Y": 0.0,
+                                    "Z": 0.0
+                                },
                                 "Transform": {
                                     "Location": {
                                         "X": 0.0,
@@ -170,7 +212,7 @@
                                         "Z": 0.0
                                     },
                                     "Rotation": {
-                                        "Pitch": 60.0,
+                                        "Pitch": 61.275840759277344,
                                         "Roll": 0.0,
                                         "Yaw": 0.0
                                     },
@@ -180,8 +222,17 @@
                                         "Z": 1.0
                                     }
                                 },
-                                "bAutoActivate": false,
+                                "bAutoActivate": true,
+                                "bDoCollisionTest": false,
+                                "bDrawDebug": true,
+                                "bDrawOnlyIfSelected": false,
+                                "bEnableCameraLag": true,
+                                "bEnableCameraRotationLag": true,
                                 "bHiddenInGame": false,
+                                "bInheritPitch": true,
+                                "bInheritRoll": true,
+                                "bInheritYaw": true,
+                                "bUsePawnControlRotation": false,
                                 "bVisible": true
                             }
                         }
@@ -228,12 +279,17 @@
                             "Parent": "DefaultSceneRoot",
                             "Properties": {
                                 "AngularRadiusDegrees": 3.0,
+                                "CascadeDistributionExponent": 3.0,
+                                "CascadeTransitionFraction": 0.10000000149011612,
+                                "DynamicShadowCascades": 4,
+                                "DynamicShadowDistanceMovableLight": 1000.0,
                                 "Intensity": 1.5,
                                 "LightColor": 4294967295,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
+                                "ShadowDistanceFadeoutFraction": 0.10000000149011612,
                                 "ShadowResolutionScale": 1.0,
                                 "ShadowSharpen": 0.0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": 0.0,
@@ -252,7 +308,7 @@
                                     }
                                 },
                                 "bAutoActivate": true,
-                                "bCastShadows": false,
+                                "bCastShadows": true,
                                 "bHiddenInGame": false,
                                 "bVisible": true
                             }
@@ -301,10 +357,10 @@
                             "Properties": {
                                 "Intensity": 0.4000000059604645,
                                 "LightColor": 4294967295,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1.0,
                                 "ShadowSharpen": 0.0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": 0.0,

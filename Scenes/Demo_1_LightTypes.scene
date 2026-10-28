@@ -111,10 +111,10 @@
                                 "AngularRadiusDegrees": 0.5,
                                 "Intensity": 0.6000000238418579,
                                 "LightColor": 4294967295,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1.0,
                                 "ShadowSharpen": 0.0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": 0.0,
@@ -493,10 +493,10 @@
                                 "LightColor": 4289386239,
                                 "LightFalloffExponent": 1.0,
                                 "OuterConeAngle": 34.0,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1.0,
                                 "ShadowSharpen": 0.0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "SourceRadius": 0.019999999552965164,
                                 "Transform": {
                                     "Location": {
@@ -874,10 +874,10 @@
                                 "Intensity": 4.0,
                                 "LightColor": 4294955690,
                                 "LightFalloffExponent": 1.0,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1.0,
                                 "ShadowSharpen": 0.0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "SourceRadius": 0.019999999552965164,
                                 "Transform": {
                                     "Location": {

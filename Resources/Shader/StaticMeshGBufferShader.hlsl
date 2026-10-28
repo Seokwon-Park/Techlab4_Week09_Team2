@@ -9,6 +9,7 @@ cbuffer WorldConstants : register(b2)
 {
     matrix World;
     matrix NormalMatrix;
+    float4 ShadowFlags; // x: bReceiveShadow
 };
 
 cbuffer MaterialParams : register(b1)
@@ -33,6 +34,7 @@ struct PS_INPUT
     float3 WorldNormal : NORMAL;
     float4 WorldTangent : TANGENT;
     float2 UV : TEXCOORD0;
+    nointerpolation float ReceiveShadow : TEXCOORD1; // 오브젝트 상수(b2)는 VS에만 묶이므로 VS가 넘긴다
 };
 
 struct GBUFFER_OUTPUT
@@ -77,6 +79,7 @@ PS_INPUT mainVS(VS_INPUT Input)
     float Handedness = Input.Tangent.w * (determinant((float3x3)World) < 0.0f ? -1.0f : 1.0f);
     Output.WorldTangent = float4(T, Handedness);
     Output.UV = Input.UV;
+    Output.ReceiveShadow = ShadowFlags.x;
     return Output;
 }
 
@@ -97,6 +100,8 @@ GBUFFER_OUTPUT mainPS(PS_INPUT Input)
 
     // 현재 UMaterial에는 Metallic/Roughness 값이 없어 임시 상수를 쓴다.
     Output.BaseColorMetallic = float4(LinearAlbedo, 0.0f);
-    Output.NormalRoughness = float4(Normal, 0.8f);
+    // bReceiveShadow가 꺼진 물체는 w를 음수(-Roughness - 1)로 저장한다. Deferred 조명이 그림자 마스크를 무시한다.
+    const float Roughness = 0.8f;
+    Output.NormalRoughness = float4(Normal, Input.ReceiveShadow > 0.5f ? Roughness : -Roughness - 1.0f);
     return Output;
 }

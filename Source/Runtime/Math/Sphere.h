@@ -37,3 +37,11 @@ struct FLODSphere
         return Result;
     }
 };
+
+struct FSphere
+{
+    FSphere(FVector InCenter, float InRadius) : Center(InCenter), Radius(InRadius) {}
+
+    FVector Center;
+    float Radius;
+};

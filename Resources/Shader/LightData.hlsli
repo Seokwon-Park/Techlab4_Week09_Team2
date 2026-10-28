@@ -10,8 +10,8 @@
 #define LIGHT_TYPE_SPOT  2
 #define LIGHT_TYPE_RECT  3
 
-// FLightRenderParameters::InvalidShadowIndex와 같은 값이다.
-#define INVALID_SHADOW_INDEX 0xFFFFFFFF
+// FLightRenderParameters::InvalidShadowMapChannel과 같은 값이다.
+#define INVALID_SHADOW_CHANNEL 0xFFFFFFFF
 
 struct FLightRenderParameters
 {
@@ -30,7 +30,7 @@ struct FLightRenderParameters
     float BarnDoorCos;      // Rect 전용: 발광면 가장자리의 문(Barn Door)
     float BarnDoorSin;
     float BarnDoorLength;
-    uint ShadowIndex;       // LightShadows에서 첫 그림자 뷰 위치, 없으면 INVALID_SHADOW_INDEX
+    uint ShadowMapChannel;  // ScreenShadowMask 채널 (Deferred 0, Forward 0~3), 없으면 INVALID_SHADOW_CHANNEL
     float SourceSize;       // Directional: tan(angular radius), Point/Spot: world radius
 };
 

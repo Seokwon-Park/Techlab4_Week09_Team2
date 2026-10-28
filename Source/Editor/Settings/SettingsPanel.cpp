@@ -86,6 +86,19 @@ void FSettingsPanel::OnRender()
 	//////////////////////////////////////////////////////////
 
 	ImGui::Dummy(ImVec2(0.0f, SectionGap));
+	ImGui::SeparatorText("Post Process");
+
+	ImGui::Checkbox("Gamma Correction", &Settings.bGammaCorrection);
+	ImGui::BeginDisabled(!Settings.bGammaCorrection);
+	ImGui::SetNextItemWidth(200.0f);
+	ImGui::SliderFloat("Display Gamma", &Settings.DisplayGamma, 1.0f, 3.0f, "%.2f", ImGuiSliderFlags_AlwaysClamp);
+	ImGui::EndDisabled();
+	ImGui::Checkbox("Vignette", &Settings.bShowVignette);
+	ImGui::Checkbox("Camera Fade / Letterbox", &Settings.bShowCameraOverlay);
+
+	//////////////////////////////////////////////////////////
+
+	ImGui::Dummy(ImVec2(0.0f, SectionGap));
 	ImGui::SeparatorText("Grid");
 
 	ImGui::Checkbox("Draw Batch Line / Grid", &Settings.bDrawBatchLine);
@@ -168,6 +181,12 @@ bool FSettingsPanel::SaveSettings() const
 	File << "DrawPSGrid=" << Settings.bDrawPSGrid << "\n";
 	File << "SceneDepthMaxRange=" << Settings.SceneDepthMaxRange << "\n";
 	File << "EnableFXAA=" << Settings.bEnableFXAA << "\n";
+
+	File << "GammaCorrection=" << Settings.bGammaCorrection << "\n";
+	File << "DisplayGamma=" << Settings.DisplayGamma << "\n";
+	File << "ShowVignette=" << Settings.bShowVignette << "\n";
+	File << "ShowCameraOverlay=" << Settings.bShowCameraOverlay << "\n";
+
 	File << "LightCullingMode=" << (Settings.LightCullingMode == ELightCullingMode::Off ? "Off" : Settings.LightCullingMode == ELightCullingMode::Tiled ? "Tiled" : "Clustered") << "\n";
 	File << "RenderingPath=" << (Settings.RenderingPath == ERenderingPath::Forward ? "Forward" : "Deferred") << "\n";
 	File << "LightingModel=" << (Settings.LightingModel == ELightingModel::Gouraud ? "Gouraud" :
@@ -258,7 +277,7 @@ bool FSettingsPanel::LoadSettings()
                     else if (Key == Prefix + "Wireframe" && (Value == 0 || Value == 1))
                         Settings.ViewWireframe[Index] = static_cast<int32>(Value);
 					else if (Key == Prefix + "Mode" && Value >= 0 &&
-						Value <= static_cast<int32>(EViewportMode::Cascade) && Value == static_cast<int32>(Value))
+						Value <= static_cast<int32>(EViewportMode::ShadowMask) && Value == static_cast<int32>(Value))
 						Settings.ViewMode[Index] = static_cast<int32>(Value);
                     else if (Key == Prefix + "LocationX")
                     {
@@ -312,6 +331,12 @@ bool FSettingsPanel::LoadSettings()
 				else if (Key == "DrawPSGrid") Settings.bDrawPSGrid = std::stoi(ValueStr);
 				else if (Key == "SceneDepthMaxRange") Settings.SceneDepthMaxRange = std::stof(ValueStr);
 				else if (Key == "EnableFXAA") Settings.bEnableFXAA = std::stoi(ValueStr);
+
+				else if (Key == "GammaCorrection")   Settings.bGammaCorrection = std::stoi(ValueStr);
+				else if (Key == "DisplayGamma")      Settings.DisplayGamma = std::stof(ValueStr);
+				else if (Key == "ShowVignette")      Settings.bShowVignette = std::stoi(ValueStr);
+				else if (Key == "ShowCameraOverlay") Settings.bShowCameraOverlay = std::stoi(ValueStr);
+
 				else if (Key == "LightCullingMode")
 				{
 					if (ValueStr == "Off") Settings.LightCullingMode = ELightCullingMode::Off;

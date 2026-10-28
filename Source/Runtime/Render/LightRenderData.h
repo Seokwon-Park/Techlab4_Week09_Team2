@@ -37,19 +37,11 @@ struct FForwardLightingConstants
 	FVector4 CameraPosition;
 	uint32 LightCounts[4];  // x: 포인트 개수, y: 스포트 개수, z: 방향광 개수, w: 렉트 개수
 	uint32 LightOffsets[4]; // 공유 조명 버퍼에서 각 종류가 시작되는 위치, 순서는 위와 같음
-	// 그림자 위치는 광원마다 FLightRenderParameters::ShadowIndex로 찾는다. 종류별 시작 위치는 두지 않는다.
+	// 그림자는 광원마다 FLightRenderParameters::ShadowMapChannel로 ScreenShadowMask에서 읽는다.
 	FVector4 SkyColorIntensity;
-	float CascadeShadowDistances[4];
-	uint32 CascadeShadowCount;
-	uint32 ShadowAtlasWidth;
-	uint32 ShadowAtlasHeight;
-	uint32 PcfMode;
-	float ShadowDepthBias;
-	float CascadeBlendRatio;         
-	float ShadowBiasPadding[2]{};
 };
 
-// LightData.hlsli의 FLightShadowRenderData와 같은 배치다. 그림자 뷰 하나(큐브 면, cascade 하나)마다 하나씩 만든다.
+// CPU 전용 그림자 뷰 설명 (Details 미리보기, 캐스케이드 경계 선, stat). 그림자 맵 한 장(Point 면, 캐스케이드)마다 하나. GPU에 올리지 않는다.
 struct FLightShadowRenderData
 {
 	FMatrix ViewProjection;
@@ -100,11 +92,4 @@ static_assert(offsetof(FForwardLightingConstants, CameraPosition) == 16);
 static_assert(offsetof(FForwardLightingConstants, LightCounts) == 32);
 static_assert(offsetof(FForwardLightingConstants, LightOffsets) == 48);
 static_assert(offsetof(FForwardLightingConstants, SkyColorIntensity) == 64);
-static_assert(offsetof(FForwardLightingConstants, CascadeShadowDistances) == 80);
-static_assert(offsetof(FForwardLightingConstants, CascadeShadowCount) == 96);
-static_assert(offsetof(FForwardLightingConstants, ShadowAtlasWidth) == 100);
-static_assert(offsetof(FForwardLightingConstants, ShadowAtlasHeight) == 104);
-static_assert(offsetof(FForwardLightingConstants, PcfMode) == 108);
-static_assert(offsetof(FForwardLightingConstants, ShadowDepthBias) == 112);
-static_assert(offsetof(FForwardLightingConstants, CascadeBlendRatio) == 116);
-static_assert(sizeof(FForwardLightingConstants) == 128);
+static_assert(sizeof(FForwardLightingConstants) == 80);

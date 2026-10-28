@@ -108,10 +108,10 @@
                                 "AngularRadiusDegrees": 1.5,
                                 "Intensity": 1.0,
                                 "LightColor": 4294967295,
-                                "ShadowBias": 0.009999999776482582,
+                                "ShadowBias": 0.5,
                                 "ShadowResolutionScale": 1.0,
                                 "ShadowSharpen": 0.0,
-                                "ShadowSlopeBias": 0.009999999776482582,
+                                "ShadowSlopeBias": 0.5,
                                 "Transform": {
                                     "Location": {
                                         "X": 0.0,

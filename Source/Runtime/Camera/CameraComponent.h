@@ -6,6 +6,7 @@
 #include "../Math/Rotator.h"
 #include "CameraComponent.generated.h"
 
+struct FMinimalViewInfo;
 
 UCLASS()
 class UCameraComponent : public USceneComponent
@@ -24,6 +25,7 @@ public:
 	FMatrix GetOrthogonalMatrix() const;
 	FMatrix GetProjectionMatrix() const;
 	FMatrix GetViewProjectionMatrix() const;
+	void GetCameraView(float DeltaTime, FMinimalViewInfo& OutPOV) const;
 
 	// Picking
 	FRay DeProjection(FVector2 MousePos, float ScreenW, float ScreenH);

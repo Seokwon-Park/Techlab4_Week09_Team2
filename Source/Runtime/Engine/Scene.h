@@ -11,13 +11,8 @@
 #include "Render/Renderer.h"
 #include "Render/SkyLightEnvironment.h"
 #include "Render/LightRenderData.h"
+#include "Render/LightSceneInfo.h"
 #include <unordered_map>
-
-struct FLightSceneInfo
-{
-	uint32 Id;
-	
-};
 
 class FScene
 {
@@ -71,6 +66,8 @@ public:
 	};
 	bool bElementListChanged = false;
 
+	// 그림자 렌더러가 쓰는 라이트 목록. Id가 인덱스이고, 지워진 칸은 nullptr로 남겨 다음 라이트가 재사용한다.
+	TArray<FLightSceneInfo*>              Lights;
 	TArray<FLocalLightSceneProxy*>        LocalLightProxies;      // ↔ PackedIndex ↔
 	TArray<FDirectionalLightSceneProxy*>  DirectionalLightProxies;
 	TArray<USkyLightComponent*>           SkyLights;               // 프록시 없음
