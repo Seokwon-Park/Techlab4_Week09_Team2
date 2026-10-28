@@ -2,7 +2,7 @@
 -- 골 액터 이름(StageN_Goal)에서 번호를 읽고 StageN+1_Start 액터 위치로 보낸다.
 -- 다음 Start가 없으면 마지막 Stage다. 그래서 Stage 개수나 간격이 바뀌어도 이 스크립트는 그대로 쓴다.
 local SPAWN_HEIGHT = 0.0
-local GOAL_FREEZE_SECONDS = 1.0 -- 골에 닿은 뒤 다음 Stage로 넘어가기 전까지 조작을 멈추는 시간
+local GOAL_FREEZE_SECONDS = 0.5 -- 골에 닿은 뒤 다음 Stage로 넘어가기 전까지 조작을 멈추는 시간
 local state = script_state
 
 local restartWidget = nil
@@ -47,6 +47,10 @@ function OnBeginOverlap(other)
     other:SetMovementEnabled(false) -- 멈춰 있는 동안 클릭/관성/장애물 충돌을 받지 않는다
     PlaySound2D("Assets/Sounds/Levelup.mp3")
     StartCoroutine(function()
+        -- 페이드 인/아웃
+        local seqA = GetActorByName("PadeInOutSequenceActor")
+        seqA:PlaySequence()
+
         wait(GOAL_FREEZE_SECONDS)
         state.used = false -- Q로 되돌아와 다시 도착해도 동작하도록 푼다
         if not other:IsValid() then return end

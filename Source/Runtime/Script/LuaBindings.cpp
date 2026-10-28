@@ -445,6 +445,20 @@ namespace
 				}
 				return sol::nullopt;
 			});
+		Lua.set_function("GetComponentByName", [](sol::this_environment Env, const std::string& Name) -> sol::optional<FLuaComponentRef>
+			{
+				AActor* Owner = OwnerFromEnv(Env);
+				if (!Owner) throw sol::error("GetComponentByName needs an Actor script context.");
+				for (UActorComponent* Component : Owner->GetComponents())
+				{
+					if (Component && Component->GetName() == Name)
+					{
+						return FLuaComponentRef::Make(Component);
+					}
+				}
+				return sol::nullopt;
+			});
+
 		Lua.set_function("SetViewTargetWithBlend",
 			[](sol::this_environment Env,
 				const FLuaActorRef& Target,
@@ -518,7 +532,65 @@ namespace
 					"SetCameraRelativeTransform: Actor has no camera component."
 				);
 			});
+	}
 
+	void RegisterComponent(sol::state& Lua)
+	{
+		Lua.new_usertype<FLuaComponentRef>("Component",
+			sol::no_constructor,
+			"IsValid", [](const FLuaComponentRef& R) { return R.Get() != nullptr; },
+			"Name", sol::property([](const FLuaComponentRef& R) { return Deref(R).GetName(); }),
+			"Owner", sol::property([](const FLuaComponentRef& R) { return FLuaActorRef::Make(Deref(R).GetOwner()); }),
+			"Location", sol::property(
+				// Getter
+				[](const FLuaComponentRef& Ref)
+				{
+					if (auto* SceneComp = Cast<USceneComponent>(&Deref(Ref)))
+					{
+						return SceneComp->GetRelativeLocation();
+					}
+					else
+					{
+						throw sol::error("Component is not a scene component.");
+					}
+				},
+				// Setter
+				[](const FLuaComponentRef& Ref, const FVector& V)
+				{
+					if (auto* SceneComp = Cast<USceneComponent>(&Deref(Ref)))
+					{
+						SceneComp->SetRelativeLocation(V);
+					}
+					else
+					{
+						throw sol::error("Component is not a scene component.");
+					}
+				}),
+			"Rotation", sol::property(
+				// Getter
+				[](const FLuaComponentRef& Ref) {
+					if (auto* SceneComp = Cast<USceneComponent>(&Deref(Ref)))
+					{
+						return SceneComp->GetRelativeRotation();
+					}
+					else
+					{
+						throw sol::error("Component is not a scene component.");
+					}
+				},
+				// Setter
+				[](const FLuaComponentRef& Ref, const FRotator& R)
+				{
+					if (auto* SceneComp = Cast<USceneComponent>(&Deref(Ref)))
+					{
+						SceneComp->SetRelativeRotation(R);
+					}
+					else
+					{
+						throw sol::error("Component is not a scene component.");
+					}
+				})
+		);
 	}
 
 	EKeyCode ToKeyCode(const std::string& Name)
@@ -844,6 +916,7 @@ namespace FLuaBindings
 		// TODO(B): wait, wait_until, wait_until_move_done, StartCoroutine
 		RegisterMath(Lua);
 		RegisterActor(Lua);
+		RegisterComponent(Lua);
 		RegisterInput(Lua);
 		RegisterCoroutine(Lua);
 		RegisterWidget(Lua);

@@ -4,6 +4,7 @@
 
 class AActor;
 class UWorld;
+class UActorComponent;
 
 struct FLuaActorRef
 {
@@ -17,4 +18,17 @@ struct FLuaActorRef
 	AActor* Get() const;
 };
 
+struct FLuaComponentRef
+{
+	UWorld* World = nullptr;
+	AActor* Owner = nullptr;
+	UActorComponent* Ptr = nullptr;
+	uint32 UUID = 0;
+	static FLuaComponentRef Make(UActorComponent* Component);
+	// 살아 있으면 컴포넌트, 파괴됐으면 nullptr
+	UActorComponent* Get() const;
+
+};
+
 AActor& Deref(const FLuaActorRef& Ref);
+UActorComponent& Deref(const FLuaComponentRef& Ref);
