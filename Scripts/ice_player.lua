@@ -33,6 +33,13 @@ local function InitMovementState()
     end
 end
 
+local function ResetCameraLag()
+    local events = _G.GameEvents
+    if events and events.ResetPlayerCameraLag then
+        events.ResetPlayerCameraLag()
+    end
+end
+
 local function Respawn()
     obj:ResetMovement()
     obj.Location = _G.RespawnLocation or player.spawnLocation
@@ -92,6 +99,7 @@ local function MoveStage(offset)
 
     _G.RespawnLocation = target.Location + FVector(0, 0, 0)
     Respawn()
+    ResetCameraLag()
     print("[Dev] Stage " .. current .. " -> " .. (current + offset))
 end
 
@@ -231,6 +239,10 @@ function BeginPlay()
     InitMovementState()
     UpdateIceState()
 
+SetCameraRelativeTransform(obj,
+    FVector(-2.0, 0.0, 3.0),
+    FRotator(0.0, 0.0, 0.0)
+)
     -- delegate 등록
     _G.GameEvents = _G.GameEvents or {}
     _G.GameEvents.RespawnPlayer = Respawn
@@ -270,7 +282,7 @@ function Tick(dt)
         end
     end
 if IsKeyPressed("1") then
-    local ok = SetViewTargetWithBlend(obj, 1.5, "EaseInOut", 2.0)
+    local ok = SetViewTargetWithBlend(obj, 1.0, "EaseInOut", 2.0)
     print("[CameraTest] 맹독충 시점 요청:", ok)
 end
 

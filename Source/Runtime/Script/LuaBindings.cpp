@@ -10,6 +10,7 @@
 #include "Components/ParticleSubUVComponent.h"
 #include "Core/EngineTimer.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Input/InputSystem.h"
 #include "Script/LuaActorRef.h"
 #include "Script/LuaWidgetRef.h"
@@ -25,7 +26,7 @@
 #include "UI/TextBlock.h"
 #include "Camera/PlayerCameraManager.h"
 #include "GameFramework/PlayerController.h"
-
+#include "Camera/CameraComponent.h"
 #include "Asset/AssetManager.h"
 #include "Components/AudioComponent.h"
 #include "Engine/Classes/Sound/SoundWave.h"
@@ -207,6 +208,13 @@ namespace
 		throw sol::error("Actor does not have a ParticleSubUVComponent.");
 	}
 
+	USpringArmComponent& CameraArm(const FLuaActorRef& Ref)
+	{
+		for (UActorComponent* Comp : Deref(Ref).GetComponents())
+			if (auto* Arm = Cast<USpringArmComponent>(Comp)) return *Arm;
+		throw sol::error("Actor does not have a SpringArmComponent.");
+	}
+
 	void RegisterActor(sol::state& Lua)
 	{
 		Lua.new_usertype<FLuaActorRef>("Actor",
@@ -385,6 +393,21 @@ namespace
 			sol::meta_function::to_string, [](const FLuaActorRef& Ref)
 			{
 				return std::format("Actor#{}", Ref.UUID);
+			},
+
+			"CameraLagEnabled", sol::property(
+				[](const FLuaActorRef& Ref)
+				{
+					return CameraArm(Ref).bEnableCameraLag;
+				},
+				[](const FLuaActorRef& Ref, bool b)
+				{
+					CameraArm(Ref).bEnableCameraLag = b;
+				}
+			),
+			"ResetCameraLag", [](const FLuaActorRef& Ref)
+			{
+				CameraArm(Ref).ResetCameraLag();
 			}
 		);
 
@@ -452,7 +475,32 @@ namespace
 					throw sol::error("IsCameraBlending: camera manager is unavailable.");
 
 				return PCM->IsBlending();
-			});	}
+			});	
+		Lua.set_function("SetCameraRelativeTransform",
+			[](const FLuaActorRef& Ref,
+				const FVector& RelativeLocation,
+				const FRotator& RelativeRotation)
+			{
+				AActor& Actor = Deref(Ref);
+
+				for (UActorComponent* Component : Actor.GetComponents())
+				{
+					if (UCameraComponent* Camera = Cast<UCameraComponent>(Component))
+					{
+						Camera->SetRelativeLocationAndRotation(
+							RelativeLocation,
+							RelativeRotation
+						);
+						return;
+					}
+				}
+
+				throw sol::error(
+					"SetCameraRelativeTransform: Actor has no camera component."
+				);
+			});
+
+}
 
 	EKeyCode ToKeyCode(const std::string& Name)
 	{
