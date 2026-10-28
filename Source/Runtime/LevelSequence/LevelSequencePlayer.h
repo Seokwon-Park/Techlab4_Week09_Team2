@@ -6,6 +6,7 @@
 class ULevelSequence;
 class ALevelSequenceActor;
 class UCameraComponent;
+class AActor;
 
 // UE FOnLevelSequencePlayerCameraCutEvent
 using FOnLevelSequencePlayerCameraCutEvent = TDelegate<UCameraComponent*>;
@@ -32,4 +33,9 @@ public:
 
 protected:
 	void UpdateCameraCut(UObject* CameraObject, float BlendTime) override;
+
+private:
+	AActor* SavedViewTarget = nullptr;
+	uint32 SavedViewTargetUUID = 0;
+	bool bHasSavedViewTarget = false;
 };

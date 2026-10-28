@@ -20,7 +20,7 @@
                                     "Rotation": {
                                         "Pitch": 0.0,
                                         "Roll": 0.0,
-                                        "Yaw": 0.0
+                                        "Yaw": 90.0
                                     },
                                     "Scale": {
                                         "X": 1.0,
@@ -124,6 +124,34 @@
                         {
                             "Class": "UCameraComponent",
                             "Name": "UCameraComponent_0",
+                            "Name": "PlayerCamera",
+                            "Parent": "USpringArmComponent_0",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": -3.0,
+                                        "Y": -3.552713678800501e-15,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        },
+                        {
+                            "Class": "USpringArmComponent",
+                            "Name": "USpringArmComponent_0",
                             "Parent": "DefaultSceneRoot",
                             "Properties": {
                                 "Transform": {
@@ -166,7 +194,7 @@
                                     "Location": {
                                         "X": 0.0,
                                         "Y": 0.0,
-                                        "Z": 0.0
+                                        "Z": 0.5
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
@@ -817,7 +845,7 @@
                                     },
                                     "Rotation": {
                                         "Pitch": 0.0,
-                                        "Roll": 0.0,
+                                        "Roll": 0.1580369472503662,
                                         "Yaw": 0.0
                                     },
                                     "Scale": {
@@ -122398,6 +122426,96 @@
                         "ScriptPath": "Scripts/ice_intro.lua",
                         "StartTime": 0.0,
                         "bActorEnableCollision": false,
+                        "bAutoPlay": false,
+                        "bDisableCameraCuts": false,
+                        "bPauseAtEnd": false,
+                        "bRestoreState": true
+                    }
+                },
+                {
+                    "Class": "ALevelSequenceActor",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "FadeInOutSequenceActor",
+                    "Properties": {
+                        "LevelSequenceAsset": "Assets/Sequences/FadeInOut.sequence",
+                        "LoopCount": 0,
+                        "PlayRate": 1.0,
+                        "ScriptPath": "Scripts/ice_intro.lua",
+                        "StartTime": 0.0,
+                        "bActorEnableCollision": false,
+                        "bAutoPlay": false,
+                        "bDisableCameraCuts": false,
+                        "bPauseAtEnd": false,
+                        "bRestoreState": true
+                    }
+                },
+                {
+                    "Class": "ALevelSequenceActor",
+                    "Components": [
+                        {
+                            "Class": "USceneComponent",
+                            "Name": "DefaultSceneRoot",
+                            "Parent": "",
+                            "Properties": {
+                                "Transform": {
+                                    "Location": {
+                                        "X": 0.0,
+                                        "Y": 0.0,
+                                        "Z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "Pitch": 0.0,
+                                        "Roll": 0.0,
+                                        "Yaw": 0.0
+                                    },
+                                    "Scale": {
+                                        "X": 1.0,
+                                        "Y": 1.0,
+                                        "Z": 1.0
+                                    }
+                                },
+                                "bAutoActivate": true,
+                                "bHiddenInGame": false,
+                                "bVisible": true
+                            }
+                        }
+                    ],
+                    "Name": "StartLevelCinematicActor",
+                    "Properties": {
+                        "LevelSequenceAsset": "Assets/Sequences/StartLevelCinematic.sequence",
+                        "LoopCount": 0,
+                        "PlayRate": 1.0,
+                        "ScriptPath": "",
+                        "StartTime": 0.0,
+                        "bActorEnableCollision": true,
                         "bAutoPlay": false,
                         "bDisableCameraCuts": false,
                         "bPauseAtEnd": false,
