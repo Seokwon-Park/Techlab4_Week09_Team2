@@ -231,6 +231,10 @@ function BeginPlay()
     InitMovementState()
     UpdateIceState()
 
+SetCameraRelativeTransform(obj,
+    FVector(-2.0, 0.0, 3.0),
+    FRotator(0.0, 0.0, 0.0)
+)
     -- delegate 등록
     _G.GameEvents = _G.GameEvents or {}
     _G.GameEvents.RespawnPlayer = Respawn
@@ -270,7 +274,7 @@ function Tick(dt)
         end
     end
 if IsKeyPressed("1") then
-    local ok = SetViewTargetWithBlend(obj, 1.5, "EaseInOut", 2.0)
+    local ok = SetViewTargetWithBlend(obj, 1.0, "EaseInOut", 2.0)
     print("[CameraTest] 맹독충 시점 요청:", ok)
 end
 
