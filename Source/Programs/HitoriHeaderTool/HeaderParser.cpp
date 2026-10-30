@@ -30,19 +30,17 @@ namespace
         { "ScriptCallable", "FUNC_ScriptCallable" },
     };
 
-    // UPROPERTY(Type=Color) 에 쓸 수 있는 EPropertyType 이름
-    constexpr const char* PropertyTypeNames[] =
-    {
-        "Float", "Int", "String", "Bool", "Vector", "Vector4", "Color", "LinearColor", "Rotator", "Transform", "Object",
-    };
+    // UPROPERTY(Type=LinearColor): 멤버 타입이 정하는 프로퍼티 클래스 대신 F<이름>Property를 쓴다 (Runtime/UObject/Property.h).
+    // 크기가 같은 타입끼리 위젯만 바꾸는 용도라서, 크기가 다르면 AddProperty의 static_assert가 막는다.
+    constexpr const char* PropertyTypeNames[] = { "Color", "LinearColor" };
 
     // UPROPERTY(meta=(...)) 키. 순서는 Runtime/UObject/Property.h의 FPropertyMeta 필드 순서와 같아야 한다.
     // 생성 코드가 C++20 지정 초기화(FPropertyMeta{ .ClampMin = ..., .Delta = ... })를 쓰기 때문이다.
     constexpr const char* PropertyMetaKeys[] = { "ClampMin", "ClampMax", "UIMin", "UIMax", "Delta" };
     constexpr int PropertyMetaKeyCount = (int)std::size(PropertyMetaKeys);
 
-    // meta를 무시하는 위젯(색상 선택기, 체크박스 등)을 쓰는 Type=
-    constexpr const char* NonNumericTypeNames[] = { "String", "Bool", "Color", "LinearColor", "Transform", "Object" };
+    // meta를 무시하는 위젯(색상 선택기)을 쓰는 Type=
+    constexpr const char* NonNumericTypeNames[] = { "Color", "LinearColor" };
 
     std::string Quote(const std::string& Text) { return "'" + Text + "'"; }
 
@@ -797,7 +795,7 @@ void FHeaderParser::ResolvePropertySpecifiers(const std::vector<FSpecifier>& Spe
                 [&](const char* Name) { return Specifier.Value == Name; });
             if (!bValidType)
             {
-                Error(Specifier.Line, "Type=" + Specifier.Value + ": not an EPropertyType name.");
+                Error(Specifier.Line, "Type=" + Specifier.Value + ": only Color and LinearColor are allowed for Type=. Other property types come from the member type.");
                 continue;
             }
             Property.TypeOverride = Specifier.Value;

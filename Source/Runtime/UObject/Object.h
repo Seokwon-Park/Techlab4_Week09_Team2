@@ -11,32 +11,10 @@
 #include "Serialization/StructuredArchiveSlots.h"
 
 class UClass;
-struct FProperty;
+class FProperty;
 // Property Reflection
 
 #define INVALID_OBJECT ((UObject*)-1)
-
-#define REFLECT_START(ClassName) \
-public: \
-	inline static void RegisterProperties(UClass* InClass) \
-	{
-
-#define PROPERTY(PropertyName) \
-    InClass->AddProperty<decltype(ThisClass::PropertyName)>(#PropertyName, offsetof(ThisClass, PropertyName));
-
-#define PROPERTY_TYPE(PropertyName, PropertyType) \
-    InClass->AddProperty<decltype(ThisClass::PropertyName)>(#PropertyName, offsetof(ThisClass, PropertyName), EPropertyType::##PropertyType);
-
-// Flags: EPropertyFlags 조합 (예: CPF_VisibleAnywhere, CPF_EditAnywhere | CPF_Transient)
-#define PROPERTY_FLAGS(PropertyName, Flags) \
-    InClass->AddProperty<decltype(ThisClass::PropertyName)>(#PropertyName, offsetof(ThisClass, PropertyName), Flags);
-
-#define PROPERTY_TYPE_FLAGS(PropertyName, PropertyType, Flags) \
-    InClass->AddProperty<decltype(ThisClass::PropertyName)>(#PropertyName, offsetof(ThisClass, PropertyName), EPropertyType::##PropertyType, Flags);
-
-#define REFLECT_END()\
-	};\
-private:
 
 // 추상 클래스는 생성자를 등록하지 않는다.
 // 템플릿이어야 버려진 if constexpr 분기의 new T()가 컴파일되지 않고,
@@ -65,7 +43,11 @@ public:                                                                 \
 			{															\
 				ClassName::RegisterProperties(&c);						\
 			}															\
-			RegisterClass(&c);											\
+            if (&ClassName::RegisterFunctions != &Super::RegisterFunctions) \
+            {															\
+                ClassName::RegisterFunctions(&c);                       \
+            }															\
+            RegisterClass(&c);                                          \
             bIsInit = true;                                             \
         }                                                               \
         return &c;                                                      \
@@ -101,11 +83,12 @@ public:
 	void SetName(const FName& InName) { Name = FName(InName); }
 
 	inline static void RegisterProperties(UClass* InClass) {};
+	inline static void RegisterFunctions(UClass* InClass) {};   // 추가
 
 	inline void SetFlags(EObjectFlags NewFlags) { Flags |= NewFlags; }
 	inline void ClearFlags(EObjectFlags FlagsToClear) { Flags &= ~FlagsToClear; }
 	inline bool HasAnyFlags(EObjectFlags FlagsToCheck) const { return HasFlag(Flags, FlagsToCheck); }
-	inline bool HasAllFlags(EObjectFlags FlagsToCheck) const { return (Flags & FlagsToCheck) == FlagsToCheck; }
+	inline bool HasAllFlags(EObjectFlags FlagsToCheck) const { return (Flags & FlagsToCheck) == FlagsToCheck; } 
 	inline EObjectFlags GetFlags() const { return Flags; }
 	EObjectFlags GetMaskedFlags(EObjectFlags Mask = EObjectFlags::RF_AllFlags) const{return EObjectFlags(GetFlags() & Mask);}
 

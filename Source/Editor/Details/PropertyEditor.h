@@ -2,7 +2,7 @@
 
 struct ImFont;
 class UObject;
-struct FProperty;
+class FProperty;
 
 namespace FPropertyEditor
 {

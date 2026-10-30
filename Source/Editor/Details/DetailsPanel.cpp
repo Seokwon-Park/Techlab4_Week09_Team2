@@ -32,6 +32,41 @@
 
 namespace
 {
+	struct FDragSettings
+	{
+		float Speed;
+		float Min;
+		float Max;
+	};
+
+	FDragSettings GetDragSettings(const FPropertyMeta& Meta, float DefaultSpeed)
+	{
+		const float Min = (std::max)(Meta.UIMin, Meta.ClampMin);
+		const float Max = (std::min)(Meta.UIMax, Meta.ClampMax);
+		const bool bHasRange = Min > -FLT_MAX || Max < FLT_MAX;
+		return { Meta.Delta > 0.0f ? Meta.Delta : DefaultSpeed, bHasRange ? Min : 0.0f, bHasRange ? Max : 0.0f };
+	}
+
+	int32 ToIntBound(float Value)
+	{
+		if (Value <= static_cast<float>(INT_MIN)) return INT_MIN;
+		if (Value >= static_cast<float>(INT_MAX)) return INT_MAX;
+		return static_cast<int32>(Value);
+	}
+
+	// 드래그 범위와 별개로, Ctrl+클릭으로 직접 입력한 값도 Clamp 범위로 자른다.
+	void ClampToMeta(float* Values, int32 Count, const FPropertyMeta& Meta)
+	{
+		if (!Meta.HasClamp())
+		{
+			return;
+		}
+		for (int32 Index = 0; Index < Count; ++Index)
+		{
+			Values[Index] = std::clamp(Values[Index], Meta.ClampMin, Meta.ClampMax);
+		}
+	}
+
 	void DrawScriptSection(AActor* Actor)
 	{
 		ImGui::SeparatorText("Lua Script");
@@ -399,12 +434,13 @@ namespace
 			if (ImGui::IsItemHovered()) {
 				ImGui::SetTooltip("%s", Texture->GetPath().c_str());
 			}
-		} else {
+		}
+		else {
 			ImGui::Button("Empty", { ThumbnailSize, ThumbnailSize });
 		}
 
 		if (ImGui::BeginDragDropTarget()) {
-			if (const ImGuiPayload* Payload{ ImGui::AcceptDragDropPayload(EditorDragDrop::Texture) }) {
+			if (const ImGuiPayload * Payload{ ImGui::AcceptDragDropPayload(EditorDragDrop::Texture) }) {
 				UTexture2D* DroppedTexture{ *static_cast<UTexture2D**>(Payload->Data) };
 				if (SetMaterialTexture(MeshComponent, MaterialSlot, TextureSlot, DroppedTexture, Effective, Override)) {
 					Texture = DroppedTexture;
@@ -531,14 +567,14 @@ namespace
 					}
 
 					ImGui::TableNextRow();
-					
+
 					ImGui::TableSetColumnIndex(0);
 					ImGui::Text("Shininess");
-					
+
 					ImGui::TableSetColumnIndex(1);
 					ImGui::SetNextItemWidth(-1.0f);
-					
-					float TempShininess =Effective ? Effective->Shininess : 32.0f;
+
+					float TempShininess = Effective ? Effective->Shininess : 32.0f;
 					if (ImGui::DragFloat("##Shininess", &TempShininess, 0.5f, 1.0f, 256.0f))
 					{
 						Override = EnsureMaterialOverride(MeshComponent, Slot, Effective, Override);
@@ -550,7 +586,7 @@ namespace
 					}
 
 					ImGui::TableNextRow();
-					
+
 					// 4: UV Scroll Speed
 					ImGui::TableSetColumnIndex(0);
 					ImGui::Text("UV Scroll");
@@ -635,10 +671,191 @@ namespace
 		}
 	}
 
-	// UClass에 등록된 프로퍼티를 타입에 맞는 위젯으로 그린다
+	uint32 ToUIntBound(float Value)
+	{
+		if (Value <= 0.0f) return 0;
+		if (Value >= static_cast<float>(UINT_MAX)) return UINT_MAX;
+		return static_cast<uint32>(Value);
+	}
+
+	// 프로퍼티 타입에 맞는 위젯 하나를 그린다. 값이 바뀌면 true
+	// UE도 FProperty는 위젯을 모르고, 에디터(PropertyEditor 모듈)가 CastField로 타입을 보고 위젯을 고른다.
+	bool DrawPropertyValue(UObject* Object, const FProperty& Property, void* ValuePtr, const char* Label, ImFont* CustomFont)
+	{
+		if (const FFloatProperty* FloatProperty = CastField<FFloatProperty>(&Property))
+		{
+			float* Value = &FloatProperty->GetPropertyValue(ValuePtr);
+			const FDragSettings Drag = GetDragSettings(FloatProperty->Meta, 0.1f);
+			const bool bChanged = ImGui::DragFloat(Label, Value, Drag.Speed, Drag.Min, Drag.Max);
+			if (bChanged) ClampToMeta(Value, 1, FloatProperty->Meta);
+			return bChanged;
+		}
+		if (const FIntProperty* IntProperty = CastField<FIntProperty>(&Property))
+		{
+			int32* Value = &IntProperty->GetPropertyValue(ValuePtr);
+			const FPropertyMeta& Meta = IntProperty->Meta;
+			const FDragSettings Drag = GetDragSettings(Meta, 1.0f);
+			const bool bChanged = ImGui::DragInt(Label, Value, Drag.Speed, ToIntBound(Drag.Min), ToIntBound(Drag.Max));
+			if (bChanged && Meta.HasClamp())
+			{
+				*Value = ToIntBound(std::clamp(static_cast<float>(*Value), Meta.ClampMin, Meta.ClampMax));
+			}
+			return bChanged;
+		}
+		if (const FUInt32Property* UIntProperty = CastField<FUInt32Property>(&Property))
+		{
+			uint32* Value = &UIntProperty->GetPropertyValue(ValuePtr);
+			const FPropertyMeta& Meta = UIntProperty->Meta;
+			const FDragSettings Drag = GetDragSettings(Meta, 1.0f);
+			const uint32 Min = ToUIntBound(Drag.Min);
+			const uint32 Max = Drag.Min < Drag.Max ? ToUIntBound(Drag.Max) : UINT_MAX;
+			const bool bChanged = ImGui::DragScalar(Label, ImGuiDataType_U32, Value, Drag.Speed, &Min, &Max);
+			if (bChanged && Meta.HasClamp())
+			{
+				*Value = ToUIntBound(std::clamp(static_cast<float>(*Value), Meta.ClampMin, Meta.ClampMax));
+			}
+			return bChanged;
+		}
+		if (const FVectorProperty* VectorProperty = CastField<FVectorProperty>(&Property))
+		{
+			FVector& Value = VectorProperty->GetPropertyValue(ValuePtr);
+			const FDragSettings Drag = GetDragSettings(VectorProperty->Meta, 0.1f);
+			const bool bChanged = ImGui::DragFloat3(Label, Value.V, Drag.Speed, Drag.Min, Drag.Max);
+			if (bChanged) ClampToMeta(Value.V, 3, VectorProperty->Meta);
+			return bChanged;
+		}
+		if (const FRotatorProperty* RotatorProperty = CastField<FRotatorProperty>(&Property))
+		{
+			FRotator& Value = RotatorProperty->GetPropertyValue(ValuePtr);
+			// Transform의 Rotation과 같은 X/Y/Z 축 순서로 보여준다.
+			float Euler[3] = { Value.Roll, Value.Pitch, Value.Yaw };
+			const FDragSettings Drag = GetDragSettings(RotatorProperty->Meta, 0.1f);
+			if (ImGui::DragFloat3(Label, Euler, Drag.Speed, Drag.Min, Drag.Max))
+			{
+				ClampToMeta(Euler, 3, RotatorProperty->Meta);
+				Value.Roll = Euler[0];
+				Value.Pitch = Euler[1];
+				Value.Yaw = Euler[2];
+			}
+			return false;
+		}
+		if (const FVector4Property* Vector4Property = CastField<FVector4Property>(&Property))
+		{
+			FVector4& Value = Vector4Property->GetPropertyValue(ValuePtr);
+			const FDragSettings Drag = GetDragSettings(Vector4Property->Meta, 0.1f);
+			const bool bChanged = ImGui::DragFloat4(Label, &Value.X, Drag.Speed, Drag.Min, Drag.Max);
+			if (bChanged) ClampToMeta(&Value.X, 4, Vector4Property->Meta);
+			return bChanged;
+		}
+		if (const FBoolProperty* BoolProperty = CastField<FBoolProperty>(&Property))
+		{
+			return ImGui::Checkbox(Label, &BoolProperty->GetPropertyValue(ValuePtr));
+		}
+		if (const FEnumProperty* EnumProperty = CastField<FEnumProperty>(&Property))
+		{
+			// UENUM: 이름 목록으로 콤보박스를 그린다. UMETA(Hidden) 항목은 목록에서 뺀다.
+			const FEnumInfo* EnumInfo = EnumProperty->Enum;
+			if (!EnumInfo)
+			{
+				ImGui::TextDisabled("(No enum info)");
+				return false;
+			}
+			bool bChanged = false;
+			const int64 Current = EnumProperty->GetValue(ValuePtr);
+			const FString Preview = EnumInfo->ToName(Current);
+			if (ImGui::BeginCombo(Label, Preview.c_str()))
+			{
+				for (const FEnumEntry& Entry : EnumInfo->Entries)
+				{
+					if (Entry.bHidden)
+					{
+						continue;
+					}
+					const bool bSelected = Entry.Value == Current;
+					if (ImGui::Selectable(Entry.Name.c_str(), bSelected) && !bSelected)
+					{
+						EnumProperty->SetValue(ValuePtr, Entry.Value);
+						bChanged = true;
+					}
+					if (bSelected)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+			return bChanged;
+		}
+		if (const FColorProperty* ColorProperty = CastField<FColorProperty>(&Property))
+		{
+			FColor& C = ColorProperty->GetPropertyValue(ValuePtr);
+			float V[4] = { C.R / 255.f, C.G / 255.f, C.B / 255.f, C.A / 255.f };
+			if (ImGui::ColorEdit4(Label, V))
+			{
+				C = FColor(uint8(V[0] * 255.f + 0.5f), uint8(V[1] * 255.f + 0.5f),
+					uint8(V[2] * 255.f + 0.5f), uint8(V[3] * 255.f + 0.5f));
+				return true;
+			}
+			return false;
+		}
+		if (const FLinearColorProperty* LinearColorProperty = CastField<FLinearColorProperty>(&Property))
+		{
+			return ImGui::ColorEdit4(Label, LinearColorProperty->GetPropertyValue(ValuePtr).RGBA);
+		}
+		if (const FStrProperty* StrProperty = CastField<FStrProperty>(&Property))
+		{
+			FString& Value = StrProperty->GetPropertyValue(ValuePtr);
+
+			char Buffer[256] = {};
+			strncpy_s(Buffer, Value.c_str(), sizeof(Buffer) - 1);
+			if (CustomFont) ImGui::PushFont(CustomFont);
+			if (ImGui::InputText(Label, Buffer, sizeof(Buffer)))
+			{
+				Value = Buffer;
+			}
+			if (CustomFont) ImGui::PopFont();
+			return false;
+		}
+		if (const FTransformProperty* TransformProperty = CastField<FTransformProperty>(&Property))
+		{
+			FTransform& Value = TransformProperty->GetPropertyValue(ValuePtr);
+
+			ImGui::NewLine();
+
+			bool bChanged = false;
+			bChanged |= DrawVector3Controller("Location", Value.Location.V, 0.0f, 55.0f);
+			bChanged |= DrawRotatorAsXYZ("Rotation", Value.Rotation);
+			bChanged |= DrawVector3Controller("Scale", Value.Scale.V, 1.0f, 55.0f);
+			return bChanged;
+		}
+		if (const FObjectProperty* ObjectProperty = CastField<FObjectProperty>(&Property))
+		{
+			UObject** ObjPtr = &ObjectProperty->GetPropertyValue(ValuePtr);
+			const UClass* PropertyClass = ObjectProperty->PropertyClass;
+
+			if (PropertyClass == UMaterial::StaticClass())
+			{
+				DrawTextureSlot(reinterpret_cast<UMaterial**>(ObjPtr), 0);
+			}
+			else if (PropertyClass == UFont::StaticClass())
+			{
+				DrawFontSlot(Object, reinterpret_cast<UFont**>(ObjPtr));
+			}
+			else if (PropertyClass == UStaticMesh::StaticClass())
+			{
+				DrawMeshSlot(Object, reinterpret_cast<UStaticMesh**>(ObjPtr));
+			}
+			return false;
+		}
+
+		ImGui::TextDisabled("(Unsupported %s)", Property.GetClass()->GetName());
+		return false;
+	}
+
+	// UClass에 등록된 프로퍼티 한 줄: 라벨과 값 위젯
 	void DrawProperty(UObject* Object, const FProperty& Property, ImFont* CustomFont)
 	{
-		void* ValuePtr = reinterpret_cast<char*>(Object) + Property.Offset;
+		void* ValuePtr = Property.ContainerPtrToValuePtr(Object);
 		const FString Label = "##" + Property.Name;
 
 		const char* DisplayName = Property.Name.c_str();
@@ -648,145 +865,17 @@ namespace
 		const float AvailableWidth = ImGui::GetContentRegionAvail().x;
 		const float LabelWidth = AvailableWidth * 0.45f;
 
-		const bool bInline = Property.Type != EPropertyType::Transform && AvailableWidth >= 260.0f && ImGui::CalcTextSize(DisplayName).x < LabelWidth;
+		const bool bInline = !Property.IsA<FTransformProperty>() && AvailableWidth >= 260.0f && ImGui::CalcTextSize(DisplayName).x < LabelWidth;
 
 		ImGui::AlignTextToFramePadding();
 		ImGui::TextWrapped("%s", DisplayName);
 
 		if (bInline)
-		{
-			ImGui::SameLine();
-			ImGui::SetCursorPosX(StartX + LabelWidth);
-		}
+			ImGui::SameLine(StartX + LabelWidth);
 
 		ImGui::SetNextItemWidth(-1.0f);
 
-		bool bChanged = false;
-
-		switch (Property.Type)
-		{
-		case EPropertyType::Float:
-			bChanged = ImGui::DragFloat(Label.c_str(), static_cast<float*>(ValuePtr), 0.1f);
-			break;
-		case EPropertyType::Int:
-			bChanged = ImGui::DragInt(Label.c_str(), static_cast<int*>(ValuePtr), 1.0f);
-			break;
-		case EPropertyType::Bool:
-			bChanged = ImGui::Checkbox(Label.c_str(), static_cast<bool*>(ValuePtr));
-			break;
-		case EPropertyType::Vector:
-		{
-			FVector* Value = static_cast<FVector*>(ValuePtr);
-			bChanged = ImGui::DragFloat3(Label.c_str(), Value->V, 0.1f);
-			break;
-		}
-		case EPropertyType::Rotator:
-		{
-			FRotator* Value = static_cast<FRotator*>(ValuePtr);
-			// Transform의 Rotation과 같은 X/Y/Z 축 순서로 보여준다.
-			float Euler[3] = { Value->Roll, Value->Pitch, Value->Yaw };
-			if (ImGui::DragFloat3(Label.c_str(), Euler, 0.1f))
-			{
-				Value->Roll = Euler[0];
-				Value->Pitch = Euler[1];
-				Value->Yaw = Euler[2];
-			}
-			break;
-		}
-
-
-		case EPropertyType::Vector4:
-		{
-			FVector4* Value = static_cast<FVector4*>(ValuePtr);
-			bChanged = ImGui::DragFloat4(Label.c_str(), &Value->X, 0.1f);
-			break;
-		}
-
-		case EPropertyType::Color:
-		{
-			FColor* C = static_cast<FColor*>(ValuePtr);
-			float V[4] = { C->R / 255.f, C->G / 255.f, C->B / 255.f, C->A / 255.f };
-			if (ImGui::ColorEdit4(Label.c_str(), V))
-			{
-				*C = FColor(uint8(V[0] * 255.f + 0.5f), uint8(V[1] * 255.f + 0.5f),
-					uint8(V[2] * 255.f + 0.5f), uint8(V[3] * 255.f + 0.5f));
-				bChanged = true;
-			}
-			break;
-		}
-
-		case EPropertyType::LinearColor:
-		{
-			// 타입은 Vector4와 같고 위젯만 색상 선택기다
-			FLinearColor* Value = static_cast<FLinearColor*>(ValuePtr);
-			bChanged = ImGui::ColorEdit4(Label.c_str(), &Value->R);
-			break;
-		}
-		case EPropertyType::String:
-		{
-			FString* Value = static_cast<FString*>(ValuePtr);
-
-			char Buffer[256] = {};
-			strncpy_s(Buffer, Value->c_str(), sizeof(Buffer) - 1);
-			if (CustomFont) ImGui::PushFont(CustomFont);
-			if (ImGui::InputText(Label.c_str(), Buffer, sizeof(Buffer)))
-			{
-				*Value = Buffer;
-			}
-			if (CustomFont) ImGui::PopFont();
-			break;
-		}
-		case EPropertyType::Transform:
-		{
-			FTransform* Value = static_cast<FTransform*>(ValuePtr);
-
-			ImGui::NewLine();
-
-			FTransform Transform = *Value;
-			bool bChange = false;
-
-			bChanged |= DrawVector3Controller("Location", Value->Location.V, 0.0f, 55.0f);
-			bChanged |= DrawRotatorAsXYZ("Rotation", Value->Rotation);
-			bChanged |= DrawVector3Controller("Scale", Value->Scale.V, 1.0f, 55.0f);
-
-			//if (bChange)
-			//{
-			//	// 씬 컴포넌트면 SetTransform을 거치고, 아니면 값을 직접 쓴다
-			//	if (USceneComponent* SceneComponent = Cast<USceneComponent>(Object))
-			//	{
-			//		SceneComponent->SetTransform(Transform);
-			//	}
-			//	else
-			//	{
-			//		*Value = Transform;
-			//	}
-			//}
-			break;
-		}
-		case EPropertyType::Object:
-		{
-			UObject** ObjPtr = static_cast<UObject**>(ValuePtr);
-
-			if (Property.Class == UMaterial::StaticClass())
-			{
-				DrawTextureSlot(reinterpret_cast<UMaterial**>(ObjPtr), 0);
-			}
-			else if (Property.Class == UFont::StaticClass())
-			{
-				DrawFontSlot(Object, reinterpret_cast<UFont**>(ObjPtr));
-			}
-			else if (Property.Class == UStaticMesh::StaticClass())
-			{
-				DrawMeshSlot(Object, reinterpret_cast<UStaticMesh**>(ObjPtr));
-			}
-			break;
-		}
-		default:
-			ImGui::TextDisabled("(Unsupported)");
-			break;
-		}
-
-		if (bChanged)
+		if (DrawPropertyValue(Object, Property, ValuePtr, Label.c_str(), CustomFont))
 		{
 			Object->PostEditChangeProperty(Property);
 		}
@@ -813,9 +902,9 @@ namespace
 
 			// 노출할 프로퍼티가 하나도 없으면 헤더도 그리지 않는다
 			bool bHasVisibleProperty = false;
-			for (const FProperty& Property : Class->GetProperties())
+			for (const FProperty* Property : Class->GetProperties())
 			{
-				if (Property.HasAnyFlags(CPF_Edit))
+				if (Property->HasAnyFlags(CPF_Edit))
 				{
 					bHasVisibleProperty = true;
 					break;
@@ -829,16 +918,16 @@ namespace
 			ImGui::PushID(Class->Name.c_str());
 			if (ImGui::CollapsingHeader(Class->Name.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 			{
-				for (const FProperty& Property : Class->GetProperties())
+				for (const FProperty* Property : Class->GetProperties())
 				{
-					if (!Property.HasAnyFlags(CPF_Edit))
+					if (!Property->HasAnyFlags(CPF_Edit))
 					{
 						continue;
 					}
 
-					const bool bReadOnly = Property.HasAnyFlags(CPF_EditConst);
+					const bool bReadOnly = Property->HasAnyFlags(CPF_EditConst);
 					if (bReadOnly) ImGui::BeginDisabled();
-					DrawProperty(Object, Property, CustomFont);
+					DrawProperty(Object, *Property, CustomFont);
 					if (bReadOnly) ImGui::EndDisabled();
 				}
 			}
@@ -959,10 +1048,10 @@ void FDetailsPanel::DrawShadowPreview()
 		else if (Light->GetLightType() == ELightType::Directional)
 			ImGui::Text("Cascade %d", i + 1);
 		ImGui::TextDisabled("Slice %u | %.0f x %.0f", Shadow.AtlasIndex, Rect.Width, Rect.Height);
-		
+
 		const ImVec2 UV0(Rect.X / Width, Rect.Y / Height);
 		const ImVec2 UV1((Rect.X + Rect.Width) / Width, (Rect.Y + Rect.Height) / Height);
-		
+
 		if (!ImGuiRenderer->DrawShadowMap(Atlas->GetSRV(), Shadow.AtlasIndex,
 			ImVec2(DisplayWidth, DisplayWidth * Rect.Height / Rect.Width), UV0, UV1, ShadowPreviewContrast))
 			ImGui::TextDisabled("Shadow preview shader is unavailable.");
@@ -990,7 +1079,7 @@ void FDetailsPanel::OnRender()
 		UActorComponent* SelectCandidateComponent = TargetComponent;
 
 		DrawActorHeader(TargetActor, TargetComponent);
-		DrawCompoenetList(TargetActor, TargetComponent);				
+		DrawCompoenetList(TargetActor, TargetComponent);
 		ImGui::Separator();
 
 		// 액터 -> 컴포넌트 순으로, 클래스별 프로퍼티 표시
@@ -1005,7 +1094,7 @@ void FDetailsPanel::OnRender()
 			DrawProperties(TargetComponent, CustomFont);
 			DrawShadowPreview();
 
-			if(SelectCandidateComponent != TargetComponent)
+			if (SelectCandidateComponent != TargetComponent)
 			{
 				SelectComponent(TargetComponent);
 			}
@@ -1023,9 +1112,9 @@ void FDetailsPanel::OnRender()
 				}
 
 				PendingDeleteComponent = nullptr;
-			}			
-		}		
-	}	
+			}
+		}
+	}
 	ImGui::End();
 }
 
@@ -1084,7 +1173,7 @@ void FDetailsPanel::DrawCompoenetList(AActor* SelectedActor, UActorComponent*& O
 		{
 			Flags |= ImGuiTreeNodeFlags_Selected;
 		}
-		
+
 		FString Label = ActorComp->GetName();
 		const ImVec2 RowStart = ImGui::GetCursorScreenPos();
 		const float RowWidth = ImGui::GetContentRegionAvail().x;
@@ -1105,7 +1194,7 @@ void FDetailsPanel::DrawCompoenetList(AActor* SelectedActor, UActorComponent*& O
 
 		const FString ClassName = std::format("({})", ActorComp->GetClass()->Name);
 		const float TextX = RowStart.x + RowWidth - ImGui::CalcTextSize(ClassName.c_str()).x;
-		ImGui::GetWindowDrawList()->AddText(ImVec2(TextX, RowStart.y), IM_COL32(200, 200, 200, 255), ClassName.c_str());		
+		ImGui::GetWindowDrawList()->AddText(ImVec2(TextX, RowStart.y), IM_COL32(200, 200, 200, 255), ClassName.c_str());
 
 		ImGui::PopID();
 	}
@@ -1240,7 +1329,7 @@ void FDetailsPanel::DrawSceneComponentNode(USceneComponent* Component, USceneCom
 
 void FDetailsPanel::TryReparent(USceneComponent* DroppedComponent, USceneComponent* DragComponent)
 {
-	if (DroppedComponent != nullptr 
+	if (DroppedComponent != nullptr
 		&& DroppedComponent->GetAttachParent() != DragComponent
 		&& DroppedComponent != DragComponent)
 	{

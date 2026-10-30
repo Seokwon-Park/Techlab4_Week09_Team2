@@ -108,12 +108,15 @@ std::string GenerateHeader(const FHeaderInfo& Header, const std::string& ModuleN
                         + ": meta is only allowed on float, int32, uint32, FVector, FVector4, FRotator properties.\");");
                 }
 
-                std::string Call = "\t\tInClass->AddProperty<" + Type + ">(\"" + Property.Name + "\", offsetof(ThisClass, " + Property.Name + ")";
+                // Type=LinearColor면 프로퍼티 클래스를 직접 넘긴다. 없으면 AddProperty가 멤버 타입으로 고른다.
+                std::string TemplateArgs = Type;
                 if (!Property.TypeOverride.empty())
                 {
-                    Call += ", EPropertyType::" + Property.TypeOverride;
+                    TemplateArgs += ", F" + Property.TypeOverride + "Property";
                 }
-                Call += ", " + JoinFlags(Property.Flags);
+
+                std::string Call = "\t\tInClass->AddProperty<" + TemplateArgs + ">(\"" + Property.Name + "\", offsetof(ThisClass, " + Property.Name + "), "
+                    + JoinFlags(Property.Flags) + ")";
                 if (!Property.Meta.empty())
                 {
                     std::string Meta;
@@ -121,9 +124,10 @@ std::string GenerateHeader(const FHeaderInfo& Header, const std::string& ModuleN
                     {
                         Meta += (Meta.empty() ? "" : ", ") + ("." + Value.Key + " = " + Value.Literal);
                     }
-                    Call += ", FPropertyMeta{ " + Meta + " }";
+                    // AddProperty가 만든 FNumericProperty를 돌려주므로 meta를 바로 넣는다
+                    Call += "->Meta = FPropertyMeta{ " + Meta + " }";
                 }
-                Lines.push_back(Call + ");");
+                Lines.push_back(Call + ";");
             }
             Lines.push_back("\t}");
             Lines.push_back("private:");
