@@ -109,6 +109,22 @@ local others = actor:GetOverlappingActors() -- 기존 겹침 목록. 액터 중�
 양쪽에 Overlap 이벤트가 켜진 충돌 도형(`UShapeComponent`)이 필요합니다.
 일반 표시용 메시만 붙이면 이 Overlap 검사에 참여하지 않습니다.
 
+### LevelSequenceActor 재생 제어
+
+```lua
+local sequence = GetActorByName("ClearSequenceActor")
+sequence:PlaySequence()
+sequence:PauseSequence() -- 현재 카메라와 포즈 유지
+sequence:StopSequence()  -- 카메라 복귀 및 완료 모드에 따른 상태 복구
+local playing = sequence:IsSequencePlaying()
+local moved = sequence:SeekSequence(11.5) -- 초 단위, 도착 지점을 즉시 평가
+```
+
+`SeekSequence(seconds)`는 재생 범위 안으로 시간을 제한하고, 건너뛴 구간의 이벤트는 실행하지 않습니다.
+재생 중 호출하면 재생을 계속하므로 구도를 고정하려면 이어서 `PauseSequence()`를 호출합니다.
+유효한 시퀀스 액터/에셋이 없거나 시간이 NaN·무한대이면 `false`, 평가 요청이 성공하면 `true`를 반환합니다.
+`bPauseAtEnd=true`인 시퀀스의 자연 종료도 `IsSequencePlaying()`이 `false`가 되는 것으로 확인할 수 있습니다.
+
 ### Input
 
 `RegisterInput`에 등록된 전역 함수입니다. 객체 생성 없이 직접 호출합니다.

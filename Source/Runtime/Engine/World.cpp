@@ -165,7 +165,7 @@ void UWorld::Tick(float RealDeltaTime)
 
 			UpdateOverlaps();
 			FLuaBindings::FlushPendingDestroy(this);
-			if (PlayerController) PlayerController->UpdateCameraManager(DeltaTime);
+			if (PlayerController) PlayerController->UpdateCameraManager(RealDeltaTime);
 		}
 	}
 	else

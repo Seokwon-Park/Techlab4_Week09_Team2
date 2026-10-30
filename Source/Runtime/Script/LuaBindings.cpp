@@ -2,6 +2,7 @@
 #include "LuaBindings.h"
 
 #include <sol/sol.hpp>
+#include <cmath>
 
 #include "Components/MovementComponent.h"
 #include "Components/SlidingMovementComponent.h"
@@ -235,6 +236,20 @@ namespace
 			"PlaySequence", [](const FLuaActorRef& Ref) { if (ULevelSequencePlayer* P = SequencePlayerOf(Ref)) P->Play(); },
 			"PauseSequence", [](const FLuaActorRef& Ref) { if (ULevelSequencePlayer* P = SequencePlayerOf(Ref)) P->Pause(); },
 			"StopSequence", [](const FLuaActorRef& Ref) { if (ULevelSequencePlayer* P = SequencePlayerOf(Ref)) P->Stop(); },
+			"SeekSequence", [](const FLuaActorRef& Ref, float Seconds) -> bool
+			{
+				ALevelSequenceActor* Actor = Cast<ALevelSequenceActor>(Ref.Get());
+				if (!Actor || !std::isfinite(Seconds)) return false;
+				if (!Actor->GetSequencePlayer() && !Actor->InitializePlayer()) return false;
+				ULevelSequencePlayer* Player = Actor->GetSequencePlayer();
+				// Clamp before converting seconds to an integer frame number.
+				Seconds = FMath::Clamp(Seconds, static_cast<float>(Player->GetStartTime().AsSeconds()),
+					static_cast<float>(Player->GetEndTime().AsSeconds()));
+				// Jump evaluates the destination pose/camera without firing skipped events.
+				Player->SetPlaybackPosition(
+					FMovieSceneSequencePlaybackParams(Seconds, EUpdatePositionMethod::Jump));
+				return true;
+			},
 			"IsSequencePlaying", [](const FLuaActorRef& Ref)
 			{
 				ULevelSequencePlayer* P = SequencePlayerOf(Ref);
